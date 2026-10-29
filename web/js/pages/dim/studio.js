@@ -74,5 +74,13 @@ export function setupStudio(container, dim, storage) {
     azioni[azione]();
   };
   document.addEventListener('keydown', alTasto);
-  return () => document.removeEventListener('keydown', alTasto);
+  const menu = controlli.querySelector('.dim-menu');
+  const desktop = typeof matchMedia === 'function' ? matchMedia('(min-width: 1024px)') : null;
+  const allineaMenu = () => { if (menu && desktop) menu.open = desktop.matches; };
+  allineaMenu();
+  if (desktop) desktop.addEventListener('change', allineaMenu);
+  return () => {
+    document.removeEventListener('keydown', alTasto);
+    if (desktop) desktop.removeEventListener('change', allineaMenu);
+  };
 }

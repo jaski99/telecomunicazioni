@@ -5,8 +5,8 @@ import { dimostrazioneEsempio, elemento } from './dim-fake-dom.js';
 
 const dim = dimostrazioneEsempio();
 
-test('testoProgresso dice «Passo k di N» e gestisce lo zero', () => {
-  assert.equal(testoProgresso(0, 3), 'Nessun passo rivelato (0 di 3)');
+test('testoProgresso dice sempre «Passo k di N», anche a zero', () => {
+  assert.equal(testoProgresso(0, 3), 'Passo 0 di 3');
   assert.equal(testoProgresso(2, 3), 'Passo 2 di 3');
 });
 

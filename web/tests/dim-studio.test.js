@@ -99,3 +99,24 @@ test('senza pannello o controlli setupStudio non fa nulla', () => {
   assert.equal(typeof smonta, 'function');
   smonta();
 });
+
+test('il menu «Altro» è aperto da 1024 px e la sincronizzazione si rimuove allo smontaggio', () => {
+  const ascoltatori = [];
+  const media = { matches: true, addEventListener: (t, f) => ascoltatori.push(f), removeEventListener: (t, f) => ascoltatori.splice(ascoltatori.indexOf(f), 1) };
+  globalThis.matchMedia = () => media;
+  const menu = elemento({ classi: [] });
+  menu.open = false;
+  const controlli = elemento({ children: { '.dim-menu': menu } });
+  const pannello = elemento({ attrs: { id: 'modo-studio' } });
+  const contenitore = elemento({ children: { '#modo-studio': pannello, '.dim-controlli': controlli } });
+  globalThis.document = documentoFinto();
+  const smonta = setupStudio(contenitore, dim, memoria());
+  assert.equal(menu.open, true);
+  assert.equal(ascoltatori.length, 1);
+  media.matches = false;
+  ascoltatori[0]();
+  assert.equal(menu.open, false);
+  smonta();
+  assert.equal(ascoltatori.length, 0);
+  delete globalThis.matchMedia;
+});

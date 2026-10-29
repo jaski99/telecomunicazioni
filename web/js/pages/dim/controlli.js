@@ -1,9 +1,8 @@
-/** Controlli di studio: barra di avanzamento, azioni, indice dei passi. Solo DOM e testi. */
+/** Controlli di studio: avanzamento, azioni, indice dei passi. Solo DOM e testi. */
 import { escapeHtml } from '../../core/math.js';
 import { passi } from './dati.js';
 
 export function testoProgresso(rivelati, totale) {
-  if (rivelati === 0) return `Nessun passo rivelato (0 di ${totale})`;
   return `Passo ${rivelati} di ${totale}`;
 }
 
@@ -15,7 +14,8 @@ function voceIndice(n, rivelato) {
   return `<li><button class="dim-indice__voce" type="button" data-indice="${n}"${rivelato ? '' : ' disabled'}>Passo ${n}<span class="dim-indice__stato">${rivelato ? 'rivelato' : 'nascosto'}</span></button></li>`;
 }
 
-/** Barra fissa in basso su mobile, colonna sticky con indice da 1024 px (CSS). */
+/** Testo e striscia di avanzamento, poi una riga di pulsanti; «Mostra tutti» e «Ricomincia» stanno nel
+ *  menu «Altro» (sempre aperto da 1024 px). Su mobile la barra è fissa in basso (CSS). */
 export function renderControlli(dim, rivelati) {
   const elenco = passi(dim);
   const totale = elenco.length;
@@ -27,15 +27,19 @@ export function renderControlli(dim, rivelati) {
 </div>
 <div class="dim-controlli__azioni">
 <button class="btn btn--ghost" type="button" data-azione="indietro"${rivelati === 0 ? ' disabled' : ''}>Indietro</button>
-<button class="btn" type="button" data-azione="avanti"${rivelati >= totale ? ' disabled' : ''}>Prossimo passo</button>
+<button class="btn dim-avanti" type="button" data-azione="avanti"${rivelati >= totale ? ' disabled' : ''}>Prossimo passo</button>
+<details class="dim-menu" data-menu><summary class="btn btn--ghost">Altro</summary>
+<div class="dim-menu__corpo">
 <button class="btn btn--ghost" type="button" data-azione="tutti"${rivelati >= totale ? ' disabled' : ''}>Mostra tutti</button>
 <button class="btn btn--ghost" type="button" data-azione="ricomincia"${rivelati === 0 ? ' disabled' : ''}>Ricomincia</button>
+</div>
+</details>
 </div>
 <nav class="dim-indice" aria-label="Indice dei passi"><p class="dim-indice__titolo">Passi</p><ol class="dim-indice__lista">${indice}</ol></nav>
 </aside>`;
 }
 
-/** Riallinea barra, testo, pulsanti e indice al nuovo numero di passi rivelati. */
+/** Riallinea testo, striscia, pulsanti e indice al nuovo numero di passi rivelati. */
 export function aggiornaControlli(root, rivelati, totale) {
   const testo = root.querySelector('[data-progresso-testo]');
   if (testo) testo.textContent = testoProgresso(rivelati, totale);

@@ -28,14 +28,18 @@
 .dim-pannello .formula { margin: 0; }
 .dim-lista { margin: 0; padding-left: var(--s-5); }
 
-/* Controlli: barra fissa in basso su mobile, sopra la nav */
-.dim-controlli { position: fixed; z-index: 4; left: 0; right: 0; bottom: calc(var(--tap) + 1px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: var(--s-2); min-height: var(--header-height); padding: var(--s-2) var(--gutter); background: var(--c-bg); border-top: 1px solid var(--c-border); box-shadow: var(--shadow-1); }
+/* Controlli: su mobile barra fissa in basso (testo e striscia, poi una riga di pulsanti) sopra la nav */
+.dim-controlli { position: fixed; z-index: 4; left: 0; right: 0; bottom: calc(var(--tap) + 1px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: var(--s-2); padding: var(--s-2) var(--gutter); background: var(--c-bg); border-top: 1px solid var(--c-border); box-shadow: var(--shadow-1); }
 .dim-controlli__progresso { display: flex; align-items: center; gap: var(--s-3); }
-.dim-controlli__testo { margin: 0; }
+.dim-controlli__testo { margin: 0; white-space: nowrap; }
 .dim-controlli__progresso .progress { flex: 1; min-width: 0; }
-.progress__bar { height: 100%; border-radius: var(--radius); background: var(--c-primary); }
-.dim-controlli__azioni { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); }
-.dim-controlli__azioni .btn { padding: 0 var(--s-2); font-size: var(--fs-small); }
+.dim-controlli__azioni { display: flex; align-items: center; gap: var(--s-2); }
+.dim-controlli .btn { padding: 0 var(--s-3); font-size: var(--fs-small); }
+.dim-avanti { flex: 1; min-width: 0; }
+.dim-menu { position: relative; }
+.dim-menu > summary { list-style: none; cursor: pointer; }
+.dim-menu > summary::-webkit-details-marker { display: none; }
+.dim-menu__corpo { position: absolute; right: 0; bottom: 100%; display: flex; flex-direction: column; gap: var(--s-2); margin-bottom: var(--s-2); padding: var(--s-2); background: var(--c-bg); border: 1px solid var(--c-border); border-radius: var(--radius); box-shadow: var(--shadow-1); }
 /* Indice dei passi: stili di base (anche se nascosto su mobile), display da 1024 px */
 .dim-indice { display: none; }
 .dim-indice__titolo { margin: var(--s-4) 0 var(--s-2); font-weight: 700; }
@@ -60,10 +64,14 @@
 .step__figura:empty { display: none; }
 .dim-attesa { margin: 0; padding: var(--s-4); border: 1px dashed var(--c-border); border-radius: var(--radius); color: var(--c-text-muted); }
 
-/* Notazione: lista a due colonne da desktop */
-.dim-notazione { display: grid; grid-template-columns: 1fr; gap: var(--s-3) var(--s-5); margin: 0; padding: 0; list-style: none; }
-.dim-notazione li { display: grid; grid-template-columns: auto 1fr; align-items: baseline; gap: var(--s-3); }
-.dim-notazione strong { font-weight: 700; }
+/* Notazione: su mobile simbolo sopra e significato sotto; da 1024 px una voce per riga, simbolo | significato */
+.dim-notazione { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); margin: 0; padding: 0; list-style: none; }
+.dim-notazione li { display: flex; flex-direction: column; gap: var(--s-1); min-width: 0; }
+.dim-notazione strong { font-weight: 700; min-width: 0; }
+.dim-notazione span { min-width: 0; overflow-wrap: anywhere; }
+
+/* Compatta: righe in colonna, con lo spazio tra le voci */
+.dim-compatta li + li { margin-top: var(--s-3); }
 
 /* Errori frequenti */
 .dim-errori { display: flex; flex-direction: column; gap: var(--s-4); }
@@ -99,17 +107,20 @@
 @media (min-width: 768px) {
   .dim-pannello .card, .step { padding: var(--s-5); }
   .dim-pannello .formula-box { padding: var(--s-5); }
-  .dim-controlli__azioni { display: flex; flex-wrap: wrap; }
 }
 
-/* Da desktop: sidebar sticky a sinistra, contenuto a destra */
+/* Da desktop: sidebar sticky a sinistra, contenuto a destra; una voce di notazione per riga */
 @media (min-width: 1024px) {
-  .dim-notazione { grid-template-columns: 1fr 1fr; }
+  .dim-notazione li { display: grid; grid-template-columns: minmax(0, 45%) minmax(0, 1fr); align-items: baseline; gap: var(--s-4); }
   .dim-corpo { display: grid; grid-template-columns: var(--dim-colonna) minmax(0, 1fr); gap: var(--s-6); align-items: start; padding-bottom: 0; }
   .dim-corpo:not(.dim-corpo--studio) { grid-template-columns: minmax(0, 1fr); }
-  .dim-controlli { position: sticky; top: calc(var(--tap) + var(--s-6)); z-index: 1; left: auto; right: auto; bottom: auto; min-height: 0; padding: var(--s-4); border: 1px solid var(--c-border); border-radius: var(--radius); box-shadow: none; max-height: calc(100vh - var(--tap) * 2); overflow-y: auto; }
+  .dim-controlli { position: sticky; top: calc(var(--tap) + var(--s-6)); z-index: 1; left: auto; right: auto; bottom: auto; padding: var(--s-4); border: 1px solid var(--c-border); border-radius: var(--radius); box-shadow: none; max-height: calc(100vh - var(--tap) * 2); overflow-y: auto; }
   .dim-controlli__progresso { flex-direction: column; align-items: stretch; }
-  .dim-controlli__azioni { display: flex; flex-direction: column; }
-  .dim-controlli__azioni .btn { width: 100%; }
+  .dim-controlli__progresso .progress { flex: none; }
+  .dim-controlli__azioni { flex-direction: column; align-items: stretch; }
+  .dim-avanti { flex: none; }
+  .dim-controlli .btn { width: 100%; }
+  .dim-menu > summary { display: none; }
+  .dim-menu__corpo { position: static; margin: 0; padding: 0; border: 0; box-shadow: none; background: transparent; }
   .dim-indice { display: block; }
 }

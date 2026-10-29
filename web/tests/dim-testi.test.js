@@ -15,9 +15,18 @@ test('A voce non produce testo vuoto o null quando manca il parlato', () => {
   assert.match(html, /<div class="prose"><\/div>/);
 });
 
-test('Compatta elenca le righe chiave come lista ordinata', () => {
-  const html = renderCompatta(dimostrazioneEsempio({ versione_compatta: ['Uno $a$', 'Due'] }));
-  assert.match(html, /<ol class="dim-compatta"><li>Uno \$a\$<\/li><li>Due<\/li><\/ol>/);
+test('Compatta mette le voci che sono solo formula in un blocco formula, con la punteggiatura dentro', () => {
+  const html = renderCompatta(dimostrazioneEsempio({ versione_compatta: ['$P(X>t)=e^{-\\lambda t}$.'] }));
+  assert.match(html, /<ol class="dim-compatta"><li><div class="formula-box">/);
+  assert.match(html, /<annotation encoding="application\/x-tex">P\(X&gt;t\)=e\^\{-\\lambda t\}\.<\/annotation>/);
+  assert.doesNotMatch(html, /<li>\.<\/li>|<p>\.<\/p>/);
+});
+
+test('Compatta mette le voci con testo e formule in un contenitore .scroll-x', () => {
+  const html = renderCompatta(dimostrazioneEsempio({ versione_compatta: ['Uno $a$ e $b$.'] }));
+  assert.match(html, /<li><div class="scroll-x" tabindex="0" role="region" aria-label="Riga compatta"><p>Uno <span class="formula-inline">[\s\S]*<\/span> e <span class="formula-inline">[\s\S]*<\/span>\.<\/p><\/div><\/li>/);
+  assert.doesNotMatch(html, /\$/);
+  assert.doesNotMatch(html, /formula-box/);
 });
 
 test('Compatta senza righe non rompe il pannello', () => {
