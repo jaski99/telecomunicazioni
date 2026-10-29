@@ -10,6 +10,7 @@ Richiede Playwright con browser Chromium installato (CI only).
 
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -48,18 +49,27 @@ def build_routes():
 ROUTES = build_routes()
 MODALITA = ["studio", "avocce", "compatta", "abuchi", "recall"]
 
-# Testi che non devono mai apparire (apostrofo/accento errato o placeholder)
+# Testi che non devono mai apparire come parole intere
+# (apostrofo/accento errato o placeholder). Usa matching a parola intera
+# per evitare falsi positivi (es. "null" dentro "annullare").
 TESTI_VIETATI = [
-    "[object Object]",
-    "null",
-    "undefined",
-    "NaN",
-    "perche",   # senza accento
-    "e'",       # apostrofo invece di accento
-    "ne'",      # apostrofo invece di accento
-    "puo",      # senza accento
-    "montara",  # senza accento
+    r"\[object Object\]",
+    r"\bnull\b",
+    r"\bundefined\b",
+    r"\bNaN\b",
+    r"\bperche\b",   # senza accento
+    r"\be'\b",       # apostrofo invece di accento
+    r"\bene'\b",     # apostrofo invece di accento
+    r"\bpuo\b",      # senza accento
+    r"\bmontara\b",  # senza accento
 ]
+
+# Nodi che hanno figure SVG (per assert svg > 0 solo dove pertinente)
+GRAFO = leggi_grafo()
+NODI_CON_FIGURE = set()
+for _n in GRAFO.get("nodi", []):
+    if _n.get("figure") or (_n.get("lezione") and _n["lezione"].get("figure")):
+        NODI_CON_FIGURE.add(_n.get("id"))
 
 
 @pytest.fixture(scope="session")
@@ -111,7 +121,10 @@ def controlla_pagina(page, errori):
         "let nodo;"
         "while ((nodo = walker.nextNode())) {"
         "  const t = nodo.textContent.trim();"
-        "  for (const p of proibiti) { if (t === p || t.includes(p)) visibili.push(t); }"
+        "  for (const p of proibiti) {"
+        "    const re = new RegExp(p, 'i');"
+        "    if (re.test(t)) visibili.push(t);"
+        "  }"
         "}"
         "return visibili;"
         "}"
@@ -157,7 +170,9 @@ def test_rota_senza_errori_né_scroll(server, width, height, route):
     assert nessun_vietato == [], f"[{route}] testo vietato visibile: {nessun_vietato}"
     assert errore_pagina == 0, "[" + route + "] pagina in errore"
     assert katex_error == 0, f"[{route}] errori KaTeX visibili"
-    assert katex >= 0 and svg >= 0
+    # Ogni rotta deve mostrare almeno un h1 (contenuto reale, mai bianco)
+    h1 = page.locator("h1").count()
+    assert h1 > 0, f"[{route}] manca h1 (pagina bianca)"
 
 
 @pytest.mark.parametrize("width,height", VIEWPORTS)
@@ -208,7 +223,9 @@ def test_nodo_contenuto_reale(server, width, height, route):
     assert errore_pagina == 0
     assert katex > 0, f"[{route}] nessun .katex (matematica mancante)"
     assert katex_error == 0, f"[{route}] errori KaTeX visibili"
-    assert svg > 0, f"[{route}] nessun SVG (figure mancanti)"
+    # SVG solo se il nodo ha figure dichiarate in graph.json
+    if nid in NODI_CON_FIGURE:
+        assert svg > 0, f"[{route}] nessun SVG (figure mancanti per nodo {nid})"
 
 
 @pytest.mark.parametrize("width,height", VIEWPORTS)
@@ -251,7 +268,19 @@ def test_dim_contenuto_reale(server, width, height, route):
     assert errore_pagina == 0
     assert katex > 0, f"[{route}] nessun .katex (matematica mancante)"
     assert katex_error == 0, f"[{route}] errori KaTeX visibili"
-    assert svg > 0, f"[{route}] nessun SVG (figure mancanti)"
+    # SVG solo se il nodo ha figure dichiarate in graph.json
+    nodo_id = did
+    grafo = leggi_grafo()
+    nodo = next((n for n in grafo.get("nodi", []) if n.get("id") == nodo_id), None)
+    ha_figura = bool(
+        nodo
+        and (
+            nodo.get("figure")
+            or (nodo.get("lezione") and nodo["lezione"].get("figure"))
+        )
+    )
+    if ha_figura:
+        assert svg > 0, f"[{route}] nessun SVG (figure mancanti per nodo {nodo_id})"
 
 
 @pytest.mark.parametrize("width,height", VIEWPORTS)

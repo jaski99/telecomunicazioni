@@ -2,7 +2,7 @@
  * uno alla volta col perché. Tutti i campi sono sempre visibili.
  * Mantiene il file sotto le 200 righe.
  */
-import { testoSicuro, escapeHtml } from '../core/math.js';
+import { testoSicuro, escapeHtml, compilaLatex } from '../core/math.js';
 import { elenco, chipStato, linkNodo } from '../ui.js';
 import { renderFigura } from '../figure/index.js';
 const KEY = 'tlc-kg:dimostrazioni:v1';
@@ -27,12 +27,12 @@ export function render(ctx, params) {
 </p>
 <section class="sempre-visibile">
   ${dim.enunciato ? `<h2>Enunciato</h2><p>${escapeHtml(testoSicuro(dim.enunciato))}</p>` : ''}
-  ${dim.ipotesi ? `<h2>Ipotesi</h2><p>${escapeHtml(testoSicuro(dim.ipotesi))}</p>` : ''}
-  ${dim.notazione ? `<h2>Notazione</h2><ul>${Array.isArray(dim.notazione) ? dim.notazione.map((s) => `<li><strong>${escapeHtml(String(s.simbolo || ''))}</strong>: ${escapeHtml(testoSicuro(s.significato || ''))}</li>`).join('') : `<li>${escapeHtml(testoSicuro(dim.notazione))}</li>`}</ul>` : ''}
+  ${dim.ipotesi ? `<h2>Ipotesi</h2><ul>${Array.isArray(dim.ipotesi) ? dim.ipotesi.map((ip) => `<li>${escapeHtml(testoSicuro(ip))}</li>`).join('') : `<li>${escapeHtml(testoSicuro(dim.ipotesi))}</li>`}</ul>` : ''}
+  ${dim.notazione ? `<h2>Notazione</h2><ul>${Array.isArray(dim.notazione) ? dim.notazione.map((s) => `<li><strong>${compilaLatex(String(s.simbolo || ''))}</strong>: ${escapeHtml(testoSicuro(s.significato || ''))}</li>`).join('') : `<li>${escapeHtml(testoSicuro(dim.notazione))}</li>`}</ul>` : ''}
   ${dim.idea ? `<h2>Idea della dimostrazione</h2><p>${escapeHtml(testoSicuro(dim.idea))}</p>` : ''}
   ${dim.formula_finale ? `<h2>Formula finale</h2><div class="formula">${escapeHtml('$' + dim.formula_finale + '$')}</div>` : ''}
   ${renderFigureLista(dim.figure)}
-  ${dim.errori_frequenti ? `<h2>Errori frequenti</h2>${elenco(dim.errori_frequenti)}` : ''}
+  ${dim.errori_frequenti ? `<h2>Errori frequenti</h2>${renderErroriFrequenti(dim.errori_frequenti)}` : ''}
   ${dim.fonti ? `<h2>Fonti</h2>${elenco(dim.fonti)}` : ''}
   ${dim.verifica ? `<h2>Verifica</h2><p>${escapeHtml(testoSicuro(dim.verifica.stato || ''))}</p>${dim.verifica.note ? `<p class="muted">${escapeHtml(testoSicuro(dim.verifica.note))}</p>` : ''}${renderPuntiAperti(dim.verifica.punti_aperti)}` : ''}
 </section>
@@ -177,6 +177,17 @@ function setupRecall(container, dim) {
 function renderFigureLista(figura) {
   if (!Array.isArray(figura) || !figura.length) return '';
   return `<h2>Figure</h2>${figura.map((f) => renderFigura(f)).join('')}`;
+}
+
+function renderErroriFrequenti(arr) {
+  if (!Array.isArray(arr) || arr.length === 0) return '';
+  let html = '<ul>';
+  for (const e of arr) {
+    if (!e || typeof e !== 'object') continue;
+    html += `<li><strong>Errore:</strong> ${escapeHtml(testoSicuro(e.errore || ''))}<br><strong>Perché è sbagliato:</strong> ${escapeHtml(testoSicuro(e.perche_sbagliato || ''))}<br><strong>Correzione:</strong> ${escapeHtml(testoSicuro(e.correzione || ''))}</li>`;
+  }
+  html += '</ul>';
+  return html;
 }
 function renderPuntiAperti(arr) {
   if (!Array.isArray(arr) || !arr.length) return '';

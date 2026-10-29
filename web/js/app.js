@@ -91,6 +91,7 @@ async function mostraRoute(hash) {
   }
   const page = route.page;
   const ctx = { graph, quiz, storage, renderMath, testoSicuro };
+  let html;
   try {
     if (typeof page.render === 'function') {
       html = await page.render(ctx, params || {});
