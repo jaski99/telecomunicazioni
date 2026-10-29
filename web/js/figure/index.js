@@ -1,44 +1,25 @@
-/**
- * Router delle figure SVG. Esporta renderFigura(spec) -> stringa HTML
- * contenente un <figure> accessibile con SVG oppure, per spec non valida,
- * solo la descrizione testuale. Mai solleva eccezioni non gestite.
- */
+/* Router figure: renderFigura(specOId, figureDisponibili). accetta ID stringa
+   + elenco figure; "Figura non disponibile" solo se l'ID non esiste. */
 
 import { renderGrafico } from './grafico.js';
 import { renderBlocchi } from './blocchi.js';
 import { renderTemporale } from './temporale.js';
-import { figuraSVG, figuraSoloTesto, svgBase } from './helpers.js';
+import { figuraSVG, figuraSoloTesto, svgBase, fontSize } from './helpers.js';
 
-const RENDERER = {
-  grafico: renderGrafico,
-  blocchi: renderBlocchi,
-  temporale: renderTemporale,
-};
+const RENDERER = { grafico: renderGrafico, blocchi: renderBlocchi, temporale: renderTemporale };
 
-/**
- * @param {object} spec
- * @returns {string} HTML <figure> ... </figure>
- */
-export function renderFigura(spec) {
+export function renderFigura(specOId, figureDisponibili = []) {
   try {
-    if (!spec || typeof spec !== 'object') {
-      return figuraSoloTesto(spec);
+    let spec = specOId;
+    if (typeof specOId === 'string') {
+      spec = Array.isArray(figureDisponibili) ? figureDisponibili.find(f => f && String(f.id) === specOId) : undefined;
+      if (!spec) return figuraSoloTesto({ titolo: 'Figura', descrizione: 'Figura non disponibile.' });
     }
-    const titolo = testoSicuroLocal(spec.titolo);
-    const descrizione = testoSicuroLocal(spec.descrizione);
-    const tipo = spec.tipo;
-    if (!tipo || !RENDERER[tipo]) {
-      return figuraSoloTesto({ titolo, descrizione });
-    }
-    const svgInner = RENDERER[tipo](spec);
-    const svg = svgBase(spec, spec.viewBox_w || 760, spec.viewBox_h || 460, svgInner);
-    return figuraSVG(spec, svg);
-  } catch (_err) {
-    return figuraSoloTesto(spec);
-  }
-}
-
-function testoSicuroLocal(v) {
-  if (v === null || v === undefined) return '';
-  return String(v);
+    if (!spec || typeof spec !== 'object') return figuraSoloTesto(spec);
+    const tipo = spec.tipo; if (!tipo || !RENDERER[tipo]) return figuraSoloTesto({ titolo: spec.titolo, descrizione: spec.descrizione });
+    const r = RENDERER[tipo](spec);
+    const fs = r.fs || fontSize(r.viewBox.w);
+    const svg = svgBase(spec, r.viewBox.w, r.viewBox.h, r.svgInner, fs);
+    return figuraSVG(spec, svg, r.serie);
+  } catch (_e) { return figuraSoloTesto(specOId); }
 }
