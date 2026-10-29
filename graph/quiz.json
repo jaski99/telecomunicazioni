@@ -1,0 +1,1734 @@
+{
+  "versione": 1,
+  "descrizione": "Banca riformulata per esercitazione. I temi si riferiscono alla raccolta esaminata; non è una prova ufficiale.",
+  "elementi": [
+    {
+      "id": "q-m01",
+      "tipo": "scelta_multipla",
+      "area": 5,
+      "nodo_id": "modulazione-prodotto-dsb-ssb",
+      "temi": [
+        "M1"
+      ],
+      "domanda": "Come viene interpretata SSB-BC nella raccolta di prova?",
+      "spiegazione": "La raccolta associa SSB-BC alla conversione in salita; il suo significato terminologico generale resta NON TROVATO.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Conversione di frequenza in salita"
+        },
+        {
+          "id": "b",
+          "testo": "Modulazione d’angolo a portante costante",
+          "perche_sbagliata": "La conversione riportata riguarda la traslazione di frequenza, non una modulazione d’angolo."
+        },
+        {
+          "id": "c",
+          "testo": "Modulazione a prodotto con doppia banda laterale",
+          "perche_sbagliata": "La sigla riportata non è associata alla generica DSB a prodotto."
+        }
+      ],
+      "corretta": "a"
+    },
+    {
+      "id": "q-m02",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "dim-aloha-throughput",
+      "temi": [
+        "M2"
+      ],
+      "domanda": "Qual è il massimo throughput normalizzato dello slotted ALOHA?",
+      "spiegazione": "Per S=Ge⁻ᴳ il massimo si ha a G=1 ed è 1/e; la finestra di uno slot distingue lo slotted dal puro ALOHA.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "1/(2e), circa 0,184 trame riuscite per trama",
+          "perche_sbagliata": "Questo è il massimo del puro ALOHA, con finestra vulnerabile doppia."
+        },
+        {
+          "id": "b",
+          "testo": "1/2, pari a 0,5 trame riuscite per trama",
+          "perche_sbagliata": "La curva slotted Ge⁻ᴳ ha massimo 1/e, non 1/2."
+        },
+        {
+          "id": "c",
+          "testo": "1/e, circa 0,368 trame riuscite per trama"
+        }
+      ],
+      "corretta": "c"
+    },
+    {
+      "id": "q-m03",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "dim-aloha-throughput",
+      "temi": [
+        "M3"
+      ],
+      "domanda": "Come si confrontano i picchi slotted e puro ALOHA?",
+      "spiegazione": "Il puro ALOHA ha massimo 1/(2e), mentre lo slotted ha massimo 1/e; il rapporto tra i picchi è due.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "I due picchi coincidono se il carico medio è identico",
+          "perche_sbagliata": "Le finestre vulnerabili diverse producono massimi distinti, 1/e contro 1/(2e)."
+        },
+        {
+          "id": "b",
+          "testo": "Il picco slotted è doppio del picco del puro ALOHA"
+        },
+        {
+          "id": "c",
+          "testo": "Il picco slotted è metà di quello del puro ALOHA",
+          "perche_sbagliata": "Questa inversione ignora la sincronizzazione a slot, che dimezza la finestra vulnerabile."
+        }
+      ],
+      "corretta": "b"
+    },
+    {
+      "id": "q-m04",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "architetture-iso-osi-tcpip",
+      "temi": [
+        "M4"
+      ],
+      "domanda": "Quale servizio identifica il quarto livello ISO/OSI?",
+      "spiegazione": "Nel modello a sette livelli il quarto è il trasporto; rete è il terzo e sessione il quinto.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Trasporto end-to-end tra processi"
+        },
+        {
+          "id": "b",
+          "testo": "Instradamento dei pacchetti tra reti",
+          "perche_sbagliata": "L’instradamento è associato al livello di rete, che precede il trasporto."
+        },
+        {
+          "id": "c",
+          "testo": "Gestione delle sessioni applicative",
+          "perche_sbagliata": "La sessione è il livello 5, non il quarto."
+        }
+      ],
+      "corretta": "a"
+    },
+    {
+      "id": "q-m05",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "architetture-iso-osi-tcpip",
+      "temi": [
+        "M5"
+      ],
+      "domanda": "A quale livello OSI corrisponde il quinto strato?",
+      "spiegazione": "La numerazione dal basso colloca la sessione al livello 5.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Trasporto affidabile tra estremi",
+          "perche_sbagliata": "Il trasporto è il livello 4, immediatamente sotto la sessione."
+        },
+        {
+          "id": "b",
+          "testo": "Presentazione dei dati applicativi",
+          "perche_sbagliata": "La presentazione è il livello 6, sopra la sessione."
+        },
+        {
+          "id": "c",
+          "testo": "Sessione e gestione del dialogo"
+        }
+      ],
+      "corretta": "c"
+    },
+    {
+      "id": "q-m06",
+      "tipo": "scelta_multipla",
+      "area": 3,
+      "nodo_id": "processi-aleatori-stazionarieta-ergodicita",
+      "temi": [
+        "M6"
+      ],
+      "domanda": "Quale statistica serve per descrivere completamente l’energia di un processo?",
+      "spiegazione": "La descrizione energetica richiede statistiche di secondo ordine, per esempio autocorrelazione o densità congiunta.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "La sola densità marginale a un istante",
+          "perche_sbagliata": "La marginale non descrive la dipendenza temporale necessaria alle medie energetiche."
+        },
+        {
+          "id": "b",
+          "testo": "La densità congiunta del secondo ordine"
+        },
+        {
+          "id": "c",
+          "testo": "La sola distribuzione di ordine uno, resa stazionaria",
+          "perche_sbagliata": "La stazionarietà non ricostruisce le correlazioni da una marginale."
+        }
+      ],
+      "corretta": "b"
+    },
+    {
+      "id": "q-m07",
+      "tipo": "scelta_multipla",
+      "area": 5,
+      "nodo_id": "modulazioni-angolo-pm-fm",
+      "temi": [
+        "M7"
+      ],
+      "domanda": "Che rete si antepone a un modulatore PM per realizzare FM?",
+      "spiegazione": "Per PM→FM si antepone un integratore al modulatore PM; la chiave è coerente con la relazione fase-frequenza.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Un integratore sul segnale modulante"
+        },
+        {
+          "id": "b",
+          "testo": "Un derivatore sul segnale modulante",
+          "perche_sbagliata": "La derivata fa dipendere la fase dal derivato del messaggio, non dalla sua integrale."
+        },
+        {
+          "id": "c",
+          "testo": "Un integratore dopo l’uscita PM",
+          "perche_sbagliata": "La rete va prima del modulatore, dove modifica il messaggio d’ingresso."
+        }
+      ],
+      "corretta": "a"
+    },
+    {
+      "id": "q-m08",
+      "tipo": "scelta_multipla",
+      "area": 5,
+      "nodo_id": "modulazioni-angolo-pm-fm",
+      "temi": [
+        "M8"
+      ],
+      "domanda": "Come si ottiene PM usando un modulatore FM?",
+      "spiegazione": "Per FM→PM si antepone un derivatore al messaggio, coerentemente con la relazione tra fase e frequenza istantanea.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Anteponendo un integratore al messaggio",
+          "perche_sbagliata": "L’integratore prima di FM conduce alla conversione opposta, PM→FM."
+        },
+        {
+          "id": "b",
+          "testo": "Ponendo un integratore dopo l’uscita FM",
+          "perche_sbagliata": "La trasformazione richiesta si applica al messaggio prima del modulatore."
+        },
+        {
+          "id": "c",
+          "testo": "Anteponendo un derivatore al messaggio"
+        }
+      ],
+      "corretta": "c"
+    },
+    {
+      "id": "q-m09",
+      "tipo": "scelta_multipla",
+      "area": 1,
+      "nodo_id": "trasformata-fourier",
+      "temi": [
+        "M9"
+      ],
+      "domanda": "Che cosa si può concludere dalla sola potenza media finita di x(t)?",
+      "spiegazione": "La distinzione tra potenza finita e integrabilità va mantenuta: la sola prima ipotesi non assicura la trasformata classica ordinaria.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Garantisce sempre che x(t) sia integrabile assolutamente",
+          "perche_sbagliata": "La potenza media finita non implica integrabilità assoluta sull’intera retta."
+        },
+        {
+          "id": "b",
+          "testo": "Non garantisce da sola una trasformata ordinaria assolutamente convergente"
+        },
+        {
+          "id": "c",
+          "testo": "Implica che x(t) non ammetta alcuna trasformata generalizzata",
+          "perche_sbagliata": "Esistono trasformate in senso generalizzato anche per segnali di potenza."
+        }
+      ],
+      "corretta": "b"
+    },
+    {
+      "id": "q-m10",
+      "tipo": "scelta_multipla",
+      "area": 3,
+      "nodo_id": "processi-aleatori-stazionarieta-ergodicita",
+      "temi": [
+        "M10"
+      ],
+      "domanda": "Quale ruolo ha la stazionarietà rispetto all’ergodicità?",
+      "spiegazione": "La stazionarietà è una condizione necessaria nel quadro del quesito, non una garanzia sufficiente di ergodicità.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "È necessaria nel contesto indicato, ma non sufficiente"
+        },
+        {
+          "id": "b",
+          "testo": "È sufficiente per ogni processo stazionario",
+          "perche_sbagliata": "La stazionarietà non basta a garantire che medie temporali e statistiche coincidano."
+        },
+        {
+          "id": "c",
+          "testo": "È indipendente da qualunque ipotesi di ergodicità",
+          "perche_sbagliata": "Nel contesto del quesito è indicata come condizione necessaria."
+        }
+      ],
+      "corretta": "a"
+    },
+    {
+      "id": "q-m11",
+      "tipo": "scelta_multipla",
+      "area": 5,
+      "nodo_id": "modulazione-prodotto-dsb-ssb",
+      "temi": [
+        "M11"
+      ],
+      "domanda": "Quale segnale passa-banda corrisponde alla simmetria di ampiezza e fase indicata?",
+      "spiegazione": "Nel contesto della raccolta, simmetria dell’ampiezza e antisimmetria della fase caratterizzano la modulazione a prodotto.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Una modulazione d’angolo generica",
+          "perche_sbagliata": "La condizione citata è associata alla forma di modulazione a prodotto."
+        },
+        {
+          "id": "b",
+          "testo": "Una modulazione FM in ogni caso",
+          "perche_sbagliata": "La sola FM non garantisce la simmetria spettrale richiesta dal quesito."
+        },
+        {
+          "id": "c",
+          "testo": "Un’oscillazione modulata a prodotto"
+        }
+      ],
+      "corretta": "c"
+    },
+    {
+      "id": "q-m12",
+      "tipo": "scelta_multipla",
+      "area": 5,
+      "nodo_id": "dim-formula-carson",
+      "temi": [
+        "M12"
+      ],
+      "domanda": "Che banda stima la formula di Carson?",
+      "spiegazione": "Carson stima la banda significativa della modulazione d’angolo in base a deviazione massima e banda del messaggio.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "La banda minima per evitare aliasing",
+          "perche_sbagliata": "L’aliasing riguarda il campionamento e non la deviazione angolare."
+        },
+        {
+          "id": "b",
+          "testo": "La banda significativa di una modulazione d’angolo"
+        },
+        {
+          "id": "c",
+          "testo": "La banda di una modulazione AM ordinaria",
+          "perche_sbagliata": "Carson è applicata a FM/PM, non alla modulazione d’ampiezza ordinaria."
+        }
+      ],
+      "corretta": "b"
+    },
+    {
+      "id": "q-m13",
+      "tipo": "scelta_multipla",
+      "area": 5,
+      "nodo_id": "dim-formula-carson",
+      "temi": [
+        "M13"
+      ],
+      "domanda": "Dove è collocata la banda di Carson nel segnale modulato?",
+      "spiegazione": "La descrizione del quesito colloca lo spettro attorno a ω₀; la formula esprime la larghezza, non il centro del passa-banda.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Attorno alla portante ω₀ del segnale passa-banda"
+        },
+        {
+          "id": "b",
+          "testo": "Attorno a zero, come per il passa-basso equivalente",
+          "perche_sbagliata": "La banda RF è centrata sulla portante; l’inviluppo equivalente è il passa-basso."
+        },
+        {
+          "id": "c",
+          "testo": "Attorno alla frequenza di taglio di un filtro RC",
+          "perche_sbagliata": "La formula non specifica il taglio di un filtro."
+        }
+      ],
+      "corretta": "a"
+    },
+    {
+      "id": "q-m14",
+      "tipo": "scelta_multipla",
+      "area": 5,
+      "nodo_id": "dim-formula-carson",
+      "temi": [
+        "M14"
+      ],
+      "domanda": "Quale espressione riporta la formula di Carson in pulsazione?",
+      "spiegazione": "La stima è due volte la somma della deviazione massima e della massima pulsazione del messaggio.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Bω=Δωmax−ωm",
+          "perche_sbagliata": "La somma dei contributi va raddoppiata per coprire entrambi i lati."
+        },
+        {
+          "id": "b",
+          "testo": "Bω=2(ω₀+ωm)",
+          "perche_sbagliata": "La portante individua il centro; non è la deviazione massima nella stima della banda."
+        },
+        {
+          "id": "c",
+          "testo": "Bω=2(Δωmax+ωm)"
+        }
+      ],
+      "corretta": "c"
+    },
+    {
+      "id": "q-m15",
+      "tipo": "scelta_multipla",
+      "area": 1,
+      "nodo_id": "serie-fourier",
+      "temi": [
+        "M15"
+      ],
+      "domanda": "Quale rappresentazione è inappropriata per un segnale periodico?",
+      "spiegazione": "I segnali periodici si rappresentano con serie di Fourier; l’integrale ordinario descrive invece segnali aperiodici secondo le ipotesi appropriate.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Una serie esponenziale di Fourier",
+          "perche_sbagliata": "La serie è proprio la rappresentazione armonica di un segnale periodico."
+        },
+        {
+          "id": "b",
+          "testo": "Un singolo integrale di Fourier aperiodico"
+        },
+        {
+          "id": "c",
+          "testo": "Una serie trigonometrica di seni e coseni",
+          "perche_sbagliata": "Anche la forma trigonometrica è una serie di Fourier per segnali periodici."
+        }
+      ],
+      "corretta": "b"
+    },
+    {
+      "id": "q-m16",
+      "tipo": "scelta_multipla",
+      "area": 2,
+      "nodo_id": "filtri-ricorrenti-trasversali",
+      "temi": [
+        "M16"
+      ],
+      "domanda": "Quali singolarità può avere una funzione di trasferimento ricorrente generale?",
+      "spiegazione": "Il modello ricorrente generale può avere poli e zeri; “solo poli” è una sottoclasse, non la regola generale.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Poli e zeri, secondo la rete"
+        },
+        {
+          "id": "b",
+          "testo": "Soltanto zeri, come un FIR trasversale",
+          "perche_sbagliata": "La ricorsione introduce poli e la forma generale può avere anche zeri."
+        },
+        {
+          "id": "c",
+          "testo": "Soltanto poli, in ogni rete ricorrente",
+          "perche_sbagliata": "La restrizione ai soli poli vale per il ricorsivo puro."
+        }
+      ],
+      "corretta": "a"
+    },
+    {
+      "id": "q-m17",
+      "tipo": "scelta_multipla",
+      "area": 2,
+      "nodo_id": "filtri-ricorrenti-trasversali",
+      "temi": [
+        "M17"
+      ],
+      "domanda": "Qual è la forma della funzione di trasferimento ricorrente pura?",
+      "spiegazione": "Il filtro ricorrente puro è la classe con soli poli nel modello considerato.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Presenta soltanto zeri nel numeratore",
+          "perche_sbagliata": "La ricorsione pura è descritta dai poli, non da soli zeri."
+        },
+        {
+          "id": "b",
+          "testo": "Presenta necessariamente poli e zeri finiti",
+          "perche_sbagliata": "La presenza di zeri aggiuntivi appartiene al caso ricorrente generale."
+        },
+        {
+          "id": "c",
+          "testo": "Presenta poli e non aggiunge zeri propri"
+        }
+      ],
+      "corretta": "c"
+    },
+    {
+      "id": "q-m18",
+      "tipo": "scelta_multipla",
+      "area": 2,
+      "nodo_id": "filtri-ricorrenti-trasversali",
+      "temi": [
+        "M18"
+      ],
+      "domanda": "Quale caratteristica si associa al filtro trasversale FIR?",
+      "spiegazione": "La funzione trasversale è un polinomio di ritardi e presenta zeri; nel modello ideale non introduce poli ricorsivi.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Poli senza zeri nella risposta",
+          "perche_sbagliata": "La struttura finita trasversale produce zeri, non poli ricorsivi."
+        },
+        {
+          "id": "b",
+          "testo": "Zeri senza poli propri della ricorsione"
+        },
+        {
+          "id": "c",
+          "testo": "Poli e zeri obbligatori in ogni caso",
+          "perche_sbagliata": "La risposta FIR non richiede poli propri di una ricorsione."
+        }
+      ],
+      "corretta": "b"
+    },
+    {
+      "id": "q-m19",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "parametro-a-propagazione-trasmissione",
+      "temi": [
+        "M19"
+      ],
+      "domanda": "Quando il rapporto a=Tprop/Ttrasm può diventare critico per la rete?",
+      "spiegazione": "Un rapporto grande significa che la propagazione pesa molto rispetto al tempo di trasmissione e può degradare le prestazioni.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Quando supera circa 0,1"
+        },
+        {
+          "id": "b",
+          "testo": "Quando è inferiore a 0,01",
+          "perche_sbagliata": "Un rapporto piccolo indica propagazione trascurabile rispetto alla trasmissione."
+        },
+        {
+          "id": "c",
+          "testo": "Quando è compreso tra 0,01 e 0,1 soltanto",
+          "perche_sbagliata": "Il criterio della raccolta segnala la regione oltre 0,1."
+        }
+      ],
+      "corretta": "a"
+    },
+    {
+      "id": "q-m20",
+      "tipo": "scelta_multipla",
+      "area": 5,
+      "nodo_id": "modulazione-prodotto-dsb-ssb",
+      "temi": [
+        "M20"
+      ],
+      "domanda": "Quale tipo di modulazione è usato per la conversione di frequenza ideale?",
+      "spiegazione": "La conversione di frequenza ideale è associata alla modulazione SSB-SC.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "DSB-SC, due bande laterali soppresse",
+          "perche_sbagliata": "La conversione ideale indicata usa una sola banda laterale."
+        },
+        {
+          "id": "b",
+          "testo": "VSB, con una banda laterale vestigiale",
+          "perche_sbagliata": "VSB mantiene una porzione di banda laterale e non è l’equivalenza richiesta."
+        },
+        {
+          "id": "c",
+          "testo": "SSB-SC, banda laterale unica senza portante"
+        }
+      ],
+      "corretta": "c"
+    },
+    {
+      "id": "q-m21",
+      "tipo": "scelta_multipla",
+      "area": 5,
+      "nodo_id": "demodulazione-coerente-non-coerente",
+      "temi": [
+        "M21"
+      ],
+      "domanda": "Di quale riferimento si avvale la demodulazione coerente?",
+      "spiegazione": "Il demodulatore coerente moltiplica rispetto a una replica di portante sincronizzata.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Di un rivelatore che ignora la portante",
+          "perche_sbagliata": "Senza riferimento coerente non si ricostruisce la fase di demodulazione."
+        },
+        {
+          "id": "b",
+          "testo": "Di una portante locale sincronizzata in fase"
+        },
+        {
+          "id": "c",
+          "testo": "Di una portante a frequenza non correlata",
+          "perche_sbagliata": "Il riferimento deve essere coerente con la portante ricevuta."
+        }
+      ],
+      "corretta": "b"
+    },
+    {
+      "id": "q-m22",
+      "tipo": "scelta_multipla",
+      "area": 5,
+      "nodo_id": "demodulazione-coerente-non-coerente",
+      "temi": [
+        "M22"
+      ],
+      "domanda": "Su che cosa opera un demodulatore non coerente?",
+      "spiegazione": "La modalità non coerente estrae l’informazione dall’oscillazione modulata senza riferimento di fase della portante.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Sull’oscillazione modulata senza replica di fase portante"
+        },
+        {
+          "id": "b",
+          "testo": "Su un duplicato di portante sincronizzato in fase",
+          "perche_sbagliata": "Questo è il requisito caratteristico della demodulazione coerente."
+        },
+        {
+          "id": "c",
+          "testo": "Su un segnale baseband già estratto dal ricevitore",
+          "perche_sbagliata": "La risposta descrive uno stadio successivo, non il rivelatore non coerente."
+        }
+      ],
+      "corretta": "a"
+    },
+    {
+      "id": "q-m23",
+      "tipo": "scelta_multipla",
+      "area": 5,
+      "nodo_id": "modulazione-prodotto-dsb-ssb",
+      "temi": [
+        "M23"
+      ],
+      "domanda": "Dove si collocano le bande laterali della modulazione a prodotto?",
+      "spiegazione": "Moltiplicare il messaggio per una portante produce repliche spostate ai lati di ω₀.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Ai lati del doppio della massima frequenza utile",
+          "perche_sbagliata": "La traslazione spettrale avviene attorno alla portante, non a 2fmax."
+        },
+        {
+          "id": "b",
+          "testo": "Ai due lati della frequenza zero soltanto",
+          "perche_sbagliata": "Il prodotto con la portante sposta lo spettro in banda passante."
+        },
+        {
+          "id": "c",
+          "testo": "Ai due lati della frequenza portante"
+        }
+      ],
+      "corretta": "c"
+    },
+    {
+      "id": "q-m24",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "parametro-a-propagazione-trasmissione",
+      "temi": [
+        "M24"
+      ],
+      "domanda": "Quale valore del parametro a segnala una propagazione dominante?",
+      "spiegazione": "Se a=Tprop/Ttrasm è grande, la propagazione diventa rilevante rispetto al tempo necessario a trasmettere il pacchetto.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Un valore prossimo a zero",
+          "perche_sbagliata": "Un valore quasi nullo rende piccolo il ritardo rispetto alla trasmissione."
+        },
+        {
+          "id": "b",
+          "testo": "Un valore grande, oltre l’unità"
+        },
+        {
+          "id": "c",
+          "testo": "Un valore fisso pari a 0,1 in ogni rete",
+          "perche_sbagliata": "La soglia descrive un rapporto variabile, non un valore universale fisso."
+        }
+      ],
+      "corretta": "b"
+    },
+    {
+      "id": "q-m25",
+      "tipo": "scelta_multipla",
+      "area": 3,
+      "nodo_id": "criterio-nyquist-isi",
+      "temi": [
+        "M25"
+      ],
+      "domanda": "Che cosa rappresenta la banda di Nyquist per x[n]=x₀δ[n]?",
+      "spiegazione": "Per la sequenza con un solo campione non nullo, la banda bilatera limite è |ω|≤π/T nella convenzione indicata.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "La minima semi-banda che consente repliche a somma costante"
+        },
+        {
+          "id": "b",
+          "testo": "La banda passante di un filtro trasversale",
+          "perche_sbagliata": "La definizione riguarda lo spettro per la sequenza di campioni, non la topologia del filtro."
+        },
+        {
+          "id": "c",
+          "testo": "La banda minima antialiasing di qualunque segnale",
+          "perche_sbagliata": "Il problema è la ricostruzione della sequenza specifica, non un limite universale antialiasing."
+        }
+      ],
+      "corretta": "a"
+    },
+    {
+      "id": "q-m26",
+      "tipo": "scelta_multipla",
+      "area": 3,
+      "nodo_id": "criterio-nyquist-isi",
+      "temi": [
+        "M26"
+      ],
+      "domanda": "A quale obiettivo risponde il criterio di Nyquist per la trasmissione?",
+      "spiegazione": "La condizione di Nyquist sui campioni della risposta complessiva annulla i contributi degli altri simboli agli istanti decisionali.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Impedire ogni aliasing prima della conversione A/D",
+          "perche_sbagliata": "Il criterio di Nyquist di trasmissione riguarda l’ISI, non il filtro anti-alias."
+        },
+        {
+          "id": "b",
+          "testo": "Massimizzare la potenza media ricevuta",
+          "perche_sbagliata": "La potenza non è la condizione d’interferenza tra simboli."
+        },
+        {
+          "id": "c",
+          "testo": "Annullare l’interferenza intersimbolica agli istanti di decisione"
+        }
+      ],
+      "corretta": "c"
+    },
+    {
+      "id": "q-m27",
+      "tipo": "scelta_multipla",
+      "area": 5,
+      "nodo_id": "modulazione-prodotto-dsb-ssb",
+      "temi": [
+        "M27"
+      ],
+      "domanda": "Come è chiamata l’AM convenzionale con due bande laterali?",
+      "spiegazione": "La modulazione AM convenzionale è anche indicata come DSB.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "SSB-SC, singola banda senza portante",
+          "perche_sbagliata": "SSB-SC sopprime la portante e seleziona una banda, diversamente dall’AM convenzionale."
+        },
+        {
+          "id": "b",
+          "testo": "DSB, doppia banda laterale"
+        },
+        {
+          "id": "c",
+          "testo": "VSB, banda laterale vestigiale",
+          "perche_sbagliata": "VSB trasmette una banda intera e una porzione dell’altra."
+        }
+      ],
+      "corretta": "b"
+    },
+    {
+      "id": "q-m28",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "codici-rivelazione-errore",
+      "temi": [
+        "M28"
+      ],
+      "domanda": "Che cosa distingue un codice sistematico?",
+      "spiegazione": "Il codice sistematico conserva i k bit informativi distinguendoli dai bit ridondanti.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "I bit informativi sono mantenuti separati dai bit di ridondanza"
+        },
+        {
+          "id": "b",
+          "testo": "I bit di informazione sono sostituiti dai bit di controllo",
+          "perche_sbagliata": "In un sistematico i dati originali restano presenti nella parola codificata."
+        },
+        {
+          "id": "c",
+          "testo": "La parola è definita soltanto da una matrice senza bit dati",
+          "perche_sbagliata": "Una rappresentazione matriciale non definisce da sola la sistematicità."
+        }
+      ],
+      "corretta": "a"
+    },
+    {
+      "id": "q-m29",
+      "tipo": "scelta_multipla",
+      "area": 1,
+      "nodo_id": "energia-potenza-spettri",
+      "temi": [
+        "M29"
+      ],
+      "domanda": "Quale trasformazione lega autocorrelazione e spettro di energia?",
+      "spiegazione": "La relazione di Wiener–Khinchin associa l’autocorrelazione allo spettro tramite Fourier.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "La convoluzione di due segnali nel tempo",
+          "perche_sbagliata": "La relazione è una coppia di Fourier, non una convoluzione temporale."
+        },
+        {
+          "id": "b",
+          "testo": "La derivata della funzione di autocorrelazione",
+          "perche_sbagliata": "La derivazione non sostituisce la relazione spettrale di Fourier."
+        },
+        {
+          "id": "c",
+          "testo": "La trasformata di Fourier, a fattori convenzionali vicino"
+        }
+      ],
+      "corretta": "c"
+    },
+    {
+      "id": "q-m30",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "accesso-multiplo-deterministico-casuale",
+      "temi": [
+        "M30"
+      ],
+      "domanda": "Nel confronto idealizzato della raccolta, come varia il ritardo TDMA rispetto a FDMA?",
+      "spiegazione": "La risposta riprende il confronto riportato nella raccolta; senza modello di carico e definizione del ritardo non va generalizzata.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "È maggiore perché ogni utente attende sempre un frame intero",
+          "perche_sbagliata": "Il modello usato nel quesito attribuisce a TDMA un ritardo inferiore."
+        },
+        {
+          "id": "b",
+          "testo": "È minore nel modello di confronto riportato"
+        },
+        {
+          "id": "c",
+          "testo": "È identico per qualunque carico e numero di utenti",
+          "perche_sbagliata": "L’uguaglianza non è universale; il confronto dipende dalle ipotesi."
+        }
+      ],
+      "corretta": "b"
+    },
+    {
+      "id": "q-m31",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "accesso-multiplo-deterministico-casuale",
+      "temi": [
+        "M31"
+      ],
+      "domanda": "Come confronta la raccolta la velocità FDMA rispetto a TDMA?",
+      "spiegazione": "L’equivalenza è riferita al confronto didattico riportato; l’efficienza reale dipende dalle allocazioni e dagli overhead.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "La considera equivalente nel confronto riportato"
+        },
+        {
+          "id": "b",
+          "testo": "La considera sempre superiore per ogni allocazione",
+          "perche_sbagliata": "La raccolta indica equivalenza, non un vantaggio universale di FDMA."
+        },
+        {
+          "id": "c",
+          "testo": "La considera necessariamente inferiore in ogni condizione",
+          "perche_sbagliata": "La risposta del confronto è uguale, non minore."
+        }
+      ],
+      "corretta": "a"
+    },
+    {
+      "id": "q-m32",
+      "tipo": "scelta_multipla",
+      "area": 5,
+      "nodo_id": "modulazioni-angolo-pm-fm",
+      "temi": [
+        "M32"
+      ],
+      "domanda": "Quale rete va prima del modulatore PM per ottenere FM?",
+      "spiegazione": "L’integratore anteposto rende la fase del PM proporzionale all’integrale del messaggio, cioè alla frequenza istantanea desiderata.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Un derivatore applicato al messaggio prima del PM",
+          "perche_sbagliata": "La derivazione crea l’operazione opposta rispetto all’integrale richiesto."
+        },
+        {
+          "id": "b",
+          "testo": "Un integratore posto dopo il modulatore PM",
+          "perche_sbagliata": "Per la conversione si modifica l’ingresso del modulatore, non la portante d’uscita."
+        },
+        {
+          "id": "c",
+          "testo": "Un integratore applicato al messaggio prima del PM"
+        }
+      ],
+      "corretta": "c"
+    },
+    {
+      "id": "q-m33",
+      "tipo": "scelta_multipla",
+      "area": 5,
+      "nodo_id": "modulazioni-angolo-pm-fm",
+      "temi": [
+        "M33"
+      ],
+      "domanda": "Come si converte un modulatore FM in PM?",
+      "spiegazione": "Il derivatore anteposto compensa l’integrale che lega fase e frequenza, realizzando PM.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Anteponendo un integratore al messaggio modulante",
+          "perche_sbagliata": "L’integratore porta alla conversione PM→FM, non FM→PM."
+        },
+        {
+          "id": "b",
+          "testo": "Anteponendo un derivatore al messaggio modulante"
+        },
+        {
+          "id": "c",
+          "testo": "Posponendo il derivatore alla portante modulata",
+          "perche_sbagliata": "La rete va applicata al messaggio prima del modulatore."
+        }
+      ],
+      "corretta": "b"
+    },
+    {
+      "id": "q-m34",
+      "tipo": "scelta_multipla",
+      "area": 5,
+      "nodo_id": "modulazione-prodotto-dsb-ssb",
+      "temi": [
+        "M34"
+      ],
+      "domanda": "Un’oscillazione modulata su portante è di quale tipo spettrale?",
+      "spiegazione": "La traslazione spettrale colloca l’oscillazione modulata attorno alla portante, quindi nel modello usuale è passa-banda.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Passa-banda, concentrata attorno alla portante"
+        },
+        {
+          "id": "b",
+          "testo": "Passa-basso, concentrata soltanto vicino a zero",
+          "perche_sbagliata": "La modulazione sposta lo spettro baseband attorno alla portante."
+        },
+        {
+          "id": "c",
+          "testo": "Mai passa-banda, anche quando la portante è non nulla",
+          "perche_sbagliata": "Una portante non nulla genera componenti in banda passante."
+        }
+      ],
+      "corretta": "a"
+    },
+    {
+      "id": "q-i01",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "reti-concetti-introduttivi",
+      "temi": [
+        "I1"
+      ],
+      "domanda": "Quali soggetti e aspetti caratterizzano la rete descritta nella raccolta?",
+      "spiegazione": "La scheda menziona utenti, fornitori e pagamento del servizio; non è una definizione tecnica esaustiva di ogni rete.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Soltanto router e linee in fibra",
+          "perche_sbagliata": "La definizione citata include soggetti e servizio, non soltanto apparati."
+        },
+        {
+          "id": "b",
+          "testo": "Utenti, fornitori del servizio e modalità di pagamento"
+        },
+        {
+          "id": "c",
+          "testo": "Solo il gestore e le tariffe, senza utenti",
+          "perche_sbagliata": "Gli utenti sono uno degli elementi caratterizzanti indicati."
+        }
+      ],
+      "corretta": "b"
+    },
+    {
+      "id": "q-i02",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "reti-concetti-introduttivi",
+      "temi": [
+        "I2"
+      ],
+      "domanda": "Qual è la descrizione strutturale minima di una rete nel materiale?",
+      "spiegazione": "La definizione introduttiva del foglio descrive la rete con nodi e linee.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Un insieme di nodi collegati da linee"
+        },
+        {
+          "id": "b",
+          "testo": "Un unico protocollo senza apparati collegati",
+          "perche_sbagliata": "Un protocollo è un insieme di regole, non la rete stessa."
+        },
+        {
+          "id": "c",
+          "testo": "Un insieme di utenti senza collegamenti",
+          "perche_sbagliata": "La descrizione include sia nodi sia linee."
+        }
+      ],
+      "corretta": "a"
+    },
+    {
+      "id": "q-i03",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "reti-concetti-introduttivi",
+      "temi": [
+        "I3"
+      ],
+      "domanda": "Che cosa specifica un protocollo di comunicazione?",
+      "spiegazione": "Il protocollo coordina formato e scambio dei dati tra entità comunicanti.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Una tabella che assegna solo gli indirizzi IP",
+          "perche_sbagliata": "Gli indirizzi identificano destinazioni, ma non definiscono tutte le regole di scambio."
+        },
+        {
+          "id": "b",
+          "testo": "La sola forma fisica del mezzo trasmissivo",
+          "perche_sbagliata": "Il protocollo comprende regole logiche di scambio oltre al mezzo."
+        },
+        {
+          "id": "c",
+          "testo": "Regole per formattare, inviare e ricevere dati"
+        }
+      ],
+      "corretta": "c"
+    },
+    {
+      "id": "q-i04",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "reti-concetti-introduttivi",
+      "temi": [
+        "I4"
+      ],
+      "domanda": "Perché serve uno schema di indirizzamento?",
+      "spiegazione": "Gli indirizzi consentono di distinguere la destinazione a cui inoltrare il messaggio.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Per misurare l’attenuazione lungo la linea",
+          "perche_sbagliata": "L’attenuazione è una proprietà del canale, non dell’indirizzo."
+        },
+        {
+          "id": "b",
+          "testo": "Per identificare il destinatario del messaggio"
+        },
+        {
+          "id": "c",
+          "testo": "Per scegliere la codifica di ridondanza",
+          "perche_sbagliata": "La ridondanza riguarda la protezione dei dati, non l’identità del destinatario."
+        }
+      ],
+      "corretta": "b"
+    },
+    {
+      "id": "q-i05",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "reti-concetti-introduttivi",
+      "temi": [
+        "I5"
+      ],
+      "domanda": "Quale vantaggio attribuisce la raccolta alla standardizzazione?",
+      "spiegazione": "La standardizzazione rende interoperabili le interfacce; la raccolta cita ITU come organismo, senza verificare qui altri dettagli storici.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Interfacce compatibili tra produttori, con implementazioni interne libere"
+        },
+        {
+          "id": "b",
+          "testo": "Macchine di produttori diversi con architettura interna identica",
+          "perche_sbagliata": "Lo standard riguarda l’interfaccia e non obbliga a rendere identici tutti i dettagli interni."
+        },
+        {
+          "id": "c",
+          "testo": "Eliminazione di ogni necessità di protocolli",
+          "perche_sbagliata": "Gli standard definiscono interfacce e regole, non eliminano i protocolli."
+        }
+      ],
+      "corretta": "a"
+    },
+    {
+      "id": "q-i06",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "reti-concetti-introduttivi",
+      "temi": [
+        "I6"
+      ],
+      "domanda": "Come va riportato il riferimento storico a Meucci nella scheda di domande?",
+      "spiegazione": "La raccolta menziona Meucci e il 1871; l’esattezza e il contesto storico indipendente restano NON TROVATO.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Come fatto storico verificato qui e attribuito al docente",
+          "perche_sbagliata": "Il foglio è una raccolta studentesca e non costituisce verifica indipendente."
+        },
+        {
+          "id": "b",
+          "testo": "Come data tecnica di uno strato ISO/OSI",
+          "perche_sbagliata": "Il riferimento riguarda la storia del telefono, non i livelli ISO/OSI."
+        },
+        {
+          "id": "c",
+          "testo": "Come attribuzione riportata, non verifica storica indipendente"
+        }
+      ],
+      "corretta": "c"
+    },
+    {
+      "id": "q-i07",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "reti-concetti-introduttivi",
+      "temi": [
+        "I7"
+      ],
+      "domanda": "Quali due aspetti della telefonia vocale cita il foglio?",
+      "spiegazione": "La raccolta evidenzia intelligibilità e riconoscimento del parlante come aspetti della comunicazione telefonica.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Solo volume ricevuto e velocità del modem",
+          "perche_sbagliata": "Questi parametri non sono i due aspetti elencati nella scheda."
+        },
+        {
+          "id": "b",
+          "testo": "Comprensibilità del parlato e riconoscimento di chi parla"
+        },
+        {
+          "id": "c",
+          "testo": "Indirizzamento del pacchetto e controllo CRC",
+          "perche_sbagliata": "Sono funzioni di comunicazione dati, non i due obiettivi vocali citati."
+        }
+      ],
+      "corretta": "b"
+    },
+    {
+      "id": "q-i08",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "reti-concetti-introduttivi",
+      "temi": [
+        "I8"
+      ],
+      "domanda": "Quale attribuzione sulle prime radiocomunicazioni fa la raccolta?",
+      "spiegazione": "La scheda attribuisce la nascita delle radiocomunicazioni a Marconi; l’attribuzione storica oltre il foglio è NON TROVATO.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "La collega a Marconi, ma non è una verifica storica indipendente"
+        },
+        {
+          "id": "b",
+          "testo": "La attribuisce a un protocollo Ethernet contemporaneo",
+          "perche_sbagliata": "Il foglio la presenta come riferimento storico, non come protocollo di rete."
+        },
+        {
+          "id": "c",
+          "testo": "La definisce come trasmissione possibile soltanto su cavo",
+          "perche_sbagliata": "La caratteristica indicata riguarda la propagazione radio, non un collegamento cablato."
+        }
+      ],
+      "corretta": "a"
+    },
+    {
+      "id": "q-i09",
+      "tipo": "scelta_multipla",
+      "area": 6,
+      "nodo_id": "reti-concetti-introduttivi",
+      "temi": [
+        "I9"
+      ],
+      "domanda": "Quale sintesi sui mezzi trasmissivi coincide con la scheda?",
+      "spiegazione": "La risposta riassume i mezzi elencati senza aggiungere prestazioni o proprietà non verificate.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "La fibra non attenua e la radio non può essere broadcast",
+          "perche_sbagliata": "La raccolta afferma che qualunque mezzo attenua e descrive la radio come potenzialmente broadcast."
+        },
+        {
+          "id": "b",
+          "testo": "Il rame consente una sola utenza e non supporta FDM",
+          "perche_sbagliata": "La scheda cita FDM come condivisione possibile del mezzo in rame/coassiale."
+        },
+        {
+          "id": "c",
+          "testo": "Rame, fibra e radio sono mezzi possibili e ciascuno attenua il segnale"
+        }
+      ],
+      "corretta": "c"
+    },
+    {
+      "id": "q-p01",
+      "tipo": "vero_falso",
+      "area": 3,
+      "nodo_id": "es-condizione-nyquist",
+      "temi": [
+        "P1"
+      ],
+      "domanda": "Valuta l’affermazione sul tema banda minima per campioni.",
+      "spiegazione": "La somma delle repliche di X deve risultare costante per ottenere la sequenza con un solo campione non nullo. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
+      "affermazione": "La somma delle repliche di X deve risultare costante per ottenere la sequenza con un solo campione non nullo.",
+      "risposta_corretta": true
+    },
+    {
+      "id": "q-p02",
+      "tipo": "vero_falso",
+      "area": 1,
+      "nodo_id": "serie-fourier",
+      "temi": [
+        "P2"
+      ],
+      "domanda": "Valuta l’affermazione sul tema serie e integrale per segnali periodici.",
+      "spiegazione": "La periodicità conduce a una serie di Fourier; l’integrale è la rappresentazione per segnali aperiodici sotto le relative ipotesi.",
+      "affermazione": "Un segnale periodico si rappresenta con un integrale di Fourier aperiodico, non con una serie.",
+      "risposta_corretta": false
+    },
+    {
+      "id": "q-p03",
+      "tipo": "vero_falso",
+      "area": 2,
+      "nodo_id": "filtri-ricorrenti-trasversali",
+      "temi": [
+        "P3"
+      ],
+      "domanda": "Valuta l’affermazione sul tema struttura di un FIR trasversale.",
+      "spiegazione": "Il modello trasversale ideale combina ritardi e coefficienti; la sua H è un polinomio in z⁻¹. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
+      "affermazione": "Il modello trasversale ideale combina ritardi e coefficienti; la sua H è un polinomio in z⁻¹.",
+      "risposta_corretta": true
+    },
+    {
+      "id": "q-p04",
+      "tipo": "vero_falso",
+      "area": 2,
+      "nodo_id": "filtri-ricorrenti-trasversali",
+      "temi": [
+        "P4"
+      ],
+      "domanda": "Valuta l’affermazione sul tema poli e zeri di un ricorsivo generale.",
+      "spiegazione": "Una funzione ricorrente generale può avere sia poli sia zeri; solo la sottoclasse pura esclude zeri aggiuntivi.",
+      "affermazione": "Ogni filtro ricorrente generale ha soltanto poli e non può avere zeri.",
+      "risposta_corretta": false
+    },
+    {
+      "id": "q-p05",
+      "tipo": "vero_falso",
+      "area": 2,
+      "nodo_id": "filtri-ricorrenti-trasversali",
+      "temi": [
+        "P5"
+      ],
+      "domanda": "Valuta l’affermazione sul tema solo poli in un ricorsivo puro.",
+      "spiegazione": "Un ricorsivo puro è modellato con poli senza zeri aggiuntivi. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
+      "affermazione": "Un ricorsivo puro è modellato con poli senza zeri aggiuntivi.",
+      "risposta_corretta": true
+    },
+    {
+      "id": "q-p06",
+      "tipo": "vero_falso",
+      "area": 1,
+      "nodo_id": "energia-potenza-spettri",
+      "temi": [
+        "P6"
+      ],
+      "domanda": "Valuta l’affermazione sul tema relazione di Wiener-Khinchin.",
+      "spiegazione": "La coppia è legata dalla trasformata di Fourier, non da una convoluzione temporale.",
+      "affermazione": "Autocorrelazione e spettro di energia sono collegati da convoluzione temporale.",
+      "risposta_corretta": false
+    },
+    {
+      "id": "q-p07",
+      "tipo": "vero_falso",
+      "area": 5,
+      "nodo_id": "modulazione-prodotto-dsb-ssb",
+      "temi": [
+        "P7"
+      ],
+      "domanda": "Valuta l’affermazione sul tema DSB per AM.",
+      "spiegazione": "La modulazione AM convenzionale è detta DSB. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
+      "affermazione": "La modulazione AM convenzionale è detta DSB.",
+      "risposta_corretta": true
+    },
+    {
+      "id": "q-p08",
+      "tipo": "vero_falso",
+      "area": 3,
+      "nodo_id": "criterio-nyquist-isi",
+      "temi": [
+        "P8"
+      ],
+      "domanda": "Valuta l’affermazione sul tema Nyquist e ISI.",
+      "spiegazione": "Il criterio mira a eliminare l’interferenza intersimbolica agli istanti di decisione.",
+      "affermazione": "Il criterio di Nyquist per la trasmissione serve a massimizzare la potenza inviata.",
+      "risposta_corretta": false
+    },
+    {
+      "id": "q-p09",
+      "tipo": "vero_falso",
+      "area": 5,
+      "nodo_id": "segnali-passa-banda-inviluppo-complesso",
+      "temi": [
+        "P9"
+      ],
+      "domanda": "Valuta l’affermazione sul tema portante e banda passante.",
+      "spiegazione": "Una modulazione su portante genera un segnale passa-banda. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
+      "affermazione": "Una modulazione su portante genera un segnale passa-banda.",
+      "risposta_corretta": true
+    },
+    {
+      "id": "q-p10",
+      "tipo": "vero_falso",
+      "area": 6,
+      "nodo_id": "codici-rivelazione-errore",
+      "temi": [
+        "P10"
+      ],
+      "domanda": "Valuta l’affermazione sul tema separazione dei bit sistematici.",
+      "spiegazione": "I dati restano riconoscibili e distinti dai bit di controllo nella parola sistematica.",
+      "affermazione": "In un codice sistematico i bit informativi vengono sostituiti dai bit di ridondanza.",
+      "risposta_corretta": false
+    },
+    {
+      "id": "q-p11",
+      "tipo": "vero_falso",
+      "area": 6,
+      "nodo_id": "parametro-a-propagazione-trasmissione",
+      "temi": [
+        "P11"
+      ],
+      "domanda": "Valuta l’affermazione sul tema parametro a elevato.",
+      "spiegazione": "Un parametro a grande segnala un tempo di propagazione rilevante rispetto al tempo di trasmissione. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
+      "affermazione": "Un parametro a grande segnala un tempo di propagazione rilevante rispetto al tempo di trasmissione.",
+      "risposta_corretta": true
+    },
+    {
+      "id": "q-p12",
+      "tipo": "vero_falso",
+      "area": 5,
+      "nodo_id": "modulazione-prodotto-dsb-ssb",
+      "temi": [
+        "P12"
+      ],
+      "domanda": "Valuta l’affermazione sul tema spettri di modulazione prodotto.",
+      "spiegazione": "Le traslazioni spettrali si collocano ai lati della portante, non attorno al suo doppio.",
+      "affermazione": "Nella modulazione a prodotto le bande laterali sono centrate sul doppio della portante.",
+      "risposta_corretta": false
+    },
+    {
+      "id": "q-p13",
+      "tipo": "vero_falso",
+      "area": 1,
+      "nodo_id": "energia-potenza-spettri",
+      "temi": [
+        "P13"
+      ],
+      "domanda": "Valuta l’affermazione sul tema potenza e trasformata ordinaria.",
+      "spiegazione": "Una funzione a potenza finita non è per ciò solo integrabile assolutamente. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
+      "affermazione": "Una funzione a potenza finita non è per ciò solo integrabile assolutamente.",
+      "risposta_corretta": true
+    },
+    {
+      "id": "q-p14",
+      "tipo": "vero_falso",
+      "area": 5,
+      "nodo_id": "dim-formula-carson",
+      "temi": [
+        "P14"
+      ],
+      "domanda": "Valuta l’affermazione sul tema Carson e portante.",
+      "spiegazione": "Carson stima la banda significativa di una modulazione d’angolo.",
+      "affermazione": "La formula di Carson esprime la banda minima di campionamento anti-alias.",
+      "risposta_corretta": false
+    },
+    {
+      "id": "q-p15",
+      "tipo": "vero_falso",
+      "area": 6,
+      "nodo_id": "dim-ritardo-tdma-fdma",
+      "temi": [
+        "P15"
+      ],
+      "domanda": "Valuta l’affermazione sul tema TDMA e attesa idealizzata.",
+      "spiegazione": "Nel semplice confronto didattico, il ritardo medio di accesso TDMA è minore. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
+      "affermazione": "Nel semplice confronto didattico, il ritardo medio di accesso TDMA è minore.",
+      "risposta_corretta": true
+    },
+    {
+      "id": "q-p16",
+      "tipo": "vero_falso",
+      "area": 5,
+      "nodo_id": "modulazioni-angolo-pm-fm",
+      "temi": [
+        "P16"
+      ],
+      "domanda": "Valuta l’affermazione sul tema conversione PM in FM.",
+      "spiegazione": "Si antepone un integratore al PM per ottenere FM; la derivazione è associata alla conversione inversa.",
+      "affermazione": "Per ottenere FM da PM si antepone un derivatore al messaggio.",
+      "risposta_corretta": false
+    },
+    {
+      "id": "q-p17",
+      "tipo": "vero_falso",
+      "area": 5,
+      "nodo_id": "modulazioni-angolo-pm-fm",
+      "temi": [
+        "P17"
+      ],
+      "domanda": "Valuta l’affermazione sul tema conversione FM in PM.",
+      "spiegazione": "La derivazione del messaggio prima dell’FM realizza la relazione di fase richiesta per PM. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
+      "affermazione": "La derivazione del messaggio prima dell’FM realizza la relazione di fase richiesta per PM.",
+      "risposta_corretta": true
+    },
+    {
+      "id": "q-p18",
+      "tipo": "vero_falso",
+      "area": 5,
+      "nodo_id": "demodulazione-coerente-non-coerente",
+      "temi": [
+        "P18"
+      ],
+      "domanda": "Valuta l’affermazione sul tema demodulazione coerente.",
+      "spiegazione": "La demodulazione coerente richiede una replica di portante sincronizzata.",
+      "affermazione": "Un demodulatore coerente può funzionare senza riferimento alla portante.",
+      "risposta_corretta": false
+    },
+    {
+      "id": "q-p19",
+      "tipo": "vero_falso",
+      "area": 3,
+      "nodo_id": "processi-aleatori-stazionarieta-ergodicita",
+      "temi": [
+        "P19"
+      ],
+      "domanda": "Valuta l’affermazione sul tema densità secondo ordine.",
+      "spiegazione": "La descrizione energetica di un processo richiede statistiche di secondo ordine. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
+      "affermazione": "La descrizione energetica di un processo richiede statistiche di secondo ordine.",
+      "risposta_corretta": true
+    },
+    {
+      "id": "q-p20",
+      "tipo": "vero_falso",
+      "area": 5,
+      "nodo_id": "modulazione-prodotto-dsb-ssb",
+      "temi": [
+        "P20"
+      ],
+      "domanda": "Valuta l’affermazione sul tema sideband conversion.",
+      "spiegazione": "La raccolta associa la conversione di frequenza alla modulazione SSB-SC.",
+      "affermazione": "La conversione di frequenza ideale è una modulazione DSB con portante trasmessa.",
+      "risposta_corretta": false
+    },
+    {
+      "id": "q-p21",
+      "tipo": "vero_falso",
+      "area": 3,
+      "nodo_id": "segnali-pam",
+      "temi": [
+        "P21"
+      ],
+      "domanda": "Valuta l’affermazione sul tema frequenza di simbolo.",
+      "spiegazione": "Gli zeri della sinc dipendono dal periodo del simbolo e dalla durata dell’impulso. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
+      "affermazione": "Gli zeri della sinc dipendono dal periodo del simbolo e dalla durata dell’impulso.",
+      "risposta_corretta": true
+    },
+    {
+      "id": "q-p22",
+      "tipo": "vero_falso",
+      "area": 3,
+      "nodo_id": "es-pam-ami",
+      "temi": [
+        "P22"
+      ],
+      "domanda": "Valuta l’affermazione sul tema correlazione AMI.",
+      "spiegazione": "Con due uno consecutivi AMI alterna il segno, quindi la correlazione a un simbolo è negativa.",
+      "affermazione": "Per impulsi AMI adiacenti il prodotto medio dei simboli è positivo.",
+      "risposta_corretta": false
+    },
+    {
+      "id": "q-p23",
+      "tipo": "vero_falso",
+      "area": 6,
+      "nodo_id": "architetture-iso-osi-tcpip",
+      "temi": [
+        "P23"
+      ],
+      "domanda": "Valuta l’affermazione sul tema livelli ISO/OSI.",
+      "spiegazione": "Il livello di trasporto è il quarto livello ISO/OSI. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
+      "affermazione": "Il livello di trasporto è il quarto livello ISO/OSI.",
+      "risposta_corretta": true
+    },
+    {
+      "id": "q-p24",
+      "tipo": "vero_falso",
+      "area": 2,
+      "nodo_id": "es-rete-rc",
+      "temi": [
+        "P24"
+      ],
+      "domanda": "Valuta l’affermazione sul tema punto di taglio RC.",
+      "spiegazione": "Il modulo al taglio è 1/√2 del valore passante, cioè il punto a −3 dB.",
+      "affermazione": "Al taglio RC del primo ordine il modulo è 1/2 del guadagno passante.",
+      "risposta_corretta": false
+    },
+    {
+      "id": "q-p25",
+      "tipo": "vero_falso",
+      "area": 3,
+      "nodo_id": "es-derivatore-processo-gaussiano",
+      "temi": [
+        "P25"
+      ],
+      "domanda": "Valuta l’affermazione sul tema derivatore ideale.",
+      "spiegazione": "Il modulo quadro della risposta di un derivatore è ω². La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
+      "affermazione": "Il modulo quadro della risposta di un derivatore è ω².",
+      "risposta_corretta": true
+    },
+    {
+      "id": "q-p26",
+      "tipo": "vero_falso",
+      "area": 3,
+      "nodo_id": "processi-gaussiani-funzione-errore",
+      "temi": [
+        "P26"
+      ],
+      "domanda": "Valuta l’affermazione sul tema densità gaussiana.",
+      "spiegazione": "Per una gaussiana a media zero la varianza determina la densità marginale.",
+      "affermazione": "Una variabile gaussiana a media zero non è determinata dalla varianza.",
+      "risposta_corretta": false
+    },
+    {
+      "id": "q-p27",
+      "tipo": "vero_falso",
+      "area": 1,
+      "nodo_id": "es-antitrasformata-rettangolare",
+      "temi": [
+        "P27"
+      ],
+      "domanda": "Valuta l’affermazione sul tema integrale della sinc inversa.",
+      "spiegazione": "Lo spettro rettangolare bilatero produce una sinc nel tempo. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
+      "affermazione": "Lo spettro rettangolare bilatero produce una sinc nel tempo.",
+      "risposta_corretta": true
+    },
+    {
+      "id": "q-p28",
+      "tipo": "vero_falso",
+      "area": 6,
+      "nodo_id": "reti-concetti-introduttivi",
+      "temi": [
+        "P28"
+      ],
+      "domanda": "Valuta l’affermazione sul tema rete e indirizzamento.",
+      "spiegazione": "Lo schema di indirizzi identifica il destinatario; l’attenuazione è una proprietà del mezzo.",
+      "affermazione": "Un indirizzo di rete misura l’attenuazione del canale anziché indicare una destinazione.",
+      "risposta_corretta": false
+    },
+    {
+      "id": "q-c-rc",
+      "tipo": "completamento_formula",
+      "area": 2,
+      "nodo_id": "es-rete-rc",
+      "temi": [],
+      "domanda": "Completa i passaggi della formula senza cambiare convenzione.",
+      "spiegazione": "Controlla le unità e confronta ogni risposta con la definizione della rete o del segnale; le soluzioni accettate includono forme equivalenti.",
+      "testo_con_buchi": "H(ω)=1/(1+jωRC), taglio ωc=___1___ rad/s per R e C assegnati.",
+      "soluzioni": {
+        "1": [
+          "1/(RC)",
+          "1 diviso RC"
+        ]
+      }
+    },
+    {
+      "id": "q-c-cr",
+      "tipo": "completamento_formula",
+      "area": 2,
+      "nodo_id": "es-rete-cr",
+      "temi": [],
+      "domanda": "Completa i passaggi della formula senza cambiare convenzione.",
+      "spiegazione": "Controlla le unità e confronta ogni risposta con la definizione della rete o del segnale; le soluzioni accettate includono forme equivalenti.",
+      "testo_con_buchi": "La rete CR con uscita sul resistore ha modulo ___1___ in ω=0 e ___2___ in ω→∞.",
+      "soluzioni": {
+        "1": [
+          "0",
+          "zero"
+        ],
+        "2": [
+          "1",
+          "uno"
+        ]
+      }
+    },
+    {
+      "id": "q-c-sinc",
+      "tipo": "completamento_formula",
+      "area": 1,
+      "nodo_id": "es-spettri-impulso-rettangolare",
+      "temi": [],
+      "domanda": "Completa i passaggi della formula senza cambiare convenzione.",
+      "spiegazione": "Controlla le unità e confronta ogni risposta con la definizione della rete o del segnale; le soluzioni accettate includono forme equivalenti.",
+      "testo_con_buchi": "Il primo zero positivo della sinc rettangolare si trova a ω=___1___/τ.",
+      "soluzioni": {
+        "1": [
+          "2π",
+          "2 pi"
+        ]
+      }
+    },
+    {
+      "id": "q-c-pam",
+      "tipo": "completamento_formula",
+      "area": 3,
+      "nodo_id": "es-pam-bipolare",
+      "temi": [],
+      "domanda": "Completa i passaggi della formula senza cambiare convenzione.",
+      "spiegazione": "Controlla le unità e confronta ogni risposta con la definizione della rete o del segnale; le soluzioni accettate includono forme equivalenti.",
+      "testo_con_buchi": "Per simboli bipolari equiprobabili E[aₙ]=___1___ e E[aₙ²]=___2___.",
+      "soluzioni": {
+        "1": [
+          "0",
+          "zero"
+        ],
+        "2": [
+          "1",
+          "uno"
+        ]
+      }
+    },
+    {
+      "id": "q-c-ami",
+      "tipo": "completamento_formula",
+      "area": 3,
+      "nodo_id": "es-pam-ami",
+      "temi": [],
+      "domanda": "Completa i passaggi della formula senza cambiare convenzione.",
+      "spiegazione": "Controlla le unità e confronta ogni risposta con la definizione della rete o del segnale; le soluzioni accettate includono forme equivalenti.",
+      "testo_con_buchi": "Il fattore AMI sin²(ωT/2) si annulla quando f=___1___/T per k intero.",
+      "soluzioni": {
+        "1": [
+          "k",
+          "un intero k"
+        ]
+      }
+    },
+    {
+      "id": "q-c-derive",
+      "tipo": "completamento_formula",
+      "area": 3,
+      "nodo_id": "es-derivatore-processo-gaussiano",
+      "temi": [],
+      "domanda": "Completa i passaggi della formula senza cambiare convenzione.",
+      "spiegazione": "Controlla le unità e confronta ogni risposta con la definizione della rete o del segnale; le soluzioni accettate includono forme equivalenti.",
+      "testo_con_buchi": "Per un derivatore ideale |H(ω)|²=___1___ e Gᵧ(ω)=___2___G₀.",
+      "soluzioni": {
+        "1": [
+          "ω²",
+          "omega al quadrato"
+        ],
+        "2": [
+          "ω²",
+          "omega al quadrato"
+        ]
+      }
+    },
+    {
+      "id": "q-traffic-little",
+      "tipo": "scelta_multipla",
+      "area": 7,
+      "nodo_id": "es-teoria-traffico-extra",
+      "temi": [],
+      "domanda": "Quale legge collega N, λ e W in regime stazionario?",
+      "spiegazione": "Little moltiplica tasso d’arrivo e permanenza media; la stabilità e il confine del sistema devono essere coerenti.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "N=λ/W, dividendo impropriamente per W",
+          "perche_sbagliata": "Le unità non restituiscono un numero medio di utenti/pacchetti."
+        },
+        {
+          "id": "b",
+          "testo": "N=W/λ, scambiando tasso e permanenza media",
+          "perche_sbagliata": "Il rapporto tempo/tasso non è la legge di Little e ha unità errate."
+        },
+        {
+          "id": "c",
+          "testo": "N=λW, con quantità medie riferite allo stesso sistema"
+        }
+      ],
+      "corretta": "c"
+    },
+    {
+      "id": "q-pcm-quantizzazione",
+      "tipo": "scelta_multipla",
+      "area": 4,
+      "nodo_id": "conversione-ad-quantizzazione-pcm",
+      "temi": [],
+      "domanda": "Dopo aver quantizzato un campione PCM, quale operazione produce la parola binaria?",
+      "spiegazione": "Nel PCM la codifica rappresenta in bit l’indice del livello; campionamento e quantizzazione sono passaggi precedenti.",
+      "opzioni": [
+        {
+          "id": "a",
+          "testo": "Codificare l’indice del livello quantizzato"
+        },
+        {
+          "id": "b",
+          "testo": "Ricostruire il segnale con un filtro passa-basso",
+          "perche_sbagliata": "Il filtro di ricostruzione appartiene al convertitore digitale-analogico."
+        },
+        {
+          "id": "c",
+          "testo": "Derivare il segnale analogico prima del campionamento",
+          "perche_sbagliata": "La derivazione non assegna un codice binario al livello quantizzato."
+        }
+      ],
+      "corretta": "a"
+    }
+  ]
+}
