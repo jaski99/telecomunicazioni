@@ -91,3 +91,37 @@ def test_a12_spaziature_main(shell_server, width, height, route):
                and abs(x['value'] - round(x['value'] / 4) * 4) > .5]
         assert not bad, bad[:10]
         browser.close()
+
+
+@pytest.mark.parametrize('width,height', VIEWPORTS)
+@pytest.mark.parametrize('route', SAMPLE_ROUTES + ['nodo/serie-fourier'])
+def test_formule_senza_overflow_verticale(shell_server, width, height, route):
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={'width': width, 'height': height})
+        page.goto(f'{shell_server}/#/{route}', wait_until='networkidle')
+        clipped = page.locator('main .katex').evaluate_all('''elements => elements
+            .filter(e => e.scrollHeight > e.clientHeight)
+            .map(e => ({height: e.clientHeight, scrollHeight: e.scrollHeight, text: e.textContent.slice(0, 80)}))''')
+        assert not clipped, clipped
+        browser.close()
+
+
+@pytest.mark.parametrize('width,height', VIEWPORTS)
+@pytest.mark.parametrize('route', ['', 'fonti'])
+def test_tabelle_mantengono_parole_e_url_scrollabili(shell_server, width, height, route):
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={'width': width, 'height': height})
+        page.goto(f'{shell_server}/#/{route}', wait_until='networkidle')
+        table = page.locator('table.tabella').first
+        assert table.evaluate("e => getComputedStyle(e).overflowX") == 'auto'
+        cells = table.locator('th, td')
+        assert cells.count() > 0
+        assert all(value == 'break-word' for value in cells.evaluate_all(
+            "es => es.map(e => getComputedStyle(e).overflowWrap)"))
+        links = table.locator('td a')
+        assert links.count() > 0
+        assert all(value == 'anywhere' for value in links.evaluate_all(
+            "es => es.map(e => getComputedStyle(e).overflowWrap)"))
+        browser.close()

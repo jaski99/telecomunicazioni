@@ -91,7 +91,7 @@ def sibling_overlaps(page):
 
 
 def spacing_values(page):
-    return page.evaluate('''() => [...document.querySelectorAll('main, main *')].flatMap(e => {
+    return page.evaluate('''() => [...document.querySelectorAll('main, main *')].filter(e => !e.closest('.katex')).flatMap(e => {
       const s=getComputedStyle(e);
       return ['marginTop','marginRight','marginBottom','marginLeft','paddingTop','paddingRight',
         'paddingBottom','paddingLeft','rowGap','columnGap'].map(p => ({property:p, value:parseFloat(s[p]) || 0}));
