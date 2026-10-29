@@ -1,0 +1,197 @@
+{
+  "id": "filtri-ricorrenti-trasversali",
+  "perche_ti_serve": "È il prerequisito diretto della dimostrazione T3 e risponde ai temi di quiz M16, M17 e M18 su zeri e poli: qui impari a leggere lo schema generale prima di derivare $H(\\omega)$ nella dimostrazione.",
+  "scenario": "L'equalizzatore del collegamento numerico che corregge gli echi del canale è una linea di ritardo con prese pesate: ogni eco ritardato di un multiplo del tempo di simbolo viene sottratto con il peso giusto. Capire lo schema generale è capire perché alcuni equalizzatori hanno memoria infinita e altri no.",
+  "definizione_esame": {
+    "definizione": "Filtro a linee di ritardo con celle da $T$: $y(t) = \\sum_{k=0}^{N-1} h_k x(t-kT) + \\sum_{k=1}^{M} h'_k y(t-kT)$; è *ricorrente* in generale, *trasversale* se tutti gli $h'_k$ sono zero, *puramente ricorrente* se resta solo $h_0 = 1$ con i soli termini in $h'_k$.",
+    "scopo": "Ottenere risposte in frequenza periodiche in $\\omega$ (periodo $2\\pi/T$) combinando copie ritardate di ingresso e uscita con pesi costanti.",
+    "esempio": "Con due soli pesi trasversali $h_0 = 1$, $h_1 = 0{,}5$ si ha $H(\\omega) = 1 + 0{,}5 e^{-j\\omega T}$: $|H|$ oscilla fra $1{,}5$ e $0{,}5$ con periodo $2\\pi/T$."
+  },
+  "spiegazione": "### Anatomia dello schema generale\nLo schema di file1 p. 15 ha tre ingredienti: le **celle di ritardo** da $T$ in cascata (la «linea»), i **moltiplicatori** che pesano il segnale prelevato a ogni presa e un unico **sommatore**. Nel filtro generale le linee sono due: una sull'ingresso con pesi $h_0, \\dots, h_{N-1}$ (il primo ramo è diretto, senza ritardo) e una sull'uscita con pesi $h'_1, \\dots, h'_M$, che riporta le uscite passate nel sommatore. È la retroazione a fare la differenza concettuale: con essa l'effetto di un ingresso può riverberare in avanti senza fine.\n\n### I tre casi e la loro H(ω)\n**Ricorrente** (entrambi i gruppi di pesi): numeratore e denominatore polinomiali in $e^{-j\\omega T}$, quindi **zeri e poli** (tema M16). **Trasversale** ($h'_k = 0$ per ogni $k$): solo numeratore, **solo zeri** (tema M18); la risposta a un impulso dura al più $(N-1)T$, perché dopo l'ultima presa non c'è più niente che rientri. **Puramente ricorrente** ($h_k = 0$ per $k \\ge 1$ e $h_0 = 1$): solo denominatore, **solo poli** (tema M17); un impulso in ingresso continua in teoria a circolare per sempre nella linea di uscita, ammortizzato o no dai pesi. La derivazione completa di $H(\\omega)$ è la dimostrazione T3 (punto A4): qui devi saperla anticipare qualitativamente e classificare al volo.\n\n### Periodicità e stabilità, in due righe ciascuno\nPoiché $\\omega$ compare solo in $e^{-j\\omega T}$, ogni $H(\\omega)$ di questa famiglia è **periodica con periodo $2\\pi/T$**: aumentare $T$ stringe il periodo in frequenza. Per il trasversale la stabilità non è un problema (somma finita di termini limitati); con la retroazione invece i poli possono rendere la risposta non smorzata: gli appunti verificati non sviluppano criteri di stabilità, e in questa sede non se ne inventano — il punto è riconosciuto come limite del modello ideale.",
+  "analogia": {
+    "testo": "La linea di ritardo è un corridoio con specchi a distanze regolari: il trasversale somma le immagini riflesse una sola volta, il ricorrente lascia che le immagini si riflettano fra loro all'infinito.",
+    "limite": "L'analogia ottica non rende la fase $e^{-jk\\omega T}$: in frequenza i ritardi non sono intensità ma rotazioni, ed è dall'interferenza fra rotazioni che nascono zeri e picchi."
+  },
+  "worked_example": {
+    "titolo": "Classificare tre filtri dai pesi",
+    "problema": "Dati i pesi, classificare: (a) $h = (1, -0{,}5)$, nessun $h'$; (b) $h_0 = 1$, $h'_1 = 0{,}8$; (c) $h = (1, 0{,}3)$, $h'_1 = 0{,}5$. Per (a) calcolare anche $H(0)$.",
+    "passi": [
+      "(a) Solo pesi sull'ingresso: trasversale. In continua ogni $e^{-jk\\omega T}$ vale 1, quindi $H(0) = 1 - 0{,}5 = 0{,}5$.",
+      "(b) Solo ramo diretto e retroazione: puramente ricorrente; $H(\\omega) = 1/(1 - 0{,}8 e^{-j\\omega T})$, in continua $1/(1-0{,}8) = 5$.",
+      "(c) Entrambi i gruppi presenti: ricorrente, con zeri dal numeratore e poli dal denominatore."
+    ],
+    "soluzione": "(a) trasversale, $H(0) = 0{,}5$; (b) puramente ricorrente, $H(0) = 5$; (c) ricorrente.",
+    "perche_funziona": "Il controllo in continua è il primo test di sanità: in $\\omega = 0$ i ritardi spariscono e $H$ si riduce a rapporti fra somme di pesi."
+  },
+  "completion_problem": {
+    "titolo": "Da quale somma parte la retroazione?",
+    "testo": "Nell'equazione del filtro generale la somma sugli ingressi parte da $k = $ ____, quella sulle uscite da $k = $ ____, perché ____.",
+    "passi_mancanti": [
+      "Ricordare gli indici di file1 p. 15",
+      "Motivare l'assenza del termine di uscita istantaneo"
+    ],
+    "soluzione": "Ingressi da $k = 0$ (esiste la presa diretta $h_0 x(t)$); uscite da $k = 1$: l'uscita può rientrare nel sommatore solo dopo almeno una cella di ritardo, altrimenti sarebbe definita circolarmente allo stesso istante."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Durata della risposta a un impulso",
+    "testo": "Un filtro trasversale ha $N = 5$ prese e $T = 1\\ \\mathrm{ms}$. Quanto dura al massimo la risposta a un impulso breve in ingresso? E per il corrispondente filtro ricorrente con un peso $h'_1 \\ne 0$?",
+    "suggerimento": "Conta il ritardo dell'ultima presa e chiediti se qualcosa rientra dopo.",
+    "soluzione_attesa": "Trasversale: al più $4T = 4\\ \\mathrm{ms}$ oltre la durata dell'impulso, perché l'ultima presa è a $(N-1)T$. Con retroazione la risposta in linea di principio non si chiude mai del tutto: ogni uscita rientra e ne genera altre (con ampiezza che dipende dai pesi)."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Scambiare i ruoli: «trasversale = solo poli»",
+      "perche_sbagliato": "È l'opposto: il trasversale pesa solo ingressi ritardati (numeratore, soli zeri); soli poli caratterizza il puramente ricorrente. È l'errore che i temi M16-M18 sono costruiti per cogliere."
+    },
+    {
+      "errore": "Credere che raddoppiare $T$ allarghi il periodo di $H(\\omega)$ in frequenza",
+      "perche_sbagliato": "Il periodo è $2\\pi/T$: ritardi più lunghi danno un $H$ che oscilla più rapidamente in $\\omega$, non più lentamente."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "I tre tipi di filtro e i loro zeri-poli in una riga?",
+        "risposta": "Trasversale: solo zeri. Puramente ricorrente: solo poli. Ricorrente: zeri e poli (M16-M18)."
+      },
+      {
+        "domanda": "Con quale periodo è periodica $H(\\omega)$ e da che cosa dipende?",
+        "risposta": "Periodo $2\\pi/T$: dipende solo dal ritardo elementare della linea, non dai pesi."
+      },
+      {
+        "domanda": "Perché il trasversale ha risposta impulsiva di durata finita?",
+        "risposta": "Perché niente rientra: dopo l'ultima presa, a $(N-1)T$, l'impulso ha esaurito tutti i suoi contributi."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega con parole tue, disegnando a voce, la differenza fra le due linee di ritardo dello schema generale."
+  },
+  "riepilogo": "Una linea, pesi $h_k$: trasversale, soli zeri, memoria finita. Solo retroazione $h'_k$: puramente ricorrente, soli poli. Entrambe: ricorrente, zeri e poli. Per tutti, $H(\\omega)$ periodica di periodo $2\\pi/T$; la derivazione è T3.",
+  "flashcard": [
+    {
+      "fronte": "Trasversale: zeri o poli?",
+      "retro": "Solo zeri (pesi solo sull'ingresso)."
+    },
+    {
+      "fronte": "Periodo di $H(\\omega)$?",
+      "retro": "$2\\pi/T$."
+    },
+    {
+      "fronte": "Somma sulle uscite: da quale k?",
+      "retro": "Da $k = 1$: serve almeno un ritardo."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "classificare un filtro dai suoi pesi in pochi secondi",
+      "calcolare $H(0)$ come controllo immediato"
+    ],
+    "so_dire": [
+      "perché la retroazione crea memoria in linea di principio infinita",
+      "la corrispondenza tipo di filtro ↔ zeri e poli"
+    ]
+  },
+  "figure": [
+    {
+      "id": "linea-ritardo-prese",
+      "tipo": "blocchi",
+      "titolo": "Linea di ritardo con prese pesate",
+      "descrizione": "Idea comune ai filtri dell'area: una linea di ritardo con celle da T offre copie sempre più ritardate del segnale; ogni presa ha un peso e il sommatore combina i contributi. Aggiungendo una seconda linea sull'uscita si passa dal trasversale al ricorrente.",
+      "blocchi": [
+        {
+          "id": "in",
+          "etichetta": "x(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 1
+        },
+        {
+          "id": "r1",
+          "etichetta": "Ritardo T",
+          "forma": "ritardo",
+          "colonna": 2,
+          "riga": 1
+        },
+        {
+          "id": "r2",
+          "etichetta": "Ritardo T",
+          "forma": "ritardo",
+          "colonna": 4,
+          "riga": 1
+        },
+        {
+          "id": "m0",
+          "etichetta": "× h₀",
+          "forma": "moltiplicatore",
+          "colonna": 0,
+          "riga": 3
+        },
+        {
+          "id": "m1",
+          "etichetta": "× h₁",
+          "forma": "moltiplicatore",
+          "colonna": 2,
+          "riga": 3
+        },
+        {
+          "id": "m2",
+          "etichetta": "× h₂",
+          "forma": "moltiplicatore",
+          "colonna": 4,
+          "riga": 3
+        },
+        {
+          "id": "s",
+          "etichetta": "Sommatore Σ",
+          "forma": "sommatore",
+          "colonna": 2,
+          "riga": 5
+        },
+        {
+          "id": "out",
+          "etichetta": "y(t)",
+          "forma": "uscita",
+          "colonna": 6,
+          "riga": 5
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "in",
+          "a": "r1"
+        },
+        {
+          "da": "r1",
+          "a": "r2"
+        },
+        {
+          "da": "in",
+          "a": "m0"
+        },
+        {
+          "da": "r1",
+          "a": "m1"
+        },
+        {
+          "da": "r2",
+          "a": "m2"
+        },
+        {
+          "da": "m0",
+          "a": "s"
+        },
+        {
+          "da": "m1",
+          "a": "s"
+        },
+        {
+          "da": "m2",
+          "a": "s"
+        },
+        {
+          "da": "s",
+          "a": "out"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "id": "demodulazione-coerente-non-coerente",
+  "perche_ti_serve": "Gruppo A: prerequisito di T10 e quiz M21-M22. Punteggi: NON TROVATO.",
+  "scenario": "In un collegamento di telecomunicazioni un segnale di voce o un flusso di dati deve attraversare trasmettitore, canale e ricevitore: Recuperare la banda base e capire gli effetti del disallineamento della portante.",
+  "definizione_esame": {
+    "definizione": "La demodulazione estrae il messaggio dal segnale ricevuto; quella coerente usa un riferimento locale sincronizzato in frequenza e fase.",
+    "scopo": "Recuperare la banda base e capire gli effetti del disallineamento della portante.",
+    "esempio": "Moltiplicando $x(t)\\cos\\omega_0t$ per $2\\cos\\omega_0t$ e filtrando si recupera $x(t)$."
+  },
+  "spiegazione": "### Rivelazione coerente\nPer la DSB-SC, $s(t)=x(t)\\cos\\omega_0t$. Il ricevitore moltiplica per $2\\cos\\omega_0t$ e ottiene $2s(t)\\cos\\omega_0t=x(t)+x(t)\\cos 2\\omega_0t$. Se le bande sono separate, un passa-basso elimina il secondo termine e restituisce il messaggio. Il fattore due compensa il mezzo prodotto dall'identità trigonometrica. Il riferimento locale deve avere frequenza e fase opportune, oltre a un guadagno calibrato.\n\n### Errore di fase e quadratura\nSe il riferimento è $2\\cos(\\omega_0t-\\Delta)$, il termine in banda base diventa $x(t)\\cos\\Delta$. Per $\\Delta=\\pi/2$ il ramo desiderato si annulla idealmente; con errore di frequenza la fase relativa varia nel tempo e produce una distorsione variabile. In QAM due messaggi condividono la stessa portante tramite coseno e meno seno: un errore di fase ruota le due componenti e introduce interferenza reciproca. Non è dunque corretto dire che in QAM l'unico effetto è attenuare entrambe indipendentemente. T10 ricava la matrice con una convenzione di segno esplicita.\n\n### Rivelazione non coerente\nUn rivelatore di inviluppo può ricostruire l'ampiezza di una modulazione AM con portante sufficientemente grande e inviluppo non negativo, senza un oscillatore locale agganciato in fase. Se l'inviluppo attraversa zero o se si usa DSB-SC, il modulo non conserva in generale il segno del messaggio: il rivelatore di inviluppo semplice non recupera correttamente qualsiasi segnale. La rivelazione non coerente è una famiglia di metodi e non equivale sempre a un semplice rivelatore di inviluppo. La risposta dipende dalla modulazione e dalle ipotesi sul ricevitore.",
+  "analogia": {
+    "testo": "Un ricevitore che scandisce il ritmo insieme al trasmettitore.",
+    "limite": "Il sincronismo riguarda la fase della portante, non soltanto gli istanti di parola."
+  },
+  "worked_example": {
+    "titolo": "Esempio svolto",
+    "problema": "Per DSB-SC e riferimento con $\\Delta=60^\\circ$, calcolare il guadagno in banda base.",
+    "passi": [
+      "L’uscita ideale filtrata è $x\\cos\\Delta$.",
+      "Calcolare $\\cos60^\\circ=0{,}5$.",
+      "Il risultato è metà del messaggio."
+    ],
+    "soluzione": "$0{,}5x(t)$, nel modello ideale.",
+    "perche_funziona": "I termini alla doppia portante vengono eliminati e rimane il fattore coseno della differenza di fase."
+  },
+  "completion_problem": {
+    "titolo": "Completa il ragionamento",
+    "testo": "Per $\\Delta=90^\\circ$ completare il valore del ramo coerente.",
+    "passi_mancanti": [
+      "Calcolare il coseno della differenza di fase."
+    ],
+    "soluzione": "Zero nel modello ideale."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Prova da solo",
+    "testo": "Che cosa accade a una DSB-SC negativa con un rivelatore di inviluppo semplice?",
+    "suggerimento": "Considerare il modulo.",
+    "soluzione_attesa": "Il segno del messaggio non è recuperato in generale."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Usare un rivelatore di inviluppo su DSB-SC senza condizioni.",
+      "perche_sbagliato": "Il modulo perde il segno del messaggio."
+    },
+    {
+      "errore": "Dimenticare il fattore due nel riferimento coerente.",
+      "perche_sbagliato": "Il risultato filtrato ha un guadagno diverso da quello previsto."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Che cosa elimina il passa-basso?",
+        "risposta": "I termini centrati attorno a $2\\omega_0$."
+      },
+      {
+        "domanda": "Che cosa richiede il metodo coerente?",
+        "risposta": "Un riferimento locale sincronizzato."
+      },
+      {
+        "domanda": "Quando il modulo può perdere informazione?",
+        "risposta": "Quando il messaggio o l’inviluppo cambia segno."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega con parole tue: Recuperare la banda base e capire gli effetti del disallineamento della portante."
+  },
+  "riepilogo": "Il ricevitore coerente usa una portante locale e un filtro; il rivelatore di inviluppo richiede condizioni sulla modulazione.",
+  "flashcard": [
+    {
+      "fronte": "Che cosa elimina il passa-basso?",
+      "retro": "I termini centrati attorno a $2\\omega_0$."
+    },
+    {
+      "fronte": "Che cosa richiede il metodo coerente?",
+      "retro": "Un riferimento locale sincronizzato."
+    },
+    {
+      "fronte": "Quando il modulo può perdere informazione?",
+      "retro": "Quando il messaggio o l’inviluppo cambia segno."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "Per DSB-SC e riferimento con $\\Delta=60^\\circ$, calcolare il guadagno in banda base."
+    ],
+    "so_dire": [
+      "La demodulazione estrae il messaggio dal segnale ricevuto; quella coerente usa un riferimento locale sincronizzato in frequenza e fase."
+    ]
+  }
+}

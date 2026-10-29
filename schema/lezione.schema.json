@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jaski99.github.io/telecomunicazioni/schema/lezione.schema.json",
+  "title": "Lezione",
+  "description": "Lezione per concetto o tipo_esercizio — CONTRACTS §3.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "perche_ti_serve",
+    "scenario",
+    "definizione_esame",
+    "spiegazione",
+    "analogia",
+    "worked_example",
+    "completion_problem",
+    "esercizio_autonomo",
+    "errori_trappole",
+    "richiamo_attivo",
+    "riepilogo",
+    "flashcard",
+    "checklist"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "maxLength": 64
+    },
+    "perche_ti_serve": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 300
+    },
+    "scenario": {
+      "type": "string",
+      "minLength": 50
+    },
+    "definizione_esame": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["definizione", "scopo", "esempio"],
+      "properties": {
+        "definizione": { "type": "string", "minLength": 1 },
+        "scopo": { "type": "string", "minLength": 1 },
+        "esempio": { "type": "string", "minLength": 1 }
+      }
+    },
+    "spiegazione": {
+      "type": "string",
+      "minLength": 1200
+    },
+    "analogia": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["testo", "limite"],
+      "properties": {
+        "testo": { "type": "string", "minLength": 1 },
+        "limite": { "type": "string", "minLength": 1 }
+      }
+    },
+    "worked_example": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["titolo", "problema", "passi", "soluzione", "perche_funziona"],
+      "properties": {
+        "titolo": { "type": "string", "minLength": 1 },
+        "problema": { "type": "string", "minLength": 1 },
+        "passi": {
+          "type": "array",
+          "minItems": 3,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "soluzione": { "type": "string", "minLength": 1 },
+        "perche_funziona": { "type": "string", "minLength": 1 }
+      }
+    },
+    "completion_problem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["titolo", "testo", "passi_mancanti", "soluzione"],
+      "properties": {
+        "titolo": { "type": "string", "minLength": 1 },
+        "testo": { "type": "string", "minLength": 1 },
+        "passi_mancanti": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "soluzione": { "type": "string", "minLength": 1 }
+      }
+    },
+    "esercizio_autonomo": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["titolo", "testo", "suggerimento", "soluzione_attesa"],
+      "properties": {
+        "titolo": { "type": "string", "minLength": 1 },
+        "testo": { "type": "string", "minLength": 1 },
+        "suggerimento": { "type": "string", "minLength": 1 },
+        "soluzione_attesa": { "type": "string", "minLength": 1 }
+      }
+    },
+    "errori_trappole": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["errore", "perche_sbagliato"],
+        "properties": {
+          "errore": { "type": "string", "minLength": 1 },
+          "perche_sbagliato": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "richiamo_attivo": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["domande", "spiega_con_parole_tue"],
+      "properties": {
+        "domande": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 5,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["domanda", "risposta"],
+            "properties": {
+              "domanda": { "type": "string", "minLength": 1 },
+              "risposta": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "spiega_con_parole_tue": { "type": "string", "minLength": 1 }
+      }
+    },
+    "riepilogo": {
+      "type": "string",
+      "minLength": 40,
+      "maxLength": 800
+    },
+    "flashcard": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["fronte", "retro"],
+        "properties": {
+          "fronte": { "type": "string", "minLength": 1 },
+          "retro": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "checklist": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["so_fare", "so_dire"],
+      "properties": {
+        "so_fare": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "so_dire": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "figure": {
+      "type": "array",
+      "items": { "$ref": "figura.schema.json" }
+    }
+  }
+}

@@ -1,0 +1,696 @@
+{
+  "versione": 1,
+  "avvertenza": "Raccolta di studenti (file2), non prova ufficiale; frequenze e punteggi non indicati = NON TROVATO.",
+  "prove": [
+    {
+      "id": "E1",
+      "tipo": "esercizio",
+      "titolo": "Spettro di una successione periodica rettangolare",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "es-spettri-impulsi-periodici"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "E2",
+      "tipo": "esercizio",
+      "titolo": "Spettro di un impulso rettangolare isolato",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "es-spettri-impulso-rettangolare"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "E3",
+      "tipo": "esercizio",
+      "titolo": "Antitrasformata di uno spettro rettangolare",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "es-antitrasformata-rettangolare"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "E4",
+      "tipo": "esercizio",
+      "titolo": "Campionamento con un solo campione non nullo",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "es-condizione-nyquist"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "E5",
+      "tipo": "esercizio",
+      "titolo": "Risposta in frequenza della rete RC",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "es-rete-rc"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "E6",
+      "tipo": "esercizio",
+      "titolo": "Risposta in frequenza della rete CR",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "es-rete-cr"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "E7",
+      "tipo": "esercizio",
+      "titolo": "Uscita di un derivatore con ingresso gaussiano",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "es-derivatore-processo-gaussiano"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "E8",
+      "tipo": "esercizio",
+      "titolo": "Spettro PAM con codice bipolare",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "es-pam-bipolare"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "E9",
+      "tipo": "esercizio",
+      "titolo": "Spettro PAM con codice AMI",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "es-pam-ami"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "I1",
+      "tipo": "intro_reti",
+      "titolo": "Reti: componenti di una rete",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "reti-concetti-introduttivi"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "I2",
+      "tipo": "intro_reti",
+      "titolo": "Reti: definizione strutturale di rete",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "reti-concetti-introduttivi"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "I3",
+      "tipo": "intro_reti",
+      "titolo": "Reti: protocollo di comunicazione",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "reti-concetti-introduttivi"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "I4",
+      "tipo": "intro_reti",
+      "titolo": "Reti: funzione degli indirizzi",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "reti-concetti-introduttivi"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "I5",
+      "tipo": "intro_reti",
+      "titolo": "Reti: scopo della standardizzazione",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "reti-concetti-introduttivi"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "I6",
+      "tipo": "intro_reti",
+      "titolo": "Reti: attribuzione storica del telefono",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "reti-concetti-introduttivi"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "I7",
+      "tipo": "intro_reti",
+      "titolo": "Reti: obiettivi della telefonia",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "reti-concetti-introduttivi"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "I8",
+      "tipo": "intro_reti",
+      "titolo": "Reti: prime radiocomunicazioni",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "reti-concetti-introduttivi"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "I9",
+      "tipo": "intro_reti",
+      "titolo": "Reti: mezzi trasmissivi",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "reti-concetti-introduttivi"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M1",
+      "tipo": "quiz",
+      "titolo": "Concetto: equivalenza SSB-BC",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "modulazione-prodotto-dsb-ssb"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M2",
+      "tipo": "quiz",
+      "titolo": "Concetto: massimo slotted ALOHA",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-aloha-throughput"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M3",
+      "tipo": "quiz",
+      "titolo": "Concetto: confronto slotted e puro ALOHA",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-aloha-throughput"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M4",
+      "tipo": "quiz",
+      "titolo": "Concetto: livello 4 OSI",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "architetture-iso-osi-tcpip"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M5",
+      "tipo": "quiz",
+      "titolo": "Concetto: livello 5 OSI",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "architetture-iso-osi-tcpip"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M6",
+      "tipo": "quiz",
+      "titolo": "Concetto: informazione energetica del processo",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "processi-aleatori-stazionarieta-ergodicita"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M7",
+      "tipo": "quiz",
+      "titolo": "Concetto: PM per ottenere FM",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "modulazioni-angolo-pm-fm"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M8",
+      "tipo": "quiz",
+      "titolo": "Concetto: FM per ottenere PM",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "modulazioni-angolo-pm-fm"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M9",
+      "tipo": "quiz",
+      "titolo": "Concetto: integrabilità e potenza",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "trasformata-fourier"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M10",
+      "tipo": "quiz",
+      "titolo": "Concetto: stazionarietà ed ergodicità",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "processi-aleatori-stazionarieta-ergodicita"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M11",
+      "tipo": "quiz",
+      "titolo": "Concetto: simmetria spettrale in modulazione prodotto",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "modulazione-prodotto-dsb-ssb"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M12",
+      "tipo": "quiz",
+      "titolo": "Concetto: interpretazione di Carson",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-formula-carson"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M13",
+      "tipo": "quiz",
+      "titolo": "Concetto: banda di un segnale modulato d’angolo",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-formula-carson"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M14",
+      "tipo": "quiz",
+      "titolo": "Concetto: espressione di Carson",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-formula-carson"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M15",
+      "tipo": "quiz",
+      "titolo": "Concetto: rappresentazione dei periodici",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "serie-fourier"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M16",
+      "tipo": "quiz",
+      "titolo": "Concetto: filtro ricorrente",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "filtri-ricorrenti-trasversali"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M17",
+      "tipo": "quiz",
+      "titolo": "Concetto: filtro ricorsivo puro",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "filtri-ricorrenti-trasversali"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M18",
+      "tipo": "quiz",
+      "titolo": "Concetto: filtro trasversale",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "filtri-ricorrenti-trasversali"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M19",
+      "tipo": "quiz",
+      "titolo": "Concetto: rapporto propagazione-trasmissione",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "parametro-a-propagazione-trasmissione"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M20",
+      "tipo": "quiz",
+      "titolo": "Concetto: conversione di frequenza",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "modulazione-prodotto-dsb-ssb"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M21",
+      "tipo": "quiz",
+      "titolo": "Concetto: demodulazione coerente",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "demodulazione-coerente-non-coerente"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M22",
+      "tipo": "quiz",
+      "titolo": "Concetto: demodulazione non coerente",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "demodulazione-coerente-non-coerente"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M23",
+      "tipo": "quiz",
+      "titolo": "Concetto: bande laterali prodotto",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "modulazione-prodotto-dsb-ssb"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M24",
+      "tipo": "quiz",
+      "titolo": "Concetto: valore problematico di a",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "parametro-a-propagazione-trasmissione"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M25",
+      "tipo": "quiz",
+      "titolo": "Concetto: banda di Nyquist per sequenza impulsiva",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "criterio-nyquist-isi"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M26",
+      "tipo": "quiz",
+      "titolo": "Concetto: criterio di Nyquist",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "criterio-nyquist-isi"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M27",
+      "tipo": "quiz",
+      "titolo": "Concetto: altro nome di AM",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "modulazione-prodotto-dsb-ssb"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M28",
+      "tipo": "quiz",
+      "titolo": "Concetto: codice sistematico",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "codici-rivelazione-errore"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M29",
+      "tipo": "quiz",
+      "titolo": "Concetto: spettro energia e autocorrelazione",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "energia-potenza-spettri"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M30",
+      "tipo": "quiz",
+      "titolo": "Concetto: ritardo TDMA e FDMA",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "accesso-multiplo-deterministico-casuale"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M31",
+      "tipo": "quiz",
+      "titolo": "Concetto: velocità FDMA e TDMA",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "accesso-multiplo-deterministico-casuale"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M32",
+      "tipo": "quiz",
+      "titolo": "Concetto: conversione PM-FM",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "modulazioni-angolo-pm-fm"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M33",
+      "tipo": "quiz",
+      "titolo": "Concetto: conversione FM-PM",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "modulazioni-angolo-pm-fm"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "M34",
+      "tipo": "quiz",
+      "titolo": "Concetto: passa-banda modulato",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "modulazione-prodotto-dsb-ssb"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "T1",
+      "tipo": "teoria",
+      "titolo": "Teorema del campionamento nel tempo",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-teorema-campionamento"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "T2",
+      "tipo": "teoria",
+      "titolo": "Trasformata della funzione impulsiva",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-impulso-dirac-trasformata"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "T3",
+      "tipo": "teoria",
+      "titolo": "Filtro trasversale e funzione di trasferimento",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-filtro-trasversale"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "T4",
+      "tipo": "teoria",
+      "titolo": "Risposta impulsiva e funzione di trasferimento",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-risposta-impulsiva-h"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "T5",
+      "tipo": "teoria",
+      "titolo": "Segnali PAM e due spettri",
+      "punti": 10,
+      "nodi": [
+        "dim-pam-due-spettri"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "T6",
+      "tipo": "teoria",
+      "titolo": "Spettri della modulazione a prodotto",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-spettri-modulazione-prodotto"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "T7",
+      "tipo": "teoria",
+      "titolo": "Conversione analogico-digitale in tre fasi",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-conversione-ad"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "T8",
+      "tipo": "teoria",
+      "titolo": "Conversione digitale-analogica e ricostruzione",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-conversione-da"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "T9",
+      "tipo": "teoria",
+      "titolo": "Conversione tra modulatori PM e FM",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-pm-fm-trasformazione"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "T10",
+      "tipo": "teoria",
+      "titolo": "Modulazione a prodotto, QAM ed errore di fase",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-modulazione-prodotto-qam-errore-fase"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "T11",
+      "tipo": "teoria",
+      "titolo": "Quadripoli e passa-basso equivalente",
+      "punti": 10,
+      "nodi": [
+        "dim-quadripoli-passa-basso-equivalente"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "T12",
+      "tipo": "teoria",
+      "titolo": "Efficienza sliding window senza errori",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-sliding-window-efficienza"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "T13",
+      "tipo": "teoria",
+      "titolo": "Tempo residuo in un processo di Poisson",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-poisson-tempo-residuo"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "T14",
+      "tipo": "teoria",
+      "titolo": "Equilibrio dei processi nascita-morte",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-nascita-morte-equilibrio"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "T15",
+      "tipo": "teoria",
+      "titolo": "Throughput normalizzato ALOHA",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-aloha-throughput"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "T16",
+      "tipo": "teoria",
+      "titolo": "Throughput CSMA/CD e parametro a",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-csma-cd-throughput"
+      ],
+      "fonte": "FILE2"
+    },
+    {
+      "id": "T17",
+      "tipo": "teoria",
+      "titolo": "Ritardo medio TDMA rispetto a FDMA",
+      "punti": "NON TROVATO",
+      "nodi": [
+        "dim-ritardo-tdma-fdma"
+      ],
+      "fonte": "FILE2"
+    }
+  ]
+}

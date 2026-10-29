@@ -1,0 +1,158 @@
+{
+  "id": "segnali-deterministici",
+  "perche_ti_serve": "È il nodo di partenza del gruppo B: senza classificare il segnale non sai se per T1-T5 ed E1-E3 servono serie, trasformata o spettro di potenza. Nessun punteggio è associato a questo nodo.",
+  "scenario": "Durante una telefonata la voce è un segnale tempo-continuo che dura quanto la conversazione: per trasmetterla su un collegamento numerico dovrai campionarla (T1), filtrarla (T3, T4) e trasformarla in una successione di impulsi (T5). Ogni passo usa un tipo diverso di segnale deterministico.",
+  "definizione_esame": {
+    "definizione": "Un segnale deterministico è una funzione del tempo $x(t)$ nota in ogni istante; lo si classifica per continuità (tempo-continuo o serie temporale $x_n = x(nT)$), periodicità e per il comportamento di energia $E = \\int |x(t)|^2 dt$ e potenza media.",
+    "scopo": "La classificazione decide lo strumento spettrale lecito: serie di Fourier per i periodici, trasformata per gli aperiodici di energia, spettro di potenza per quelli di potenza finita.",
+    "esempio": "L'impulso rettangolare singolo è tempo-continuo, aperiodico e di energia finita; la sua ripetizione periodica ha invece potenza finita ed energia infinita."
+  },
+  "spiegazione": "### Le tre domande di classificazione\nDavanti a un segnale deterministico poni sempre tre domande. **È definito per ogni $t$ o solo in istanti discreti?** Nel secondo caso è una *serie temporale* $x_n = x(nT)$, come i campioni di T1. **Si ripete?** Se esiste $T_0$ con $x(t+T_0) = x(t)$ per ogni $t$ è periodico. **Quanta «grandezza» accumula nel tempo?** Qui entrano energia e potenza: $$E = \\int_{-\\infty}^{+\\infty} |x(t)|^2\\, dt, \\qquad P = \\lim_{\\Theta \\to \\infty} \\frac{1}{2\\Theta} \\int_{-\\Theta}^{\\Theta} |x(t)|^2\\, dt.$$ Se $E$ è finita il segnale è *di energia* e allora $P = 0$; se $E$ è infinita ma $P$ è finita e positiva è *di potenza*; alcuni segnali (una rampa illimitata) non sono nessuno dei due. Gli appunti verificati dicono anche che l'impulso rettangolare è una funzione «discreta nei valori e tempo-continua»: assume solo due livelli ma è definita per ogni $t$.\n\n### Dalla classe allo strumento\nLa mappa da memorizzare è questa: segnale **periodico** (potenza finita) → *serie di Fourier*, spettro a righe; segnale **aperiodico di energia** → *trasformata di Fourier*, spettro continuo; segnale **di potenza non periodico**, come un PAM con simboli generici → *autocorrelazione e spettro di potenza*, perché la trasformata ordinaria non esiste (è il contenuto del tema di quiz secondo cui un segnale di potenza finita in generale «non ammette trasformata» nel senso ordinario). La serie temporale ha una sua trasformata, periodica in $\\omega$, che è il ponte fra mondo continuo e campioni.\n\n### Due esempi che tornano ovunque\nL'**impulso rettangolare singolo** di ampiezza $A$ e durata $\\tau$ ha energia $E = A^2 \\tau$ e intensità (area) $I = A\\tau$: è il mattoncino di T2, dove con $A = 1/\\Delta$ e $\\tau = \\Delta$ costruisce la funzione impulsiva. La **successione periodica** degli stessi impulsi con periodo $T$ ha potenza $P = A^2 \\tau / T$ e si analizza con la serie di Fourier (esercizio E1). Aumentare il periodo fino a isolare un solo impulso è proprio il passaggio concettuale dalla serie alla trasformata.",
+  "analogia": {
+    "testo": "Energia e potenza sono come la pioggia totale caduta in una giornata e la sua intensità media oraria: una pioggia breve e intensa ha un totale finito (segnale di energia), una pioggerellina eterna accumula un totale infinito ma con intensità media finita (segnale di potenza).",
+    "limite": "L'analogia non distingue la periodicità: due segnali con la stessa potenza, uno periodico e uno no, richiedono strumenti diversi (serie contro spettro di potenza)."
+  },
+  "worked_example": {
+    "titolo": "Energia e potenza di due segnali",
+    "problema": "Classificare: (a) impulso rettangolare $A = 3$, $\\tau = 2\\ \\mathrm{ms}$, singolo; (b) lo stesso impulso ripetuto con periodo $T = 10\\ \\mathrm{ms}$.",
+    "passi": [
+      "(a) Energia: $E = A^2 \\tau = 9 \\cdot 0{,}002 = 0{,}018$ (unità di energia del segnale). È finita, quindi la potenza media su tutto l'asse è zero: segnale di energia.",
+      "(b) Su un periodo l'energia è la stessa, $0{,}018$, ma i periodi sono infiniti: l'energia totale diverge.",
+      "(b) Potenza: $P = E_{\\text{periodo}}/T = 0{,}018/0{,}010 = 1{,}8$: finita e positiva, segnale di potenza periodico."
+    ],
+    "soluzione": "(a) segnale di energia finita: si usa la trasformata di Fourier. (b) segnale di potenza finita periodico: si usa la serie di Fourier.",
+    "perche_funziona": "Funziona perché le due quantità misurano cose diverse: il totale accumulato e il ritmo medio; la ripetizione cambia il totale ma non il ritmo per periodo."
+  },
+  "completion_problem": {
+    "titolo": "Completa la classificazione",
+    "testo": "Un segnale vale $x(t) = 2$ per ogni $t$ (costante). Energia: ____. Potenza: ____. Strumento spettrale lecito in senso ordinario: ____.",
+    "passi_mancanti": [
+      "Calcolare l'energia su tutto l'asse",
+      "Calcolare la potenza media",
+      "Concludere quale analisi è lecita"
+    ],
+    "soluzione": "Energia infinita (l'integrale di $4$ su un intervallo illimitato diverge); potenza $P = 4$, finita: è un segnale di potenza. La trasformata ordinaria non converge; si lavora con spettro di potenza e autocorrelazione, oppure coerentemente in senso distribuzionale."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Rampa troncata",
+    "testo": "Il segnale vale $x(t) = t$ per $0 \\le t \\le 1\\ \\mathrm{s}$ e zero altrove. Calcola energia e potenza media e classificalo.",
+    "suggerimento": "L'integrale di $t^2$ fra $0$ e $1$ vale $1/3$.",
+    "soluzione_attesa": "Energia $E = \\int_0^1 t^2 dt = 1/3$, finita; potenza media su tutto l'asse uguale a zero: segnale di energia, tempo-continuo e aperiodico, da trattare con la trasformata."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Dire che un segnale periodico ha energia finita perché «su un periodo è piccola»",
+      "perche_sbagliato": "L'energia si somma su infiniti periodi identici: diverge sempre, a meno che il segnale sia identicamente zero; finita è la potenza."
+    },
+    {
+      "errore": "Applicare la trasformata di Fourier ordinaria a un segnale di potenza come se convergesse",
+      "perche_sbagliato": "L'integrale in generale non converge; per i segnali di potenza si passa da autocorrelazione e spettro di potenza, come in T5."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Quale strumento spettrale per un segnale periodico?",
+        "risposta": "La serie di Fourier: spettro a righe alle armoniche della pulsazione fondamentale."
+      },
+      {
+        "domanda": "Se l'energia è finita, quanto vale la potenza media su tutto l'asse?",
+        "risposta": "Zero: un totale finito spalato su un tempo infinito ha media che tende a zero."
+      },
+      {
+        "domanda": "Che cos'è una serie temporale in questo corso?",
+        "risposta": "La successione dei valori $x_n = x(nT)$ di un segnale letti a passo costante $T$: vive nel discreto anche se nasce da un segnale continuo."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega con parole tue a un compagno perché lo stesso impulso rettangolare, da solo o ripetuto, cambia classe e strumento di analisi."
+  },
+  "riepilogo": "Tre domande classificano il segnale: continuo o serie temporale, periodico o no, energia o potenza finita. Periodici → serie di Fourier; aperiodici di energia → trasformata; di potenza → autocorrelazione e spettro di potenza. Saperlo a colpo d'occhio evita di usare lo strumento sbagliato nelle dimostrazioni T1-T5.",
+  "flashcard": [
+    {
+      "fronte": "Energia finita: potenza media?",
+      "retro": "Zero: totale finito diviso tempo infinito."
+    },
+    {
+      "fronte": "Segnale periodico non identicamente zero: energia?",
+      "retro": "Infinita; la potenza invece è finita e si calcola su un periodo."
+    },
+    {
+      "fronte": "Strumento per potenza finita non periodica?",
+      "retro": "Autocorrelazione e spettro di potenza."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "calcolare energia o potenza di impulsi e successioni semplici",
+      "scegliere serie, trasformata o spettro di potenza in base alla classe"
+    ],
+    "so_dire": [
+      "perché un periodico ha energia infinita",
+      "che cos'è una serie temporale"
+    ]
+  },
+  "figure": [
+    {
+      "id": "impulso-rettangolare",
+      "tipo": "grafico",
+      "titolo": "Impulso rettangolare: segnale di energia finita",
+      "descrizione": "Un impulso rettangolare di ampiezza due e durata un secondo, centrato in zero: dura un tempo finito, quindi la sua energia è finita e la sua potenza media su tutto l'asse dei tempi è zero. È l'esempio base dei segnali di energia.",
+      "asse_x": {
+        "etichetta": "t (s)",
+        "min": -2,
+        "max": 2,
+        "tacche": [
+          {
+            "valore": -0.5,
+            "etichetta": "−τ/2"
+          },
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 0.5,
+            "etichetta": "τ/2"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "x(t)",
+        "min": 0,
+        "max": 2.4
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -2,
+              0
+            ],
+            [
+              -0.5,
+              0
+            ],
+            [
+              -0.5,
+              2
+            ],
+            [
+              0.5,
+              2
+            ],
+            [
+              0.5,
+              0
+            ],
+            [
+              2,
+              0
+            ]
+          ],
+          "etichetta": "x(t), A = 2, τ = 1 s"
+        }
+      ]
+    }
+  ]
+}

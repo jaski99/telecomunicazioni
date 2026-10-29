@@ -1,0 +1,325 @@
+{
+  "id": "dim-ritardo-tdma-fdma",
+  "titolo": "Ritardo medio TDMA e FDMA",
+  "domande_esame": [
+    "T17"
+  ],
+  "enunciato": "Per $M\\ge1$ utenti con uguali risorse, un pacchetto per utente generato all’inizio del ciclo e nessuna coda o overhead, i ritardi medi dalla generazione alla fine della trasmissione sono $D_{FD}=T$ e $D_{TD}=\\frac{T(M+1)}{2M}$, dove $T$ è la durata del ciclo. Quindi $D_{TD}\\le D_{FD}$, con uguaglianza solo per $M=1$; l’ipotesi sugli istanti di generazione resta da verificare.",
+  "ipotesi": [
+    "M utenti con pacchetti di $b$ bit, capacità aggregata $R$ e nessun tempo di guardia o overhead.",
+    "IPOTESI di ricostruzione della media degli appunti: ogni utente genera un pacchetto all’inizio del ciclo e ciascuna delle M posizioni TDMA è rappresentata una volta.",
+    "Trama di durata $T=Mb/R$; TDMA usa M slot consecutivi a velocità R; FDMA assegna a ogni utente la capacità $R/M$ per tutto il ciclo.",
+    "Nessuna coda aggiuntiva, propagazione o elaborazione; il ritardo è misurato dalla generazione alla fine della trasmissione."
+  ],
+  "notazione": [
+    {
+      "simbolo": "M",
+      "significato": "Numero di utenti e di slot di una trama, intero positivo."
+    },
+    {
+      "simbolo": "b,R",
+      "significato": "Bit di un pacchetto e capacità aggregata del canale in bit/s."
+    },
+    {
+      "simbolo": "T",
+      "significato": "Durata del ciclo comune, $T=Mb/R$."
+    },
+    {
+      "simbolo": "\\omega",
+      "significato": "Tempo di attesa prima della trasmissione."
+    },
+    {
+      "simbolo": "\\tau",
+      "significato": "Tempo di trasmissione del pacchetto."
+    },
+    {
+      "simbolo": "D_{TD},D_{FD}",
+      "significato": "Ritardi medi dalla generazione alla fine della trasmissione nei due modelli."
+    }
+  ],
+  "varianti_notazione": [],
+  "idea": "Somma la durata di trasmissione alla media delle attese delle M posizioni e confronta a parità di risorse.",
+  "passi": [
+    {
+      "n": 1,
+      "testo": "Definisci ciclo, slot e scomposizione del ritardo.",
+      "formula": "T=\\frac{Mb}{R},\\qquad D=\\omega+\\tau,\\qquad \\tau_{TD}=\\frac{T}{M}=\\frac{b}{R}",
+      "perche": "Il ciclo contiene M pacchetti trasmessi consecutivamente alla capacità R.",
+      "figura": "tdma-fdma-confronto-temporale"
+    },
+    {
+      "n": 2,
+      "testo": "Per FDMA calcola la durata sulla sottobanda di ciascun utente.",
+      "formula": "\\omega_{FD}=0,\\qquad \\tau_{FD}=\\frac{b}{R/M}=T,\\qquad D_{FD}=T",
+      "perche": "La sottobanda è disponibile subito e trasmette il pacchetto a velocità R/M."
+    },
+    {
+      "n": 3,
+      "testo": "Per TDMA esprimi l’attesa della posizione m nel ciclo.",
+      "formula": "\\omega_m=(m-1)\\frac{T}{M},\\qquad m=1,\\ldots,M",
+      "perche": "Tutti i pacchetti sono generati all’inizio del ciclo; prima della posizione m passano m−1 slot."
+    },
+    {
+      "n": 4,
+      "testo": "Calcola la media uniforme delle M attese.",
+      "formula": "\\omega_{TD}=\\frac1M\\sum_{m=1}^{M}(m-1)\\frac{T}{M}=\\frac{T}{2}\\left(1-\\frac1M\\right)",
+      "perche": "Le posizioni sono rappresentate una volta e la somma degli interi da 0 a M−1 vale $M(M-1)/2$."
+    },
+    {
+      "n": 5,
+      "testo": "Aggiungi la trasmissione e confronta con FDMA.",
+      "formula": "D_{TD}=\\frac{T}{2}\\left(1-\\frac1M\\right)+\\frac{T}{M}=\\frac{T(M+1)}{2M}=D_{FD}-\\frac{b}{2R}(M-1)",
+      "perche": "Si sommano attesa e servizio; la differenza è positiva se $M>1$ e zero se $M=1$."
+    }
+  ],
+  "formula_finale": "D_{FD}=T,\\qquad D_{TD}=\\frac{T}{2}\\left(1-\\frac1M\\right)+\\frac{T}{M}=\\frac{T(M+1)}{2M}\\le D_{FD}.",
+  "figure": [
+    {
+      "id": "tdma-fdma-confronto-temporale",
+      "tipo": "temporale",
+      "titolo": "TDMA e FDMA: quattro utenti",
+      "descrizione": "Quattro pacchetti generati a inizio trama di 4 s: TDMA usa quattro slot consecutivi da 1 s; FDMA trasmette tutti in parallelo in 4 s.",
+      "asse_t": {
+        "etichetta": "Tempo (s)",
+        "min": 0,
+        "max": 4.1
+      },
+      "corsie": [
+        {
+          "id": "td-1",
+          "etichetta": "TDMA utente 1"
+        },
+        {
+          "id": "td-2",
+          "etichetta": "TDMA utente 2"
+        },
+        {
+          "id": "td-3",
+          "etichetta": "TDMA utente 3"
+        },
+        {
+          "id": "td-4",
+          "etichetta": "TDMA utente 4"
+        },
+        {
+          "id": "fd-1",
+          "etichetta": "FDMA utente 1"
+        },
+        {
+          "id": "fd-2",
+          "etichetta": "FDMA utente 2"
+        },
+        {
+          "id": "fd-3",
+          "etichetta": "FDMA utente 3"
+        },
+        {
+          "id": "fd-4",
+          "etichetta": "FDMA utente 4"
+        }
+      ],
+      "intervalli": [
+        {
+          "corsia": "td-1",
+          "t0": 0,
+          "t1": 1,
+          "etichetta": "Pacchetto TDMA",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "fd-1",
+          "t0": 0,
+          "t1": 4,
+          "etichetta": "Pacchetto FDMA",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "td-2",
+          "t0": 0,
+          "t1": 1,
+          "etichetta": "Attesa",
+          "stile": "attesa"
+        },
+        {
+          "corsia": "td-2",
+          "t0": 1,
+          "t1": 2,
+          "etichetta": "Pacchetto TDMA",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "fd-2",
+          "t0": 0,
+          "t1": 4,
+          "etichetta": "Pacchetto FDMA",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "td-3",
+          "t0": 0,
+          "t1": 2,
+          "etichetta": "Attesa",
+          "stile": "attesa"
+        },
+        {
+          "corsia": "td-3",
+          "t0": 2,
+          "t1": 3,
+          "etichetta": "Pacchetto TDMA",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "fd-3",
+          "t0": 0,
+          "t1": 4,
+          "etichetta": "Pacchetto FDMA",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "td-4",
+          "t0": 0,
+          "t1": 3,
+          "etichetta": "Attesa",
+          "stile": "attesa"
+        },
+        {
+          "corsia": "td-4",
+          "t0": 3,
+          "t1": 4,
+          "etichetta": "Pacchetto TDMA",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "fd-4",
+          "t0": 0,
+          "t1": 4,
+          "etichetta": "Pacchetto FDMA",
+          "stile": "trasmissione"
+        }
+      ],
+      "frecce": [],
+      "marcatori": [
+        {
+          "t": 0,
+          "etichetta": "Generazione"
+        },
+        {
+          "t": 1,
+          "etichetta": "Fine slot 1"
+        },
+        {
+          "t": 2,
+          "etichetta": "Fine slot 2"
+        },
+        {
+          "t": 3,
+          "etichetta": "Fine slot 3"
+        },
+        {
+          "t": 4,
+          "etichetta": "Fine trama"
+        }
+      ]
+    }
+  ],
+  "a_voce": "Considero M utenti, ognuno con un pacchetto di b bit, e la stessa capacità totale R. Nel modello scelto ogni pacchetto nasce all’inizio della trama, senza code pregresse. In FDMA ciascuno dispone subito di R su M e impiega T uguale M b su R. In TDMA l’utente nella posizione m aspetta m meno uno slot e trasmette in uno slot, cioè T su M. La media sulle M posizioni è T mezzi per uno meno uno su M; aggiungo il tempo di trasmissione T su M. Ottengo T per M più uno diviso due M. È minore di T se M è maggiore di uno e coincide per un solo utente. Questo confronto non è universale: un arrivo asincrono, code, propagazione e overhead possono cambiare il risultato.",
+  "errori_frequenti": [
+    {
+      "errore": "Scrivere $D_{TD}=\\omega_{TD}$ dimenticando la trasmissione.",
+      "perche_sbagliato": "La consegna si completa solo dopo lo slot di durata $T/M$.",
+      "correzione": "Somma $T/M$ alla media delle attese."
+    },
+    {
+      "errore": "Usare sempre $T/2$ come attesa TDMA.",
+      "perche_sbagliato": "Qui si media una sequenza discreta di M posizioni da zero a $(M-1)T/M$.",
+      "correzione": "Usa $T(M-1)/(2M)$ nelle ipotesi dichiarate."
+    },
+    {
+      "errore": "Affermare che TDMA è sempre migliore di FDMA.",
+      "perche_sbagliato": "La disuguaglianza dipende da sincronizzazione, code, capacità e assenza di overhead.",
+      "correzione": "Presenta il confronto come risultato del modello specificato."
+    },
+    {
+      "errore": "Dire che il confronto è stretto anche per $M=1$.",
+      "perche_sbagliato": "Con un solo utente i due ritardi sono entrambi T.",
+      "correzione": "Specifica $M>1$ per la disuguaglianza stretta."
+    }
+  ],
+  "versione_compatta": [
+    "$T=Mb/R$; in FDMA $D_{FD}=T$.",
+    "In TDMA $\\tau_{TD}=T/M$ e $\\omega_m=(m-1)T/M$.",
+    "$\\omega_{TD}=T(M-1)/(2M)$.",
+    "$D_{TD}=T(M+1)/(2M)\\le T$, con uguaglianza a $M=1$.",
+    "Confronto limitato a generazione sincrona e assenza di code."
+  ],
+  "a_buchi": {
+    "testo": "La posizione m aspetta ___1___. La media è ___2___ perché si sommano ___3___ posizioni equiprobabili. Sommando il servizio si ottiene ___4___.",
+    "soluzioni": {
+      "1": [
+        "$(m-1)T/M$",
+        "(m-1)T/M"
+      ],
+      "2": [
+        "$T(M-1)/(2M)$",
+        "T(M-1)/(2M)"
+      ],
+      "3": [
+        "M",
+        "$M$"
+      ],
+      "4": [
+        "$T(M+1)/(2M)$",
+        "T(M+1)/(2M)"
+      ]
+    }
+  },
+  "richiamo_attivo": [
+    {
+      "domanda": "Quanto dura la trasmissione TDMA?",
+      "risposta": "$T/M=b/R$."
+    },
+    {
+      "domanda": "Perché l’attesa media non è semplicemente $T/2$?",
+      "risposta": "Si media su M posizioni discrete da zero a $(M-1)T/M$."
+    },
+    {
+      "domanda": "Quando vale l’uguaglianza tra i ritardi?",
+      "risposta": "Per $M=1$, nel modello indicato."
+    },
+    {
+      "domanda": "La conclusione vale per qualunque arrivo?",
+      "risposta": "No: qui le generazioni sono sincronizzate e non ci sono code aggiuntive."
+    }
+  ],
+  "collegamenti": [
+    "accesso-multiplo-deterministico-casuale",
+    "dim-aloha-throughput"
+  ],
+  "fonti": [
+    {
+      "chiave": "FILE2",
+      "rif": "file2 p. 1: T17, titolo riformulato; punteggio NON TROVATO"
+    },
+    {
+      "chiave": "FILE3",
+      "rif": "file3 p. 31: media discreta e confronto"
+    },
+    {
+      "chiave": "FILE1",
+      "rif": "file1 p. 48: slide 25 Accesso multiplo citata, non consultata"
+    },
+    {
+      "chiave": "RICOSTRUZIONE",
+      "rif": "Ipotesi esplicita di generazione a inizio ciclo e assenza di code"
+    }
+  ],
+  "verifica": {
+    "stato": "da_verificare",
+    "data": "2026-10-28",
+    "note": "A9: le immagini riportano la formula completa e il confronto. La sincronizzazione della generazione è l’IPOTESI che rende esplicita la media discreta; lucidi non consultati.",
+    "punti_aperti": [
+      "A9: confermare sulla slide 25 la convenzione sugli istanti di generazione e le condizioni del confronto.",
+      "Confronto diretto con la slide del docente: NON TROVATO."
+    ]
+  }
+}

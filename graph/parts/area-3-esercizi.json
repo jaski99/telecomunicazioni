@@ -1,0 +1,155 @@
+[
+  {
+    "id": "es-condizione-nyquist",
+    "titolo": "Condizione di Nyquist in frequenza: somma delle repliche",
+    "area": 3,
+    "tipo": "tipo_esercizio",
+    "gruppo": "A",
+    "worker": "W6",
+    "sapere": "Per campioni x(nT)=x₀δ[n], la periodizzazione X_s(ω)=(1/T)Σ_kX(ω+k2π/T) deve essere costante. La condizione equivalente è Σ_kX(ω+k2π/T)=x₀T.",
+    "saper_fare": [
+      "Ricavare la trasformata della sequenza con un solo campione non nullo.",
+      "Scrivere la somma delle repliche con passo 2π/T.",
+      "Classificare i casi Bω<π/T, Bω=π/T e Bω>π/T senza concludere dal solo overlap."
+    ],
+    "prerequisiti": [
+      {
+        "id": "criterio-nyquist-isi",
+        "forza": "hard",
+        "motivo": "Prerequisito indicato dal contratto per comprendere e svolgere l’esercizio."
+      }
+    ],
+    "tempo_studio_min": 35,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Esercizio della raccolta d’esame."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 4-6 (rif. p. 2.35)"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "Controllo che l’altezza x₀T abbia unità di trasformata.",
+      "Verifico separatamente passo 2π/T e semi-banda π/T."
+    ]
+  },
+  {
+    "id": "es-derivatore-processo-gaussiano",
+    "titolo": "Derivatore gaussiano: spettro d’uscita e densità marginale",
+    "area": 3,
+    "tipo": "tipo_esercizio",
+    "gruppo": "A",
+    "worker": "W6",
+    "sapere": "Il derivatore ideale H(jω)=jω trasforma lo spettro unilaterale d’ingresso G₀ in G_y(ω)=ω²G₀ nella banda 0≤ω≤ωₘ. Per media nulla, σ²=G₀ωₘ³/3 e l’uscita resta gaussiana.",
+    "saper_fare": [
+      "Moltiplicare lo spettro d’ingresso per |H|²=ω².",
+      "Integrare lo spettro unilaterale per ottenere la varianza.",
+      "Scrivere la densità gaussiana con media zero e varianza calcolata."
+    ],
+    "prerequisiti": [
+      {
+        "id": "processi-gaussiani-funzione-errore",
+        "forza": "hard",
+        "motivo": "Prerequisito indicato dal contratto per comprendere e svolgere l’esercizio."
+      },
+      {
+        "id": "sistemi-lineari-funzione-trasferimento",
+        "forza": "hard",
+        "motivo": "Prerequisito indicato dal contratto per comprendere e svolgere l’esercizio."
+      }
+    ],
+    "tempo_studio_min": 35,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Esercizio della raccolta d’esame."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 p. 23 (rif. p. 5.29)"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "Uso |H|², non H, per trasformare la densità di potenza.",
+      "Integro sulla semiasse positiva secondo la convenzione unilaterale canonica."
+    ]
+  },
+  {
+    "id": "es-pam-bipolare",
+    "titolo": "PAM bipolare: media nulla e spettro sinc quadrato",
+    "area": 3,
+    "tipo": "tipo_esercizio",
+    "gruppo": "A",
+    "worker": "W6",
+    "sapere": "Per simboli bipolari indipendenti equiprobabili E[aₙ]=0 ed E[aₙ²]=1. Con impulsi rettangolari unitari di durata T, le righe da media scompaiono e G_s=(T/π)sinc²(ωT/2) nella convenzione unilaterale stabilita in NOTAZIONE.md.",
+    "saper_fare": [
+      "Ricavare media, varianza e correlazioni del codice bipolare.",
+      "Calcolare G(ω) dell’impulso rettangolare e formare |G|².",
+      "Disegnare la densità con massimo in zero e nulli a f=k/T."
+    ],
+    "prerequisiti": [
+      {
+        "id": "dim-pam-due-spettri",
+        "forza": "hard",
+        "motivo": "Prerequisito indicato dal contratto per comprendere e svolgere l’esercizio."
+      }
+    ],
+    "tempo_studio_min": 35,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Esercizio della raccolta d’esame."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 24-25 (rif. p. 5.43)"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "Applico la densità unilaterale decisa in NOTAZIONE.md, senza fattore 1/(2πT).",
+      "Controllo che la sinc al quadrato sia non negativa."
+    ]
+  },
+  {
+    "id": "es-pam-ami",
+    "titolo": "PAM AMI: correlazione a un simbolo e nulli completi",
+    "area": 3,
+    "tipo": "tipo_esercizio",
+    "gruppo": "A",
+    "worker": "W6",
+    "sapere": "Per AMI con bit equiprobabili C₀=1/2, C₁=−1/4 e Cₖ=0 per k≥2. Con duty cycle 0,5, lo spettro unilaterale è (T/4π)sinc²(ωT/4)sin²(ωT/2), nullo a ogni f=k/T.",
+    "saper_fare": [
+      "Ricavare C₀ e C₁ dal codice AMI.",
+      "Usare 1/2−1/2 cos(ωT)=sin²(ωT/2).",
+      "Trovare gli zeri di entrambi i fattori ed elencare ogni multiplo k/T."
+    ],
+    "prerequisiti": [
+      {
+        "id": "dim-pam-due-spettri",
+        "forza": "hard",
+        "motivo": "Prerequisito indicato dal contratto per comprendere e svolgere l’esercizio."
+      }
+    ],
+    "tempo_studio_min": 35,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Esercizio della raccolta d’esame."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 26-27 (rif. p. 5.45)"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "Uso tutti i k interi nella griglia f=k/T.",
+      "Distinguo gli zeri del codice da quelli dell’impulso di durata T/2."
+    ]
+  }
+]

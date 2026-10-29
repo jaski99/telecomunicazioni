@@ -1,0 +1,235 @@
+{
+  "id": "es-derivatore-processo-gaussiano",
+  "perche_ti_serve": "Serve per l’esercizio E7, gruppo A della mappa. Collega il calcolo allo schema di area 3 — derivatore e processo gaussiano senza attribuire punteggi non documentati.",
+  "scenario": "Un derivatore ideale ha H(jω)=jω, quindi moltiplica lo spettro di potenza per |H|²=ω². Un filtro lineare applicato a un processo gaussiano produce ancora un processo gaussiano; media zero e varianza si ottengono integrando la densità secondo la convenzione unilaterale indicata negli appunti. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
+  "definizione_esame": {
+    "definizione": "Area 3 — derivatore e processo gaussiano: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
+    "scopo": "Per G₀=2 e ωm=3 rad/s, ottenere Gᵧ(ω)=ω²G₀, integrare la densità unilaterale e scrivere la gaussiana con varianza 18.",
+    "esempio": "Assumendo la convenzione unilaterale decisa in NOTAZIONE.md §5.2, con G₀=2 e ωm=3 rad/s calcola la varianza e scrivi la densità di y(t)."
+  },
+  "spiegazione": "### Spettro all’uscita\nIl derivatore moltiplica ciascuna componente sinusoidale per jω. Per gli spettri di potenza conta il modulo quadro: |jω|²=ω². Pertanto l’uscita non ha spettro piatto: cresce quadraticamente fino al limite ωm e si annulla fuori banda.\n\n### Potenza e densità\nCon la convenzione unilaterale decisa in NOTAZIONE.md §5.2, la potenza è l’integrale da zero a ωm. L’integrale di G₀ω² produce G₀ωm³/3, che coincide con la varianza dato il valor medio nullo. Poiché l’uscita è gaussiana, la densità del primo ordine è determinata da media e varianza.\n\n### Precisazione della convenzione\nIl fattore numerico dipende dalla definizione bilaterale o unilaterale dello spettro. La convenzione è quella unilaterale decisa da W3 in NOTAZIONE.md §5.2. La lettura dell’immagine di file1 p. 23 conferma inoltre il fattore ω² all’uscita del derivatore.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Dichiara le ipotesi del modello; per le densità spettrali applica la convenzione unilaterale fissata in NOTAZIONE.md §5.2. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $G_y(\\omega)=\\omega^2G_0,\\qquad \\sigma_y^2=\\int_0^{\\omega_m}\\omega^2G_0\\,d\\omega=\\frac{G_0\\omega_m^3}{3}$.",
+  "analogia": {
+    "testo": "Il derivatore pesa di più le variazioni veloci: nello spettro ogni frequenza viene amplificata in potenza secondo il quadrato di ω.",
+    "limite": "Un derivatore ideale amplifica senza limite le alte frequenze; il modello richiede banda limitata e la densità unilaterale scelta in NOTAZIONE.md."
+  },
+  "worked_example": {
+    "titolo": "Esempio guidato E7",
+    "problema": "Assumendo la convenzione unilaterale decisa in NOTAZIONE.md §5.2, con G₀=2 e ωm=3 rad/s calcola la varianza e scrivi la densità di y(t).",
+    "passi": [
+      "La risposta in frequenza del derivatore è H(jω)=jω.",
+      "Per il filtraggio di processi, Gᵧ(ω)=|H(jω)|²Gₓ(ω)=ω²G₀ entro la banda e zero oltre.",
+      "Con A2, integra sulla sola semiasse positiva: σ²=∫₀^ωm ω²G₀dω.",
+      "Integra: σ²=G₀ωm³/3=2·27/3=18.",
+      "Il derivatore elimina la componente costante; l’ingresso e l’uscita hanno media nulla.",
+      "Essendo y gaussiano, pᵧ(y)=1/√(2πσ²) exp(−y²/(2σ²))=1/√(36π) exp(−y²/36)."
+    ],
+    "soluzione": "La convenzione unilaterale in pulsazione è la scelta canonica del sito (NOTAZIONE.md §5.2); con densità bilaterale i fattori di normalizzazione cambiano. La lettura di file1 p. 23 mostra il fattore ω², non G₀ costante all’uscita.",
+    "perche_funziona": "La risposta in potenza del derivatore è |jω|²=ω²; l’integrale unilaterale fornisce la varianza e la linearità preserva la gaussianità del processo."
+  },
+  "completion_problem": {
+    "titolo": "Ricava σ² e la densità per G₀=3, ωₘ=2",
+    "testo": "Applica il derivatore e trova la densità d’uscita usando la convenzione unilaterale decisa in NOTAZIONE.md.",
+    "passi_mancanti": [
+      "Scrivi G_y=|H|²G₀.",
+      "Integra da zero a ωₘ.",
+      "Sostituisci la varianza nella densità gaussiana."
+    ],
+    "soluzione": "G_y(ω)=3ω² per 0≤ω≤2. σ²=∫₀²3ω²dω=8. Quindi p_y(y)=1/√(16π) exp(−y²/16), a media zero."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Derivatore con G₀=3 e ωₘ=2 rad/s",
+    "testo": "Ricava G_y, la varianza e la densità marginale gaussiana dell’uscita.",
+    "suggerimento": "Uso |H|², non H, per trasformare la densità di potenza.",
+    "soluzione_attesa": "G_y(ω)=3ω² per 0≤ω≤2 e zero oltre. σ²=3·2³/3=8. Con media zero, p_y(y)=1/√(16π) exp(−y²/16)."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Moltiplicare G₀ per |H| invece che |H|².",
+      "perche_sbagliato": "Le densità di potenza sono filtrate con il modulo quadro."
+    },
+    {
+      "errore": "Integrare anche la semiasse negativa nella convenzione unilaterale.",
+      "perche_sbagliato": "La definizione adottata integra da zero a ωₘ."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Con G₀=2 e ωm=3 rad/s, qual è la varianza dopo il derivatore?",
+        "risposta": "σ²=G₀ωm³/3=2·27/3=18; l’uscita ha media zero e resta gaussiana."
+      },
+      {
+        "domanda": "Qual è il passaggio chiave?",
+        "risposta": "Per il filtraggio di processi, Gᵧ(ω)=|H(jω)|²Gₓ(ω)=ω²G₀ entro la banda e zero oltre."
+      },
+      {
+        "domanda": "Quale fattore moltiplica lo spettro d’ingresso attraverso H(jω)=jω?",
+        "risposta": "Il modulo quadro è |jω|²=ω²: quindi Gᵧ(ω)=ω²G₀ entro la banda e zero fuori."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega perché la derivazione moltiplica la densità per ω² e come l’integrazione dà la varianza dell’uscita."
+  },
+  "riepilogo": "H=jω → Gᵧ=ω²G₀ → integra la densità (convenzione dichiarata) → ottieni la varianza → scrivi la gaussiana a media zero.",
+  "flashcard": [
+    {
+      "fronte": "Qual è il risultato centrale?",
+      "retro": "La relazione di riferimento è $G_y(\\omega)=\\omega^2G_0\\ (0\\leq\\omega\\leq\\omega_m),\\qquad \\sigma_y^2=\\frac{G_0\\omega_m^3}{3}$. Dichiara sempre le ipotesi e le unità."
+    },
+    {
+      "fronte": "Come si calcola la varianza del processo derivato?",
+      "retro": "Per G₀=2 e ωm=3, σ²=∫₀³2ω²dω=18; la densità è pᵧ(y)=exp(−y²/36)/√(36π)."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "Moltiplico G₀ per |H(jω)|²=ω² e pongo lo spettro nullo oltre ωm=3 rad/s.",
+      "Integro da zero a ωm con la convenzione unilaterale e verifico σ²=18."
+    ],
+    "so_dire": [
+      "Giustifico la varianza G₀ωm³/3 e ricordo che il derivatore ideale amplifica le alte frequenze."
+    ]
+  },
+  "figure": [
+    {
+      "id": "derivatore-uscita",
+      "tipo": "grafico",
+      "titolo": "Spettro di potenza dopo derivazione",
+      "descrizione": "La densità unilaterale cresce come ω² fino a ωm e poi è nulla.",
+      "asse_x": {
+        "etichetta": "ω/ωₘ",
+        "min": 0,
+        "max": 1.4
+      },
+      "asse_y": {
+        "etichetta": "Ampiezza normalizzata",
+        "min": 0,
+        "max": 1
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.05,
+              0.0025000000000000005
+            ],
+            [
+              0.1,
+              0.010000000000000002
+            ],
+            [
+              0.15,
+              0.0225
+            ],
+            [
+              0.2,
+              0.04000000000000001
+            ],
+            [
+              0.25,
+              0.0625
+            ],
+            [
+              0.3,
+              0.09
+            ],
+            [
+              0.35,
+              0.12249999999999998
+            ],
+            [
+              0.4,
+              0.16000000000000003
+            ],
+            [
+              0.45,
+              0.2025
+            ],
+            [
+              0.5,
+              0.25
+            ],
+            [
+              0.55,
+              0.30250000000000005
+            ],
+            [
+              0.6,
+              0.36
+            ],
+            [
+              0.65,
+              0.42250000000000004
+            ],
+            [
+              0.7,
+              0.48999999999999994
+            ],
+            [
+              0.75,
+              0.5625
+            ],
+            [
+              0.8,
+              0.6400000000000001
+            ],
+            [
+              0.85,
+              0.7224999999999999
+            ],
+            [
+              0.9,
+              0.81
+            ],
+            [
+              0.95,
+              0.9025
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              1.05,
+              0
+            ],
+            [
+              1.1,
+              0
+            ],
+            [
+              1.15,
+              0
+            ],
+            [
+              1.2,
+              0
+            ],
+            [
+              1.25,
+              0
+            ],
+            [
+              1.3,
+              0
+            ],
+            [
+              1.35,
+              0
+            ],
+            [
+              1.4,
+              0
+            ]
+          ],
+          "etichetta": "Gᵧ(ω)/(G₀ωₘ²)"
+        }
+      ],
+      "annotazioni": []
+    }
+  ]
+}

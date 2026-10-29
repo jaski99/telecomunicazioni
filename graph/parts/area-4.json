@@ -1,0 +1,147 @@
+[
+  {
+    "id": "dim-conversione-ad",
+    "titolo": "Campionamento, quantizzazione e codifica",
+    "area": 4,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W4",
+    "sapere": "Ricostruire le operazioni e le ipotesi della trasformazione di un’onda analogica in parole PCM.",
+    "saper_fare": [
+      "Determinare la frequenza di campionamento, il numero di bit e la velocità prodotta."
+    ],
+    "prerequisiti": [
+      {
+        "id": "conversione-ad-quantizzazione-pcm",
+        "forza": "hard",
+        "motivo": "I livelli e le parole PCM sono le grandezze usate nella dimostrazione A/D."
+      }
+    ],
+    "tempo_studio_min": 50,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "T7 tratta i tre stadi A/D."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "pp. 7-9 del PDF"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 32-34; riferimento studente 7.4"
+      }
+    ],
+    "risorse": []
+  },
+  {
+    "id": "dim-conversione-da",
+    "titolo": "Decodifica e ricostruzione analogica",
+    "area": 4,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W4",
+    "sapere": "Collegare decodifica, spettro del PAM, filtro di ricostruzione ed errore di quantizzazione.",
+    "saper_fare": [
+      "Isolare la replica centrale e discutere l’equalizzazione nella banda utile."
+    ],
+    "prerequisiti": [
+      {
+        "id": "dim-conversione-ad",
+        "forza": "hard",
+        "motivo": "La decodifica ricostruisce i livelli quantizzati generati nella conversione A/D."
+      }
+    ],
+    "tempo_studio_min": 50,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "T8 tratta il percorso D/A."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "pp. 10-11 del PDF"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 35-36; riferimento studente 7.8"
+      }
+    ],
+    "risorse": []
+  },
+  {
+    "id": "conversione-ad-quantizzazione-pcm",
+    "titolo": "Conversione A/D, quantizzazione e PCM",
+    "area": 4,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W4",
+    "sapere": "Distinguere discretizzazione temporale, livelli di quantizzazione e rappresentazione binaria PCM.",
+    "saper_fare": [
+      "Dimensionare il numero di livelli e calcolare la velocità del flusso PCM."
+    ],
+    "prerequisiti": [
+      {
+        "id": "dim-teorema-campionamento",
+        "forza": "hard",
+        "motivo": "Il teorema determina quando i campioni conservano l’informazione di un segnale limitato in banda."
+      }
+    ],
+    "tempo_studio_min": 60,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "T7 e T8 richiedono la conversione e il recupero dei campioni."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "pp. 7-11 del PDF"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "pp. 32-36 del PDF"
+      }
+    ],
+    "risorse": []
+  },
+  {
+    "id": "collegamento-numerico-tdm-pcm",
+    "titolo": "Collegamento numerico TDM e PCM",
+    "area": 4,
+    "tipo": "concetto",
+    "gruppo": "B",
+    "worker": "W4",
+    "sapere": "Descrivere la formazione di trame TDM da sorgenti PCM e il ruolo dell’interferenza intersimbolica.",
+    "saper_fare": [
+      "Calcolare la velocità utile aggregata distinguendo simboli, bit e overhead."
+    ],
+    "prerequisiti": [
+      {
+        "id": "dim-conversione-ad",
+        "forza": "hard",
+        "motivo": "Il multiplex trasporta le parole generate dalla conversione delle sorgenti."
+      },
+      {
+        "id": "criterio-nyquist-isi",
+        "forza": "hard",
+        "motivo": "La forma d’impulso sul collegamento deve controllare l’interferenza tra simboli."
+      }
+    ],
+    "tempo_studio_min": 60,
+    "priorita": {
+      "livello": "media",
+      "motivazione": "Tema di programma sul multiplex numerico e sui collegamenti."
+    },
+    "fonti": [
+      {
+        "chiave": "RICOSTRUZIONE",
+        "rif": "NON TROVATO"
+      },
+      {
+        "chiave": "PROGRAMMA",
+        "rif": "NON TROVATO"
+      }
+    ],
+    "risorse": []
+  }
+]

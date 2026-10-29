@@ -1,0 +1,90 @@
+{
+  "id": "collegamento-numerico-tdm-pcm",
+  "perche_ti_serve": "Gruppo B: collegamento tra conversione A/D e criterio di Nyquist per la trasmissione numerica.",
+  "scenario": "In un collegamento di telecomunicazioni un segnale di voce o un flusso di dati deve attraversare trasmettitore, canale e ricevitore: Combinare più sorgenti senza confondere i loro campioni.",
+  "definizione_esame": {
+    "definizione": "Il TDM assegna a flussi diversi intervalli temporali distinti su un collegamento condiviso; il PCM fornisce parole binarie ai flussi digitalizzati.",
+    "scopo": "Combinare più sorgenti senza confondere i loro campioni.",
+    "esempio": "Quattro sorgenti con parole di 8 bit per campione possono essere distribuite in quattro slot per trama."
+  },
+  "spiegazione": "### Multiplexare nel tempo\nDopo conversione A/D ogni sorgente produce una successione di parole. Nel multiplatore a divisione di tempo, TDM, una trama contiene slot assegnati alle diverse sorgenti. Se ogni sorgente fornisce un campione a ogni trama e tutte hanno frequenza $f_s$, la frequenza di trama è $f_s$. Con $N$ sorgenti, ciascuna di $b$ bit per campione, il carico utile è $R_{utile}=Nbf_s$. Questo calcolo esclude sincronizzazione, segnalazione e altre informazioni aggiuntive: un sistema reale può quindi richiedere una velocità maggiore.\n\n### Ricezione e sincronizzazione\nIl ricevitore deve individuare l'inizio della trama e conoscere l'associazione fra slot e sorgenti. Il demultiplatore invia ciascuna parola al proprio ramo, poi decodifica e ricostruisce i segnali. Se la sincronizzazione di trama è persa, anche bit ricevuti correttamente possono essere assegnati alla sorgente sbagliata. Uno slot di tempo non è una banda di frequenza riservata: questa è la distinzione essenziale rispetto a FDMA. La definizione di una specifica struttura di trama dipende dallo standard; per quella del corso la struttura precisa è NON TROVATO.\n\n### Simboli e interferenza\nSul mezzo fisico i bit devono essere rappresentati da impulsi o simboli e il ricevitore campiona la forma d'onda ricevuta. Un canale con memoria può produrre interferenza intersimbolica: impulsi vicini contribuiscono allo stesso istante di decisione. La condizione di Nyquist riguarda l'assenza di tali contributi agli istanti di campionamento, non va confusa con il criterio antialias della conversione A/D. In assenza di codifica aggiuntiva, se ogni simbolo trasporta $k$ bit, la frequenza simbolica è $R_s=R_b/k$. La banda richiesta dipende anche dalla forma degli impulsi e dal canale, non solo dal numero di sorgenti.",
+  "analogia": {
+    "testo": "Un giro di tavolo in cui ciascuno parla nel proprio turno.",
+    "limite": "Gli slot sono rigorosamente temporizzati e contengono bit, non frasi."
+  },
+  "worked_example": {
+    "titolo": "Esempio svolto",
+    "problema": "Quattro sorgenti PCM, ognuna a 8 kcampioni/s con 8 bit a campione: trovare il carico utile totale.",
+    "passi": [
+      "Ogni sorgente produce $8\\cdot8000=64000$ bit/s.",
+      "Ci sono quattro parole per ogni trama.",
+      "Il carico utile è $4\\cdot64000=256000$ bit/s."
+    ],
+    "soluzione": "256 kbit/s, escluso ogni overhead.",
+    "perche_funziona": "Gli slot sono distinti e il carico totale è la somma dei quattro flussi."
+  },
+  "completion_problem": {
+    "titolo": "Completa il ragionamento",
+    "testo": "Con due sorgenti da 10 kbit/s, trovare il carico utile.",
+    "passi_mancanti": [
+      "Sommare i due flussi."
+    ],
+    "soluzione": "20 kbit/s senza overhead."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Prova da solo",
+    "testo": "Con tre sorgenti da 4 kcampioni/s e 8 bit a campione, calcolare il carico utile.",
+    "suggerimento": "Moltiplicare sorgenti, campioni e bit.",
+    "soluzione_attesa": "96 kbit/s."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Trascurare la sincronizzazione di trama.",
+      "perche_sbagliato": "Il ricevitore può assegnare parole a sorgenti errate."
+    },
+    {
+      "errore": "Identificare sempre bit rate e symbol rate.",
+      "perche_sbagliato": "Con più bit per simbolo le due grandezze differiscono."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "A che cosa serve il demultiplatore?",
+        "risposta": "Assegna gli slot ricevuti alle sorgenti appropriate."
+      },
+      {
+        "domanda": "Che cosa esclude il carico utile?",
+        "risposta": "Overhead di sincronizzazione e altri bit aggiuntivi."
+      },
+      {
+        "domanda": "Che cosa è l’interferenza intersimbolica?",
+        "risposta": "Il contributo di simboli vicini a un istante di decisione."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega con parole tue: Combinare più sorgenti senza confondere i loro campioni."
+  },
+  "riepilogo": "TDM separa i flussi nel tempo; PCM produce parole. La trama richiede sincronizzazione e il collegamento deve gestire l’interferenza intersimbolica.",
+  "flashcard": [
+    {
+      "fronte": "A che cosa serve il demultiplatore?",
+      "retro": "Assegna gli slot ricevuti alle sorgenti appropriate."
+    },
+    {
+      "fronte": "Che cosa esclude il carico utile?",
+      "retro": "Overhead di sincronizzazione e altri bit aggiuntivi."
+    },
+    {
+      "fronte": "Che cosa è l’interferenza intersimbolica?",
+      "retro": "Il contributo di simboli vicini a un istante di decisione."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "Quattro sorgenti PCM, ognuna a 8 kcampioni/s con 8 bit a campione: trovare il carico utile totale."
+    ],
+    "so_dire": [
+      "Il TDM assegna a flussi diversi intervalli temporali distinti su un collegamento condiviso; il PCM fornisce parole binarie ai flussi digitalizzati."
+    ]
+  }
+}

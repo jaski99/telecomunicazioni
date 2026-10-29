@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Banca quiz",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "versione",
+    "descrizione",
+    "elementi"
+  ],
+  "properties": {
+    "versione": {
+      "const": 1
+    },
+    "descrizione": {
+      "type": "string",
+      "minLength": 1
+    },
+    "elementi": {
+      "type": "array",
+      "minItems": 60,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "tipo",
+              "area",
+              "nodo_id",
+              "temi",
+              "domanda",
+              "spiegazione",
+              "opzioni",
+              "corretta"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^q-[a-z0-9]+(-[a-z0-9]+)*$"
+              },
+              "tipo": {
+                "const": "scelta_multipla"
+              },
+              "area": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 7
+              },
+              "nodo_id": {
+                "type": "string"
+              },
+              "temi": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "domanda": {
+                "type": "string",
+                "minLength": 1
+              },
+              "spiegazione": {
+                "type": "string",
+                "minLength": 40
+              },
+              "opzioni": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 4,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "id",
+                    "testo"
+                  ],
+                  "properties": {
+                    "id": {
+                      "enum": [
+                        "a",
+                        "b",
+                        "c",
+                        "d"
+                      ]
+                    },
+                    "testo": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "perche_sbagliata": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              },
+              "corretta": {
+                "enum": [
+                  "a",
+                  "b",
+                  "c",
+                  "d"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "tipo",
+              "area",
+              "nodo_id",
+              "temi",
+              "domanda",
+              "spiegazione",
+              "affermazione",
+              "risposta_corretta"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^q-[a-z0-9]+(-[a-z0-9]+)*$"
+              },
+              "tipo": {
+                "const": "vero_falso"
+              },
+              "area": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 7
+              },
+              "nodo_id": {
+                "type": "string"
+              },
+              "temi": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "domanda": {
+                "type": "string",
+                "minLength": 1
+              },
+              "spiegazione": {
+                "type": "string",
+                "minLength": 40
+              },
+              "affermazione": {
+                "type": "string",
+                "minLength": 1
+              },
+              "risposta_corretta": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "tipo",
+              "area",
+              "nodo_id",
+              "temi",
+              "domanda",
+              "spiegazione",
+              "testo_con_buchi",
+              "soluzioni"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^q-[a-z0-9]+(-[a-z0-9]+)*$"
+              },
+              "tipo": {
+                "const": "completamento_formula"
+              },
+              "area": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 7
+              },
+              "nodo_id": {
+                "type": "string"
+              },
+              "temi": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "domanda": {
+                "type": "string",
+                "minLength": 1
+              },
+              "spiegazione": {
+                "type": "string",
+                "minLength": 40
+              },
+              "testo_con_buchi": {
+                "type": "string",
+                "minLength": 1
+              },
+              "soluzioni": {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

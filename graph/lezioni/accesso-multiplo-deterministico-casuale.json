@@ -1,0 +1,91 @@
+{
+  "id": "accesso-multiplo-deterministico-casuale",
+  "perche_ti_serve": "T15–T17 e M30–M31, gruppo A: confronta ripartizione delle risorse e contesa nel modello dichiarato.",
+  "scenario": "Più stazioni devono usare lo stesso collegamento: possono ricevere turni prestabiliti oppure tentare l’accesso in modo casuale.",
+  "definizione_esame": {
+    "definizione": "L’accesso multiplo stabilisce come più utenti condividono un mezzo o una capacità comune.",
+    "scopo": "Confrontare coordinamento, collisioni, tempi di attesa e frazione utile delle risorse.",
+    "esempio": "TDMA assegna intervalli temporali; FDMA assegna bande di frequenza."
+  },
+  "spiegazione": "### Accesso deterministico\nIn TDMA gli utenti occupano intervalli temporali distinti all'interno di una trama ciclica; in FDMA usano contemporaneamente sottobande separate. Nel confronto ideale con $M$ utenti, capacità aggregata $R$ e pacchetti di $b$ bit, ogni utente TDMA trasmette alla velocità istantanea $R$ durante il proprio slot $b/R$, mentre ogni utente FDMA dispone di $R/M$ e impiega $Mb/R$. In media, se le assegnazioni sono piene e prive di overhead, entrambi hanno capacità per utente $R/M$: la velocità istantanea durante lo slot non è uguale alla velocità della sottobanda. Sincronizzazione, bande di guardia, code o overhead possono cambiare il confronto.\n\n### Accesso casuale\nIn ALOHA puro una stazione tenta senza attendere uno slot comune e una sovrapposizione distrugge le trame; se i tentativi totali sono Poisson, il periodo vulnerabile è due durate di trama. Nello slotted l'inizio è sincronizzato e il periodo vulnerabile si riduce a uno slot. CSMA ascolta il mezzo prima di trasmettere: la propagazione impedisce però una conoscenza istantanea dello stato remoto, perciò possono ancora avvenire collisioni. Nel modello CSMA/CD si interrompe una trasmissione quando la collisione è rilevata; il comportamento effettivo dipende dal mezzo e dalla modalità operativa.\n\n### Ritardi e massimi: interpretazione\nCon le ipotesi di T17 — pacchetti generati a inizio ciclo, posizioni dei turni TDMA equiprobabili, nessuna coda aggiuntiva — $D_{TD}=T(M+1)/(2M)$ mentre $D_{FD}=T$. Per $M>1$ il primo è più piccolo in questo specifico modello; con un arrivo asincrono o con code non si può generalizzare senza un nuovo calcolo. I massimi ideali di ALOHA puro e slotted sono rispettivamente $1/(2e)$ e $1/e$: il secondo massimo è doppio del primo, non il throughput a qualunque valore di traffico.",
+  "analogia": {
+    "testo": "Una sala può assegnare turni o frequenze diverse, oppure lasciare che chi vuole tenti di parlare.",
+    "limite": "La radio o il cavo hanno propagazione, collisioni e capacità quantitative che la metafora non rappresenta."
+  },
+  "worked_example": {
+    "titolo": "Capacità media",
+    "problema": "Quattro utenti dividono idealmente 8 Mbit/s in TDMA o FDMA senza overhead.",
+    "passi": [
+      "In FDMA ciascuno riceve $8/4=2$ Mbit/s.",
+      "In TDMA ciascuno usa 8 Mbit/s per un quarto del tempo.",
+      "La media temporale TDMA è $8\\cdot(1/4)=2$ Mbit/s."
+    ],
+    "soluzione": "La capacità media per utente è 2 Mbit/s in entrambi i casi; nello slot TDMA la velocità istantanea è 8 Mbit/s.",
+    "perche_funziona": "La ripartizione è confrontata a parità di risorse e senza costi aggiuntivi."
+  },
+  "completion_problem": {
+    "titolo": "Finestra vulnerabile",
+    "testo": "Considera pacchetti di durata $\\tau$ in ALOHA.",
+    "passi_mancanti": [
+      "Indica le finestre di vulnerabilità nel puro e nello slotted."
+    ],
+    "soluzione": "Due durate nel puro, una nello slotted sincronizzato."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Confronto a un dato carico",
+    "testo": "È vero che per ogni G lo slotted dà esattamente il doppio del puro?",
+    "suggerimento": "Confronta $Ge^{-G}$ con $Ge^{-2G}$.",
+    "soluzione_attesa": "No: il rapporto per $G>0$ è $e^G$; sono doppi i massimi, ottenuti a carichi diversi."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Dire che TDMA è sempre più veloce di FDMA.",
+      "perche_sbagliato": "Il risultato sul ritardo dipende dal modello di arrivo, servizio e risorse."
+    },
+    {
+      "errore": "Dimenticare le collisioni anche con ascolto del canale.",
+      "perche_sbagliato": "La propagazione ritarda l’informazione sullo stato del mezzo."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Quali risorse divide TDMA?",
+        "risposta": "Assegna slot nel tempo; FDMA assegna sottobande di frequenza."
+      },
+      {
+        "domanda": "Che cosa ascolta CSMA?",
+        "risposta": "Il mezzo prima della trasmissione, senza informazione remota istantanea."
+      },
+      {
+        "domanda": "Quale massimo è doppio?",
+        "risposta": "Il massimo slotted $1/e$ è il doppio del massimo puro $1/(2e)$."
+      }
+    ],
+    "spiega_con_parole_tue": "Con quattro utenti, confronta la divisione delle risorse in TDMA e FDMA con i tentativi casuali ALOHA; spiega che cosa aggiunge l’ascolto CSMA."
+  },
+  "riepilogo": "TDMA e FDMA ripartiscono risorse; ALOHA e CSMA competono. Ogni confronto richiede capacità, carico e ipotesi.",
+  "flashcard": [
+    {
+      "fronte": "Quali risorse divide TDMA?",
+      "retro": "Assegna slot nel tempo; FDMA assegna sottobande di frequenza."
+    },
+    {
+      "fronte": "Che cosa ascolta CSMA?",
+      "retro": "Il mezzo prima della trasmissione, senza informazione remota istantanea."
+    },
+    {
+      "fronte": "Quale massimo è doppio?",
+      "retro": "Il massimo slotted $1/e$ è il doppio del massimo puro $1/(2e)$."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "So confrontare capacità medie e istantanee.",
+      "So individuare periodi vulnerabili."
+    ],
+    "so_dire": [
+      "So spiegare perché le conclusioni sul ritardo non sono universali."
+    ]
+  }
+}

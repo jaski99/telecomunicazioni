@@ -1,0 +1,788 @@
+{
+  "id": "criterio-nyquist-isi",
+  "perche_ti_serve": "Risponde ai temi di quiz M25 (banda di Nyquist) e M26 (annullare l'interferenza intersimbolica) ed è la teoria dell'esercizio E4 con i tre casi di banda: è il lato «ricezione dei simboli» della stessa figura di T1.",
+  "scenario": "Sul collegamento numerico della telefonata i simboli viaggiano come impulsi sagomati: se all'istante di lettura di un simbolo gli impulsi dei vicini non valgono zero, ogni decisione è inquinata dai vicini. Il criterio di Nyquist è la ricetta spettrale perché quel valore sia esattamente zero.",
+  "definizione_esame": {
+    "definizione": "Condizione necessaria e sufficiente in frequenza perché $x(nT) = x_0 \\ne 0$ per $n = 0$ e $0$ per $n \\ne 0$: $\\sum_{k=-\\infty}^{+\\infty} X\\!\\left(\\omega + k\\frac{2\\pi}{T}\\right) \\equiv x_0 T$ per ogni $\\omega$; la banda minima che la rende possibile è la banda di Nyquist $B_\\omega = \\pi/T$.",
+    "scopo": "Progettare la forma complessiva dell'impulso (trasmissione più canale più ricezione) in modo che agli istanti di simbolo l'interferenza intersimbolica valga zero.",
+    "esempio": "Alla banda minima $B_\\omega = \\pi/T$ l'unica soluzione è lo spettro rettangolare $X(\\omega) = x_0 T$ per $|\\omega| \\le \\pi/T$, cioè $x(t) = x_0 \\operatorname{sinc}(t/T)$ nel tempo (file1 p. 5)."
+  },
+  "spiegazione": "### Dalla richiesta nel tempo alla condizione in frequenza\nLa richiesta è nel dominio dei tempi: l'impulso complessivo deve valere $x_0$ in $0$ e annullarsi in tutti gli altri istanti $nT$ (**annullare l'interferenza intersimbolica**, tema M26). La serie temporale dei suoi campioni ha un solo termine diverso da zero, quindi la sua trasformata è la costante $X_s(\\omega) = x_0$. Uguagliando con la ripetizione periodica dello spettro si ottiene la **condizione necessaria e sufficiente**: $$\\sum_{k} X\\!\\left(\\omega + k\\frac{2\\pi}{T}\\right) \\equiv x_0 T \\qquad \\text{per ogni } \\omega$$ (la relazione segnata con un asterisco in file1 p. 4). Poiché il primo membro è periodico di periodo $2\\pi/T$ e per segnali reali $X(-\\omega) = X^{*}(\\omega)$, basta verificarla su $(0, \\pi/T)$.\n\n### I tre casi di banda\nDetta $B_\\omega$ la banda (in pulsazione, lato positivo) di $X(\\omega)$ e $\\pi/T$ la **banda di Nyquist** (tema M25: è la banda minima per la condizione, non la banda antialiasing di T1, anche se le due sono parenti strette), gli sviluppi distinguono: **(I) $B_\\omega < \\pi/T$**: la condizione non può mai valere, perché ripetendo lo spettro restano intervalli in cui la somma è identicamente zero invece che $x_0 T$. **(II) $B_\\omega = \\pi/T$**: vale se e solo se $X(\\omega) = x_0 T$ costante in banda: spettro rettangolare e, nel tempo, il seno cardinale $x_0 \\frac{\\sin(\\pi t/T)}{\\pi t/T}$, unico e fragile (code lunghe, sensibile agli errori di sincronismo, come si commenta negli sviluppi). **(III) $B_\\omega > \\pi/T$**: vale in infiniti modi; in pratica si sostituiscono le discontinuità del rettangolo con **raccordi continui antisimmetrici** rispetto a $\\pi/T$ (file1 p. 6), fra cui il celebre **coseno rialzato** citato esplicitamente in file3 pp. 33-35: ciò che una replica perde nel raccordo, lo restituisce la replica vicina.\n\n### Come si usa il criterio\nNegli esercizi (E4) il metodo è: disegnare $X(\\omega)$ e le sue repliche traslate di $2\\pi/T$, sommare graficamente nell'intervallo $(0, \\pi/T)$ e controllare che la somma sia la costante $x_0 T$. Se le code che si sovrappongono sono antisimmetriche rispetto al punto $\\pi/T$ e al livello $x_0 T/2$, la somma è costante «a colpo d'occhio». Il prezzo della banda in eccesso si paga volentieri: impulsi che decadono più in fretta e meno sensibilità al sincronismo, in cambio di più banda occupata.",
+  "analogia": {
+    "testo": "È come disporre sedie a distanza T in una sala: il criterio garantisce che quando ti siedi sulla tua sedia (istante di decisione) nessun vicino occupa il tuo posto, anche se fra una sedia e l'altra le persone in piedi si sovrappongono.",
+    "limite": "L'analogia non mostra il ruolo della banda: alla banda minima le «persone» fra le sedie hanno code infinite e basta un piccolo errore di istante per sedersi su qualcun altro."
+  },
+  "worked_example": {
+    "titolo": "Verifica grafica con i numeri",
+    "problema": "Sia $T = 1\\ \\mathrm{ms}$ e $x_0 = 1$. Uno spettro rettangolare $X(\\omega) = T$ per $|\\omega| \\le \\pi/T$ soddisfa il criterio? E uno spettro con banda $B_\\omega = \\pi/(2T)$ (metà)?",
+    "passi": [
+      "Banda di Nyquist: $\\pi/T = \\pi/0{,}001 \\approx 3142\\ \\mathrm{rad/s}$ e la costante richiesta è $x_0 T = 0{,}001$.",
+      "Rettangolare alla banda minima: in $(0, \\pi/T)$ contribuisce solo la replica centrale con valore $T = x_0 T$: somma costante corretta, criterio soddisfatto. Nel tempo è il seno cardinale con zeri in $\\pm T, \\pm 2T, \\dots$",
+      "Banda dimezzata: le repliche si ripetono ogni $2\\pi/T$ e sono larghe $2B_\\omega = \\pi/T$: fra una e l'altra resta un intervallo scoperto largo $\\pi/T$ dove la somma è zero, non $x_0 T$: criterio impossibile (caso I)."
+    ],
+    "soluzione": "Sì per il rettangolare alla banda minima; no in modo strutturale per la banda dimezzata.",
+    "perche_funziona": "Il controllo è puramente geometrico: larghezza dello spettro contro passo delle repliche, e somma costante nel mezzo periodo."
+  },
+  "completion_problem": {
+    "titolo": "Il raccordo antisimmetrico",
+    "testo": "Con banda superiore alla minima, nel raccordo attorno a $\\omega = \\pi/T$ lo spettro scende da $x_0 T$ a $0$. Perché la somma delle repliche resti costante, il raccordo deve essere antisimmetrico rispetto al punto ($\\pi/T$, ____) e la replica vicina fornisce ____.",
+    "passi_mancanti": [
+      "Individuare il livello attorno a cui le due code si compensano",
+      "Dire che cosa succede alla somma punto per punto"
+    ],
+    "soluzione": "Il centro di antisimmetria è il punto $(\\pi/T,\\ x_0 T/2)$: quanto la replica centrale scende sotto $x_0 T/2$ oltre $\\pi/T$, tanto la replica traslata sale simmetricamente, e la somma resta $x_0 T$ in ogni punto. Il coseno rialzato è il raccordo standard con questa proprietà (file3 pp. 33-35)."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Dalla banda al ritmo di simbolo",
+    "testo": "Un canale offre una banda utile $B_\\omega = 2\\pi \\cdot 3000\\ \\mathrm{rad/s}$ (lato positivo). Qual è il massimo ritmo di simbolo $1/T$ senza interferenza intersimbolica e con quale spettro si raggiunge?",
+    "suggerimento": "Alla banda minima vale $B_\\omega = \\pi/T$; risolvi per $1/T$.",
+    "soluzione_attesa": "$1/T = B_\\omega/\\pi = 6000$ simboli al secondo, raggiungibile solo con lo spettro rettangolare (seno cardinale nel tempo). Con raccordi pratici il ritmo a pari banda è minore."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Confondere la banda di Nyquist $\\pi/T$ con la condizione antialiasing di T1 (o con la banda di un filtro)",
+      "perche_sbagliato": "M25 distingue le trappole: qui $\\pi/T$ è la banda minima dell'impulso per annullare l'interferenza intersimbolica agli istanti $nT$; in T1 la stessa quantità è mezza pulsazione di campionamento, ruolo diverso anche se la figura è la stessa."
+    },
+    {
+      "errore": "Credere che con banda maggiore della minima valga ancora solo il rettangolo",
+      "perche_sbagliato": "Il rettangolo è forzato solo a $B_\\omega = \\pi/T$; con banda in eccesso esistono infiniti spettri validi, e sono quelli utili in pratica (raccordi antisimmetrici, coseno rialzato)."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Enuncia la condizione di Nyquist in frequenza in una formula.",
+        "risposta": "$\\sum_k X(\\omega + k\\,2\\pi/T) \\equiv x_0 T$ per ogni $\\omega$: la ripetizione periodica dello spettro deve essere costante."
+      },
+      {
+        "domanda": "Perché con $B_\\omega < \\pi/T$ è impossibile?",
+        "risposta": "Perché le repliche larghe $2B_\\omega$ non coprono l'asse con passo $2\\pi/T$: restano buchi in cui la somma è zero invece di $x_0 T$."
+      },
+      {
+        "domanda": "Qual è lo spettro alla banda minima e il suo segnale nel tempo?",
+        "risposta": "Rettangolare di valore $x_0 T$ per $|\\omega| \\le \\pi/T$; nel tempo $x_0 \\operatorname{sinc}(t/T)$, con zeri in tutti i multipli di $T$ tranne l'origine."
+      },
+      {
+        "domanda": "M26: a che cosa serve il criterio, in tre parole?",
+        "risposta": "Ad annullare l'interferenza intersimbolica agli istanti di decisione."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega con parole tue perché un raccordo antisimmetrico attorno a $(\\pi/T, x_0T/2)$ mantiene costante la somma delle repliche."
+  },
+  "riepilogo": "Interferenza intersimbolica azzerata se e solo se la ripetizione periodica dello spettro è la costante $x_0 T$. Banda minore di $\\pi/T$: impossibile; uguale: solo il rettangolo (seno cardinale); maggiore: infiniti spettri, in pratica raccordi antisimmetrici e coseno rialzato.",
+  "flashcard": [
+    {
+      "fronte": "Banda di Nyquist?",
+      "retro": "$B_\\omega = \\pi/T$: banda minima per azzerare l'interferenza intersimbolica (M25)."
+    },
+    {
+      "fronte": "Condizione in frequenza?",
+      "retro": "$\\sum_k X(\\omega + k2\\pi/T) \\equiv x_0 T$."
+    },
+    {
+      "fronte": "Caso banda > minima?",
+      "retro": "Infiniti spettri: raccordi antisimmetrici, coseno rialzato."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "verificare graficamente il criterio sommando le repliche in $(0, \\pi/T)$",
+      "discutere i tre casi di banda con i disegni"
+    ],
+    "so_dire": [
+      "la differenza fra banda di Nyquist e condizione antialiasing",
+      "perché alla banda minima la soluzione è unica"
+    ]
+  },
+  "figure": [
+    {
+      "id": "impulso-di-nyquist-banda-minima",
+      "tipo": "grafico",
+      "titolo": "Impulso di Nyquist alla banda minima",
+      "descrizione": "Alla banda minima di Nyquist l'impulso che annulla l'interferenza intersimbolica è il seno cardinale: vale uno nell'origine e zero in tutti gli altri istanti di simbolo, multipli interi di T. Ogni simbolo viene letto esattamente dove gli altri non danno contributo.",
+      "asse_x": {
+        "etichetta": "t (in unità di T)",
+        "min": -4,
+        "max": 4,
+        "tacche": [
+          {
+            "valore": -2,
+            "etichetta": "−2T"
+          },
+          {
+            "valore": -1,
+            "etichetta": "−T"
+          },
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 1,
+            "etichetta": "T"
+          },
+          {
+            "valore": 2,
+            "etichetta": "2T"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "x(t)/x₀",
+        "min": -0.35,
+        "max": 1.1
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -4.0,
+              -0.0
+            ],
+            [
+              -3.95,
+              -0.0126
+            ],
+            [
+              -3.9,
+              -0.0252
+            ],
+            [
+              -3.85,
+              -0.0375
+            ],
+            [
+              -3.8,
+              -0.0492
+            ],
+            [
+              -3.75,
+              -0.06
+            ],
+            [
+              -3.7,
+              -0.0696
+            ],
+            [
+              -3.65,
+              -0.0777
+            ],
+            [
+              -3.6,
+              -0.0841
+            ],
+            [
+              -3.55,
+              -0.0886
+            ],
+            [
+              -3.5,
+              -0.0909
+            ],
+            [
+              -3.45,
+              -0.0911
+            ],
+            [
+              -3.4,
+              -0.089
+            ],
+            [
+              -3.35,
+              -0.0847
+            ],
+            [
+              -3.3,
+              -0.078
+            ],
+            [
+              -3.25,
+              -0.0693
+            ],
+            [
+              -3.2,
+              -0.0585
+            ],
+            [
+              -3.15,
+              -0.0459
+            ],
+            [
+              -3.1,
+              -0.0317
+            ],
+            [
+              -3.05,
+              -0.0163
+            ],
+            [
+              -3.0,
+              0.0
+            ],
+            [
+              -2.95,
+              0.0169
+            ],
+            [
+              -2.9,
+              0.0339
+            ],
+            [
+              -2.85,
+              0.0507
+            ],
+            [
+              -2.8,
+              0.0668
+            ],
+            [
+              -2.75,
+              0.0818
+            ],
+            [
+              -2.7,
+              0.0954
+            ],
+            [
+              -2.65,
+              0.107
+            ],
+            [
+              -2.6,
+              0.1164
+            ],
+            [
+              -2.55,
+              0.1233
+            ],
+            [
+              -2.5,
+              0.1273
+            ],
+            [
+              -2.45,
+              0.1283
+            ],
+            [
+              -2.4,
+              0.1261
+            ],
+            [
+              -2.35,
+              0.1207
+            ],
+            [
+              -2.3,
+              0.112
+            ],
+            [
+              -2.25,
+              0.1
+            ],
+            [
+              -2.2,
+              0.085
+            ],
+            [
+              -2.15,
+              0.0672
+            ],
+            [
+              -2.1,
+              0.0468
+            ],
+            [
+              -2.05,
+              0.0243
+            ],
+            [
+              -2.0,
+              -0.0
+            ],
+            [
+              -1.95,
+              -0.0255
+            ],
+            [
+              -1.9,
+              -0.0518
+            ],
+            [
+              -1.85,
+              -0.0781
+            ],
+            [
+              -1.8,
+              -0.1039
+            ],
+            [
+              -1.75,
+              -0.1286
+            ],
+            [
+              -1.7,
+              -0.1515
+            ],
+            [
+              -1.65,
+              -0.1719
+            ],
+            [
+              -1.6,
+              -0.1892
+            ],
+            [
+              -1.55,
+              -0.2028
+            ],
+            [
+              -1.5,
+              -0.2122
+            ],
+            [
+              -1.45,
+              -0.2168
+            ],
+            [
+              -1.4,
+              -0.2162
+            ],
+            [
+              -1.35,
+              -0.2101
+            ],
+            [
+              -1.3,
+              -0.1981
+            ],
+            [
+              -1.25,
+              -0.1801
+            ],
+            [
+              -1.2,
+              -0.1559
+            ],
+            [
+              -1.15,
+              -0.1257
+            ],
+            [
+              -1.1,
+              -0.0894
+            ],
+            [
+              -1.05,
+              -0.0474
+            ],
+            [
+              -1.0,
+              0.0
+            ],
+            [
+              -0.95,
+              0.0524
+            ],
+            [
+              -0.9,
+              0.1093
+            ],
+            [
+              -0.85,
+              0.17
+            ],
+            [
+              -0.8,
+              0.2339
+            ],
+            [
+              -0.75,
+              0.3001
+            ],
+            [
+              -0.7,
+              0.3679
+            ],
+            [
+              -0.65,
+              0.4363
+            ],
+            [
+              -0.6,
+              0.5046
+            ],
+            [
+              -0.55,
+              0.5716
+            ],
+            [
+              -0.5,
+              0.6366
+            ],
+            [
+              -0.45,
+              0.6986
+            ],
+            [
+              -0.4,
+              0.7568
+            ],
+            [
+              -0.35,
+              0.8103
+            ],
+            [
+              -0.3,
+              0.8584
+            ],
+            [
+              -0.25,
+              0.9003
+            ],
+            [
+              -0.2,
+              0.9355
+            ],
+            [
+              -0.15,
+              0.9634
+            ],
+            [
+              -0.1,
+              0.9836
+            ],
+            [
+              -0.05,
+              0.9959
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.05,
+              0.9959
+            ],
+            [
+              0.1,
+              0.9836
+            ],
+            [
+              0.15,
+              0.9634
+            ],
+            [
+              0.2,
+              0.9355
+            ],
+            [
+              0.25,
+              0.9003
+            ],
+            [
+              0.3,
+              0.8584
+            ],
+            [
+              0.35,
+              0.8103
+            ],
+            [
+              0.4,
+              0.7568
+            ],
+            [
+              0.45,
+              0.6986
+            ],
+            [
+              0.5,
+              0.6366
+            ],
+            [
+              0.55,
+              0.5716
+            ],
+            [
+              0.6,
+              0.5046
+            ],
+            [
+              0.65,
+              0.4363
+            ],
+            [
+              0.7,
+              0.3679
+            ],
+            [
+              0.75,
+              0.3001
+            ],
+            [
+              0.8,
+              0.2339
+            ],
+            [
+              0.85,
+              0.17
+            ],
+            [
+              0.9,
+              0.1093
+            ],
+            [
+              0.95,
+              0.0524
+            ],
+            [
+              1.0,
+              0.0
+            ],
+            [
+              1.05,
+              -0.0474
+            ],
+            [
+              1.1,
+              -0.0894
+            ],
+            [
+              1.15,
+              -0.1257
+            ],
+            [
+              1.2,
+              -0.1559
+            ],
+            [
+              1.25,
+              -0.1801
+            ],
+            [
+              1.3,
+              -0.1981
+            ],
+            [
+              1.35,
+              -0.2101
+            ],
+            [
+              1.4,
+              -0.2162
+            ],
+            [
+              1.45,
+              -0.2168
+            ],
+            [
+              1.5,
+              -0.2122
+            ],
+            [
+              1.55,
+              -0.2028
+            ],
+            [
+              1.6,
+              -0.1892
+            ],
+            [
+              1.65,
+              -0.1719
+            ],
+            [
+              1.7,
+              -0.1515
+            ],
+            [
+              1.75,
+              -0.1286
+            ],
+            [
+              1.8,
+              -0.1039
+            ],
+            [
+              1.85,
+              -0.0781
+            ],
+            [
+              1.9,
+              -0.0518
+            ],
+            [
+              1.95,
+              -0.0255
+            ],
+            [
+              2.0,
+              -0.0
+            ],
+            [
+              2.05,
+              0.0243
+            ],
+            [
+              2.1,
+              0.0468
+            ],
+            [
+              2.15,
+              0.0672
+            ],
+            [
+              2.2,
+              0.085
+            ],
+            [
+              2.25,
+              0.1
+            ],
+            [
+              2.3,
+              0.112
+            ],
+            [
+              2.35,
+              0.1207
+            ],
+            [
+              2.4,
+              0.1261
+            ],
+            [
+              2.45,
+              0.1283
+            ],
+            [
+              2.5,
+              0.1273
+            ],
+            [
+              2.55,
+              0.1233
+            ],
+            [
+              2.6,
+              0.1164
+            ],
+            [
+              2.65,
+              0.107
+            ],
+            [
+              2.7,
+              0.0954
+            ],
+            [
+              2.75,
+              0.0818
+            ],
+            [
+              2.8,
+              0.0668
+            ],
+            [
+              2.85,
+              0.0507
+            ],
+            [
+              2.9,
+              0.0339
+            ],
+            [
+              2.95,
+              0.0169
+            ],
+            [
+              3.0,
+              0.0
+            ],
+            [
+              3.05,
+              -0.0163
+            ],
+            [
+              3.1,
+              -0.0317
+            ],
+            [
+              3.15,
+              -0.0459
+            ],
+            [
+              3.2,
+              -0.0585
+            ],
+            [
+              3.25,
+              -0.0693
+            ],
+            [
+              3.3,
+              -0.078
+            ],
+            [
+              3.35,
+              -0.0847
+            ],
+            [
+              3.4,
+              -0.089
+            ],
+            [
+              3.45,
+              -0.0911
+            ],
+            [
+              3.5,
+              -0.0909
+            ],
+            [
+              3.55,
+              -0.0886
+            ],
+            [
+              3.6,
+              -0.0841
+            ],
+            [
+              3.65,
+              -0.0777
+            ],
+            [
+              3.7,
+              -0.0696
+            ],
+            [
+              3.75,
+              -0.06
+            ],
+            [
+              3.8,
+              -0.0492
+            ],
+            [
+              3.85,
+              -0.0375
+            ],
+            [
+              3.9,
+              -0.0252
+            ],
+            [
+              3.95,
+              -0.0126
+            ],
+            [
+              4.0,
+              -0.0
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

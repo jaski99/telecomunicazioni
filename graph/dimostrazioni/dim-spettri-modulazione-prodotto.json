@@ -1,0 +1,302 @@
+{
+  "id": "dim-spettri-modulazione-prodotto",
+  "titolo": "Ricavare gli spettri di ampiezza e fase di una modulazione a prodotto",
+  "domande_esame": [
+    "T6"
+  ],
+  "enunciato": "Per $s(t)=x(t)\\cos(\\omega_0t)$, la trasformata bilaterale è $S(\\omega)=[X(\\omega-\\omega_0)+X(\\omega+\\omega_0)]/2$. Nella banda positiva, le due bande laterali sono speculari: quella inferiore è ribaltata e la sua fase cambia segno rispetto alla superiore, dove definita.",
+  "ipotesi": [
+    "Il segnale x è reale e limitato a |ω| ≤ ωm, con ω₀ > ωm; la portante ha fase zero.",
+    "Le espressioni della fase si riferiscono ai punti in cui lo spettro non si annulla."
+  ],
+  "notazione": [
+    {
+      "simbolo": "x(t)",
+      "significato": "Segnale reale modulante."
+    },
+    {
+      "simbolo": "X(\\omega)",
+      "significato": "Trasformata bilaterale del messaggio."
+    },
+    {
+      "simbolo": "\\omega_0",
+      "significato": "Pulsazione della portante."
+    },
+    {
+      "simbolo": "\\phi(\\Omega)",
+      "significato": "Argomento di X(Ω), per Ω positiva."
+    }
+  ],
+  "varianti_notazione": [
+    {
+      "canonica": "\\omega",
+      "variante": "m",
+      "fonte": "file3 pp. 18-19"
+    }
+  ],
+  "idea": "Usare la proprietà di traslazione spettrale e la simmetria coniugata del segnale reale.",
+  "passi": [
+    {
+      "n": 1,
+      "testo": "Scrivere l’oscillazione modulata.",
+      "formula": "s(t)=x(t)\\cos(\\omega_0 t)",
+      "perche": "La modulazione a prodotto moltiplica messaggio e portante."
+    },
+    {
+      "n": 2,
+      "testo": "Espandere la portante in esponenziali.",
+      "formula": "\\cos(\\omega_0 t)=\\frac{e^{j\\omega_0 t}+e^{-j\\omega_0 t}}{2}",
+      "perche": "Segue dalla formula di Eulero."
+    },
+    {
+      "n": 3,
+      "testo": "Trasformare i due prodotti.",
+      "formula": "S(\\omega)=\\frac{1}{2}X(\\omega-\\omega_0)+\\frac{1}{2}X(\\omega+\\omega_0)",
+      "perche": "La moltiplicazione per un esponenziale trasla la trasformata."
+    },
+    {
+      "n": 4,
+      "testo": "Valutare la banda laterale superiore positiva.",
+      "formula": "S(\\omega_0+\\Omega)=\\frac{1}{2}X(\\Omega),\\quad 0<\\Omega\\le\\omega_m",
+      "perche": "La replica centrata su meno ω₀ non contribuisce perché le bande sono disgiunte."
+    },
+    {
+      "n": 5,
+      "testo": "Valutare la banda laterale inferiore positiva.",
+      "formula": "S(\\omega_0-\\Omega)=\\frac{1}{2}X(-\\Omega)=\\frac{1}{2}X^*(\\Omega)",
+      "perche": "La realtà di x impone la simmetria coniugata della sua trasformata."
+    },
+    {
+      "n": 6,
+      "testo": "Confrontare ampiezze e fasi delle due bande.",
+      "formula": "|S(\\omega_0\\pm\\Omega)|=\\frac{1}{2}|X(\\Omega)|,\\quad \\arg S(\\omega_0\\pm\\Omega)=\\pm\\phi(\\Omega)",
+      "perche": "Il coniugato mantiene il modulo e cambia il segno dell’argomento, modulo 2π.",
+      "figura": "fase"
+    }
+  ],
+  "formula_finale": "S(\\omega)=\\frac{X(\\omega-\\omega_0)+X(\\omega+\\omega_0)}{2}",
+  "figure": [
+    {
+      "id": "catena",
+      "tipo": "blocchi",
+      "titolo": "Modulatore a prodotto",
+      "descrizione": "Il messaggio moltiplica una portante cosinusoidale per generare un segnale DSB a portante soppressa.",
+      "blocchi": [
+        {
+          "id": "b0",
+          "etichetta": "x(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 0
+        },
+        {
+          "id": "b1",
+          "etichetta": "Prodotto con cos ω₀t",
+          "forma": "rettangolo",
+          "colonna": 1,
+          "riga": 0
+        },
+        {
+          "id": "b2",
+          "etichetta": "s(t)",
+          "forma": "uscita",
+          "colonna": 2,
+          "riga": 0
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "b0",
+          "a": "b1"
+        },
+        {
+          "da": "b1",
+          "a": "b2"
+        }
+      ]
+    },
+    {
+      "id": "ampiezza",
+      "tipo": "grafico",
+      "titolo": "Ampiezza delle bande laterali positive",
+      "descrizione": "Esempio schematico delle bande laterali positiva inferiore e superiore, speculari attorno alla portante, con ampiezza dimezzata rispetto al messaggio.",
+      "asse_x": {
+        "etichetta": "Pulsazione ω",
+        "min": 0,
+        "max": 10,
+        "tacche": [
+          {
+            "valore": 5,
+            "etichetta": "ω₀"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "Modulo indicativo",
+        "min": 0,
+        "max": 1
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "Banda inferiore",
+          "punti": [
+            [
+              3,
+              0.8
+            ],
+            [
+              5,
+              0
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "Banda superiore",
+          "punti": [
+            [
+              5,
+              0
+            ],
+            [
+              7,
+              0.8
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fase",
+      "tipo": "grafico",
+      "titolo": "Fase nelle bande laterali positive",
+      "descrizione": "Esempio schematico di fase negativa nella banda inferiore e positiva nella banda superiore, con ribaltamento attorno alla portante; fase non definita fuori banda.",
+      "asse_x": {
+        "etichetta": "Pulsazione ω",
+        "min": 0,
+        "max": 10,
+        "tacche": [
+          {
+            "valore": 5,
+            "etichetta": "ω₀"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "Fase (radianti)",
+        "min": -1,
+        "max": 1
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "Fase banda inferiore",
+          "punti": [
+            [
+              3,
+              -0.8
+            ],
+            [
+              4,
+              -0.4
+            ],
+            [
+              4.9,
+              -0.04
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "Fase banda superiore",
+          "punti": [
+            [
+              5.1,
+              0.04
+            ],
+            [
+              6,
+              0.4
+            ],
+            [
+              7,
+              0.8
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "a_voce": "Per una modulazione a prodotto moltiplico il messaggio reale per una portante cosinusoidale. Espandendo il coseno in esponenziali, la trasformata dell’uscita diventa la somma di due repliche della trasformata del messaggio, centrate sulle pulsazioni positiva e negativa della portante e moltiplicate per un mezzo. Considero la banda positiva: nella banda superiore la pulsazione del messaggio è positiva, mentre nella banda inferiore è negativa. Per un messaggio reale le componenti a frequenza opposta sono coniugate. Quindi le ampiezze delle bande laterali sono speculari intorno alla portante e le fasi hanno segno opposto, dove sono definite. Il fattore un mezzo è quello della trasformata bilaterale; bisogna distinguere questa convenzione dalla rappresentazione unilaterale di ampiezza adottata nelle figure delle fonti.",
+  "errori_frequenti": [
+    {
+      "errore": "Dimenticare il fattore un mezzo.",
+      "perche_sbagliato": "Il coseno è somma di due esponenziali ciascuno con coefficiente un mezzo.",
+      "correzione": "Usare due repliche bilaterali pesate un mezzo."
+    },
+    {
+      "errore": "Copiare la fase senza cambiare segno nella banda inferiore.",
+      "perche_sbagliato": "La componente negativa del messaggio è coniugata.",
+      "correzione": "Ribaltare la banda e cambiare segno alla fase."
+    }
+  ],
+  "versione_compatta": [
+    "Scrivere il coseno come somma di esponenziali.",
+    "Traslare X a ±ω₀ con fattore 1/2.",
+    "La banda inferiore è coniugata della superiore.",
+    "La fase è definita solo dove il modulo non è zero."
+  ],
+  "a_buchi": {
+    "testo": "La moltiplicazione per il coseno crea due repliche centrate in ___1___ e ___2___. Il peso è ___3___ perché il coseno è somma di due ___4___.",
+    "soluzioni": {
+      "1": [
+        "ω₀",
+        "+ω₀"
+      ],
+      "2": [
+        "−ω₀",
+        "-ω₀"
+      ],
+      "3": [
+        "1/2"
+      ],
+      "4": [
+        "esponenziali"
+      ]
+    }
+  },
+  "richiamo_attivo": [
+    {
+      "domanda": "Perché la fase della banda inferiore cambia segno?",
+      "risposta": "La trasformata di un segnale reale è a simmetria coniugata."
+    },
+    {
+      "domanda": "Che cosa succede nei punti in cui il modulo si annulla?",
+      "risposta": "La fase non è definita."
+    },
+    {
+      "domanda": "Come si ricava la replica centrata a −ω₀?",
+      "risposta": "Traslando la trasformata del messaggio e moltiplicandola per un mezzo."
+    }
+  ],
+  "fonti": [
+    {
+      "chiave": "FILE3",
+      "rif": "pp. 18-19 del PDF"
+    },
+    {
+      "chiave": "FILE1",
+      "rif": "pp. 28-31 del PDF; p. 6.12 è un riferimento dello studente"
+    }
+  ],
+  "verifica": {
+    "stato": "da_verificare",
+    "data": "2026-10-29",
+    "note": "Le immagini file3 pp. 18-19 e file1 p. 28 rappresentano gli spettri mediante ampiezza e fase; qui si usa la trasformata bilaterale canonica.",
+    "punti_aperti": [
+      "Confrontare la conversione tra ampiezza e fase unilaterali delle fonti e la trasformata bilaterale impiegata nella scheda.",
+      "La corrispondenza del riferimento p. 6.12 con il libro è NON TROVATO."
+    ]
+  }
+}

@@ -1,0 +1,320 @@
+{
+  "id": "dim-quadripoli-passa-basso-equivalente",
+  "titolo": "Quadripoli lineari ed equivalente passa-basso",
+  "domande_esame": [
+    "T11"
+  ],
+  "enunciato": "Un segnale passa-banda $s(t)=\\operatorname{Re}\\{i(t)e^{j\\omega_0t}\\}$ applicato a un quadripolo lineare tempo-invariante ha inviluppo di uscita con trasformata $I_r(\\omega)=H_0(\\omega)I(\\omega)$, dove $H_0(\\omega)=H(\\omega+\\omega_0)$ per $\\omega+\\omega_0\\geq 0$ e $H_0(\\omega)=0$ altrove. In generale $H_0(-\\omega)\\ne H_0^*(\\omega)$: l’equivalente non rappresenta necessariamente una rete reale fisicamente realizzabile.",
+  "ipotesi": [
+    "Il quadripolo è lineare, tempo-invariante e reale, con funzione di trasferimento H nota.",
+    "Il segnale reale è passa-banda, con bande positive e negative disgiunte e portante ω₀; l’inviluppo ha supporto entro la semibanda Bω/2.",
+    "Il modello equivalente è definito rispetto alla banda positiva: la sua risposta non è necessariamente quella di una rete reale fisicamente realizzabile."
+  ],
+  "notazione": [
+    {
+      "simbolo": "s(t)",
+      "significato": "Segnale passa-banda di ingresso."
+    },
+    {
+      "simbolo": "i(t)",
+      "significato": "Inviluppo complesso di ingresso, con trasformata I."
+    },
+    {
+      "simbolo": "i_r(t)",
+      "significato": "Inviluppo complesso di uscita, con trasformata Iᵣ."
+    },
+    {
+      "simbolo": "H_0(\\omega)",
+      "significato": "Funzione di trasferimento equivalente passa-basso."
+    },
+    {
+      "simbolo": "\\omega_0",
+      "significato": "Pulsazione della portante."
+    }
+  ],
+  "varianti_notazione": [
+    {
+      "canonica": "\\omega",
+      "variante": "m",
+      "fonte": "file3, notazione tipografica"
+    }
+  ],
+  "idea": "Traslare lo spettro positivo alla banda base e confrontare gli spettri degli inviluppi.",
+  "passi": [
+    {
+      "n": 1,
+      "testo": "Rappresentare ingresso e uscita con gli inviluppi.",
+      "formula": "s(t)=\\operatorname{Re}\\{i(t)e^{j\\omega_0 t}\\},\\quad s_r(t)=\\operatorname{Re}\\{i_r(t)e^{j\\omega_0 t}\\}",
+      "perche": "La separazione tra le bande permette la rappresentazione tramite inviluppi complessi.",
+      "figura": "quadripoli"
+    },
+    {
+      "n": 2,
+      "testo": "Applicare la funzione di trasferimento del quadripolo.",
+      "formula": "S_r(\\omega)=H(\\omega)S(\\omega)",
+      "perche": "La trasformata della risposta LTI è il prodotto della trasformata d’ingresso per H."
+    },
+    {
+      "n": 3,
+      "testo": "Riportare la banda positiva in banda base.",
+      "formula": "I(\\omega)=2S(\\omega+\\omega_0),\\quad I_r(\\omega)=2S_r(\\omega+\\omega_0),\\quad |\\omega|\\leq B_\\omega/2",
+      "perche": "Il fattore due compensa il fattore un mezzo introdotto prendendo la parte reale; le due bande sono disgiunte.",
+      "figura": "traslazione-spettrale"
+    },
+    {
+      "n": 4,
+      "testo": "Sostituire la relazione del quadripolo.",
+      "formula": "I_r(\\omega)=2H(\\omega+\\omega_0)S(\\omega+\\omega_0)",
+      "perche": "Si applica il prodotto ingresso-uscita alla pulsazione traslata nella banda utile."
+    },
+    {
+      "n": 5,
+      "testo": "Confrontare con lo spettro dell’inviluppo di ingresso.",
+      "formula": "I_r(\\omega)=H(\\omega+\\omega_0)I(\\omega)",
+      "perche": "Il fattore due e lo spettro traslato formano I nella banda dell’inviluppo."
+    },
+    {
+      "n": 6,
+      "testo": "Definire l’equivalente con la convenzione delle fonti.",
+      "formula": "H_0(\\omega)=\\begin{cases}H(\\omega+\\omega_0),&\\omega+\\omega_0\\geq 0,\\\\0,&\\text{altrove}.\\end{cases}",
+      "perche": "Nella banda utile la pulsazione traslata è positiva; fuori dalla banda il prodotto per I è nullo."
+    },
+    {
+      "n": 7,
+      "testo": "Applicare l’equivalente agli inviluppi.",
+      "formula": "I_r(\\omega)=H_0(\\omega)I(\\omega)",
+      "perche": "La definizione coincide con il risultato precedente sul supporto dello spettro I."
+    }
+  ],
+  "formula_finale": "I_r(\\omega)=H_0(\\omega)I(\\omega),\\quad H_0(\\omega)=H(\\omega+\\omega_0)\\quad(\\omega+\\omega_0\\geq0)",
+  "figure": [
+    {
+      "id": "quadripoli",
+      "tipo": "blocchi",
+      "titolo": "Quadripolo ed equivalente",
+      "descrizione": "In alto il quadripolo agisce sul segnale passa-banda; in basso il modello equivalente agisce sugli inviluppi complessi.",
+      "blocchi": [
+        {
+          "id": "ingresso-pb",
+          "etichetta": "s(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 0
+        },
+        {
+          "id": "quadripolo",
+          "etichetta": "H(ω)",
+          "forma": "rettangolo",
+          "colonna": 1,
+          "riga": 0
+        },
+        {
+          "id": "uscita-pb",
+          "etichetta": "sᵣ(t)",
+          "forma": "uscita",
+          "colonna": 2,
+          "riga": 0
+        },
+        {
+          "id": "ingresso-i",
+          "etichetta": "i(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 2
+        },
+        {
+          "id": "equivalente",
+          "etichetta": "H₀(ω)",
+          "forma": "rettangolo",
+          "colonna": 1,
+          "riga": 2
+        },
+        {
+          "id": "uscita-i",
+          "etichetta": "iᵣ(t)",
+          "forma": "uscita",
+          "colonna": 2,
+          "riga": 2
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "ingresso-pb",
+          "a": "quadripolo"
+        },
+        {
+          "da": "quadripolo",
+          "a": "uscita-pb"
+        },
+        {
+          "da": "ingresso-i",
+          "a": "equivalente"
+        },
+        {
+          "da": "equivalente",
+          "a": "uscita-i"
+        }
+      ]
+    },
+    {
+      "id": "traslazione-spettrale",
+      "tipo": "grafico",
+      "titolo": "Traslazione della banda positiva",
+      "descrizione": "Esempio schematico di una banda positiva centrata su ω₀ e della stessa banda traslata attorno a zero per rappresentare l’equivalente passa-basso.",
+      "asse_x": {
+        "etichetta": "Pulsazione ω (unità arbitrarie)",
+        "min": -3,
+        "max": 8,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 5,
+            "etichetta": "ω₀"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "Modulo indicativo",
+        "min": 0,
+        "max": 1.2
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "Equivalente passa-basso",
+          "punti": [
+            [
+              -2,
+              0
+            ],
+            [
+              -1,
+              0.4
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0.7
+            ],
+            [
+              2,
+              0
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "Banda positiva",
+          "punti": [
+            [
+              3,
+              0
+            ],
+            [
+              4,
+              0.4
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              6,
+              0.7
+            ],
+            [
+              7,
+              0
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "a_voce": "Rappresento l’oscillazione modulata come la parte reale dell’inviluppo complesso moltiplicato per la portante. Un quadripolo lineare tempo-invariante moltiplica lo spettro di ingresso per la sua funzione di trasferimento. Poiché le bande positiva e negativa sono separate, l’inviluppo si ottiene traslando la banda positiva verso zero e moltiplicandola per due. Applico la stessa operazione all’uscita, sostituisco il prodotto per H e confronto con lo spettro dell’inviluppo di ingresso. Ottengo che l’inviluppo di uscita è quello di ingresso moltiplicato per H traslata della portante: questa è la funzione equivalente passa-basso. È un modello matematico: non necessariamente soddisfa la simmetria coniugata richiesta a un sistema con risposta impulsiva reale. La sola simmetria non basta a garantire anche causalità e stabilità.",
+  "errori_frequenti": [
+    {
+      "errore": "Dimenticare il fattore due nella relazione tra spettro positivo e inviluppo.",
+      "perche_sbagliato": "La parte reale divide il contributo dell’inviluppo tra le due bande.",
+      "correzione": "Usare I(ω) = 2S(ω + ω₀) sul supporto utile."
+    },
+    {
+      "errore": "Assumere che l’equivalente sia sempre una rete fisica reale.",
+      "perche_sbagliato": "In generale H₀ non ha simmetria coniugata e può non soddisfare altri vincoli fisici.",
+      "correzione": "Distinguere modello complesso e realizzabilità fisica."
+    },
+    {
+      "errore": "Traslare la banda nella direzione opposta.",
+      "perche_sbagliato": "La pulsazione in H è quella originale, che si ottiene sommando ω₀ alla pulsazione di banda base.",
+      "correzione": "Scrivere H(ω + ω₀)."
+    }
+  ],
+  "versione_compatta": [
+    "Scrivere ingresso e uscita mediante inviluppi complessi.",
+    "Traslare la banda positiva: I(ω) = 2S(ω + ω₀).",
+    "Sostituire Sᵣ = HS e definire H₀(ω) = H(ω + ω₀).",
+    "Concludere Iᵣ = H₀I e discutere la simmetria coniugata."
+  ],
+  "a_buchi": {
+    "testo": "L’inviluppo si ricava dalla banda ___1___ traslata e moltiplicata per ___2___. La funzione equivalente è H₀(ω) = H(___3___). Il prodotto per H è lecito perché il sistema è ___4___.",
+    "soluzioni": {
+      "1": [
+        "positiva"
+      ],
+      "2": [
+        "2",
+        "due"
+      ],
+      "3": [
+        "ω + ω₀",
+        "ω+ω₀"
+      ],
+      "4": [
+        "lineare tempo-invariante",
+        "LTI"
+      ]
+    }
+  },
+  "richiamo_attivo": [
+    {
+      "domanda": "Perché compare il fattore due?",
+      "risposta": "La parte reale divide lo spettro nelle bande positiva e negativa."
+    },
+    {
+      "domanda": "Come si ottiene H₀ nella banda utile?",
+      "risposta": "Si valuta H alla pulsazione ω + ω₀."
+    },
+    {
+      "domanda": "H₀ è sempre trasferimento di una rete reale?",
+      "risposta": "No: può mancare la simmetria coniugata necessaria."
+    }
+  ],
+  "collegamenti": [
+    "segnali-passa-banda-inviluppo-complesso",
+    "sistemi-lineari-funzione-trasferimento"
+  ],
+  "fonti": [
+    {
+      "chiave": "FILE3",
+      "rif": "pp. 50-51 del PDF (numerazione stampata 43-44)"
+    },
+    {
+      "chiave": "FILE1",
+      "rif": "pp. 42-44; riferimento p. 10.9 dello studente, non verificato nel libro"
+    }
+  ],
+  "verifica": {
+    "stato": "verificata_file1_file3",
+    "data": "2026-10-29",
+    "note": "Passaggi confrontati sulle immagini; file3 usa H₀ per la funzione equivalente. L’enunciato è riformulato, non una trascrizione del testo del docente.",
+    "punti_aperti": [
+      "Confronto con il libro e verifica della realizzabilità fisica completa: NON TROVATO."
+    ]
+  }
+}

@@ -1,0 +1,239 @@
+{
+  "id": "dim-pm-fm-trasformazione",
+  "titolo": "Trasformazione tra PM e FM",
+  "domande_esame": [
+    "T9"
+  ],
+  "enunciato": "Un modulatore PM preceduto da un integratore realizza una FM; un modulatore FM preceduto da un derivatore realizza una PM, scegliendo guadagni e condizioni iniziali compatibili.",
+  "ipotesi": [
+    "Modulatori ideali con sensibilità costanti non nulle.",
+    "Il messaggio è derivabile per la catena con derivatore; le condizioni iniziali e la fase costante sono controllate.",
+    "Per la seconda identità della formula finale, la fase iniziale del modulatore FM è $\\theta_0=k_p m(t_0)$."
+  ],
+  "notazione": [
+    {
+      "simbolo": "m(t)",
+      "significato": "Messaggio modulante."
+    },
+    {
+      "simbolo": "k_p",
+      "significato": "Sensibilità di fase del modulatore PM."
+    },
+    {
+      "simbolo": "k_f",
+      "significato": "Sensibilità di frequenza angolare del modulatore FM."
+    },
+    {
+      "simbolo": "\\omega_0",
+      "significato": "Pulsazione della portante."
+    }
+  ],
+  "idea": "Confrontare le fasi istantanee: integrare prima della PM e derivare prima della FM.",
+  "passi": [
+    {
+      "n": 1,
+      "testo": "Definire la fase eccedente della PM.",
+      "formula": "\\theta_{PM}(t)=k_p m(t)",
+      "perche": "È la definizione del modulatore di fase ideale."
+    },
+    {
+      "n": 2,
+      "testo": "Definire la fase eccedente della FM.",
+      "formula": "\\theta_{FM}(t)=k_f\\int_{t_0}^{t}m(\\tau)\\,d\\tau+\\theta_0",
+      "perche": "La deviazione di pulsazione è la derivata temporale della fase eccedente."
+    },
+    {
+      "n": 3,
+      "testo": "Anteporre un integratore alla PM.",
+      "formula": "u(t)=\\frac{k_f}{k_p}\\int_{t_0}^{t}m(\\tau)\\,d\\tau+\\frac{\\theta_0}{k_p}",
+      "perche": "Sostituendo u alla modulante PM si ottiene esattamente la fase FM.",
+      "figura": "pm-verso-fm"
+    },
+    {
+      "n": 4,
+      "testo": "Anteporre un derivatore alla FM.",
+      "formula": "u(t)=\\frac{k_p}{k_f}\\frac{dm(t)}{dt}",
+      "perche": "Integrando la derivata si ottiene la fase PM a meno di una costante iniziale.",
+      "figura": "fm-verso-pm"
+    },
+    {
+      "n": 5,
+      "testo": "Regolare la fase iniziale della catena FM.",
+      "formula": "\\theta_0=k_p m(t_0)",
+      "perche": "Questa scelta compensa il termine al limite inferiore dell’integrale."
+    }
+  ],
+  "formula_finale": "\\mathrm{PM}\\{\\frac{k_f}{k_p}\\int_{t_0}^{t}m(\\tau)\\,d\\tau+\\frac{\\theta_0}{k_p}\\}=\\mathrm{FM}\\{m\\},\\quad \\mathrm{FM}\\{\\frac{k_p}{k_f}m^{\\prime}\\}=\\mathrm{PM}\\{m\\}",
+  "figure": [
+    {
+      "id": "pm-verso-fm",
+      "tipo": "blocchi",
+      "titolo": "FM tramite PM",
+      "descrizione": "Il messaggio attraversa un integratore con guadagno e quindi un modulatore PM.",
+      "blocchi": [
+        {
+          "id": "b0",
+          "etichetta": "Messaggio",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 0
+        },
+        {
+          "id": "b1",
+          "etichetta": "Integratore e guadagno",
+          "forma": "rettangolo",
+          "colonna": 1,
+          "riga": 0
+        },
+        {
+          "id": "b2",
+          "etichetta": "Modulatore PM",
+          "forma": "rettangolo",
+          "colonna": 2,
+          "riga": 0
+        },
+        {
+          "id": "b3",
+          "etichetta": "Uscita FM",
+          "forma": "uscita",
+          "colonna": 3,
+          "riga": 0
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "b0",
+          "a": "b1"
+        },
+        {
+          "da": "b1",
+          "a": "b2"
+        },
+        {
+          "da": "b2",
+          "a": "b3"
+        }
+      ]
+    },
+    {
+      "id": "fm-verso-pm",
+      "tipo": "blocchi",
+      "titolo": "PM tramite FM",
+      "descrizione": "Il messaggio attraversa un derivatore con guadagno e quindi un modulatore FM.",
+      "blocchi": [
+        {
+          "id": "b0",
+          "etichetta": "Messaggio",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 0
+        },
+        {
+          "id": "b1",
+          "etichetta": "Derivatore e guadagno",
+          "forma": "rettangolo",
+          "colonna": 1,
+          "riga": 0
+        },
+        {
+          "id": "b2",
+          "etichetta": "Modulatore FM",
+          "forma": "rettangolo",
+          "colonna": 2,
+          "riga": 0
+        },
+        {
+          "id": "b3",
+          "etichetta": "Uscita PM",
+          "forma": "uscita",
+          "colonna": 3,
+          "riga": 0
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "b0",
+          "a": "b1"
+        },
+        {
+          "da": "b1",
+          "a": "b2"
+        },
+        {
+          "da": "b2",
+          "a": "b3"
+        }
+      ]
+    }
+  ],
+  "a_voce": "La fase eccedente della PM è proporzionale al messaggio applicato. In FM invece è proporzionale al suo integrale, perché la deviazione di pulsazione è la derivata della fase. Se voglio ottenere FM con un modulatore PM, devo quindi prima integrare il messaggio e adattare il guadagno. Se invece voglio ottenere PM con un modulatore FM, devo derivare il messaggio e adattare il guadagno: l’integratore interno del modulatore recupera il messaggio. In entrambi i casi bisogna controllare la costante di fase iniziale. La derivazione richiede un messaggio sufficientemente regolare. Questa è una ricostruzione standard, non una dimostrazione verificata sul testo del docente.",
+  "errori_frequenti": [
+    {
+      "errore": "Invertire integratore e derivatore.",
+      "perche_sbagliato": "La fase FM dipende già da un integrale.",
+      "correzione": "Integratore prima di PM, derivatore prima di FM."
+    },
+    {
+      "errore": "Trascurare la fase iniziale.",
+      "perche_sbagliato": "L’integrale definito introduce il valore iniziale del messaggio.",
+      "correzione": "Compensare la costante di fase."
+    }
+  ],
+  "versione_compatta": [
+    "PM: fase proporzionale al messaggio.",
+    "FM: fase proporzionale all’integrale del messaggio.",
+    "Integratore → PM realizza FM.",
+    "Derivatore → FM realizza PM, con fase iniziale corretta."
+  ],
+  "a_buchi": {
+    "testo": "Per ottenere FM si antepone un ___1___ alla PM; per ottenere PM si antepone un ___2___ alla FM. Il secondo passaggio funziona perché l’integrale della derivata restituisce il messaggio a meno di ___3___.",
+    "soluzioni": {
+      "1": [
+        "integratore"
+      ],
+      "2": [
+        "derivatore"
+      ],
+      "3": [
+        "una costante",
+        "una costante iniziale"
+      ]
+    }
+  },
+  "richiamo_attivo": [
+    {
+      "domanda": "Quale operatore precede la PM per ottenere FM?",
+      "risposta": "Un integratore, con guadagno opportuno."
+    },
+    {
+      "domanda": "Quale operatore precede la FM per ottenere PM?",
+      "risposta": "Un derivatore, con guadagno opportuno."
+    },
+    {
+      "domanda": "Che cosa accade alla fase iniziale?",
+      "risposta": "Va scelta per compensare la costante di integrazione."
+    }
+  ],
+  "collegamenti": [
+    "modulazioni-angolo-pm-fm"
+  ],
+  "fonti": [
+    {
+      "chiave": "RICOSTRUZIONE",
+      "rif": "NON TROVATO"
+    },
+    {
+      "chiave": "FILE2",
+      "rif": "pp. 7-8, secondo R3; documento non allegato"
+    }
+  ],
+  "verifica": {
+    "stato": "ricostruzione_non_del_prof",
+    "data": "2026-10-29",
+    "note": "A11: dimostrazione assente in file1 e file3 secondo R3. A14: le croci CROP 7/8 sono errate secondo il piano; non usarle come chiave.",
+    "punti_aperti": [
+      "Confronto con testo e lucidi del docente: NON TROVATO.",
+      "File2 non allegato: verifica diretta delle croci NON TROVATO."
+    ]
+  }
+}

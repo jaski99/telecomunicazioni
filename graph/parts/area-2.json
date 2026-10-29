@@ -1,0 +1,200 @@
+[
+  {
+    "id": "sistemi-lineari-funzione-trasferimento",
+    "titolo": "Sistemi lineari: funzione di trasferimento e non distorsione",
+    "area": 2,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W3",
+    "sapere": "Devi saper caratterizzare una rete lineare permanente nel dominio delle pulsazioni con la funzione di trasferimento, leggerne spettro di ampiezza e di fase e riconoscere le condizioni di trasmissione senza distorsione di ampiezza e di fase.",
+    "saper_fare": [
+      "so ricavare l'uscita in frequenza come prodotto fra funzione di trasferimento e trasformata dell'ingresso",
+      "so riconoscere dal grafico di ampiezza e fase se una rete distorce in ampiezza, in fase o in entrambe",
+      "so calcolare funzione di trasferimento, ampiezza e fase di una semplice rete del primo ordine"
+    ],
+    "prerequisiti": [
+      {
+        "id": "trasformata-fourier",
+        "forza": "hard",
+        "motivo": "La funzione di trasferimento è definita come rapporto fra trasformate di uscita e ingresso."
+      }
+    ],
+    "tempo_studio_min": 60,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "È prerequisito diretto della dimostrazione T4 e degli sviluppi su reti e filtri dell'area 2."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 13-14 (pp. 3.11-3.12) e pp. 17-18 (p. 3.29), rif. dello studente"
+      },
+      {
+        "chiave": "FILE3",
+        "rif": "file3 pp. 39-40"
+      }
+    ],
+    "risorse": [
+      {
+        "titolo": "Video-lezioni Signals and Systems (MIT OpenCourseWare)",
+        "url": "https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/video_galleries/video-lectures/",
+        "verificato": true
+      },
+      {
+        "titolo": "Dispense di Teoria dei segnali (Università di Siena)",
+        "url": "https://www3.diism.unisi.it/~giambene/fondamenti/dispense/dispense_tds.pdf",
+        "verificato": true
+      }
+    ],
+    "checklist_ripasso": [
+      "Enunciare le due condizioni di non distorsione",
+      "Disegnare ampiezza e fase di un passa-basso del primo ordine"
+    ]
+  },
+  {
+    "id": "dim-risposta-impulsiva-h",
+    "titolo": "Risposta impulsiva di una rete lineare e legame con la funzione di trasferimento",
+    "area": 2,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W3",
+    "sapere": "Devi saper definire la risposta impulsiva come limite della risposta all'impulso rettangolare di intensità unitaria, ricavare la convoluzione per un ingresso generico e dimostrare che risposta impulsiva e funzione di trasferimento sono legate dalla trasformata di Fourier, con i relativi schemi del quadripolo.",
+    "saper_fare": [
+      "so riscrivere la dimostrazione T4 a schermo vuoto con schemi, convoluzione e passaggio al limite in frequenza",
+      "so spiegare perché per una rete causale la risposta impulsiva è uguale a zero per tempi negativi",
+      "so passare dalla risposta impulsiva alla funzione di trasferimento e viceversa con i fattori giusti"
+    ],
+    "prerequisiti": [
+      {
+        "id": "sistemi-lineari-funzione-trasferimento",
+        "forza": "hard",
+        "motivo": "Serve la definizione di funzione di trasferimento come rapporto fra le trasformate."
+      },
+      {
+        "id": "dim-impulso-dirac-trasformata",
+        "forza": "hard",
+        "motivo": "Serve il risultato che la trasformata dell'impulso ausiliario tende a uno quando la durata tende a zero."
+      }
+    ],
+    "tempo_studio_min": 70,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "È la dimostrazione chiesta dalla prova di teoria T4, con schemi richiesti esplicitamente; il punteggio di T4 è NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "file3 pp. 5-6"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 17-18 (p. 3.29, rif. dello studente)"
+      }
+    ],
+    "risorse": [
+      {
+        "titolo": "Video-lezioni Signals and Systems (MIT OpenCourseWare)",
+        "url": "https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/video_galleries/video-lectures/",
+        "verificato": true
+      }
+    ],
+    "checklist_ripasso": [
+      "Disegnare i due schemi del quadripolo a memoria",
+      "Completare la ricostruzione a buchi"
+    ]
+  },
+  {
+    "id": "filtri-ricorrenti-trasversali",
+    "titolo": "Filtri a tempo discreto: ricorrente, trasversale e puramente ricorrente",
+    "area": 2,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W3",
+    "sapere": "Devi saper leggere lo schema generale con due linee di ritardo, scrivere l'equazione ingresso-uscita e classificare i tre casi (ricorrente, trasversale, puramente ricorrente) in base a quali coefficienti sono uguali a zero e a come si presenta la funzione di trasferimento fra zeri e poli.",
+    "saper_fare": [
+      "so scrivere l'uscita come somma pesata di ingressi e uscite ritardate leggendo lo schema a blocchi",
+      "so dire per ciascun tipo di filtro se la funzione di trasferimento ha solo zeri, solo poli o entrambi (temi M16, M17, M18)",
+      "so riconoscere che la funzione di trasferimento è periodica in pulsazione con periodo due pi greco diviso il ritardo elementare"
+    ],
+    "prerequisiti": [
+      {
+        "id": "sistemi-lineari-funzione-trasferimento",
+        "forza": "hard",
+        "motivo": "I filtri si descrivono con la funzione di trasferimento e con la proprietà del ritardo in frequenza."
+      }
+    ],
+    "tempo_studio_min": 55,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "È prerequisito diretto della dimostrazione T3 e copre i temi di quiz M16, M17 e M18."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 15-16 (p. 3.20, rif. dello studente)"
+      },
+      {
+        "chiave": "FILE3",
+        "rif": "file3 p. 32 nel sommario di R3 (pagina a stampa 29)"
+      }
+    ],
+    "risorse": [
+      {
+        "titolo": "Signals and Systems (Baraniuk e altri), testo aperto",
+        "url": "https://eng.libretexts.org/Bookshelves/Electrical_Engineering/Signal_Processing_and_Modeling/Signals_and_Systems_(Baraniuk_et_al.)",
+        "verificato": true
+      }
+    ],
+    "checklist_ripasso": [
+      "Classificare i tre filtri a voce in trenta secondi",
+      "Scrivere le tre forme della funzione di trasferimento"
+    ]
+  },
+  {
+    "id": "dim-filtro-trasversale",
+    "titolo": "Filtro trasversale: schema a blocchi e funzione di trasferimento",
+    "area": 2,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W3",
+    "sapere": "Devi saper disegnare lo schema a blocchi del filtro generale e di quello trasversale, ricavare la funzione di trasferimento del filtro ricorrente e ottenere per specializzazione quella del trasversale e del puramente ricorrente, come nella pagina di dimostrazione collegata.",
+    "saper_fare": [
+      "so disegnare linea di ritardo, moltiplicatori e sommatore del filtro trasversale a memoria",
+      "so ricavare la funzione di trasferimento trasformando termine a termine l'equazione ingresso-uscita",
+      "so ottenere i casi particolari annullando i coefficienti giusti e commentare zeri e poli"
+    ],
+    "prerequisiti": [
+      {
+        "id": "filtri-ricorrenti-trasversali",
+        "forza": "hard",
+        "motivo": "Serve lo schema generale con le due linee di ritardo e l'equazione ingresso-uscita."
+      }
+    ],
+    "tempo_studio_min": 60,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "È la dimostrazione chiesta dalla prova di teoria T3, che richiede esplicitamente schema e funzione di trasferimento; il punteggio di T3 è NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "file3 p. 32 nel sommario di R3 (pagina a stampa 29)"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 15-16 (p. 3.20, rif. dello studente)"
+      }
+    ],
+    "risorse": [
+      {
+        "titolo": "Signals and Systems (Baraniuk e altri), testo aperto",
+        "url": "https://eng.libretexts.org/Bookshelves/Electrical_Engineering/Signal_Processing_and_Modeling/Signals_and_Systems_(Baraniuk_et_al.)",
+        "verificato": true
+      }
+    ],
+    "checklist_ripasso": [
+      "Ridisegnare lo schema T3 senza guardare",
+      "Verificare la funzione di trasferimento in continua e la sua periodicità"
+    ]
+  }
+]

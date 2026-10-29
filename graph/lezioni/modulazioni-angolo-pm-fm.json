@@ -1,0 +1,90 @@
+{
+  "id": "modulazioni-angolo-pm-fm",
+  "perche_ti_serve": "Gruppo A: T9 e quiz M7, M8, M32, M33; Carson M12-M14. Punteggi: NON TROVATO.",
+  "scenario": "In un collegamento di telecomunicazioni un segnale di voce o un flusso di dati deve attraversare trasmettitore, canale e ricevitore: Distinguere le dipendenze dal messaggio e collegare fase, frequenza e banda.",
+  "definizione_esame": {
+    "definizione": "In PM la fase eccedente segue il messaggio; in FM la derivata della fase eccedente, cioè la deviazione di pulsazione, segue il messaggio.",
+    "scopo": "Distinguere le dipendenze dal messaggio e collegare fase, frequenza e banda.",
+    "esempio": "Un tono in FM produce una fase eccedente sinusoidale integrata rispetto al messaggio."
+  },
+  "spiegazione": "### Fase e pulsazione istantanea\nUn'oscillazione modulata in angolo può essere scritta $s(t)=A\\cos[\\omega_0t+\\theta(t)]$, con ampiezza $A$ costante nel modello ideale. La pulsazione istantanea è $\\omega_i(t)=\\omega_0+\\theta'(t)$ e la deviazione è $\\Delta\\omega(t)=\\theta'(t)$. In PM si pone $\\theta(t)=k_pm(t)$; in FM si pone $\\theta'(t)=k_fm(t)$, con sensibilità e unità dichiarate. Fase e frequenza sono legate da derivazione e integrazione, ma non sono grandezze intercambiabili.\n\n### Realizzare un tipo mediante l'altro\nUn modulatore PM preceduto da un integratore può realizzare una FM: l'integratore fornisce una fase proporzionale all'integrale del messaggio. Viceversa, un modulatore FM preceduto da un derivatore realizza una PM: l'integrazione interna recupera il messaggio, a meno della costante iniziale. Occorre adattare i guadagni e controllare la fase iniziale. Le croci CROP 7 e 8 della raccolta sono indicate come errate nel piano; file2 non è stato allegato qui, quindi la verifica diretta delle croci è NON TROVATO. La dimostrazione T9 è una ricostruzione non verificata sul testo del docente.\n\n### Banda e regola di Carson\nLa regola di Carson stima la banda occupata come $B_\\omega\\approx 2(\\Delta\\omega_{\\max}+\\omega_m)$, con pulsazioni espresse nelle stesse unità. È una stima pratica, non un supporto spettrale esatto: per una modulante sinusoidale le bande laterali possono proseguire oltre la banda stimata. La deviazione massima si ricava dalla derivata della fase; in PM dipende quindi anche dalla rapidità di variazione del messaggio. Per una FM sinusoidale l'indice $\\beta=\\Delta\\omega_{\\max}/\\omega_m$ misura la deviazione rispetto alla pulsazione del tono.",
+  "analogia": {
+    "testo": "La fase è come la posizione di una lancetta, la frequenza come la sua velocità angolare.",
+    "limite": "Una modulazione reale può avere limiti di banda e rumore che l’analogia non rappresenta."
+  },
+  "worked_example": {
+    "titolo": "Esempio svolto",
+    "problema": "Con deviazione massima 75 kHz e massima frequenza modulante 15 kHz, stimare la banda in hertz.",
+    "passi": [
+      "Usare la versione in hertz della regola di Carson.",
+      "Sommare $75+15=90$ kHz.",
+      "Moltiplicare per due: 180 kHz."
+    ],
+    "soluzione": "Circa 180 kHz.",
+    "perche_funziona": "Deviazione e frequenza modulante sono entrambe espresse in hertz."
+  },
+  "completion_problem": {
+    "titolo": "Completa il ragionamento",
+    "testo": "Per trasformare un modulatore FM in PM, quale operatore si antepone?",
+    "passi_mancanti": [
+      "La fase FM integra il suo ingresso."
+    ],
+    "soluzione": "Un derivatore, con guadagno e fase iniziale opportuni."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Prova da solo",
+    "testo": "Con deviazione 20 kHz e tono 5 kHz trovare indice e banda di Carson.",
+    "suggerimento": "Dividere deviazione per frequenza e applicare Carson.",
+    "soluzione_attesa": "$\\beta=4$ e circa 50 kHz."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Anteporre il derivatore alla PM per ottenere FM.",
+      "perche_sbagliato": "La FM richiede la fase integrale del messaggio."
+    },
+    {
+      "errore": "Trattare la banda di Carson come limite spettrale esatto.",
+      "perche_sbagliato": "È una stima pratica delle componenti significative."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Che cosa segue il messaggio in PM?",
+        "risposta": "La fase eccedente."
+      },
+      {
+        "domanda": "Che cosa segue il messaggio in FM?",
+        "risposta": "La deviazione di pulsazione."
+      },
+      {
+        "domanda": "Come si ricava una FM a partire da un modulatore di fase?",
+        "risposta": "Un integratore con guadagno opportuno."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega con parole tue: Distinguere le dipendenze dal messaggio e collegare fase, frequenza e banda."
+  },
+  "riepilogo": "PM lega fase e messaggio; FM lega deviazione di pulsazione e messaggio. Carson stima la banda, non il supporto esatto.",
+  "flashcard": [
+    {
+      "fronte": "Che cosa segue il messaggio in PM?",
+      "retro": "La fase eccedente."
+    },
+    {
+      "fronte": "Che cosa segue il messaggio in FM?",
+      "retro": "La deviazione di pulsazione."
+    },
+    {
+      "fronte": "Come si ottiene FM usando un modulatore PM?",
+      "retro": "Un integratore con guadagno opportuno."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "Con deviazione massima 75 kHz e massima frequenza modulante 15 kHz, stimare la banda in hertz."
+    ],
+    "so_dire": [
+      "In PM la fase eccedente segue il messaggio; in FM la derivata della fase eccedente, cioè la deviazione di pulsazione, segue il messaggio."
+    ]
+  }
+}

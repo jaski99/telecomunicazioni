@@ -1,0 +1,96 @@
+{
+  "id": "protocolli-linea-hdlc-sliding-window",
+  "perche_ti_serve": "T12, gruppo A: prepara la dimostrazione dell’efficienza senza errori e i diagrammi temporali.",
+  "scenario": "Due nodi devono inviare molte trame su una linea: il mittente non vuole fermarsi dopo ogni trama, ma deve ricevere i riscontri.",
+  "definizione_esame": {
+    "definizione": "Una finestra scorrevole limita a W le trame inviate e non ancora confermate.",
+    "scopo": "Sovrapporre invio e attesa, mantenendo controllo su sequenza e conferme.",
+    "esempio": "Con $W=1$ il mittente aspetta il riscontro prima della trama successiva."
+  },
+  "spiegazione": "### Trame e protocollo di collegamento\nUn protocollo di linea organizza le unità trasmesse in trame, delimita i dati e gestisce regole come sequenza, controllo degli errori e riscontri. HDLC è una famiglia di protocolli orientati ai bit; nel caso classico usa il flag 01111110 e bit stuffing nel contenuto tra flag, inserendo uno zero dopo cinque bit consecutivi uguali a uno. Il destinatario elimina lo zero inserito. Delimitare una trama non equivale a correggere tutti gli errori.\n\n### Finestra e conferme\nNumeriamo le trame. La finestra di ampiezza $W$ limita quante possono essere in attesa di conferma: alla ricezione di un ACK che libera una posizione, il mittente può inviare un'altra trama. Un ACK può avere semantica cumulativa o individuale a seconda del protocollo; non bisogna assumere che ogni variante funzioni allo stesso modo. Con $W=1$ si ottiene il caso stop-and-wait. Per $W>1$ possono essere in viaggio più trame e il tempo di propagazione può essere sfruttato anziché lasciare inattivo il trasmettitore.\n\n### Efficienza e limiti del modello\nCon trame di $F=D+H$ bit, $D$ bit utili e capacità $C$, la durata di trasmissione è $F/C$. Definiamo $TT$ come il tempo dal primo bit di una trama al completamento della relativa conferma: nell'ipotesi simmetrica degli appunti $TT=F/C+I+A/C+I$, con $A$ lunghezza ACK e $I$ ritardo per tratta assunto nel modello. In assenza di errori, con dati sempre disponibili e canale di ritorno indipendente, l'efficienza è $\\eta=(D/F)\\min\\{1,WF/(CTT)\\}$. Se $WF<CTT$ la finestra si esaurisce prima del riscontro; all'uguaglianza i riscontri arrivano appena in tempo. Questa formula non calcola gli effetti di perdite o ritrasmissioni. Il caso particolare $A=H$ è un'ipotesi necessaria per il denominatore semplificato riportato negli appunti, da verificare sui lucidi.",
+  "analogia": {
+    "testo": "Una finestra somiglia al numero di pratiche che puoi affidare prima che torni una ricevuta.",
+    "limite": "Le conferme possono essere cumulative e la comunicazione può subire errori o ritrasmissioni."
+  },
+  "worked_example": {
+    "titolo": "Quando la finestra si esaurisce",
+    "problema": "Le trame durano 1 s, $W=2$ e il primo ACK è completo 3 s dopo l’inizio. Cosa succede?",
+    "passi": [
+      "Invia la prima trama da 0 a 1 s.",
+      "Invia la seconda da 1 a 2 s; entrambe sono ancora senza conferma.",
+      "Attendi da 2 a 3 s; il primo ACK libera una posizione."
+    ],
+    "soluzione": "La terza trama parte a 3 s, dopo un secondo di attesa.",
+    "perche_funziona": "Due posti nella finestra non coprono i 3 s richiesti per ottenere il primo riscontro."
+  },
+  "completion_problem": {
+    "titolo": "Uguaglianza al limite",
+    "testo": "Mantieni trame da 1 s e $TT=3$ s, ma scegli $W=3$.",
+    "passi_mancanti": [
+      "Quanto tempo serve per inviare le tre trame?",
+      "Quando arriva il primo riscontro?"
+    ],
+    "soluzione": "Tre trame occupano 3 s e il riscontro arriva a 3 s: nessun intervallo inattivo nel modello."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Finestra unitaria",
+    "testo": "Che comportamento si ottiene con $W=1$?",
+    "suggerimento": "Conta le trame ammesse senza riscontro.",
+    "soluzione_attesa": "Stop-and-wait: una sola trama in sospeso prima di attendere il relativo ACK."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Considerare l’ACK come dato utile della trama.",
+      "perche_sbagliato": "Il conteggio di efficienza usa $D$, non l’intera trama né i bit di riscontro."
+    },
+    {
+      "errore": "Credere che all’uguaglianza ci sia obbligatoriamente una pausa.",
+      "perche_sbagliato": "In $WF=CTT$ l’ACK arriva esattamente quando la finestra si esaurisce."
+    },
+    {
+      "errore": "Usare la formula ideale in presenza di errori senza modifiche.",
+      "perche_sbagliato": "Ritrasmissioni e perdite introducono tempi e probabilità ulteriori."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Che cosa misura W?",
+        "risposta": "Il massimo numero di trame inviate senza conferma."
+      },
+      {
+        "domanda": "Che cosa misura TT nel modello?",
+        "risposta": "Il tempo dal primo bit della trama al completamento della conferma corrispondente."
+      },
+      {
+        "domanda": "Quando non vi è pausa di finestra?",
+        "risposta": "Quando $WF\\ge CTT$, sotto le altre ipotesi ideali."
+      }
+    ],
+    "spiega_con_parole_tue": "Con $W=2$, trame da un secondo e $TT=3$ s, disegna invii, ACK e attesa; spiega quando la finestra ricomincia a scorrere."
+  },
+  "riepilogo": "La finestra controlla le trame non confermate. L’ACK libera spazio; il confronto tra $WF$ e $CTT$ decide se si attende.",
+  "flashcard": [
+    {
+      "fronte": "Che cosa misura W?",
+      "retro": "Il massimo numero di trame inviate senza conferma."
+    },
+    {
+      "fronte": "Che cosa misura TT nel modello?",
+      "retro": "Il tempo dal primo bit della trama al completamento della conferma corrispondente."
+    },
+    {
+      "fronte": "Quando non vi è pausa di finestra?",
+      "retro": "Quando $WF\\ge CTT$, sotto le altre ipotesi ideali."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "So tracciare invio, attesa e riscontro.",
+      "So confrontare $WF$ con $CTT$."
+    ],
+    "so_dire": [
+      "So definire TT e i limiti della formula."
+    ]
+  }
+}

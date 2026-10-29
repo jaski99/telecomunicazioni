@@ -1,0 +1,620 @@
+{
+  "id": "processi-gaussiani-funzione-errore",
+  "perche_ti_serve": "Gruppo B del programma: è il supporto teorico dell'esercizio E7 sul derivatore con ingresso gaussiano ergodico e prepara i calcoli di probabilità di errore delle aree successive. Nessun punteggio autonomo documentato: NON TROVATO.",
+  "scenario": "Il rumore che si somma alla voce sul collegamento è ben modellato come gaussiano: per decidere se un campione ricevuto è «alto» o «basso» devi stimare quanto spesso il rumore supera la soglia di decisione. È un calcolo di coda gaussiana, cioè di funzione errore.",
+  "definizione_esame": {
+    "definizione": "Un processo è gaussiano se le densità congiunte di ogni ordine dei suoi campioni sono gaussiane multivariate; è allora interamente descritto da valor medio e autocorrelazione. La densità del primo ordine a valor medio $m$ e varianza $\\sigma^2$ è $p_1(y) = \\frac{1}{\\sqrt{2\\pi\\sigma^2}}\\, e^{-(y-m)^2/(2\\sigma^2)}$; le probabilità di coda si esprimono con la funzione degli errori $\\operatorname{erf}(z) = \\frac{2}{\\sqrt{\\pi}} \\int_0^z e^{-u^2} du$ (definizione standard: la corrispondenza puntuale con il testo del docente è NON TROVATO).",
+    "scopo": "Ottenere densità e probabilità di soglia in forma chiusa a partire da spettro di potenza e funzione di trasferimento, senza conoscere le realizzazioni.",
+    "esempio": "In file1 p. 23 il processo in uscita da un derivatore con ingresso gaussiano ergodico resta gaussiano a media zero, con varianza data dall'integrale dello spettro pesato da $\\omega^2$."
+  },
+  "spiegazione": "### Perché il gaussiano è speciale\nPer un processo gaussiano il secondo ordine non è solo «energeticamente completo» ma determina **tutte** le densità: note media e autocorrelazione, ogni densità congiunta è fissata. Inoltre una rete lineare trasforma campioni gaussiani in combinazioni lineari di campioni gaussiani, e le combinazioni lineari di gaussiane sono gaussiane: **un processo gaussiano resta gaussiano attraverso qualunque rete lineare**, cambiano solo media e autocorrelazione in uscita. È la prima frase dello sviluppo del derivatore in file1 p. 23: «il processo $y(t)$ è gaussiano».\n\n### Dal modello spettrale alla densità del primo ordine\nLa ricetta operativa è in tre passi e usa la convenzione A2 senza eccezioni: (1) lo spettro di potenza in uscita è $G_y(\\omega) = |H(\\omega)|^2 G_x(\\omega)$ sulle pulsazioni positive; (2) la potenza, cioè $E[y^2]$, è $\\int_0^{+\\infty} G_y(\\omega)\\, d\\omega$, e se la media in uscita è zero questa è anche la varianza $\\sigma_y^2$; (3) la densità del primo ordine è la campana $$p_1(y) = \\frac{1}{\\sqrt{2\\pi \\sigma_y^2}}\\, e^{-y^2/(2\\sigma_y^2)}.$$ Nell'esempio guida del derivatore con $G_x = G_0$ costante in $(0, \\omega_m)$: $|H|^2 = \\omega^2$, quindi $\\sigma_y^2 = G_0 \\int_0^{\\omega_m} \\omega^2 d\\omega = G_0 \\omega_m^3/3$ e $p_1(y) = \\sqrt{\\frac{3}{2\\pi G_0 \\omega_m^3}}\\, e^{-3y^2/(2 G_0 \\omega_m^3)}$, esattamente come in file1 p. 23: nota che lì lo spettro in uscita è $\\omega^2 G_0$ (il riassunto che talvolta lo riporta costante è un errore di trascrizione segnalato come punto A5, di competenza di W6).\n\n### Probabilità di coda e funzione errore\nPer valor medio zero, la probabilità che il campione stia fra $-a$ e $a$ è l'area della campana in quell'intervallo e si scrive con la **funzione degli errori** standard: $P(|y| \\le a) = \\operatorname{erf}\\!\\left(\\frac{a}{\\sigma\\sqrt{2}}\\right)$; la probabilità di superamento in valore assoluto usa la complementare $\\operatorname{erfc} = 1 - \\operatorname{erf}$. Valori da avere in testa: $P(|y| \\le \\sigma) \\approx 0{,}6827$, $P(|y| \\le 2\\sigma) \\approx 0{,}9545$, $P(|y| > 3\\sigma) \\approx 0{,}0027$. Onestà sulle fonti: il programma ufficiale cita «processi gaussiani e funzione errore», ma la definizione puntuale adottata nel testo del docente è **NON TROVATO** nel materiale verificato; qui si usa la definizione standard dichiarata sopra, ed è elencata come ricostruzione nelle fonti del nodo.",
+  "analogia": {
+    "testo": "Il processo gaussiano è come una popolazione di misure di cui conosci solo media e dispersione: con quei due numeri la forma intera della distribuzione è fissata, comprese le code rare.",
+    "limite": "L'analogia ferma l'attenzione sul primo ordine: la forza vera è che anche le distribuzioni congiunte a più istanti sono fissate dall'autocorrelazione."
+  },
+  "worked_example": {
+    "titolo": "Derivatore con numeri (schema di file1 p. 23)",
+    "problema": "Ingresso gaussiano ergodico, media zero, $G_0 = 3$ in $(0, \\omega_m)$ con $\\omega_m = 2\\ \\mathrm{rad/s}$; rete derivatore. Trovare varianza in uscita e $p_1(0)$.",
+    "passi": [
+      "Spettro in uscita: $G_y(\\omega) = \\omega^2 \\cdot 3$ per $0 \\le \\omega \\le 2$.",
+      "Varianza: $\\sigma_y^2 = 3 \\int_0^2 \\omega^2 d\\omega = 3 \\cdot \\frac{8}{3} = 8$; quindi $\\sigma_y = \\sqrt{8} \\approx 2{,}828$.",
+      "Densità in zero: $p_1(0) = 1/\\sqrt{2\\pi \\cdot 8} = 1/\\sqrt{16\\pi} \\approx 0{,}1410$."
+    ],
+    "soluzione": "$\\sigma_y^2 = 8$ e $p_1(y) = \\frac{1}{\\sqrt{16\\pi}} e^{-y^2/16}$, con massimo $\\approx 0{,}141$ in zero.",
+    "perche_funziona": "Funziona perché la rete è lineare (gaussianità conservata), la media in uscita è zero ($H(0) = 0$ per il derivatore) e la convenzione unilaterale rende la potenza un integrale nudo sulle pulsazioni positive."
+  },
+  "completion_problem": {
+    "titolo": "Probabilità entro una sigma",
+    "testo": "Per il processo dell'esempio, $P(|y| \\le \\sigma_y) = \\operatorname{erf}($____$) \\approx$ ____; la probabilità che $|y|$ superi $2\\sigma_y$ vale circa ____.",
+    "passi_mancanti": [
+      "Sostituire $a = \\sigma$ nella formula con la funzione errore",
+      "Usare i valori notevoli delle code"
+    ],
+    "soluzione": "Con $a = \\sigma_y$: argomento $1/\\sqrt{2}$, e $\\operatorname{erf}(1/\\sqrt{2}) \\approx 0{,}6827$. La coda oltre $2\\sigma$: $1 - 0{,}9545 \\approx 0{,}0455$, circa il $4{,}6\\%$ dei campioni."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Soglia e falsi allarmi",
+    "testo": "Un ricevitore dichiara «segnale alto» quando il campione supera la soglia $s = 3\\sigma$ con $\\sigma = 0{,}5\\ \\mathrm{V}$ e media zero. Quanto vale la soglia in volt e con che probabilità il solo rumore gaussiano la supera in valore assoluto?",
+    "suggerimento": "La probabilità oltre $3\\sigma$ in valore assoluto è uno dei valori notevoli.",
+    "soluzione_attesa": "Soglia $= 1{,}5\\ \\mathrm{V}$; $P(|y| > 3\\sigma) \\approx 0{,}0027$: circa $3$ campioni su mille superano la soglia per il solo rumore, su entrambi i lati."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Usare come $G_y$ lo spettro costante $G_0$ anche dopo un derivatore (equivoco del punto A5)",
+      "perche_sbagliato": "Il derivatore ha $|H(\\omega)|^2 = \\omega^2$, quindi $G_y(\\omega) = \\omega^2 G_0$ in $(0, \\omega_m)$ come in file1 p. 23: dimenticare $\\omega^2$ sbaglia varianza e densità."
+    },
+    {
+      "errore": "Integrare lo spettro unilaterale anche sulle pulsazioni negative «per simmetria»",
+      "perche_sbagliato": "Nella convenzione A2 la potenza è già tutta in $\\omega \\ge 0$: raddoppiare l'integrale raddoppia la varianza e allarga la campana di $\\sqrt{2}$."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Perché attraverso una rete lineare un processo gaussiano resta gaussiano?",
+        "risposta": "Perché l'uscita è combinazione lineare (integrale pesato) di campioni dell'ingresso, e combinazioni lineari di gaussiane sono ancora gaussiane."
+      },
+      {
+        "domanda": "Scrivi la ricetta in tre passi da $G_x$ a $p_1(y)$.",
+        "risposta": "$G_y = |H|^2 G_x$ per $\\omega \\ge 0$; $\\sigma_y^2 = \\int_0^{\\infty} G_y d\\omega$ (media zero); $p_1(y)$ campana con quella varianza."
+      },
+      {
+        "domanda": "Quanto vale circa $P(|y| \\le 2\\sigma)$?",
+        "risposta": "Circa $0{,}9545$: resta fuori circa il $4{,}6\\%$ sulle due code."
+      },
+      {
+        "domanda": "Quale parte di questo nodo è ricostruzione dichiarata?",
+        "risposta": "La definizione della funzione errore: è quella standard; la forma adottata nel testo del docente è NON TROVATO nel materiale verificato."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega con parole tue perché per un gaussiano bastano media e autocorrelazione per rispondere a qualsiasi domanda probabilistica sul processo."
+  },
+  "riepilogo": "Gaussiano: media e autocorrelazione determinano tutto; le reti lineari conservano la gaussianità. Ricetta: spettro in uscita $|H|^2 G$ in convenzione unilaterale, integrazione sulle pulsazioni positive per la varianza, campana del primo ordine, code con $\\operatorname{erf}$ (definizione standard; testo del docente: NON TROVATO).",
+  "flashcard": [
+    {
+      "fronte": "Gaussiano attraverso una rete lineare?",
+      "retro": "Resta gaussiano: cambiano media e autocorrelazione."
+    },
+    {
+      "fronte": "Varianza da $G_y$ unilaterale (media zero)?",
+      "retro": "$\\sigma^2 = \\int_0^{\\infty} G_y(\\omega)\\, d\\omega$."
+    },
+    {
+      "fronte": "$P(|y| \\le \\sigma)$?",
+      "retro": "$\\approx 0{,}6827$, da $\\operatorname{erf}(1/\\sqrt{2})$."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "calcolare la varianza in uscita integrando $|H|^2 G$ in $(0, \\omega_m)$",
+      "leggere una probabilità di coda con i valori notevoli della funzione errore"
+    ],
+    "so_dire": [
+      "perché il secondo ordine basta per i gaussiani",
+      "che la definizione di funzione errore qui usata è standard e dichiarata"
+    ]
+  },
+  "figure": [
+    {
+      "id": "densita-gaussiana",
+      "tipo": "grafico",
+      "titolo": "Densità di probabilità gaussiana del primo ordine",
+      "descrizione": "Densità gaussiana a valor medio zero e varianza uno: campana simmetrica con massimo circa zero virgola quattro in zero e area totale uno. Per un processo gaussiano ergodico la varianza si ricava dallo spettro di potenza e la densità è già completamente determinata.",
+      "asse_x": {
+        "etichetta": "y (unità del segnale)",
+        "min": -4,
+        "max": 4,
+        "tacche": [
+          {
+            "valore": -2,
+            "etichetta": "−2σ"
+          },
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 2,
+            "etichetta": "2σ"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "p₁(y)",
+        "min": 0,
+        "max": 0.45
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -4.0,
+              0.0001
+            ],
+            [
+              -3.9333,
+              0.0002
+            ],
+            [
+              -3.8667,
+              0.0002
+            ],
+            [
+              -3.8,
+              0.0003
+            ],
+            [
+              -3.7333,
+              0.0004
+            ],
+            [
+              -3.6667,
+              0.0005
+            ],
+            [
+              -3.6,
+              0.0006
+            ],
+            [
+              -3.5333,
+              0.0008
+            ],
+            [
+              -3.4667,
+              0.001
+            ],
+            [
+              -3.4,
+              0.0012
+            ],
+            [
+              -3.3333,
+              0.0015
+            ],
+            [
+              -3.2667,
+              0.0019
+            ],
+            [
+              -3.2,
+              0.0024
+            ],
+            [
+              -3.1333,
+              0.0029
+            ],
+            [
+              -3.0667,
+              0.0036
+            ],
+            [
+              -3.0,
+              0.0044
+            ],
+            [
+              -2.9333,
+              0.0054
+            ],
+            [
+              -2.8667,
+              0.0066
+            ],
+            [
+              -2.8,
+              0.0079
+            ],
+            [
+              -2.7333,
+              0.0095
+            ],
+            [
+              -2.6667,
+              0.0114
+            ],
+            [
+              -2.6,
+              0.0136
+            ],
+            [
+              -2.5333,
+              0.0161
+            ],
+            [
+              -2.4667,
+              0.019
+            ],
+            [
+              -2.4,
+              0.0224
+            ],
+            [
+              -2.3333,
+              0.0262
+            ],
+            [
+              -2.2667,
+              0.0306
+            ],
+            [
+              -2.2,
+              0.0355
+            ],
+            [
+              -2.1333,
+              0.041
+            ],
+            [
+              -2.0667,
+              0.0471
+            ],
+            [
+              -2.0,
+              0.054
+            ],
+            [
+              -1.9333,
+              0.0616
+            ],
+            [
+              -1.8667,
+              0.0699
+            ],
+            [
+              -1.8,
+              0.079
+            ],
+            [
+              -1.7333,
+              0.0888
+            ],
+            [
+              -1.6667,
+              0.0995
+            ],
+            [
+              -1.6,
+              0.1109
+            ],
+            [
+              -1.5333,
+              0.1231
+            ],
+            [
+              -1.4667,
+              0.1361
+            ],
+            [
+              -1.4,
+              0.1497
+            ],
+            [
+              -1.3333,
+              0.164
+            ],
+            [
+              -1.2667,
+              0.1789
+            ],
+            [
+              -1.2,
+              0.1942
+            ],
+            [
+              -1.1333,
+              0.2099
+            ],
+            [
+              -1.0667,
+              0.2259
+            ],
+            [
+              -1.0,
+              0.242
+            ],
+            [
+              -0.9333,
+              0.2581
+            ],
+            [
+              -0.8667,
+              0.274
+            ],
+            [
+              -0.8,
+              0.2897
+            ],
+            [
+              -0.7333,
+              0.3049
+            ],
+            [
+              -0.6667,
+              0.3194
+            ],
+            [
+              -0.6,
+              0.3332
+            ],
+            [
+              -0.5333,
+              0.3461
+            ],
+            [
+              -0.4667,
+              0.3578
+            ],
+            [
+              -0.4,
+              0.3683
+            ],
+            [
+              -0.3333,
+              0.3774
+            ],
+            [
+              -0.2667,
+              0.385
+            ],
+            [
+              -0.2,
+              0.391
+            ],
+            [
+              -0.1333,
+              0.3954
+            ],
+            [
+              -0.0667,
+              0.3981
+            ],
+            [
+              0.0,
+              0.3989
+            ],
+            [
+              0.0667,
+              0.3981
+            ],
+            [
+              0.1333,
+              0.3954
+            ],
+            [
+              0.2,
+              0.391
+            ],
+            [
+              0.2667,
+              0.385
+            ],
+            [
+              0.3333,
+              0.3774
+            ],
+            [
+              0.4,
+              0.3683
+            ],
+            [
+              0.4667,
+              0.3578
+            ],
+            [
+              0.5333,
+              0.3461
+            ],
+            [
+              0.6,
+              0.3332
+            ],
+            [
+              0.6667,
+              0.3194
+            ],
+            [
+              0.7333,
+              0.3049
+            ],
+            [
+              0.8,
+              0.2897
+            ],
+            [
+              0.8667,
+              0.274
+            ],
+            [
+              0.9333,
+              0.2581
+            ],
+            [
+              1.0,
+              0.242
+            ],
+            [
+              1.0667,
+              0.2259
+            ],
+            [
+              1.1333,
+              0.2099
+            ],
+            [
+              1.2,
+              0.1942
+            ],
+            [
+              1.2667,
+              0.1789
+            ],
+            [
+              1.3333,
+              0.164
+            ],
+            [
+              1.4,
+              0.1497
+            ],
+            [
+              1.4667,
+              0.1361
+            ],
+            [
+              1.5333,
+              0.1231
+            ],
+            [
+              1.6,
+              0.1109
+            ],
+            [
+              1.6667,
+              0.0995
+            ],
+            [
+              1.7333,
+              0.0888
+            ],
+            [
+              1.8,
+              0.079
+            ],
+            [
+              1.8667,
+              0.0699
+            ],
+            [
+              1.9333,
+              0.0616
+            ],
+            [
+              2.0,
+              0.054
+            ],
+            [
+              2.0667,
+              0.0471
+            ],
+            [
+              2.1333,
+              0.041
+            ],
+            [
+              2.2,
+              0.0355
+            ],
+            [
+              2.2667,
+              0.0306
+            ],
+            [
+              2.3333,
+              0.0262
+            ],
+            [
+              2.4,
+              0.0224
+            ],
+            [
+              2.4667,
+              0.019
+            ],
+            [
+              2.5333,
+              0.0161
+            ],
+            [
+              2.6,
+              0.0136
+            ],
+            [
+              2.6667,
+              0.0114
+            ],
+            [
+              2.7333,
+              0.0095
+            ],
+            [
+              2.8,
+              0.0079
+            ],
+            [
+              2.8667,
+              0.0066
+            ],
+            [
+              2.9333,
+              0.0054
+            ],
+            [
+              3.0,
+              0.0044
+            ],
+            [
+              3.0667,
+              0.0036
+            ],
+            [
+              3.1333,
+              0.0029
+            ],
+            [
+              3.2,
+              0.0024
+            ],
+            [
+              3.2667,
+              0.0019
+            ],
+            [
+              3.3333,
+              0.0015
+            ],
+            [
+              3.4,
+              0.0012
+            ],
+            [
+              3.4667,
+              0.001
+            ],
+            [
+              3.5333,
+              0.0008
+            ],
+            [
+              3.6,
+              0.0006
+            ],
+            [
+              3.6667,
+              0.0005
+            ],
+            [
+              3.7333,
+              0.0004
+            ],
+            [
+              3.8,
+              0.0003
+            ],
+            [
+              3.8667,
+              0.0002
+            ],
+            [
+              3.9333,
+              0.0002
+            ],
+            [
+              4.0,
+              0.0001
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

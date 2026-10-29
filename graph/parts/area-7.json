@@ -1,0 +1,156 @@
+[
+  {
+    "id": "processo-poisson",
+    "titolo": "Processo di Poisson e tempi tra arrivi",
+    "area": 7,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W5",
+    "sapere": "Usare la legge dei conteggi, il tasso di arrivo e la distribuzione esponenziale degli interarrivi sotto ipotesi dichiarate.",
+    "saper_fare": [
+      "So calcolare la probabilità di zero o un arrivo.",
+      "So distinguere il numero di arrivi dal tempo tra arrivi."
+    ],
+    "prerequisiti": [],
+    "tempo_studio_min": 30,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Nessuna prova è associata direttamente; il modello degli arrivi è prerequisito delle dimostrazioni T13, T14 e T15."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "file3 p. 47: Poisson e tempo residuo"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 51–53: slide 106 Reti citata"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "So calcolare la probabilità di zero o un arrivo.",
+      "So distinguere il numero di arrivi dal tempo tra arrivi."
+    ]
+  },
+  {
+    "id": "dim-poisson-tempo-residuo",
+    "titolo": "Tempo residuo nel processo di Poisson",
+    "area": 7,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W5",
+    "sapere": "Dimostrare la distribuzione condizionata del tempo residuo e l’assenza di memoria dell’esponenziale.",
+    "saper_fare": [
+      "So ricavare la distribuzione condizionata dall’interarrivo.",
+      "So spiegare perché il tempo già atteso scompare."
+    ],
+    "prerequisiti": [
+      {
+        "id": "processo-poisson",
+        "forza": "hard",
+        "motivo": "La probabilità di zero arrivi in un intervallo fornisce la sopravvivenza esponenziale necessaria al residuo."
+      }
+    ],
+    "tempo_studio_min": 40,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "La dimostrazione T13 usa l’assenza di memoria dell’interarrivo esponenziale per ricavare la legge del tempo residuo."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "file3 p. 47"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 51–53; slide 106 Reti citata, non consultata"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "So ricavare la distribuzione condizionata dall’interarrivo.",
+      "So spiegare perché il tempo già atteso scompare."
+    ]
+  },
+  {
+    "id": "dim-nascita-morte-equilibrio",
+    "titolo": "Probabilità di equilibrio nascita–morte",
+    "area": 7,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W5",
+    "sapere": "Ricavare i bilanci infinitesimi e normalizzare la distribuzione stazionaria di una catena nascita–morte.",
+    "saper_fare": [
+      "So scrivere le equazioni e il bilancio tra stati vicini.",
+      "So controllare la normalizzazione e le condizioni di esistenza."
+    ],
+    "prerequisiti": [
+      {
+        "id": "processo-poisson",
+        "forza": "hard",
+        "motivo": "Gli arrivi poissoniani a tasso costante illustrano un tasso di nascita; il modello generale ammette tassi dipendenti dallo stato."
+      }
+    ],
+    "tempo_studio_min": 45,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "La dimostrazione T14 richiede i bilanci fra stati adiacenti e la normalizzazione delle probabilità di equilibrio."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "file3 pp. 48–49"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 54–55; slide 110 Reti citata, non consultata"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "So scrivere le equazioni e il bilancio tra stati vicini.",
+      "So controllare la normalizzazione e le condizioni di esistenza."
+    ]
+  },
+  {
+    "id": "code-mm1-little",
+    "titolo": "Code M/M/1 e legge di Little",
+    "area": 7,
+    "tipo": "concetto",
+    "gruppo": "C",
+    "worker": "W5",
+    "sapere": "Applicare equilibrio, condizioni di stabilità e legge di Little a una coda M/M/1, distinguendo coda e sistema.",
+    "saper_fare": [
+      "So verificare il requisito λ < μ.",
+      "So calcolare numero medio e tempo medio nel sistema."
+    ],
+    "prerequisiti": [
+      {
+        "id": "dim-nascita-morte-equilibrio",
+        "forza": "hard",
+        "motivo": "Le probabilità di nascita–morte, specializzate a $\\lambda$ e $\\mu$ costanti, descrivono la coda M/M/1 stabile."
+      }
+    ],
+    "tempo_studio_min": 30,
+    "priorita": {
+      "livello": "bassa",
+      "motivazione": "Nessuna prova è associata direttamente dal contratto; la coda M/M/1 specializza il modello nascita–morte della T14."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "file3 pp. 53–57: esercizi aggiuntivi di traffico e code"
+      },
+      {
+        "chiave": "RICOSTRUZIONE",
+        "rif": "Formule standard M/M/1 e Little: ricostruzione didattica, non attribuita ai lucidi."
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "So verificare il requisito λ < μ.",
+      "So calcolare numero medio e tempo medio nel sistema."
+    ]
+  }
+]

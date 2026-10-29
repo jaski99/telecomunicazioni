@@ -1,0 +1,22 @@
+{
+  "id": "figura-errata",
+  "tipo": "grafico",
+  "titolo": "Figura errata",
+  "descrizione": "Descrizione sufficientemente lunga per superare i trenta caratteri richiesti dalla specifica della figura",
+  "asse_x": {
+    "etichetta": "x",
+    "min": 10,
+    "max": 5
+  },
+  "asse_y": {
+    "etichetta": "y",
+    "min": 0,
+    "max": 1
+  },
+  "serie": [
+    {
+      "stile": "linea",
+      "punti": [[0, 0]]
+    }
+  ]
+}

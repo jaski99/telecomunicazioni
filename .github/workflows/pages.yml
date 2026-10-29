@@ -1,0 +1,87 @@
+name: CI e Pages
+
+on:
+  push:
+    branches: ["main", "arena/**"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    outputs:
+      has_web: ${{ steps.check_web.outputs.has_web }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: check_web
+        run: |
+          if [ -f web/package.json ]; then echo "has_web=true" >> $GITHUB_OUTPUT; else echo "has_web=false" >> $GITHUB_OUTPUT; fi
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Python deps
+        run: |
+          pip install -r requirements.txt playwright
+          python -m playwright install --with-deps chromium
+
+      - name: KG check
+        run: python scripts/kg.py check
+
+      - name: Web build
+        if: hashFiles('web/package.json') != ''
+        run: sh web/build.sh
+
+      - name: Node tests
+        if: hashFiles('web/package.json') != ''
+        shell: bash
+        run: |
+          set -o pipefail
+          npm test --prefix web 2>&1 | tee /tmp/node-test.log
+          status=${PIPESTATUS[0]}
+          if [ $status -ne 0 ]; then exit $status; fi
+          if grep -Eq "skipped [1-9]|todo [1-9]" /tmp/node-test.log; then echo "skipped/todo tests found — fail"; exit 1; fi
+          if grep -q "no tests" /tmp/node-test.log; then echo "no tests found — fail"; exit 1; fi
+
+      - name: Pytest
+        shell: bash
+        run: |
+          set -o pipefail
+          pytest -q 2>&1 | tee /tmp/pytest.log
+          status=${PIPESTATUS[0]}
+          if [ $status -ne 0 ]; then exit $status; fi
+          if grep -Eq " [1-9][0-9]* skipped" /tmp/pytest.log; then echo "skipped tests found — fail"; exit 1; fi
+          if grep -q "no tests collected" /tmp/pytest.log; then echo "no tests collected — fail"; exit 1; fi
+
+      - name: Upload artifact
+        if: hashFiles('web/package.json') != '' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && needs.build.outputs.has_web == 'true'
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

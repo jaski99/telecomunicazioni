@@ -1,0 +1,74 @@
+{
+  "id": "sliding-window",
+  "tipo": "temporale",
+  "titolo": "Sliding window",
+  "descrizione": "Diagramma temporale del protocollo sliding window con mittente e ricevente, trasmissione, attesa e ack, tempo totale TT",
+  "asse_t": {
+    "etichetta": "t [ms]",
+    "min": 0,
+    "max": 20
+  },
+  "corsie": [
+    {
+      "id": "mittente",
+      "etichetta": "Mittente"
+    },
+    {
+      "id": "ricevente",
+      "etichetta": "Ricevente"
+    }
+  ],
+  "intervalli": [
+    {
+      "corsia": "mittente",
+      "t0": 0,
+      "t1": 2,
+      "stile": "trasmissione",
+      "etichetta": "frame 1"
+    },
+    {
+      "corsia": "mittente",
+      "t0": 2,
+      "t1": 5,
+      "stile": "attesa",
+      "etichetta": "attesa ACK"
+    },
+    {
+      "corsia": "ricevente",
+      "t0": 3,
+      "t1": 3.5,
+      "stile": "ack",
+      "etichetta": "ACK"
+    }
+  ],
+  "frecce": [
+    {
+      "da": {
+        "corsia": "mittente",
+        "t": 2
+      },
+      "a": {
+        "corsia": "ricevente",
+        "t": 3
+      },
+      "etichetta": "propagazione"
+    },
+    {
+      "da": {
+        "corsia": "ricevente",
+        "t": 3.5
+      },
+      "a": {
+        "corsia": "mittente",
+        "t": 5
+      },
+      "etichetta": "ACK"
+    }
+  ],
+  "marcatori": [
+    {
+      "t": 2,
+      "etichetta": "fine TX"
+    }
+  ]
+}

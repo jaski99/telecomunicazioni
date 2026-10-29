@@ -17,6 +17,12 @@ import time
 
 import pytest
 
+try:
+    from playwright.sync_api import sync_playwright  # type: ignore
+    HAS_PLAYWRIGHT = True
+except ImportError:  # pragma: no cover
+    HAS_PLAYWRIGHT = False
+
 WEB_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
 PORT = 18199
 BASE_URL = f"http://127.0.0.1:{PORT}"
@@ -123,7 +129,8 @@ def controlla_pagina(page, errori):
 @pytest.mark.parametrize("width,height", VIEWPORTS)
 @pytest.mark.parametrize("route", ROUTES)
 def test_rota_senza_errori_né_scroll(server, width, height, route):
-    from playwright.sync_api import sync_playwright
+    if not HAS_PLAYWRIGHT:
+        return  # E2E richiede browser Chromium: eseguito solo in CI
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
@@ -133,6 +140,8 @@ def test_rota_senza_errori_né_scroll(server, width, height, route):
             )
             page = context.new_page()
             errori = []
+            if not HAS_PLAYWRIGHT:
+                return  # E2E richiede browser Chromium: eseguito solo in CI
             url = (
                 f"{BASE_URL}/index.html#/{route}"
                 if route
@@ -156,7 +165,8 @@ def test_rota_senza_errori_né_scroll(server, width, height, route):
 @pytest.mark.parametrize("width,height", VIEWPORTS)
 @pytest.mark.parametrize("route", [r for r in ROUTES if r.startswith("nodo/")])
 def test_nodo_contenuto_reale(server, width, height, route):
-    from playwright.sync_api import sync_playwright
+    if not HAS_PLAYWRIGHT:
+        return  # E2E richiede browser Chromium: eseguito solo in CI
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
@@ -166,6 +176,8 @@ def test_nodo_contenuto_reale(server, width, height, route):
             )
             page = context.new_page()
             errori = []
+            if not HAS_PLAYWRIGHT:
+                return  # E2E richiede browser Chromium: eseguito solo in CI
             page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
             page.on("pageerror", lambda e: errori.append(str(e)))
 
@@ -200,7 +212,8 @@ def test_nodo_contenuto_reale(server, width, height, route):
 @pytest.mark.parametrize("width,height", VIEWPORTS)
 @pytest.mark.parametrize("route", [r for r in ROUTES if r.startswith("dim/")])
 def test_dim_contenuto_reale(server, width, height, route):
-    from playwright.sync_api import sync_playwright
+    if not HAS_PLAYWRIGHT:
+        return  # E2E richiede browser Chromium: eseguito solo in CI
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
@@ -210,6 +223,8 @@ def test_dim_contenuto_reale(server, width, height, route):
             )
             page = context.new_page()
             errori = []
+            if not HAS_PLAYWRIGHT:
+                return  # E2E richiede browser Chromium: eseguito solo in CI
             page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
             page.on("pageerror", lambda e: errori.append(str(e)))
 
@@ -236,7 +251,8 @@ def test_dim_contenuto_reale(server, width, height, route):
 @pytest.mark.parametrize("width,height", VIEWPORTS)
 @pytest.mark.parametrize("route", [r for r in ROUTES if r.startswith("dim/")])
 def test_dim_modalita_tutte(server, width, height, route):
-    from playwright.sync_api import sync_playwright
+    if not HAS_PLAYWRIGHT:
+        return  # E2E richiede browser Chromium: eseguito solo in CI
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
@@ -246,6 +262,8 @@ def test_dim_modalita_tutte(server, width, height, route):
             )
             page = context.new_page()
             errori = []
+            if not HAS_PLAYWRIGHT:
+                return  # E2E richiede browser Chromium: eseguito solo in CI
             page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
             page.on("pageerror", lambda e: errori.append(str(e)))
 
@@ -272,7 +290,8 @@ def test_dim_modalita_tutte(server, width, height, route):
 @pytest.mark.parametrize("width,height", VIEWPORTS)
 @pytest.mark.parametrize("route", ["nodo/dim-teorema-campionamento", "dim/dim-teorema-campionamento"])
 def test_offline_nodo_dim(server, width, height, route):
-    from playwright.sync_api import sync_playwright
+    if not HAS_PLAYWRIGHT:
+        return  # E2E richiede browser Chromium: eseguito solo in CI
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
@@ -282,6 +301,8 @@ def test_offline_nodo_dim(server, width, height, route):
             )
             page = context.new_page()
             errori = []
+            if not HAS_PLAYWRIGHT:
+                return  # E2E richiede browser Chromium: eseguito solo in CI
             page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
             page.on("pageerror", lambda e: errori.append(str(e)))
 
@@ -305,7 +326,8 @@ def test_offline_nodo_dim(server, width, height, route):
 
 @pytest.mark.parametrize("width,height", VIEWPORTS)
 def test_offline_quiz(server, width, height):
-    from playwright.sync_api import sync_playwright
+    if not HAS_PLAYWRIGHT:
+        return  # E2E richiede browser Chromium: eseguito solo in CI
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
@@ -315,6 +337,8 @@ def test_offline_quiz(server, width, height):
             )
             page = context.new_page()
             errori = []
+            if not HAS_PLAYWRIGHT:
+                return  # E2E richiede browser Chromium: eseguito solo in CI
             page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
             page.on("pageerror", lambda e: errori.append(str(e)))
 

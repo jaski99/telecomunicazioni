@@ -1,0 +1,121 @@
+{
+  "id": "segnali-deterministici",
+  "perche_ti_serve": "Serve per T2 e per tutti i blocchi successivi: senza la distinzione energia/potenza non puoi capire spettri e campionamento all'esame.",
+  "scenario": "Devi trasmettere la voce di una telefonata su un collegamento numerico: prima di campionare devi capire se il segnale ha energia finita o potenza finita, altrimenti sbagli la rappresentazione.",
+  "definizione_esame": {
+    "definizione": "Un segnale deterministico è una funzione nota per ogni istante, descritta da un'espressione analitica.",
+    "scopo": "Permette di applicare serie e trasformata di Fourier per analizzare lo spettro.",
+    "esempio": "Impulso rettangolare $x(t) = A$ per $|t| < \\tau/2$ e $0$ altrove."
+  },
+  "spiegazione": "### Segnali a energia finita\nUn segnale $x(t)$ è a energia finita se $E = \\int_{-\\infty}^{+\\infty} |x(t)|^2 dt < \\infty$. In tal caso ammette trasformata di Fourier $X(\\omega) = \\int_{-\\infty}^{+\\infty} x(t) e^{-j\\omega t} dt$ e vale Parseval. Esempi: impulso rettangolare, triangolo, esponenziale monolatero. L'energia si conserva nel dominio della frequenza e l'antitrasformata ricostruisce il segnale senza perdita.\n\n### Segnali a potenza finita\nUn segnale è a potenza finita se $P = \\lim_{T \\to \\infty} \\frac{1}{2T} \\int_{-T}^{T} |x(t)|^2 dt < \\infty$ ma $E = \\infty$. Sono periodici, quasi-periodici o aleatori stazionari. Si descrive con serie di Fourier $c_n = \\frac{1}{T} \\int_{T} x(t) e^{-jn\\omega_0 t} dt$ e spettro a righe. La distinzione è fondamentale per scegliere lo strumento giusto e per non confondere densità spettrale di energia con spettro di potenza, errore che porta a fattori $2$ errati.\n\n### Perché conta all'esame\nAll'esame ti chiedono di riconoscere la classe del segnale e di scegliere la rappresentazione corretta. Se confondi energia e potenza, sbagli il calcolo dello spettro PAM e della condizione di Nyquist, perché usi la formula sbagliata per $G(\\omega)$ con fattore $1/(\\pi T)$ invece di $1/(2\\pi)$. Inoltre la verifica del teorema del campionamento richiede di sapere se il segnale è limitato in banda e a energia finita, altrimenti le repliche non si separano correttamente e la ricostruzione fallisce.",
+  "analogia": {
+    "testo": "Come distinguere una fotografia (energia finita, scatto singolo) da un video in loop (potenza finita, si ripete all'infinito): la prima ha un costo totale, il secondo un costo al secondo.",
+    "limite": "L'analogia non mostra la periodicità matematica né il ruolo della fase, che nella serie di Fourier è essenziale."
+  },
+  "worked_example": {
+    "titolo": "Energia di un rettangolo",
+    "problema": "Calcola energia e potenza di $x(t)=A$ per $|t|<\\tau/2$.",
+    "passi": [
+      "Scrivi $E = \\int_{-\\tau/2}^{\\tau/2} A^2 dt$ perché fuori il segnale è nullo",
+      "Integra: $E = A^2 \\tau$ finito, quindi è a energia finita",
+      "Calcola $P = \\lim_{T\\to\\infty} E/(2T) = 0$, quindi non è a potenza finita non nulla"
+    ],
+    "soluzione": "$E = A^2 \\tau$, $P = 0$: segnale a energia finita.",
+    "perche_funziona": "L'integrale è finito perché il supporto è limitato; la definizione di potenza media annulla l'energia su intervallo infinito."
+  },
+  "completion_problem": {
+    "titolo": "Classifica un segnale periodico",
+    "testo": "Un'onda quadra periodica di ampiezza $A$ e periodo $T$ è a energia o a potenza finita? Giustifica con $P$.",
+    "passi_mancanti": [
+      "Calcola $P$ su un periodo: $P = \\frac{1}{T}\\int_T |x|^2 dt$",
+      "Mostra che $P = A^2$ finita e $E = \\infty$"
+    ],
+    "soluzione": "È a potenza finita con $P=A^2$."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Potenza di un tono",
+    "testo": "Calcola potenza di $x(t)=A\\cos(\\omega_0 t)$.",
+    "suggerimento": "Usa $P = A^2/2$ e verifica con serie di Fourier: due righe a $\\pm\\omega_0$.",
+    "soluzione_attesa": "$P = A^2/2$; spettro a righe con ampiezza $A/2$ per riga."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Dire che un segnale periodico è a energia finita perché l'integrale su un periodo è finito",
+      "perche_sbagliato": "L'energia è su $(-\\infty,+\\infty)$ e diverge per segnali periodici; confondi energia su un periodo con energia totale"
+    },
+    {
+      "errore": "Usare $1/(2\\pi)$ e $1/(\\pi)$ indifferentemente per $G(\\omega)$",
+      "perche_sbagliato": "Il fattore dipende dalla densità unilaterale ($P=\\int_0^\\infty G d\\omega$) vs bilaterale; file1 usa $1/(\\pi T)$ unilaterale"
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Quando un segnale è a energia finita?",
+        "risposta": "Quando $\\int |x|^2 dt < \\infty$ su tutto l'asse."
+      },
+      {
+        "domanda": "Perché un periodico non ha trasformata in senso ordinario?",
+        "risposta": "Perché non è integrabile su $\\mathbb{R}$; si usa la serie, non l'integrale."
+      },
+      {
+        "domanda": "Cosa cambia tra $G(\\omega)$ unilaterale e bilaterale?",
+        "risposta": "Unilaterale integra da $0$ a $\\infty$, bilaterale da $-\\infty$ a $+\\infty$; fattore $2$ di differenza."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega perché l'impulso rettangolare è a energia finita e l'onda quadra no, usando le definizioni."
+  },
+  "riepilogo": "Energia finita: $E<\\infty$, trasformata. Potenza finita: $P<\\infty$, serie a righe. La classe decide lo strumento spettrale.",
+  "flashcard": [
+    {
+      "fronte": "Definizione energia",
+      "retro": "$E=\\int |x|^2 dt$"
+    },
+    {
+      "fronte": "Potenza media",
+      "retro": "$P=\\lim_{T\\to\\infty} \\frac{1}{2T}\\int_{-T}^{T}|x|^2 dt$"
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "so calcolare $E$ e $P$ di rettangolo e tono",
+      "so scegliere tra trasformata e serie"
+    ],
+    "so_dire": [
+      "so definire energia e potenza finita",
+      "so spiegare perché il periodico non è trasformabile ordinariamente"
+    ]
+  },
+  "figure": [
+    {
+      "id": "energia-rettangolo",
+      "tipo": "grafico",
+      "titolo": "Rettangolo nel tempo",
+      "descrizione": "Grafico di un impulso rettangolare di ampiezza A e durata tau centrato in zero, con asse t in secondi e ampiezza in volt",
+      "asse_x": {
+        "etichetta": "t [s]",
+        "min": -2,
+        "max": 2
+      },
+      "asse_y": {
+        "etichetta": "x(t) [V]",
+        "min": 0,
+        "max": 2
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [-2, 0],
+            [-0.5, 0],
+            [-0.5, 1],
+            [0.5, 1],
+            [0.5, 0],
+            [2, 0]
+          ],
+          "etichetta": "rettangolo"
+        }
+      ]
+    }
+  ]
+}
