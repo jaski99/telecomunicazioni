@@ -82,7 +82,7 @@ async function mostraRoute(hash) {
     currentUnmount = null;
   }
   main.innerHTML = navHTML();
-  const stato = router.esegui(hash.replace(/^#/, ''));
+  const stato = router.eseguire(hash.replace(/^#/, ''));
   const route = stato.route;
   const params = stato.params || {};
   if (!route) {

@@ -5,8 +5,7 @@ Verifica: nessun errore JS in console, nessuno scroll orizzontale, nessun
 'null'/'undefined'/'NaN' visibile, .katex e SVG presenti, rotte caricabili,
 contenuto reale, 5 modalita di dimostrazione, funzionamento offline.
 
-Richiede Playwright con browser Chromium installato (CI only: in sandbox la
-rete blocca il download dei browser).
+Richiede Playwright con browser Chromium installato (CI only).
 """
 
 import json
@@ -16,12 +15,7 @@ import sys
 import time
 
 import pytest
-
-try:
-    from playwright.sync_api import sync_playwright  # type: ignore
-    HAS_PLAYWRIGHT = True
-except ImportError:  # pragma: no cover
-    HAS_PLAYWRIGHT = False
+from playwright.sync_api import sync_playwright  # richiesto: se manca, il test fallisce
 
 WEB_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
 PORT = 18199
@@ -94,6 +88,8 @@ def server():
 
 
 def controlla_pagina(page, errori):
+    # I listener vanno registrati PRIMA di goto, altrimenti gli errori
+    # JS caricati durante la navigazione non vengono catturati.
     page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
     page.on("pageerror", lambda e: errori.append(str(e)))
 
@@ -121,17 +117,15 @@ def controlla_pagina(page, errori):
         "}"
     )
     katex = page.locator(".katex").count()
+    katex_error = page.locator(".katex-error").count()
     svg = page.locator("svg").count()
     errore_pagina = page.locator(".errore, h1:has-text('Errore di pagina')").count()
-    return scroll_ok, nessun_vietato, katex, svg, errore_pagina
+    return scroll_ok, nessun_vietato, katex, katex_error, svg, errore_pagina
 
 
 @pytest.mark.parametrize("width,height", VIEWPORTS)
 @pytest.mark.parametrize("route", ROUTES)
 def test_rota_senza_errori_né_scroll(server, width, height, route):
-    if not HAS_PLAYWRIGHT:
-        return  # E2E richiede browser Chromium: eseguito solo in CI
-
     with sync_playwright() as p:
         browser = p.chromium.launch()
         try:
@@ -140,8 +134,6 @@ def test_rota_senza_errori_né_scroll(server, width, height, route):
             )
             page = context.new_page()
             errori = []
-            if not HAS_PLAYWRIGHT:
-                return  # E2E richiede browser Chromium: eseguito solo in CI
             url = (
                 f"{BASE_URL}/index.html#/{route}"
                 if route
@@ -149,9 +141,14 @@ def test_rota_senza_errori_né_scroll(server, width, height, route):
             )
             page.goto(url, wait_until="load")
             page.wait_for_timeout(500)
-            scroll_ok, nessun_vietato, katex, svg, errore_pagina = controlla_pagina(
-                page, errori
-            )
+            (
+                scroll_ok,
+                nessun_vietato,
+                katex,
+                katex_error,
+                svg,
+                errore_pagina,
+            ) = controlla_pagina(page, errori)
         finally:
             browser.close()
 
@@ -159,15 +156,13 @@ def test_rota_senza_errori_né_scroll(server, width, height, route):
     assert scroll_ok is True, f"[{route}] scroll orizzontale su {width}x{height}"
     assert nessun_vietato == [], f"[{route}] testo vietato visibile: {nessun_vietato}"
     assert errore_pagina == 0, "[" + route + "] pagina in errore"
+    assert katex_error == 0, f"[{route}] errori KaTeX visibili"
     assert katex >= 0 and svg >= 0
 
 
 @pytest.mark.parametrize("width,height", VIEWPORTS)
 @pytest.mark.parametrize("route", [r for r in ROUTES if r.startswith("nodo/")])
 def test_nodo_contenuto_reale(server, width, height, route):
-    if not HAS_PLAYWRIGHT:
-        return  # E2E richiede browser Chromium: eseguito solo in CI
-
     with sync_playwright() as p:
         browser = p.chromium.launch()
         try:
@@ -176,8 +171,6 @@ def test_nodo_contenuto_reale(server, width, height, route):
             )
             page = context.new_page()
             errori = []
-            if not HAS_PLAYWRIGHT:
-                return  # E2E richiede browser Chromium: eseguito solo in CI
             page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
             page.on("pageerror", lambda e: errori.append(str(e)))
 
@@ -196,8 +189,16 @@ def test_nodo_contenuto_reale(server, width, height, route):
                 f"[{route}] h1 senza titolo nodo: {titolo!r} (atteso {titolo_atteso!r})"
             )
             katex = page.locator(".katex").count()
+            katex_error = page.locator(".katex-error").count()
             svg = page.locator("svg").count()
-            scroll_ok, nessun_vietato, _, _, errore_pagina = controlla_pagina(page, errori)
+            (
+                scroll_ok,
+                nessun_vietato,
+                _,
+                _,
+                _,
+                errore_pagina,
+            ) = controlla_pagina(page, errori)
         finally:
             browser.close()
 
@@ -206,15 +207,13 @@ def test_nodo_contenuto_reale(server, width, height, route):
     assert nessun_vietato == []
     assert errore_pagina == 0
     assert katex > 0, f"[{route}] nessun .katex (matematica mancante)"
+    assert katex_error == 0, f"[{route}] errori KaTeX visibili"
     assert svg > 0, f"[{route}] nessun SVG (figure mancanti)"
 
 
 @pytest.mark.parametrize("width,height", VIEWPORTS)
 @pytest.mark.parametrize("route", [r for r in ROUTES if r.startswith("dim/")])
 def test_dim_contenuto_reale(server, width, height, route):
-    if not HAS_PLAYWRIGHT:
-        return  # E2E richiede browser Chromium: eseguito solo in CI
-
     with sync_playwright() as p:
         browser = p.chromium.launch()
         try:
@@ -223,8 +222,6 @@ def test_dim_contenuto_reale(server, width, height, route):
             )
             page = context.new_page()
             errori = []
-            if not HAS_PLAYWRIGHT:
-                return  # E2E richiede browser Chromium: eseguito solo in CI
             page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
             page.on("pageerror", lambda e: errori.append(str(e)))
 
@@ -235,8 +232,16 @@ def test_dim_contenuto_reale(server, width, height, route):
             h1 = page.locator("h1").first
             assert h1.count() > 0, f"[{route}] manca h1"
             katex = page.locator(".katex").count()
+            katex_error = page.locator(".katex-error").count()
             svg = page.locator("svg").count()
-            scroll_ok, nessun_vietato, _, _, errore_pagina = controlla_pagina(page, errori)
+            (
+                scroll_ok,
+                nessun_vietato,
+                _,
+                _,
+                _,
+                errore_pagina,
+            ) = controlla_pagina(page, errori)
         finally:
             browser.close()
 
@@ -245,15 +250,13 @@ def test_dim_contenuto_reale(server, width, height, route):
     assert nessun_vietato == []
     assert errore_pagina == 0
     assert katex > 0, f"[{route}] nessun .katex (matematica mancante)"
+    assert katex_error == 0, f"[{route}] errori KaTeX visibili"
     assert svg > 0, f"[{route}] nessun SVG (figure mancanti)"
 
 
 @pytest.mark.parametrize("width,height", VIEWPORTS)
 @pytest.mark.parametrize("route", [r for r in ROUTES if r.startswith("dim/")])
 def test_dim_modalita_tutte(server, width, height, route):
-    if not HAS_PLAYWRIGHT:
-        return  # E2E richiede browser Chromium: eseguito solo in CI
-
     with sync_playwright() as p:
         browser = p.chromium.launch()
         try:
@@ -262,8 +265,6 @@ def test_dim_modalita_tutte(server, width, height, route):
             )
             page = context.new_page()
             errori = []
-            if not HAS_PLAYWRIGHT:
-                return  # E2E richiede browser Chromium: eseguito solo in CI
             page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
             page.on("pageerror", lambda e: errori.append(str(e)))
 
@@ -277,7 +278,14 @@ def test_dim_modalita_tutte(server, width, height, route):
                 page.wait_for_timeout(300)
                 attivo = page.locator(f'button[data-modo="{modo}"].attivo')
                 assert attivo.count() > 0, f"[{route}] modalita {modo} non attivata"
-            scroll_ok, nessun_vietato, _, _, errore_pagina = controlla_pagina(page, errori)
+            (
+                scroll_ok,
+                nessun_vietato,
+                _,
+                _,
+                _,
+                errore_pagina,
+            ) = controlla_pagina(page, errori)
         finally:
             browser.close()
 
@@ -290,9 +298,6 @@ def test_dim_modalita_tutte(server, width, height, route):
 @pytest.mark.parametrize("width,height", VIEWPORTS)
 @pytest.mark.parametrize("route", ["nodo/dim-teorema-campionamento", "dim/dim-teorema-campionamento"])
 def test_offline_nodo_dim(server, width, height, route):
-    if not HAS_PLAYWRIGHT:
-        return  # E2E richiede browser Chromium: eseguito solo in CI
-
     with sync_playwright() as p:
         browser = p.chromium.launch()
         try:
@@ -301,8 +306,6 @@ def test_offline_nodo_dim(server, width, height, route):
             )
             page = context.new_page()
             errori = []
-            if not HAS_PLAYWRIGHT:
-                return  # E2E richiede browser Chromium: eseguito solo in CI
             page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
             page.on("pageerror", lambda e: errori.append(str(e)))
 
@@ -314,7 +317,14 @@ def test_offline_nodo_dim(server, width, height, route):
 
             h1 = page.locator("h1").first
             assert h1.count() > 0, f"[{route}] offline: manca h1"
-            scroll_ok, nessun_vietato, _, _, errore_pagina = controlla_pagina(page, errori)
+            (
+                scroll_ok,
+                nessun_vietato,
+                _,
+                _,
+                _,
+                errore_pagina,
+            ) = controlla_pagina(page, errori)
         finally:
             browser.close()
 
@@ -326,9 +336,6 @@ def test_offline_nodo_dim(server, width, height, route):
 
 @pytest.mark.parametrize("width,height", VIEWPORTS)
 def test_offline_quiz(server, width, height):
-    if not HAS_PLAYWRIGHT:
-        return  # E2E richiede browser Chromium: eseguito solo in CI
-
     with sync_playwright() as p:
         browser = p.chromium.launch()
         try:
@@ -337,8 +344,6 @@ def test_offline_quiz(server, width, height):
             )
             page = context.new_page()
             errori = []
-            if not HAS_PLAYWRIGHT:
-                return  # E2E richiede browser Chromium: eseguito solo in CI
             page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
             page.on("pageerror", lambda e: errori.append(str(e)))
 
@@ -348,10 +353,17 @@ def test_offline_quiz(server, width, height):
             page.goto(f"{BASE_URL}/index.html#/quiz", wait_until="load")
             page.wait_for_timeout(500)
 
-            # Non deve esserne Errore di pagina (SW serve il guscio offline)
+            # Non deve esserci Errore di pagina (SW serve il guscio offline)
             errore_pagina = page.locator(".errore, h1:has-text('Errore di pagina')").count()
             assert errore_pagina == 0, "[quiz] offline: pagina in errore"
-            scroll_ok, nessun_vietato, _, _, _ = controlla_pagina(page, errori)
+            (
+                scroll_ok,
+                nessun_vietato,
+                _,
+                _,
+                _,
+                _,
+            ) = controlla_pagina(page, errori)
         finally:
             browser.close()
 

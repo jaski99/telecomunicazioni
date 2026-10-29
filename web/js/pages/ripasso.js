@@ -3,6 +3,7 @@
  */
 import { linkNodo } from '../ui.js';
 import { testoSicuro, escapeHtml } from '../core/math.js';
+import { leggiEsiti } from '../../modules/quiz/esiti.js';
 import {
   leggiChiave,
   scriviChiave,
@@ -21,6 +22,15 @@ export function render(ctx) {
   const ripasso = leggiChiave(storage, KEY_RIPASSO, {}) || {};
   const oggi = new Date();
   oggi.setHours(0, 0, 0, 0);
+
+  // Livelli di padronanza dai risultati quiz (chiave tlc-kg:esiti-quiz:v1)
+  const esiti = leggiEsiti(storage) || [];
+  const padronanzaPerNodo = {};
+  for (const e of esiti) {
+    if (!padronanzaPerNodo[e.nodo_id]) padronanzaPerNodo[e.nodo_id] = { ok: 0, totale: 0 };
+    padronanzaPerNodo[e.nodo_id].totale++;
+    if (e.corretto) padronanzaPerNodo[e.nodo_id].ok++;
+  }
 
   let html = `<h1>Ripasso (SM-2: 1-3-7-14 giorni)</h1>
 <p>Intervalli di ripasso dopo una revisione positiva: 1, 3, 7 e 14 giorni.
@@ -47,16 +57,21 @@ I nodi in scadenza o scaduti sono in cima all'elenco.</p>`;
     html += `<p class="avviso">Nessun nodo da ripassare (grafo vuoto o non caricato).</p>`;
   } else {
     html += `<table class="tabella">
-<thead><tr><th>Nodo</th><th>Area</th><th>Ultimo intervallo</th><th>Prossimo</th><th>Stato</th><th>Azioni</th></tr></thead>
+<thead><tr><th>Nodo</th><th>Area</th><th>Ultimo intervallo</th><th>Prossimo</th><th>Stato</th><th>Padronanza</th><th>Azioni</th></tr></thead>
 <tbody>`;
     for (const { n, r, prossimo, scaduto, intervalloAttuale } of righe) {
       const dataStr = prossimo ? formatData(prossimo) : 'mai revisionato';
+      const p = padronanzaPerNodo[String(n.id)] || { ok: 0, totale: 0 };
+      const padronanzaStr = p.totale > 0
+        ? `${Math.round((p.ok / p.totale) * 100)}% (${p.ok}/${p.totale})`
+        : '<span class="muted">nessun esito</span>';
       html += `<tr>
       <td><a href="#/nodo/${escapeHtml(String(n.id))}">${escapeHtml(testoSicuro(n.titolo || n.id))}</a></td>
       <td>${escapeHtml(testoSicuro(String(n.area || '?')))}</td>
       <td>${escapeHtml(String(r.intervallo || 0))} giorni</td>
       <td>${dataStr}</td>
       <td>${scaduto ? '<span class="chip chip-in-arrivo">da ripassare</span>' : '<span class="chip chip-ok">ok</span>'}</td>
+      <td>${padronanzaStr}</td>
       <td>
         <button class="btn piccoli" type="button" data-id="${escapeHtml(String(n.id))}" data-esito="si">Ricorda</button>
         <button class="btn piccoli secondario" type="button" data-id="${escapeHtml(String(n.id))}" data-esito="no">Non ricorda</button>

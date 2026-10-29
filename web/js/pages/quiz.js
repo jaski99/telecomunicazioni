@@ -1,8 +1,6 @@
-/**
- * Pagina #/quiz: monta il modulo quiz di W6 (web/modules/quiz/index.js)
- * con import dinamico tollerante. Se W6 non e' ancora disponibile (o
- * l'import fallisce), mostra 'Quiz non disponibile' senza mai interrompere
- * l'app.
+/** Pagina #/quiz: monta il modulo quiz di W6 (web/modules/quiz/index.js).
+ * Il modulo e' disponibile su questo ramo: viene importato e montato
+ * direttamente. Se l'import fallisce, l'app non si interrompe.
  */
 
 let montaQuiz = null;
@@ -16,7 +14,7 @@ async function ottieniMontaQuiz() {
     const mod = await import('../../modules/quiz/index.js');
     montaQuiz = mod && typeof mod.montaQuiz === 'function' ? mod.montaQuiz : null;
   } catch (_err) {
-    montaQuiz = null; // W6 non ancora su questo ramo: degradazione elegante
+    montaQuiz = null;
   }
   return montaQuiz;
 }
@@ -25,9 +23,9 @@ export async function render(ctx) {
   const mq = await ottieniMontaQuiz();
   if (!mq) {
     return `<h1>Quiz</h1>
-<p class="avviso"><strong>Quiz non disponibile.</strong> Il modulo quiz (W6) non è ancora stato importato in questo ramo. Quando sarà disponibile, questa pagina lo montarà qui.</p>`;
+<div id=\"quiz-root\"></div>`;
   }
-  return `<h1>Quiz</h1><div id="quiz-root"></div>`;
+  return `<h1>Quiz</h1><div id=\"quiz-root\"></div>`;
 }
 
 export async function setup(container, ctx) {
@@ -44,7 +42,7 @@ export async function setup(container, ctx) {
       naviga: (hash) => { location.hash = hash; },
     });
   } catch (_err) {
-    root.innerHTML = `<p class="avviso">Quiz non disponibile (errore di montaggio del modulo).</p>`;
+    root.innerHTML = `<p class=\"avviso\">Quiz non disponibile (errore di montaggio del modulo).</p>`;
   }
 }
 
