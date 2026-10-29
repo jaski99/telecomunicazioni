@@ -54,10 +54,18 @@ for area in (1, 2, 3):
     for nodo in carica_json(f"graph/parts/area-{area}.json"):
         NODI[nodo["id"]] = (area, nodo)
 
-LEZIONI = {p.stem: carica_json(p.relative_to(ROOT))
-           for p in sorted((ROOT / "graph" / "lezioni").glob("*.json"))}
-DIMOSTRAZIONI = {p.stem: carica_json(p.relative_to(ROOT))
-                 for p in sorted((ROOT / "graph" / "dimostrazioni").glob("*.json"))}
+def carica_file_w3(cartella):
+    # Solo i file dei nodi W3 (§4, scope di W3 in §7): lezioni e dimostrazioni
+    # degli altri worker sono validate dai loro test e da quelli generici.
+    # Si cerca ogni ID W3, così un file W3 di troppo (es. una lezione per una
+    # dimostrazione W3) resta visibile e viene rifiutato dai test di ambito.
+    base = ROOT / "graph" / cartella
+    return {i: carica_json((base / f"{i}.json").relative_to(ROOT))
+            for i in sorted(W3) if (base / f"{i}.json").is_file()}
+
+
+LEZIONI = carica_file_w3("lezioni")
+DIMOSTRAZIONI = carica_file_w3("dimostrazioni")
 
 
 def stringhe(obj):
