@@ -1,0 +1,926 @@
+{
+  "id": "dim-filtro-trasversale",
+  "titolo": "Filtro trasversale: schema a blocchi e H(ω) (T3)",
+  "domande_esame": [
+    "T3"
+  ],
+  "enunciato": "Il filtro elettrico generale a linee di ritardo è descritto da $y(t) = \\sum_{k=0}^{N-1} h_k\\, x(t-kT) + \\sum_{k=1}^{M} h'_k\\, y(t-kT)$ e ha funzione di trasferimento $H(\\omega) = \\dfrac{\\sum_{k=0}^{N-1} h_k e^{-jk\\omega T}}{1 - \\sum_{k=1}^{M} h'_k e^{-jk\\omega T}}$, periodica in $\\omega$ di periodo $2\\pi/T$. Il filtro trasversale è il caso con tutti gli $h'_k$ uguali a zero: $H(\\omega) = \\sum_{k=0}^{N-1} h_k e^{-jk\\omega T}$ e il suo schema ha una sola linea di ritardo sull'ingresso, con prese pesate che confluiscono in un sommatore. Punteggio della prova T3: NON TROVATO.",
+  "ipotesi": [
+    "Le linee di ritardo sono ideali e introducono ciascuna il ritardo elementare costante $T$, senza attenuazione né distorsione.",
+    "I moltiplicatori applicano pesi costanti $h_k$ e $h'_k$ (rete lineare e permanente), così vale la sovrapposizione e si può trasformare termine a termine.",
+    "Il numero di prese è finito: $N$ sull'ingresso (indici da $0$ a $N-1$) ed $M$ sull'uscita (indici da $1$ a $M$).",
+    "Ingresso e uscita ammettono trasformata di Fourier, almeno nel senso usato per i segnali del corso."
+  ],
+  "notazione": [
+    {
+      "simbolo": "T",
+      "significato": "ritardo elementare introdotto da ciascuna cella della linea di ritardo"
+    },
+    {
+      "simbolo": "h_k \\;(k = 0, \\dots, N-1)",
+      "significato": "pesi applicati alle prese della linea sull'ingresso: il ramo $k$ vede $x(t-kT)$"
+    },
+    {
+      "simbolo": "h'_k \\;(k = 1, \\dots, M)",
+      "significato": "pesi applicati alle prese della linea sull'uscita: il ramo $k$ vede $y(t-kT)$ e realizza la retroazione"
+    },
+    {
+      "simbolo": "H(\\omega) = \\dfrac{Y(\\omega)}{X(\\omega)}",
+      "significato": "funzione di trasferimento del filtro, periodica in $\\omega$ di periodo $2\\pi/T$"
+    }
+  ],
+  "varianti_notazione": [
+    {
+      "canonica": "h con apice per i pesi di retroazione",
+      "variante": "stessa scrittura con apice, indicata a volte come h primo",
+      "fonte": "FILE1 pp. 15-16; FILE3 pagina del filtro trasversale"
+    }
+  ],
+  "idea": "Si parte dal filtro generale con due linee di ritardo, si trasforma l'equazione ingresso-uscita e poi si spengono i pesi di retroazione: resta una somma finita di esponenziali.",
+  "passi": [
+    {
+      "n": 1,
+      "testo": "Si disegna il filtro ricorrente generale: due linee di ritardo con celle da $T$, prese con moltiplicatori $h_k$ sull'ingresso e $h'_k$ sull'uscita, tutte convergenti in un unico sommatore; l'uscita del sommatore è $y(t)$ e alimenta anche la seconda linea.",
+      "perche": "La domanda chiede lo schema prima della formula: è dallo schema che si legge, ramo per ramo, quali segnali ritardati entrano nel sommatore.",
+      "figura": "schema-filtro-ricorrente-semplificato"
+    },
+    {
+      "n": 2,
+      "testo": "Si scrive l'equazione ingresso-uscita leggendo lo schema: l'uscita è la somma degli ingressi ritardati pesati più la somma delle uscite ritardate pesate.",
+      "formula": "y(t) = \\sum_{k=0}^{N-1} h_k\\, x(t-kT) + \\sum_{k=1}^{M} h'_k\\, y(t-kT)",
+      "perche": "Il sommatore somma esattamente i contributi delle prese; la prima somma parte da $k=0$ perché esiste anche la presa senza ritardo, la seconda da $k=1$ perché l'uscita istantanea non può rientrare senza almeno un ritardo."
+    },
+    {
+      "n": 3,
+      "testo": "Si trasforma secondo Fourier membro a membro: ogni ritardo $kT$ diventa il fattore $e^{-jk\\omega T}$.",
+      "formula": "Y(\\omega) = X(\\omega) \\sum_{k=0}^{N-1} h_k e^{-jk\\omega T} + Y(\\omega) \\sum_{k=1}^{M} h'_k e^{-jk\\omega T}",
+      "perche": "Valgono linearità della trasformata e proprietà del ritardo nel tempo, $F[x(t-t_0)] = e^{-j\\omega t_0} X(\\omega)$, perché pesi e ritardi sono costanti."
+    },
+    {
+      "n": 4,
+      "testo": "Si raccoglie $Y(\\omega)$ a primo membro e si divide per $X(\\omega)$, ottenendo la funzione di trasferimento del filtro ricorrente; essa dipende, oltre che da $T$, dai valori di $N$ ed $M$ e da quelli di $h_k$ e $h'_k$, ed è periodica in $\\omega$ con periodo $2\\pi/T$.",
+      "formula": "H(\\omega) = \\frac{Y(\\omega)}{X(\\omega)} = \\frac{\\sum_{k=0}^{N-1} h_k e^{-jk\\omega T}}{1 - \\sum_{k=1}^{M} h'_k e^{-jk\\omega T}}",
+      "perche": "È algebra elementare sul passo 3; la periodicità segue da $e^{-jk\\omega T}$ che non cambia se $\\omega$ cresce di $2\\pi/T$ (punto A4, verificato in file1 p. 15 e in file3)."
+    },
+    {
+      "n": 5,
+      "testo": "Specializzazione chiesta dalla domanda: filtro trasversale, con tutti gli $h'_k$ uguali a zero. Lo schema perde la linea sull'uscita e la funzione di trasferimento diventa una somma finita di esponenziali complessi.",
+      "formula": "H(\\omega) = \\sum_{k=0}^{N-1} h_k e^{-jk\\omega T}",
+      "perche": "Sostituendo $h'_k = 0$ il denominatore del passo 4 vale uno; nel dominio del tempo resta $y(t) = \\sum_k h_k x(t-kT)$.",
+      "figura": "schema-filtro-trasversale"
+    },
+    {
+      "n": 6,
+      "testo": "Altro caso particolare, da citare a chiusura: filtro puramente ricorrente, con gli $h_k$ uguali a zero per $k \\ge 1$ e $h_0 = 1$; resta il solo denominatore.",
+      "formula": "H(\\omega) = \\frac{1}{1 - \\sum_{k=1}^{M} h'_k e^{-jk\\omega T}}",
+      "perche": "È la sostituzione speculare nel passo 4: al numeratore sopravvive solo il termine diretto $h_0 = 1$."
+    },
+    {
+      "n": 7,
+      "testo": "Lettura in termini di zeri e poli nella variabile $e^{-j\\omega T}$: il numeratore da solo dà solo zeri (filtro trasversale), il denominatore da solo dà solo poli (puramente ricorrente), insieme danno zeri e poli (ricorrente). È lo stesso contenuto dei temi di quiz M16, M17 e M18.",
+      "perche": "Numeratore e denominatore sono polinomi nella stessa variabile complessa $e^{-j\\omega T}$; la classificazione segue da quali dei due restano dopo le specializzazioni dei passi 5 e 6.",
+      "figura": "ampiezza-h-trasversale-esempio"
+    }
+  ],
+  "formula_finale": "H(\\omega) = \\sum_{k=0}^{N-1} h_k e^{-jk\\omega T} \\qquad \\text{(trasversale; in generale } H(\\omega) = \\frac{\\sum_{k=0}^{N-1} h_k e^{-jk\\omega T}}{1 - \\sum_{k=1}^{M} h'_k e^{-jk\\omega T}}\\text{)}",
+  "figure": [
+    {
+      "id": "schema-filtro-trasversale",
+      "tipo": "blocchi",
+      "titolo": "Schema a blocchi del filtro trasversale",
+      "descrizione": "Schema a blocchi del filtro trasversale: l'ingresso percorre una linea di ritardo con celle che ritardano ciascuna di T; da ogni presa il segnale ritardato viene moltiplicato per il peso h con indice corrispondente e tutti i prodotti confluiscono in un unico sommatore che fornisce l'uscita.",
+      "blocchi": [
+        {
+          "id": "in",
+          "etichetta": "x(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 1
+        },
+        {
+          "id": "r1",
+          "etichetta": "Ritardo T (1)",
+          "forma": "ritardo",
+          "colonna": 2,
+          "riga": 1
+        },
+        {
+          "id": "r2",
+          "etichetta": "Ritardo T (2)",
+          "forma": "ritardo",
+          "colonna": 4,
+          "riga": 1
+        },
+        {
+          "id": "puntini",
+          "etichetta": "…",
+          "forma": "nodo",
+          "colonna": 6,
+          "riga": 1
+        },
+        {
+          "id": "rn",
+          "etichetta": "Ritardo T (N−1)",
+          "forma": "ritardo",
+          "colonna": 8,
+          "riga": 1
+        },
+        {
+          "id": "m0",
+          "etichetta": "× h₀",
+          "forma": "moltiplicatore",
+          "colonna": 0,
+          "riga": 3
+        },
+        {
+          "id": "m1",
+          "etichetta": "× h₁",
+          "forma": "moltiplicatore",
+          "colonna": 2,
+          "riga": 3
+        },
+        {
+          "id": "m2",
+          "etichetta": "× h₂",
+          "forma": "moltiplicatore",
+          "colonna": 4,
+          "riga": 3
+        },
+        {
+          "id": "mn",
+          "etichetta": "× hN−1",
+          "forma": "moltiplicatore",
+          "colonna": 8,
+          "riga": 3
+        },
+        {
+          "id": "somma",
+          "etichetta": "Sommatore Σ",
+          "forma": "sommatore",
+          "colonna": 4,
+          "riga": 5
+        },
+        {
+          "id": "out",
+          "etichetta": "y(t)",
+          "forma": "uscita",
+          "colonna": 10,
+          "riga": 5
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "in",
+          "a": "r1"
+        },
+        {
+          "da": "r1",
+          "a": "r2"
+        },
+        {
+          "da": "r2",
+          "a": "puntini"
+        },
+        {
+          "da": "puntini",
+          "a": "rn"
+        },
+        {
+          "da": "in",
+          "a": "m0",
+          "etichetta": "x(t)"
+        },
+        {
+          "da": "r1",
+          "a": "m1",
+          "etichetta": "x(t−T)"
+        },
+        {
+          "da": "r2",
+          "a": "m2",
+          "etichetta": "x(t−2T)"
+        },
+        {
+          "da": "rn",
+          "a": "mn",
+          "etichetta": "x(t−(N−1)T)"
+        },
+        {
+          "da": "m0",
+          "a": "somma"
+        },
+        {
+          "da": "m1",
+          "a": "somma"
+        },
+        {
+          "da": "m2",
+          "a": "somma"
+        },
+        {
+          "da": "mn",
+          "a": "somma"
+        },
+        {
+          "da": "somma",
+          "a": "out"
+        }
+      ]
+    },
+    {
+      "id": "schema-filtro-ricorrente-semplificato",
+      "tipo": "blocchi",
+      "titolo": "Filtro ricorrente: struttura semplificata con retroazione",
+      "descrizione": "Schema concettuale semplificato del filtro ricorrente: accanto alla parte trasversale che pesa gli ingressi ritardati, una seconda linea ritarda l'uscita e la riporta, pesata dai coefficienti con apice, allo stesso sommatore. È questa retroazione a introdurre il denominatore nella funzione di trasferimento.",
+      "blocchi": [
+        {
+          "id": "in",
+          "etichetta": "x(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 2
+        },
+        {
+          "id": "trasv",
+          "etichetta": "Parte trasversale: pesi hₖ sugli ingressi ritardati",
+          "forma": "rettangolo",
+          "colonna": 3,
+          "riga": 0
+        },
+        {
+          "id": "somma",
+          "etichetta": "Sommatore Σ",
+          "forma": "sommatore",
+          "colonna": 3,
+          "riga": 2
+        },
+        {
+          "id": "out",
+          "etichetta": "y(t)",
+          "forma": "uscita",
+          "colonna": 9,
+          "riga": 2
+        },
+        {
+          "id": "rity",
+          "etichetta": "Linea di ritardo sull'uscita (celle da T)",
+          "forma": "ritardo",
+          "colonna": 7,
+          "riga": 4
+        },
+        {
+          "id": "pesi",
+          "etichetta": "Pesi h′ₖ sulle uscite ritardate",
+          "forma": "moltiplicatore",
+          "colonna": 3,
+          "riga": 4
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "in",
+          "a": "trasv"
+        },
+        {
+          "da": "trasv",
+          "a": "somma"
+        },
+        {
+          "da": "somma",
+          "a": "out"
+        },
+        {
+          "da": "out",
+          "a": "rity"
+        },
+        {
+          "da": "rity",
+          "a": "pesi"
+        },
+        {
+          "da": "pesi",
+          "a": "somma",
+          "etichetta": "retroazione"
+        }
+      ]
+    },
+    {
+      "id": "ampiezza-h-trasversale-esempio",
+      "tipo": "grafico",
+      "titolo": "Esempio: ampiezza di H(ω) per due soli pesi",
+      "descrizione": "Modulo della funzione di trasferimento di un filtro trasversale con due soli pesi, uno e zero virgola cinque, e ritardo elementare di un secondo: la curva è periodica in pulsazione con periodo due pi greco diviso T, vale uno virgola cinque in continua e zero virgola cinque a metà periodo.",
+      "asse_x": {
+        "etichetta": "ω (rad/s), T = 1 s",
+        "min": 0,
+        "max": 12.5664,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 3.1416,
+            "etichetta": "π/T"
+          },
+          {
+            "valore": 6.2832,
+            "etichetta": "2π/T"
+          },
+          {
+            "valore": 12.5664,
+            "etichetta": "4π/T"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "|H(ω)|",
+        "min": 0,
+        "max": 1.7
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              0.0,
+              1.5
+            ],
+            [
+              0.1047,
+              1.4982
+            ],
+            [
+              0.2094,
+              1.4927
+            ],
+            [
+              0.3142,
+              1.4836
+            ],
+            [
+              0.4189,
+              1.4709
+            ],
+            [
+              0.5236,
+              1.4547
+            ],
+            [
+              0.6283,
+              1.4349
+            ],
+            [
+              0.733,
+              1.4118
+            ],
+            [
+              0.8378,
+              1.3853
+            ],
+            [
+              0.9425,
+              1.3556
+            ],
+            [
+              1.0472,
+              1.3229
+            ],
+            [
+              1.1519,
+              1.2871
+            ],
+            [
+              1.2566,
+              1.2486
+            ],
+            [
+              1.3614,
+              1.2074
+            ],
+            [
+              1.4661,
+              1.1638
+            ],
+            [
+              1.5708,
+              1.118
+            ],
+            [
+              1.6755,
+              1.0703
+            ],
+            [
+              1.7802,
+              1.0208
+            ],
+            [
+              1.885,
+              0.97
+            ],
+            [
+              1.9897,
+              0.9183
+            ],
+            [
+              2.0944,
+              0.866
+            ],
+            [
+              2.1991,
+              0.8138
+            ],
+            [
+              2.3038,
+              0.7621
+            ],
+            [
+              2.4086,
+              0.7119
+            ],
+            [
+              2.5133,
+              0.6641
+            ],
+            [
+              2.618,
+              0.6197
+            ],
+            [
+              2.7227,
+              0.58
+            ],
+            [
+              2.8274,
+              0.5468
+            ],
+            [
+              2.9322,
+              0.5214
+            ],
+            [
+              3.0369,
+              0.5054
+            ],
+            [
+              3.1416,
+              0.5
+            ],
+            [
+              3.2463,
+              0.5054
+            ],
+            [
+              3.351,
+              0.5214
+            ],
+            [
+              3.4558,
+              0.5468
+            ],
+            [
+              3.5605,
+              0.58
+            ],
+            [
+              3.6652,
+              0.6197
+            ],
+            [
+              3.7699,
+              0.6641
+            ],
+            [
+              3.8746,
+              0.7119
+            ],
+            [
+              3.9794,
+              0.7622
+            ],
+            [
+              4.0841,
+              0.8138
+            ],
+            [
+              4.1888,
+              0.866
+            ],
+            [
+              4.2935,
+              0.9183
+            ],
+            [
+              4.3982,
+              0.97
+            ],
+            [
+              4.503,
+              1.0208
+            ],
+            [
+              4.6077,
+              1.0703
+            ],
+            [
+              4.7124,
+              1.118
+            ],
+            [
+              4.8171,
+              1.1638
+            ],
+            [
+              4.9218,
+              1.2074
+            ],
+            [
+              5.0266,
+              1.2486
+            ],
+            [
+              5.1313,
+              1.2871
+            ],
+            [
+              5.236,
+              1.3229
+            ],
+            [
+              5.3407,
+              1.3557
+            ],
+            [
+              5.4454,
+              1.3853
+            ],
+            [
+              5.5502,
+              1.4118
+            ],
+            [
+              5.6549,
+              1.4349
+            ],
+            [
+              5.7596,
+              1.4547
+            ],
+            [
+              5.8643,
+              1.4709
+            ],
+            [
+              5.969,
+              1.4836
+            ],
+            [
+              6.0738,
+              1.4927
+            ],
+            [
+              6.1785,
+              1.4982
+            ],
+            [
+              6.2832,
+              1.5
+            ],
+            [
+              6.3879,
+              1.4982
+            ],
+            [
+              6.4926,
+              1.4927
+            ],
+            [
+              6.5974,
+              1.4836
+            ],
+            [
+              6.7021,
+              1.4709
+            ],
+            [
+              6.8068,
+              1.4547
+            ],
+            [
+              6.9115,
+              1.4349
+            ],
+            [
+              7.0162,
+              1.4118
+            ],
+            [
+              7.121,
+              1.3853
+            ],
+            [
+              7.2257,
+              1.3556
+            ],
+            [
+              7.3304,
+              1.3229
+            ],
+            [
+              7.4351,
+              1.2871
+            ],
+            [
+              7.5398,
+              1.2486
+            ],
+            [
+              7.6446,
+              1.2074
+            ],
+            [
+              7.7493,
+              1.1638
+            ],
+            [
+              7.854,
+              1.118
+            ],
+            [
+              7.9587,
+              1.0703
+            ],
+            [
+              8.0634,
+              1.0208
+            ],
+            [
+              8.1682,
+              0.97
+            ],
+            [
+              8.2729,
+              0.9183
+            ],
+            [
+              8.3776,
+              0.866
+            ],
+            [
+              8.4823,
+              0.8138
+            ],
+            [
+              8.587,
+              0.7621
+            ],
+            [
+              8.6918,
+              0.7119
+            ],
+            [
+              8.7965,
+              0.6641
+            ],
+            [
+              8.9012,
+              0.6196
+            ],
+            [
+              9.0059,
+              0.58
+            ],
+            [
+              9.1106,
+              0.5468
+            ],
+            [
+              9.2154,
+              0.5214
+            ],
+            [
+              9.3201,
+              0.5054
+            ],
+            [
+              9.4248,
+              0.5
+            ],
+            [
+              9.5295,
+              0.5055
+            ],
+            [
+              9.6342,
+              0.5214
+            ],
+            [
+              9.739,
+              0.5468
+            ],
+            [
+              9.8437,
+              0.5801
+            ],
+            [
+              9.9484,
+              0.6197
+            ],
+            [
+              10.0531,
+              0.6641
+            ],
+            [
+              10.1578,
+              0.7119
+            ],
+            [
+              10.2626,
+              0.7622
+            ],
+            [
+              10.3673,
+              0.8138
+            ],
+            [
+              10.472,
+              0.866
+            ],
+            [
+              10.5767,
+              0.9183
+            ],
+            [
+              10.6814,
+              0.9701
+            ],
+            [
+              10.7862,
+              1.0208
+            ],
+            [
+              10.8909,
+              1.0703
+            ],
+            [
+              10.9956,
+              1.118
+            ],
+            [
+              11.1003,
+              1.1639
+            ],
+            [
+              11.205,
+              1.2075
+            ],
+            [
+              11.3098,
+              1.2486
+            ],
+            [
+              11.4145,
+              1.2872
+            ],
+            [
+              11.5192,
+              1.3229
+            ],
+            [
+              11.6239,
+              1.3557
+            ],
+            [
+              11.7286,
+              1.3853
+            ],
+            [
+              11.8334,
+              1.4118
+            ],
+            [
+              11.9381,
+              1.4349
+            ],
+            [
+              12.0428,
+              1.4547
+            ],
+            [
+              12.1475,
+              1.4709
+            ],
+            [
+              12.2522,
+              1.4836
+            ],
+            [
+              12.357,
+              1.4927
+            ],
+            [
+              12.4617,
+              1.4982
+            ],
+            [
+              12.5664,
+              1.5
+            ]
+          ],
+          "etichetta": "|1 + 0,5·e^(−jωT)|"
+        }
+      ]
+    }
+  ],
+  "a_voce": "Disegno prima il filtro generale: l'ingresso scorre in una linea di ritardo fatta di celle da T, ogni presa viene moltiplicata per un peso h con indice k e tutto finisce in un sommatore; nel filtro ricorrente c'è anche una seconda linea che ritarda l'uscita e la riporta, pesata dagli h con apice, allo stesso sommatore. Leggendo lo schema scrivo l'uscita come somma di ingressi ritardati più somma di uscite ritardate. Trasformo termine a termine: ogni ritardo kT diventa e alla meno j k omega T. Raccolgo Y di omega e divido per X di omega: al numeratore restano i pesi dell'ingresso, al denominatore uno meno i pesi di retroazione, e il tutto è periodico in omega con periodo due pi greco diviso T. Il filtro trasversale si ottiene spegnendo la retroazione: sparisce la seconda linea nello schema e il denominatore diventa uno, quindi H di omega è una somma finita di esponenziali pesati. Per questo il trasversale ha solo zeri, mentre il ricorrente ha zeri e poli e il puramente ricorrente solo poli.",
+  "errori_frequenti": [
+    {
+      "errore": "Far partire entrambe le somme da $k = 1$, perdendo il ramo diretto $h_0 x(t)$.",
+      "perche_sbagliato": "Nello schema la prima presa è sull'ingresso senza alcun ritardo: il termine $k = 0$ esiste ed è spesso il più importante.",
+      "correzione": "Somma sugli ingressi da $k = 0$ a $N-1$; somma sulle uscite da $k = 1$ a $M$, perché l'uscita rientra solo dopo almeno un ritardo."
+    },
+    {
+      "errore": "Scrivere il ritardo in frequenza come $e^{+jk\\omega T}$ con il segno più.",
+      "perche_sbagliato": "Con la convenzione di trasformata adottata il ritardo temporale $t_0$ produce $e^{-j\\omega t_0}$; il segno sbagliato ribalta la fase di $H(\\omega)$.",
+      "correzione": "$F[x(t-kT)] = e^{-jk\\omega T} X(\\omega)$: segno meno per tutti i rami, numeratore e denominatore."
+    },
+    {
+      "errore": "Chiamare trasversale il filtro con la sola retroazione, invertendo i ruoli di $h_k$ e $h'_k$.",
+      "perche_sbagliato": "Il trasversale pesa solo gli ingressi ritardati e ha risposta di durata finita; la sola retroazione definisce invece il puramente ricorrente, con soli poli.",
+      "correzione": "Trasversale: $h'_k$ tutti uguali a zero, solo zeri. Puramente ricorrente: $h_k$ uguali a zero per $k \\ge 1$ con $h_0 = 1$, solo poli. Ricorrente: entrambi, zeri e poli."
+    }
+  ],
+  "versione_compatta": [
+    "Schema generale: linea di ritardo su $x$ (pesi $h_k$) + linea su $y$ (pesi $h'_k$) → unico sommatore.",
+    "Tempo: $y(t) = \\sum_{k=0}^{N-1} h_k x(t-kT) + \\sum_{k=1}^{M} h'_k y(t-kT)$.",
+    "Fourier: ritardo $kT \\to e^{-jk\\omega T}$; raccolgo $Y$ e divido per $X$.",
+    "Ricorrente: $H(\\omega) = \\dfrac{\\sum_0^{N-1} h_k e^{-jk\\omega T}}{1 - \\sum_1^{M} h'_k e^{-jk\\omega T}}$, periodica con periodo $2\\pi/T$.",
+    "Trasversale ($h'_k = 0$): $H(\\omega) = \\sum_0^{N-1} h_k e^{-jk\\omega T}$, solo zeri.",
+    "Puramente ricorrente ($h_0 = 1$, altri $h_k = 0$): solo il denominatore, solo poli."
+  ],
+  "a_buchi": {
+    "testo": "Ogni cella della linea introduce un ritardo ___1___, che in frequenza diventa il fattore ___2___. Nel filtro ricorrente $H(\\omega)$ ha al denominatore $1 - \\sum h'_k e^{-jk\\omega T}$ perché l'uscita rientra nel sommatore: è la ___3___. Il filtro trasversale si ottiene ponendo ___4___ e la sua $H(\\omega)$ è una ___5___ finita di esponenziali, periodica in $\\omega$ con periodo ___6___.",
+    "soluzioni": {
+      "1": [
+        "T"
+      ],
+      "2": [
+        "e^{-jkωT}",
+        "e alla -jkωT"
+      ],
+      "3": [
+        "retroazione"
+      ],
+      "4": [
+        "h'_k = 0 per ogni k",
+        "gli h con apice uguali a zero"
+      ],
+      "5": [
+        "somma"
+      ],
+      "6": [
+        "2π/T",
+        "due pi greco diviso T"
+      ]
+    }
+  },
+  "richiamo_attivo": [
+    {
+      "domanda": "Perché la somma sulle uscite ritardate parte da $k = 1$ e non da $k = 0$?",
+      "risposta": "Perché l'uscita può rientrare nel sommatore solo attraverso almeno una cella di ritardo: un ramo con $k = 0$ renderebbe l'uscita definita in funzione di sé stessa allo stesso istante."
+    },
+    {
+      "domanda": "Quale proprietà della trasformata si usa per passare dall'equazione nel tempo a $H(\\omega)$?",
+      "risposta": "Linearità e proprietà del ritardo: $F[x(t-kT)] = e^{-jk\\omega T}X(\\omega)$, applicata a ogni ramo delle due linee."
+    },
+    {
+      "domanda": "Perché $H(\\omega)$ è periodica e con quale periodo?",
+      "risposta": "Perché dipende da $\\omega$ solo tramite $e^{-j\\omega T}$ e le sue potenze: il periodo è $2\\pi/T$, più piccolo se il ritardo elementare cresce."
+    },
+    {
+      "domanda": "Come si classificano i tre filtri rispetto a zeri e poli?",
+      "risposta": "Trasversale: solo zeri (solo numeratore). Puramente ricorrente: solo poli (solo denominatore). Ricorrente: zeri e poli insieme."
+    }
+  ],
+  "collegamenti": [
+    "filtri-ricorrenti-trasversali",
+    "dim-risposta-impulsiva-h"
+  ],
+  "fonti": [
+    {
+      "chiave": "FILE3",
+      "rif": "file3 p. 32 nel sommario di R3 (pagina a stampa 29)"
+    },
+    {
+      "chiave": "FILE1",
+      "rif": "file1 pp. 15-16 (p. 3.20, rif. dello studente)"
+    }
+  ],
+  "verifica": {
+    "stato": "verificata_file1_file3",
+    "data": "2026-10-29",
+    "note": "Confronto pagina per pagina sulle immagini renderizzate di file1 e file3 (appunti di studenti, non il libro); il testo di Calandrino e Immovilli non è stato consultato direttamente e la sua edizione è NON TROVATO, quindi non si dichiara identità con il testo del docente. Punto A4 risolto sulle immagini: numeratore, denominatore e indici delle somme coincidono in file1 p. 15 e nella pagina di file3; la nota sulla periodicità di H(ω) è leggibile in entrambe le fonti.",
+    "punti_aperti": [
+      "Confronto con il libro di Calandrino e Immovilli non ancora fatto: edizione e pagine effettive NON TROVATO; i riferimenti del tipo p. x.y sono quelli riportati dallo studente in file1 (IPOTESI: capitolo.pagina)."
+    ]
+  }
+}

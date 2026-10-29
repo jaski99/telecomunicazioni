@@ -1,0 +1,337 @@
+{
+  "id": "serie-temporali-trasformata",
+  "perche_ti_serve": "È il ponte tecnico di T1 e del criterio di Nyquist: la formula $X_s(\\omega) = \\frac{1}{T}\\sum_k X(\\omega + k\\omega_s)$ con il fattore giusto è il primo passo scritto di entrambe le dimostrazioni.",
+  "scenario": "I campioni della voce telefonica, presi ogni $T$, sono una serie temporale: la sua trasformata è ciò che «vede» il mondo numerico. Capire che è uno spettro ripetuto periodicamente spiega perché, campionando troppo lentamente, frequenze diverse diventano indistinguibili all'altro capo del collegamento.",
+  "definizione_esame": {
+    "definizione": "Data la serie temporale $x_n = x(nT)$, la sua trasformata è $X_s(\\omega) = \\sum_{n=-\\infty}^{+\\infty} x_n e^{-jn\\omega T}$, funzione periodica di $\\omega$ con periodo $\\omega_s = 2\\pi/T$, e vale $X_s(\\omega) = \\frac{1}{T}\\sum_{k} X(\\omega + k\\omega_s)$ dove $X$ è la trasformata del segnale continuo.",
+    "scopo": "Collegare in modo esatto il mondo dei campioni a quello dello spettro continuo, rendendo visibile il fenomeno delle repliche.",
+    "esempio": "Se $x_n$ è zero per ogni $n \\ne 0$ e $x_0 \\ne 0$, allora $X_s(\\omega) = x_0$, costante: è il punto di partenza del criterio di Nyquist in frequenza (file1 p. 4)."
+  },
+  "spiegazione": "### Definizione e periodicità\nLa trasformata di una serie temporale assomiglia a una serie di Fourier «all'inverso»: gli indici discreti sono i tempi e la variabile continua è la pulsazione. La periodicità è immediata: sostituendo $\\omega$ con $\\omega + 2\\pi/T$ ogni esponenziale acquista il fattore $e^{-jn2\\pi} = 1$, quindi $$X_s\\!\\left(\\omega + \\frac{2\\pi}{T}\\right) = X_s(\\omega) \\quad \\text{per ogni } \\omega.$$ Di conseguenza basta conoscerla su un intervallo lungo $2\\pi/T$, tipicamente $(-\\pi/T, \\pi/T)$; fuori si ripete identica. I campioni si recuperano con l'inversione su un periodo: $x_n = \\frac{T}{2\\pi}\\int_{-\\pi/T}^{\\pi/T} X_s(\\omega) e^{jn\\omega T}\\, d\\omega$, dove il fattore $T/(2\\pi)$ è l'analogo discreto-continuo del $1/(2\\pi)$ della trasformata.\n\n### Il legame con lo spettro continuo: la ripetizione\nIl risultato centrale, usato in file1 pp. 4 e 7, dice che la trasformata della serie dei campioni è la ripetizione periodica dello spettro del segnale: $$X_s(\\omega) = \\frac{1}{T} \\sum_{k=-\\infty}^{+\\infty} X(\\omega + k\\omega_s), \\qquad \\omega_s = \\frac{2\\pi}{T}.$$ La lettura corretta degli indici: il termine con $k = 0$ è lo spettro originario; il termine con $k = -1$ è centrato in $+\\omega_s$ e quello con $k = 1$ in $-\\omega_s$ (con il segno più dentro la parentesi, l'indice è «rovesciato» rispetto alla posizione: è un dettaglio da dire a voce per non sbagliare il disegno). Il fattore $1/T$ non è decorativo: è quello che in T1 verrà compensato dal fattore $T$ in ricostruzione (punto A3).\n\n### Convoluzione fra serie e funzione\nGli sviluppi usano anche la convoluzione «mista» $\\{a_n\\} * g(t) = \\sum_n a_n g(t-nT)$ fra una serie temporale e una funzione tempo-continua, con il relativo teorema: in frequenza diventa il prodotto fra la trasformata della serie e la trasformata della funzione. È la scrittura con cui in T5 nascono il PAM ($\\{a_n\\} * g(t)$) e la sua autocorrelazione $\\frac{1}{T}\\{C_k\\} * \\phi(\\tau)$: due applicazioni dello stesso attrezzo.",
+  "analogia": {
+    "testo": "Le repliche sono le immagini di un oggetto fra due specchi paralleli: il mondo dei campioni vede la somma di tutte le immagini, non riesci a sapere quale è l'originale se le immagini si toccano.",
+    "limite": "Negli specchi le immagini si attenuano; qui le repliche sono identiche e con lo stesso fattore $1/T$: non c'è un indizio di ampiezza che distingua quella centrale."
+  },
+  "worked_example": {
+    "titolo": "Verifica numerica della ripetizione",
+    "problema": "Un segnale ha spettro triangolare $|X(\\omega)| = 1 - |\\omega|/3$ per $|\\omega| \\le 3$, zero oltre. Lo campioni con $T = \\pi/3\\ \\mathrm{s}$ (quindi $\\omega_s = 6$). Le repliche si toccano? Quanto vale $X_s(0)$ in modulo?",
+    "passi": [
+      "Confronto: mezza larghezza $\\omega_m = 3$ e periodo di ripetizione $\\omega_s = 6$: serve $\\omega_s \\ge 2\\omega_m$, qui vale l'uguaglianza esatta: le repliche si sfiorano in $\\omega = \\pm 3$ senza sovrapporsi.",
+      "In $\\omega = 0$ contribuisce solo la replica centrale (le altre sono lontane e là valgono zero): $|X_s(0)| = \\frac{1}{T} |X(0)| = \\frac{3}{\\pi} \\cdot 1 \\approx 0{,}9549$.",
+      "Controllo: con $T$ più grande, per esempio $T = \\pi/2$ ($\\omega_s = 4 < 6$), le repliche centrate in $\\pm 4$ invaderebbero la banda $(-3, 3)$."
+    ],
+    "soluzione": "Al limite esatto le repliche si toccano ma non si sovrappongono; $|X_s(0)| \\approx 0{,}955$, con il fattore $1/T$ ben visibile.",
+    "perche_funziona": "Funziona perché ogni replica è larga $2\\omega_m$: il confronto fra larghezza e passo di ripetizione decide tutto, ed è la stessa geometria della dimostrazione T1."
+  },
+  "completion_problem": {
+    "titolo": "Serie con un solo campione non zero",
+    "testo": "Se $x_n = x_0$ per $n = 0$ e zero altrove, allora $X_s(\\omega) = $ ____, e usando la ripetizione si ottiene la condizione $\\sum_k X(\\omega + k\\,2\\pi/T) \\equiv$ ____.",
+    "passi_mancanti": [
+      "Calcolare la serie con un solo termine",
+      "Uguagliare le due espressioni di $X_s$ (è il primo passo di file1 p. 4)"
+    ],
+    "soluzione": "$X_s(\\omega) = x_0$ (costante); uguagliando a $\\frac{1}{T}\\sum_k X(\\omega + k 2\\pi/T)$ si ottiene $\\sum_k X(\\omega + k 2\\pi/T) \\equiv x_0 T$: è la condizione di Nyquist in frequenza del nodo successivo."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Scegliere il passo dai dati spettrali",
+    "testo": "Lo spettro di un segnale è apprezzabile fino a $f_m = 3400\\ \\mathrm{Hz}$ (banda telefonica classica). Qual è il più grande $T$ che mantiene le repliche separate, e quanto vale $\\omega_s$ in quel caso?",
+    "suggerimento": "La condizione è $f_s \\ge 2 f_m$; converti poi in pulsazione con $\\omega_s = 2\\pi f_s$.",
+    "soluzione_attesa": "$f_s \\ge 6800\\ \\mathrm{Hz}$, quindi $T \\le 1/6800 \\approx 147\\ \\mathrm{\\mu s}$ e al limite $\\omega_s = 2\\pi \\cdot 6800 \\approx 42726\\ \\mathrm{rad/s}$, il doppio di $\\omega_m = 2\\pi \\cdot 3400$."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Perdere il fattore $1/T$ nella formula della ripetizione",
+      "perche_sbagliato": "Senza quel fattore le ampiezze non tornano e in T1 non si capisce il fattore $T$ della ricostruzione (punto A3: in file1 p. 9 si legge $X(\\omega) = T X_s(\\omega)$ in banda)."
+    },
+    {
+      "errore": "Disegnare la replica $k = 1$ centrata in $+\\omega_s$",
+      "perche_sbagliato": "Con la scrittura $X(\\omega + k\\omega_s)$ il termine $k = 1$ è centrato in $-\\omega_s$: il più dentro la parentesi sposta il grafico a sinistra, come nelle figure di file1 e file3."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Dimostra in una riga la periodicità di $X_s(\\omega)$.",
+        "risposta": "Con $\\omega \\to \\omega + 2\\pi/T$ ogni termine acquista $e^{-jn2\\pi} = 1$: la somma non cambia."
+      },
+      {
+        "domanda": "Che cosa sono $k$ e $1/T$ nella formula della ripetizione?",
+        "risposta": "$k$ indicizza le copie dello spettro traslate di multipli di $\\omega_s$; $1/T$ è il fattore di scala globale dovuto al campionamento."
+      },
+      {
+        "domanda": "Su quale intervallo basta conoscere $X_s$?",
+        "risposta": "Un intervallo lungo $2\\pi/T$, per esempio $(-\\pi/T, \\pi/T)$: fuori si ripete."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega con parole tue perché conoscere i campioni non significa automaticamente conoscere $X(\\omega)$, usando la figura delle repliche."
+  },
+  "riepilogo": "$X_s(\\omega) = \\sum_n x_n e^{-jn\\omega T}$ è periodica con periodo $2\\pi/T$ ed è uguale alla ripetizione dello spettro continuo scalata di $1/T$. Tutta la teoria di T1 e del criterio di Nyquist è geometria di queste repliche: separate o sovrapposte.",
+  "flashcard": [
+    {
+      "fronte": "Trasformata della serie temporale?",
+      "retro": "$X_s(\\omega) = \\sum_n x_n e^{-jn\\omega T}$, periodo $2\\pi/T$ in $\\omega$."
+    },
+    {
+      "fronte": "Formula della ripetizione?",
+      "retro": "$X_s = \\frac{1}{T}\\sum_k X(\\omega + k\\omega_s)$."
+    },
+    {
+      "fronte": "Replica $k=1$: dove è centrata?",
+      "retro": "In $-\\omega_s$ (il segno più sposta a sinistra)."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "disegnare repliche separate e sovrapposte con indici corretti",
+      "recuperare i campioni da $X_s$ su un periodo"
+    ],
+    "so_dire": [
+      "da dove viene il fattore $1/T$ e dove viene compensato",
+      "perché basta un intervallo di $\\omega$ lungo $2\\pi/T$"
+    ]
+  },
+  "figure": [
+    {
+      "id": "ripetizione-periodica-spettro",
+      "tipo": "grafico",
+      "titolo": "Ripetizione periodica dello spettro",
+      "descrizione": "Lo spettro triangolare di un segnale, largo tre unità, viene ripetuto identico ogni omega esse uguale a cinque: è la forma della trasformata della serie temporale dei campioni, a meno del fattore uno diviso T. Qui le copie sono separate perché la larghezza è minore del periodo di ripetizione.",
+      "asse_x": {
+        "etichetta": "ω (rad/s, unità arbitrarie)",
+        "min": -8,
+        "max": 8,
+        "tacche": [
+          {
+            "valore": -5,
+            "etichetta": "−ωs"
+          },
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 5,
+            "etichetta": "ωs"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "|X(ω)| ripetuto",
+        "min": 0,
+        "max": 1.15
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -1.5,
+              0.0
+            ],
+            [
+              -1.3,
+              0.1333
+            ],
+            [
+              -1.1,
+              0.2667
+            ],
+            [
+              -0.9,
+              0.4
+            ],
+            [
+              -0.7,
+              0.5333
+            ],
+            [
+              -0.5,
+              0.6667
+            ],
+            [
+              -0.3,
+              0.8
+            ],
+            [
+              -0.1,
+              0.9333
+            ],
+            [
+              0.1,
+              0.9333
+            ],
+            [
+              0.3,
+              0.8
+            ],
+            [
+              0.5,
+              0.6667
+            ],
+            [
+              0.7,
+              0.5333
+            ],
+            [
+              0.9,
+              0.4
+            ],
+            [
+              1.1,
+              0.2667
+            ],
+            [
+              1.3,
+              0.1333
+            ],
+            [
+              1.5,
+              0.0
+            ]
+          ],
+          "etichetta": "k = 0"
+        },
+        {
+          "stile": "tratteggio",
+          "punti": [
+            [
+              3.5,
+              0.0
+            ],
+            [
+              3.7,
+              0.1333
+            ],
+            [
+              3.9,
+              0.2667
+            ],
+            [
+              4.1,
+              0.4
+            ],
+            [
+              4.3,
+              0.5333
+            ],
+            [
+              4.5,
+              0.6667
+            ],
+            [
+              4.7,
+              0.8
+            ],
+            [
+              4.9,
+              0.9333
+            ],
+            [
+              5.1,
+              0.9333
+            ],
+            [
+              5.3,
+              0.8
+            ],
+            [
+              5.5,
+              0.6667
+            ],
+            [
+              5.7,
+              0.5333
+            ],
+            [
+              5.9,
+              0.4
+            ],
+            [
+              6.1,
+              0.2667
+            ],
+            [
+              6.3,
+              0.1333
+            ],
+            [
+              6.5,
+              0.0
+            ]
+          ],
+          "etichetta": "k = −1"
+        },
+        {
+          "stile": "tratteggio",
+          "punti": [
+            [
+              -6.5,
+              0.0
+            ],
+            [
+              -6.3,
+              0.1333
+            ],
+            [
+              -6.1,
+              0.2667
+            ],
+            [
+              -5.9,
+              0.4
+            ],
+            [
+              -5.7,
+              0.5333
+            ],
+            [
+              -5.5,
+              0.6667
+            ],
+            [
+              -5.3,
+              0.8
+            ],
+            [
+              -5.1,
+              0.9333
+            ],
+            [
+              -4.9,
+              0.9333
+            ],
+            [
+              -4.7,
+              0.8
+            ],
+            [
+              -4.5,
+              0.6667
+            ],
+            [
+              -4.3,
+              0.5333
+            ],
+            [
+              -4.1,
+              0.4
+            ],
+            [
+              -3.9,
+              0.2667
+            ],
+            [
+              -3.7,
+              0.1333
+            ],
+            [
+              -3.5,
+              0.0
+            ]
+          ],
+          "etichetta": "k = 1"
+        }
+      ]
+    }
+  ]
+}

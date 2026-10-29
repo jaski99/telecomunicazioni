@@ -1,0 +1,149 @@
+{
+  "id": "energia-potenza-spettri",
+  "perche_ti_serve": "Gruppo A, tema di quiz M29 (spettro di energia e autocorrelazione legati dalla trasformata): qui si fissa la convenzione unilaterale decisa per il punto A2, che T5 e poi E7-E9 dovranno usare senza ambiguità.",
+  "scenario": "Sul collegamento numerico della telefonata viaggia un flusso continuo di impulsi PAM: non ha energia totale finita, ha una potenza media. Per sapere in quali bande di pulsazione si concentra quella potenza — e quindi che filtro serve — occorre lo spettro di potenza, con una convenzione dichiarata una volta per tutte.",
+  "definizione_esame": {
+    "definizione": "Spettro di energia: $\\Phi(\\omega) = |X(\\omega)|^2 = F[\\phi(\\tau)]$ con $\\phi$ autocorrelazione del segnale di energia. Spettro di potenza unilaterale adottato nel sito: $G(\\omega) = \\frac{1}{\\pi} F[C(\\tau)]$ per $\\omega \\ge 0$, con $C(\\tau) = \\langle x(t) x(t+\\tau) \\rangle$ e $P = C(0) = \\int_0^{+\\infty} G(\\omega)\\, d\\omega$.",
+    "scopo": "Distribuire sulle pulsazioni energia e potenza e calcolare l'una o l'altra integrando lo spettro, con il fattore giusto per la convenzione scelta.",
+    "esempio": "Se $G(\\omega) = G_0$ fra $0$ e $\\omega_m$ e zero oltre, la potenza è semplicemente $P = G_0 \\omega_m$: nessun fattore aggiuntivo, come nello sviluppo del derivatore in file1 p. 23."
+  },
+  "spiegazione": "### Energia: Parseval e autocorrelazione\nPer un segnale di energia valgono tre facce della stessa quantità: $$E = \\int |x(t)|^2 dt = \\frac{1}{2\\pi}\\int_{-\\infty}^{+\\infty} |X(\\omega)|^2 d\\omega, \\qquad F[\\phi(\\tau)] = |X(\\omega)|^2,$$ dove $\\phi(\\tau) = \\int x(t) x(t+\\tau)\\, dt$ è l'autocorrelazione (per segnali reali) e $\\phi(0) = E$. Il tema M29 chiede proprio questo: **spettro di energia e autocorrelazione sono una coppia di Fourier**. È la relazione che in T5 userai per l'impulso formatore $g(t)$.\n\n### Potenza: la decisione sul punto A2\nPer i segnali di potenza si definisce l'autocorrelazione temporale $C(\\tau)$ e si vorrebbe la sua distribuzione in frequenza. Le fonti parlano chiaro: in file1 p. 21 lo spettro è $G_x(\\omega) = F[C(\\tau)]/\\pi$ e in file1 p. 23 la potenza si calcola come $P = \\int_0^{\\omega_m} G_y(\\omega)\\, d\\omega$ senza altri fattori. Quindi la convenzione del sito è: **densità unilaterale in $\\omega$**, definita per $\\omega \\ge 0$, con $$G(\\omega) = \\frac{1}{\\pi} F[C(\\tau)], \\qquad P = \\int_0^{+\\infty} G(\\omega) \\, d\\omega = C(0).$$ La verifica è immediata: antitrasformando in $\\tau = 0$, $C(0) = \\frac{1}{2\\pi}\\int_{-\\infty}^{+\\infty} F[C]\\, d\\omega = \\frac{1}{\\pi}\\int_0^{+\\infty} F[C]\\, d\\omega$ perché $F[C]$ è pari e reale per segnali reali. Chi preferisce la densità bilaterale per radiante, $\\mathcal{S}(\\omega) = F[C]/(2\\pi)$ con $P = \\int_{-\\infty}^{+\\infty} \\mathcal{S}\\, d\\omega$, trova $\\mathcal{S} = G/2$ sulle pulsazioni positive: di qui nasce il «doppio» che separa il fattore $1/(\\pi T)$ di T5 dal $1/(2\\pi T)$ di altri testi. Dettagli e tabella di conversione in NOTAZIONE.md.\n\n### Come si usa in pratica\nAttraverso una rete lineare con funzione di trasferimento $H(\\omega)$, lo spettro di potenza in uscita è $G_y(\\omega) = |H(\\omega)|^2 G_x(\\omega)$ nella stessa convenzione: è il passaggio che in file1 p. 23 trasforma lo spettro costante $G_0$ in $\\omega^2 G_0$ all'uscita di un derivatore ($|H|^2 = \\omega^2$). La potenza in uscita è poi l'integrale sulle pulsazioni positive. Regola di sopravvivenza: **dichiara sempre la convenzione prima del primo integrale** e controlla che in $\\tau = 0$ (o integrando lo spettro) torni la potenza che ti aspetti.",
+  "analogia": {
+    "testo": "Lo spettro unilaterale è come contare il traffico di un'autostrada su una sola carreggiata raddoppiando i conteggi: il bilancio totale torna, purché dichiari che stai contando così.",
+    "limite": "L'analogia non spiega perché il fattore in $\\omega$ sia $\\pi$ e non $2\\pi$: quello viene dal fattore $1/(2\\pi)$ dell'antitrasformata combinato con la parità dello spettro."
+  },
+  "worked_example": {
+    "titolo": "Potenza da uno spettro costante, e controllo",
+    "problema": "Un segnale ha $G(\\omega) = 2$ per $0 \\le \\omega \\le 5\\ \\mathrm{rad/s}$ e zero oltre (unilaterale). Calcolare la potenza e il valore corrispondente della densità bilaterale $\\mathcal{S}(\\omega)$.",
+    "passi": [
+      "Potenza unilaterale: $P = \\int_0^5 2\\, d\\omega = 10$.",
+      "Conversione: sulle pulsazioni positive $\\mathcal{S}(\\omega) = G(\\omega)/2 = 1$, e per parità lo stesso sulle negative.",
+      "Controllo bilaterale: $\\int_{-5}^{5} 1\\, d\\omega = 10$: la potenza è la stessa, come deve essere."
+    ],
+    "soluzione": "$P = 10$ in entrambe le convenzioni; la densità bilaterale vale $1$ su $(-5, 5)$.",
+    "perche_funziona": "Funziona perché le convenzioni ridefiniscono solo come si spalma la stessa potenza sull'asse: unilaterale concentra tutto in $\\omega \\ge 0$ con valori doppi rispetto alla bilaterale per radiante."
+  },
+  "completion_problem": {
+    "titolo": "Uscita di una rete con |H|² dato",
+    "testo": "In ingresso $G_x(\\omega) = 3$ per $0 \\le \\omega \\le 2$. Una rete ha $|H(\\omega)|^2 = \\omega^2$. Allora $G_y(\\omega) = $ ____ e la potenza in uscita è ____.",
+    "passi_mancanti": [
+      "Moltiplicare lo spettro per il modulo quadro",
+      "Integrare sulle sole pulsazioni positive"
+    ],
+    "soluzione": "$G_y(\\omega) = 3\\omega^2$ per $0 \\le \\omega \\le 2$; potenza $P_y = \\int_0^2 3\\omega^2 d\\omega = [\\omega^3]_0^2 = 8$. È lo stesso calcolo dello sviluppo del derivatore in file1 p. 23, dove l'integrale dà $G_0 \\omega_m^3/3$."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Da C(0) allo spettro",
+    "testo": "Un processo ha autocorrelazione con $C(0) = 4$ e spettro unilaterale triangolare: $G(\\omega) = G_0(1 - \\omega/4)$ per $0 \\le \\omega \\le 4$. Trova $G_0$.",
+    "suggerimento": "Deve valere $\\int_0^{+\\infty} G\\, d\\omega = C(0)$; l'area del triangolo è base per altezza diviso due.",
+    "soluzione_attesa": "Area $= \\frac{4 \\cdot G_0}{2} = 2 G_0 = 4$, quindi $G_0 = 2$. Se avessi usato per errore la bilaterale avresti imposto il doppio dell'area e trovato $G_0 = 1$."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Integrare la densità unilaterale da $-\\infty$ a $+\\infty$",
+      "perche_sbagliato": "La densità unilaterale è definita (e disegnata) per $\\omega \\ge 0$ e già contiene entrambi i contributi: integrarla anche sulle negative raddoppia la potenza."
+    },
+    {
+      "errore": "Portare il fattore $1/(2\\pi)$ davanti all'integrale della potenza nella convenzione del sito",
+      "perche_sbagliato": "Quel fattore appartiene alla coppia con $F[C]$ bilaterale in $\\omega$; con $G = F[C]/\\pi$ la potenza è l'integrale nudo sulle pulsazioni positive (punto A2)."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "M29: da che cosa è legato lo spettro di energia all'autocorrelazione?",
+        "risposta": "Dalla trasformata di Fourier: $F[\\phi(\\tau)] = |X(\\omega)|^2$."
+      },
+      {
+        "domanda": "Scrivi la definizione unilaterale adottata e la formula della potenza.",
+        "risposta": "$G(\\omega) = F[C(\\tau)]/\\pi$ per $\\omega \\ge 0$ e $P = \\int_0^{+\\infty} G\\, d\\omega = C(0)$, come in file1 pp. 21-23."
+      },
+      {
+        "domanda": "Se un testo usa la bilaterale per radiante, come converti?",
+        "risposta": "$\\mathcal{S}(\\omega) = G(\\omega)/2$ per $\\omega > 0$, estesa pari alle negative, e $P = \\int_{-\\infty}^{+\\infty} \\mathcal{S}\\, d\\omega$: nasce così il fattore $1/(2\\pi T)$ al posto di $1/(\\pi T)$."
+      },
+      {
+        "domanda": "Come cambia lo spettro di potenza attraverso una rete lineare?",
+        "risposta": "Si moltiplica per $|H(\\omega)|^2$, nella stessa convenzione in ingresso e in uscita."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega a parole tue perché nel fattore unilaterale compare $\\pi$ e non $2\\pi$, usando l'antitrasformata in $\\tau = 0$ e la parità."
+  },
+  "riepilogo": "Energia: $|X(\\omega)|^2$ è la trasformata dell'autocorrelazione e $\\phi(0) = E$. Potenza (punto A2 deciso): densità unilaterale $G = F[C]/\\pi$ per $\\omega \\ge 0$, $P = \\int_0^{\\infty} G\\, d\\omega = C(0)$; la bilaterale vale la metà e spiega il $2\\pi$ dei testi che la usano. Dichiarare la convenzione è parte della risposta.",
+  "flashcard": [
+    {
+      "fronte": "$G(\\omega)$ unilaterale da $C(\\tau)$?",
+      "retro": "$G = F[C]/\\pi$, per $\\omega \\ge 0$."
+    },
+    {
+      "fronte": "Potenza dalla $G$ unilaterale?",
+      "retro": "$P = \\int_0^{\\infty} G\\, d\\omega = C(0)$."
+    },
+    {
+      "fronte": "Spettro in uscita da una rete?",
+      "retro": "Moltiplicato per $|H(\\omega)|^2$."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "calcolare la potenza integrando sulle pulsazioni positive",
+      "convertire unilaterale e bilaterale senza perdere il fattore due"
+    ],
+    "so_dire": [
+      "la decisione A2 con le due evidenze di file1 (pp. 21 e 23)",
+      "il legame M29 fra autocorrelazione e spettro di energia"
+    ]
+  },
+  "figure": [
+    {
+      "id": "densita-unilaterale-esempio",
+      "tipo": "grafico",
+      "titolo": "Densità spettrale di potenza unilaterale costante",
+      "descrizione": "Esempio di spettro di potenza unilaterale: costante pari a zero virgola cinque fra zero e quattro radianti al secondo e zero oltre. La potenza è l'area del rettangolo, due, perché nella convenzione unilaterale la potenza è l'integrale sulle sole pulsazioni positive.",
+      "asse_x": {
+        "etichetta": "ω (rad/s)",
+        "min": 0,
+        "max": 6,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 4,
+            "etichetta": "ωm = 4"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "G(ω)",
+        "min": 0,
+        "max": 0.7
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              0,
+              0.5
+            ],
+            [
+              4,
+              0.5
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              6,
+              0
+            ]
+          ],
+          "etichetta": "G(ω) = 0,5 per 0 ≤ ω ≤ 4"
+        }
+      ]
+    }
+  ]
+}

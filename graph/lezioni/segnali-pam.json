@@ -1,0 +1,873 @@
+{
+  "id": "segnali-pam",
+  "perche_ti_serve": "È il prerequisito concettuale della dimostrazione T5 da 10 punti: definizione, convoluzione con l'impulso formatore e scomposizione nelle due componenti devono essere automatiche prima di affrontare il calcolo degli spettri.",
+  "scenario": "La voce campionata della telefonata diventa una fila di numeri; per spedirli sul collegamento ogni numero scalda un impulso elettrico identico agli altri, più alto o più basso (o di segno opposto) a seconda del valore: quel treno di impulsi modulati in ampiezza è il segnale PAM da analizzare in questo nodo e da «spettrare» in T5.",
+  "definizione_esame": {
+    "definizione": "$s(t) = \\sum_{n=-\\infty}^{+\\infty} a_n\\, g(t-nT) = \\{a_n\\} * g(t)$: successione di impulsi ottenuti da $g(t)$ (energia finita) per traslazioni di multipli di $T$ e moltiplicati per i simboli della serie temporale $\\{a_n\\}$ (potenza finita). Con $x_n = a_n - \\langle a_n \\rangle$ si ha $s(t) = s_m(t) + x(t)$.",
+    "scopo": "Tradurre una serie temporale di simboli in un segnale tempo-continuo trasmettibile, di cui controllare banda occupata e struttura spettrale.",
+    "esempio": "Simboli binari $1, 0, 1, 1, 0, 1$ e impulso a campana: dove il simbolo è $0$ l'impulso manca, dove è $1$ compare con la forma di $g$; impulsi vicini possono sovrapporsi parzialmente (figura della lezione)."
+  },
+  "spiegazione": "### Gli ingredienti e la loro fisica\nLa serie temporale $\\{a_n\\}$ è la successione dei valori da trasmettere: campioni di un segnale analogico (PAM «naturale», eredità di T1) o simboli di un codice di linea (PAM numerico: bipolare, AMI e simili, esercizi E8-E9). L'impulso formatore $g(t)$ è la forma elettrica assegnata a ogni simbolo: deve avere **energia finita** e in genere dura dell'ordine di $T$ o più, quindi impulsi consecutivi **possono sovrapporsi**: il segnale in un istante è la somma dei contributi di più simboli, ed è per questo che serve il criterio di Nyquist del nodo precedente per rileggerli senza interferenza. Il periodo $T$ è il tempo di simbolo: $1/T$ simboli al secondo.\n\n### La scrittura come convoluzione e le medie dei simboli\nScrivere $s(t) = \\{a_n\\} * g(t)$ non è un vezzo: è la stessa convoluzione mista serie-funzione del nodo sulle serie temporali, e dice che la trasformata si fattorizza nel prodotto fra trasformata della serie e $G(\\omega)$. Le quantità che governano tutto sono tre medie temporali sui simboli: il valor medio $\\langle a_n \\rangle$, la potenza $\\langle a_n^2 \\rangle = \\lim_{N \\to \\infty} \\frac{1}{2N}\\sum_{-N}^{N} a_n^2$ (finita per ipotesi) e i prodotti a distanza $\\langle a_n a_{n+k} \\rangle$. A seconda del codice queste medie si calcolano per conteggio (serie deterministica) o come valori attesi (serie aleatoria stazionaria): il formalismo degli sviluppi le tratta allo stesso modo, con le parentesi angolari.\n\n### La scomposizione che genera i due spettri\nCon $x_n = a_n - \\langle a_n \\rangle$, che ha certamente valor medio zero, il segnale si spezza in $$s_m(t) = \\langle a_n \\rangle \\sum_n g(t-nT) \\quad \\text{e} \\quad x(t) = \\sum_n x_n g(t-nT).$$ Il primo è la ripetizione periodica di $g$: è un segnale deterministico periodico e avrà uno **spettro a righe**; il secondo è un PAM a valor medio zero, trattabile solo con autocorrelazione e **spettro di potenza distribuito**. Capire questa scomposizione è capire il titolo di T5: «i due spettri» sono proprio questi, e si sovrappongono. Corollario immediato da segnare: se il codice ha $\\langle a_n \\rangle = 0$, la componente $s_m$ non esiste e lo spettro è solo distribuito.",
+  "analogia": {
+    "testo": "Il PAM è un carillon a rullo: il rullo (la serie dei simboli) decide quali note suonano e con che forza, la lamella metallica (l'impulso g) è sempre la stessa e la sua vibrazione può durare più dell'intervallo fra due note.",
+    "limite": "Nel carillon le note si sommano in potenza acustica senza cancellazioni di segno; nel PAM i simboli possono essere negativi e i contributi si sommano con segno, fino ad annullarsi agli istanti giusti."
+  },
+  "worked_example": {
+    "titolo": "Medie di un piccolo codice periodico",
+    "problema": "La serie dei simboli si ripete con periodo di 4 simboli: $1, 1, 0, -1$. Calcolare $\\langle a_n \\rangle$, $\\langle a_n^2 \\rangle$ e $C_0 = \\langle a_n^2 \\rangle - [\\langle a_n \\rangle]^2$; esistono le righe spettrali?",
+    "passi": [
+      "Valor medio: $(1 + 1 + 0 - 1)/4 = 0{,}25$.",
+      "Potenza: $(1 + 1 + 0 + 1)/4 = 0{,}75$.",
+      "$C_0 = 0{,}75 - 0{,}0625 = 0{,}6875$. Il valor medio è diverso da zero, quindi $s_m(t)$ esiste: ci saranno righe spettrali oltre al continuo."
+    ],
+    "soluzione": "$\\langle a_n \\rangle = 0{,}25$, $\\langle a_n^2 \\rangle = 0{,}75$, $C_0 = 0{,}6875$; spettro con righe più parte distribuita.",
+    "perche_funziona": "Per una serie periodica le medie temporali sono medie su un periodo della serie: è lo stesso meccanismo con cui, per i codici aleatori, si passa alle probabilità dei simboli."
+  },
+  "completion_problem": {
+    "titolo": "Chi genera che cosa",
+    "testo": "Nella scomposizione $s(t) = s_m(t) + x(t)$: lo spettro a righe nasce da ____ perché è ____; lo spettro distribuito nasce da ____ e si ottiene dalla sua ____.",
+    "passi_mancanti": [
+      "Associare ogni componente alla sua natura",
+      "Associare ogni componente al suo strumento di analisi"
+    ],
+    "soluzione": "Le righe nascono da $s_m(t) = \\langle a_n \\rangle \\sum_n g(t-nT)$ perché è un segnale **periodico** (serie di Fourier). Il distribuito nasce da $x(t) = \\sum_n x_n g(t-nT)$ a valor medio zero e si ottiene trasformando la sua **autocorrelazione** (nella convenzione unilaterale)."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Codice bipolare ideale",
+    "testo": "I simboli sono $+1$ e $-1$ con uguale frequenza, indipendenti simbolo per simbolo. Valuta $\\langle a_n \\rangle$, $\\langle a_n^2 \\rangle$, $\\langle a_n a_{n+1} \\rangle$ e anticipa la forma dello spettro (righe? dipendenza dai coseni?).",
+    "suggerimento": "Per simboli indipendenti la media del prodotto è il prodotto delle medie.",
+    "soluzione_attesa": "$\\langle a_n \\rangle = 0$ (niente righe), $\\langle a_n^2 \\rangle = 1$, $\\langle a_n a_{n+1} \\rangle = \\langle a_n \\rangle \\langle a_{n+1} \\rangle = 0$, così come a ogni distanza diversa da zero. Lo spettro sarà solo distribuito e proporzionale a $|G(\\omega)|^2$: è il punto di partenza dell'esercizio E8."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Pensare che gli impulsi non si sovrappongano mai perché «uno per simbolo»",
+      "perche_sbagliato": "L'impulso formatore può durare più di $T$ (anzi quelli a banda di Nyquist durano idealmente all'infinito): il segnale è una somma di contributi sovrapposti, e la lettura corretta agli istanti $nT$ è garantita dal criterio di Nyquist, non dall'assenza di sovrapposizione."
+    },
+    {
+      "errore": "Confondere $G(\\omega)$ trasformata dell'impulso con $G_x(\\omega)$ spettro di potenza",
+      "perche_sbagliato": "Negli appunti la stessa lettera $G$ ha i due ruoli distinti solo dal pedice: nel fattore $|G(\\omega)|^2$ di T5 è la trasformata dell'impulso formatore $g(t)$, mentre il risultato dello spettro porta il pedice $x$."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Scrivi la definizione di PAM nelle due forme.",
+        "risposta": "$s(t) = \\sum_n a_n g(t-nT)$ e, come convoluzione mista, $s(t) = \\{a_n\\} * g(t)$."
+      },
+      {
+        "domanda": "Quali ipotesi sui simboli e su $g(t)$ servono a T5?",
+        "risposta": "Serie dei simboli a potenza finita $\\langle a_n^2 \\rangle < \\infty$ e serie centrata parzialmente coerente; impulso $g(t)$ a energia finita con $F[\\phi] = |G(\\omega)|^2$."
+      },
+      {
+        "domanda": "Quando spariscono le righe dallo spettro del PAM?",
+        "risposta": "Quando $\\langle a_n \\rangle = 0$: la componente periodica $s_m(t)$ è identicamente assente e resta il solo spettro distribuito."
+      },
+      {
+        "domanda": "Che relazione c'è fra questo nodo e il criterio di Nyquist?",
+        "risposta": "L'impulso complessivo visto dal decisore deve soddisfare il criterio di Nyquist perché agli istanti $nT$ ogni simbolo sia letto senza il contributo degli altri, nonostante la sovrapposizione fra un istante e l'altro."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega con parole tue perché separare il valor medio dei simboli è la mossa che rende trattabile il calcolo dello spettro."
+  },
+  "riepilogo": "PAM: stessa forma d'impulso ogni $T$, ampiezza data dai simboli; scrittura come convoluzione serie-impulso. Le tre medie dei simboli governano lo spettro. Scomposizione in parte periodica (righe, solo se $\\langle a_n \\rangle \\ne 0$) e parte a media zero (spettro distribuito): è la mappa di T5.",
+  "flashcard": [
+    {
+      "fronte": "Definizione di PAM?",
+      "retro": "$s(t) = \\sum_n a_n g(t-nT) = \\{a_n\\} * g(t)$."
+    },
+    {
+      "fronte": "Componente che dà le righe?",
+      "retro": "$s_m(t) = \\langle a_n \\rangle \\sum_n g(t-nT)$, periodica."
+    },
+    {
+      "fronte": "Simboli centrati $x_n$?",
+      "retro": "$x_n = a_n - \\langle a_n \\rangle$: valor medio zero per costruzione."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "disegnare la forma d'onda PAM da simboli e impulso dati",
+      "calcolare le tre medie per codici periodici o con probabilità semplici"
+    ],
+    "so_dire": [
+      "perché la scomposizione genera due spettri di natura diversa",
+      "il doppio ruolo della lettera $G$ negli appunti"
+    ]
+  },
+  "figure": [
+    {
+      "id": "forma-onda-pam",
+      "tipo": "grafico",
+      "titolo": "Forma d'onda di un segnale PAM",
+      "descrizione": "Forma d'onda PAM con simboli uno, zero, uno, uno, zero, uno e impulso formatore a campana: dove il simbolo è zero manca la gobba, dove due simboli vicini valgono uno le gobbe si sommano parzialmente. L'ampiezza di ogni impulso è il simbolo stesso.",
+      "asse_x": {
+        "etichetta": "t (in unità di T)",
+        "min": -0.5,
+        "max": 5.5,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 1,
+            "etichetta": "T"
+          },
+          {
+            "valore": 2,
+            "etichetta": "2T"
+          },
+          {
+            "valore": 3,
+            "etichetta": "3T"
+          },
+          {
+            "valore": 4,
+            "etichetta": "4T"
+          },
+          {
+            "valore": 5,
+            "etichetta": "5T"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "s(t)",
+        "min": 0,
+        "max": 1.6
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -0.5,
+              0.2494
+            ],
+            [
+              -0.4667,
+              0.2982
+            ],
+            [
+              -0.4333,
+              0.3523
+            ],
+            [
+              -0.4,
+              0.4111
+            ],
+            [
+              -0.3667,
+              0.4738
+            ],
+            [
+              -0.3333,
+              0.5394
+            ],
+            [
+              -0.3,
+              0.6065
+            ],
+            [
+              -0.2667,
+              0.6736
+            ],
+            [
+              -0.2333,
+              0.739
+            ],
+            [
+              -0.2,
+              0.8007
+            ],
+            [
+              -0.1667,
+              0.857
+            ],
+            [
+              -0.1333,
+              0.906
+            ],
+            [
+              -0.1,
+              0.946
+            ],
+            [
+              -0.0667,
+              0.9756
+            ],
+            [
+              -0.0333,
+              0.9938
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0333,
+              0.9938
+            ],
+            [
+              0.0667,
+              0.9756
+            ],
+            [
+              0.1,
+              0.946
+            ],
+            [
+              0.1333,
+              0.906
+            ],
+            [
+              0.1667,
+              0.857
+            ],
+            [
+              0.2,
+              0.8007
+            ],
+            [
+              0.2333,
+              0.739
+            ],
+            [
+              0.2667,
+              0.6736
+            ],
+            [
+              0.3,
+              0.6065
+            ],
+            [
+              0.3333,
+              0.5394
+            ],
+            [
+              0.3667,
+              0.4738
+            ],
+            [
+              0.4,
+              0.4111
+            ],
+            [
+              0.4333,
+              0.3523
+            ],
+            [
+              0.4667,
+              0.2982
+            ],
+            [
+              0.5,
+              0.2494
+            ],
+            [
+              0.5333,
+              0.2059
+            ],
+            [
+              0.5667,
+              0.168
+            ],
+            [
+              0.6,
+              0.1354
+            ],
+            [
+              0.6333,
+              0.1077
+            ],
+            [
+              0.6667,
+              0.0847
+            ],
+            [
+              0.7,
+              0.0658
+            ],
+            [
+              0.7333,
+              0.0505
+            ],
+            [
+              0.7667,
+              0.0384
+            ],
+            [
+              0.8,
+              0.0289
+            ],
+            [
+              0.8333,
+              0.0216
+            ],
+            [
+              0.8667,
+              0.0162
+            ],
+            [
+              0.9,
+              0.0123
+            ],
+            [
+              0.9333,
+              0.0097
+            ],
+            [
+              0.9667,
+              0.0082
+            ],
+            [
+              1.0,
+              0.0077
+            ],
+            [
+              1.0333,
+              0.0082
+            ],
+            [
+              1.0667,
+              0.0097
+            ],
+            [
+              1.1,
+              0.0123
+            ],
+            [
+              1.1333,
+              0.0162
+            ],
+            [
+              1.1667,
+              0.0216
+            ],
+            [
+              1.2,
+              0.0289
+            ],
+            [
+              1.2333,
+              0.0384
+            ],
+            [
+              1.2667,
+              0.0505
+            ],
+            [
+              1.3,
+              0.0658
+            ],
+            [
+              1.3333,
+              0.0847
+            ],
+            [
+              1.3667,
+              0.1077
+            ],
+            [
+              1.4,
+              0.1354
+            ],
+            [
+              1.4333,
+              0.168
+            ],
+            [
+              1.4667,
+              0.2059
+            ],
+            [
+              1.5,
+              0.2494
+            ],
+            [
+              1.5333,
+              0.2982
+            ],
+            [
+              1.5667,
+              0.3523
+            ],
+            [
+              1.6,
+              0.4111
+            ],
+            [
+              1.6333,
+              0.4739
+            ],
+            [
+              1.6667,
+              0.5395
+            ],
+            [
+              1.7,
+              0.6066
+            ],
+            [
+              1.7333,
+              0.6738
+            ],
+            [
+              1.7667,
+              0.7392
+            ],
+            [
+              1.8,
+              0.8011
+            ],
+            [
+              1.8333,
+              0.8575
+            ],
+            [
+              1.8667,
+              0.9068
+            ],
+            [
+              1.9,
+              0.9472
+            ],
+            [
+              1.9333,
+              0.9774
+            ],
+            [
+              1.9667,
+              0.9965
+            ],
+            [
+              2.0,
+              1.0039
+            ],
+            [
+              2.0333,
+              0.9994
+            ],
+            [
+              2.0667,
+              0.9835
+            ],
+            [
+              2.1,
+              0.9571
+            ],
+            [
+              2.1333,
+              0.9214
+            ],
+            [
+              2.1667,
+              0.8781
+            ],
+            [
+              2.2,
+              0.8293
+            ],
+            [
+              2.2333,
+              0.7772
+            ],
+            [
+              2.2667,
+              0.724
+            ],
+            [
+              2.3,
+              0.6723
+            ],
+            [
+              2.3333,
+              0.6241
+            ],
+            [
+              2.3667,
+              0.5815
+            ],
+            [
+              2.4,
+              0.5464
+            ],
+            [
+              2.4333,
+              0.5203
+            ],
+            [
+              2.4667,
+              0.5042
+            ],
+            [
+              2.5,
+              0.4987
+            ],
+            [
+              2.5333,
+              0.5042
+            ],
+            [
+              2.5667,
+              0.5203
+            ],
+            [
+              2.6,
+              0.5464
+            ],
+            [
+              2.6333,
+              0.5815
+            ],
+            [
+              2.6667,
+              0.6241
+            ],
+            [
+              2.7,
+              0.6723
+            ],
+            [
+              2.7333,
+              0.724
+            ],
+            [
+              2.7667,
+              0.7772
+            ],
+            [
+              2.8,
+              0.8293
+            ],
+            [
+              2.8333,
+              0.8781
+            ],
+            [
+              2.8667,
+              0.9214
+            ],
+            [
+              2.9,
+              0.9571
+            ],
+            [
+              2.9333,
+              0.9835
+            ],
+            [
+              2.9667,
+              0.9994
+            ],
+            [
+              3.0,
+              1.0039
+            ],
+            [
+              3.0333,
+              0.9965
+            ],
+            [
+              3.0667,
+              0.9774
+            ],
+            [
+              3.1,
+              0.9472
+            ],
+            [
+              3.1333,
+              0.9068
+            ],
+            [
+              3.1667,
+              0.8575
+            ],
+            [
+              3.2,
+              0.8011
+            ],
+            [
+              3.2333,
+              0.7392
+            ],
+            [
+              3.2667,
+              0.6738
+            ],
+            [
+              3.3,
+              0.6066
+            ],
+            [
+              3.3333,
+              0.5395
+            ],
+            [
+              3.3667,
+              0.4739
+            ],
+            [
+              3.4,
+              0.4111
+            ],
+            [
+              3.4333,
+              0.3523
+            ],
+            [
+              3.4667,
+              0.2982
+            ],
+            [
+              3.5,
+              0.2494
+            ],
+            [
+              3.5333,
+              0.2059
+            ],
+            [
+              3.5667,
+              0.168
+            ],
+            [
+              3.6,
+              0.1354
+            ],
+            [
+              3.6333,
+              0.1077
+            ],
+            [
+              3.6667,
+              0.0847
+            ],
+            [
+              3.7,
+              0.0658
+            ],
+            [
+              3.7333,
+              0.0505
+            ],
+            [
+              3.7667,
+              0.0384
+            ],
+            [
+              3.8,
+              0.0289
+            ],
+            [
+              3.8333,
+              0.0216
+            ],
+            [
+              3.8667,
+              0.0162
+            ],
+            [
+              3.9,
+              0.0123
+            ],
+            [
+              3.9333,
+              0.0097
+            ],
+            [
+              3.9667,
+              0.0082
+            ],
+            [
+              4.0,
+              0.0077
+            ],
+            [
+              4.0333,
+              0.0082
+            ],
+            [
+              4.0667,
+              0.0097
+            ],
+            [
+              4.1,
+              0.0123
+            ],
+            [
+              4.1333,
+              0.0162
+            ],
+            [
+              4.1667,
+              0.0216
+            ],
+            [
+              4.2,
+              0.0289
+            ],
+            [
+              4.2333,
+              0.0384
+            ],
+            [
+              4.2667,
+              0.0505
+            ],
+            [
+              4.3,
+              0.0658
+            ],
+            [
+              4.3333,
+              0.0847
+            ],
+            [
+              4.3667,
+              0.1077
+            ],
+            [
+              4.4,
+              0.1354
+            ],
+            [
+              4.4333,
+              0.168
+            ],
+            [
+              4.4667,
+              0.2059
+            ],
+            [
+              4.5,
+              0.2494
+            ],
+            [
+              4.5333,
+              0.2982
+            ],
+            [
+              4.5667,
+              0.3523
+            ],
+            [
+              4.6,
+              0.4111
+            ],
+            [
+              4.6333,
+              0.4738
+            ],
+            [
+              4.6667,
+              0.5394
+            ],
+            [
+              4.7,
+              0.6065
+            ],
+            [
+              4.7333,
+              0.6736
+            ],
+            [
+              4.7667,
+              0.739
+            ],
+            [
+              4.8,
+              0.8007
+            ],
+            [
+              4.8333,
+              0.857
+            ],
+            [
+              4.8667,
+              0.906
+            ],
+            [
+              4.9,
+              0.946
+            ],
+            [
+              4.9333,
+              0.9756
+            ],
+            [
+              4.9667,
+              0.9938
+            ],
+            [
+              5.0,
+              1.0
+            ],
+            [
+              5.0333,
+              0.9938
+            ],
+            [
+              5.0667,
+              0.9756
+            ],
+            [
+              5.1,
+              0.946
+            ],
+            [
+              5.1333,
+              0.906
+            ],
+            [
+              5.1667,
+              0.857
+            ],
+            [
+              5.2,
+              0.8007
+            ],
+            [
+              5.2333,
+              0.739
+            ],
+            [
+              5.2667,
+              0.6736
+            ],
+            [
+              5.3,
+              0.6065
+            ],
+            [
+              5.3333,
+              0.5394
+            ],
+            [
+              5.3667,
+              0.4738
+            ],
+            [
+              5.4,
+              0.4111
+            ],
+            [
+              5.4333,
+              0.3523
+            ],
+            [
+              5.4667,
+              0.2982
+            ],
+            [
+              5.5,
+              0.2494
+            ]
+          ],
+          "etichetta": "s(t), simboli 1 0 1 1 0 1"
+        }
+      ]
+    }
+  ]
+}

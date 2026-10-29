@@ -1,0 +1,300 @@
+{
+  "id": "processi-aleatori-stazionarieta-ergodicita",
+  "perche_ti_serve": "Prerequisito diretto di T5, dove i simboli PAM sono trattati con medie temporali e autocorrelazione; copre i temi M6 (densità del secondo ordine e conoscenza energetica) e M10 (stazionarietà necessaria, non sufficiente, per l'ergodicità).",
+  "scenario": "Sul collegamento la voce digitalizzata e il rumore del canale non sono segnali noti campione per campione: sono processi. Per decidere soglie e filtri bastano però medie, potenze e autocorrelazioni, purché le statistiche non cambino nel tempo e una sola lunga registrazione rappresenti tutto il processo: stazionarietà ed ergodicità.",
+  "definizione_esame": {
+    "definizione": "Un processo aleatorio è descritto dalle densità di probabilità congiunte di ogni ordine dei suoi campioni; la conoscenza energetica completa è data dalla densità del **secondo ordine**, da cui discendono valor medio $m(t)$, autocorrelazione statistica $E[x(t)x(t+\\tau)]$ e potenza. È stazionario in senso lato se media e autocorrelazione non dipendono dall'origine dei tempi; è ergodico se le medie temporali su una singola realizzazione coincidono con quelle statistiche.",
+    "scopo": "Ridurre un fenomeno aleatorio continuo a poche funzioni calcolabili (media, autocorrelazione, spettro di potenza) con cui progettare ricevitori e prevedere le prestazioni.",
+    "esempio": "Per un processo stazionario ergodico a valor medio zero, $C(0) = \\langle x^2(t) \\rangle = E[x^2(t)]$ è insieme potenza e varianza: è il ponte usato negli sviluppi su PAM e derivatore."
+  },
+  "spiegazione": "### Descrivere un processo: gli ordini della densità\nLa densità del **primo ordine** $p_1(x; t)$ dice come è distribuito il singolo campione all'istante $t$: dà media e varianza istantanee ma niente sa dei legami fra istanti diversi. La densità del **secondo ordine** descrive coppie di campioni $(x(t), x(t+\\tau))$ e quindi l'autocorrelazione: negli appunti verificati è lei a fornire la **conoscenza completa dal punto di vista energetico** (tema M6), perché potenza e spettro dipendono solo da quantità del secondo ordine. Ordini superiori servono per statistiche più fini; per i processi gaussiani, eccezionalmente, il secondo ordine basta a determinare tutti gli altri.\n\n### Medie statistiche, medie temporali, stazionarietà\nA ogni grandezza corrispondono due medie: quella **statistica** $E[\\cdot]$ sulle realizzazioni e quella **temporale** $\\langle \\cdot \\rangle$ lungo una realizzazione, come il $C(\\tau) = \\langle x(t) x(t+\\tau) \\rangle$ di T5. Il processo è **stazionario in senso stretto** se tutte le densità sono invarianti per traslazione temporale; in **senso lato** se lo sono solo media (costante) e autocorrelazione (funzione del solo $\\tau$). Per i processi stazionari lo spettro di potenza è legato all'autocorrelazione dalla relazione di Wiener-Chinchin, nella convenzione unilaterale del sito: $G(\\omega) = F[C(\\tau)]/\\pi$ per $\\omega \\ge 0$.\n\n### Ergodicità: necessaria la stazionarietà, non sufficiente\nUn processo è **ergodico** (nelle grandezze che interessano: media, autocorrelazione) se le medie temporali calcolate su una singola realizzazione lunga coincidono con le medie statistiche. È l'ipotesi che permette di misurare: in laboratorio hai quasi sempre una sola registrazione. Il tema M10 fissa la logica corretta: la stazionarietà è condizione **necessaria ma non sufficiente** per l'ergodicità. Necessaria perché, se le statistiche cambiassero nel tempo, una media temporale mescolerebbe regimi diversi; non sufficiente perché un processo può essere stazionario ma «bloccato» in una realizzazione non rappresentativa: l'esempio da tenere pronto è $x(t) = A$ costante nel tempo per ogni realizzazione, con $A$ variabile aleatoria da realizzazione a realizzazione: le statistiche non dipendono da $t$, ma la media temporale di una realizzazione è il suo particolare $A$, non $E[A]$.",
+  "analogia": {
+    "testo": "Stazionarietà è un clima stabile: le statistiche di luglio non cambiano da un anno all'altro. Ergodicità è poter ricostruire quel clima osservando a lungo una sola stazione invece di tante stazioni per un giorno.",
+    "limite": "L'esempio climatico nasconde che l'ergodicità va dichiarata grandezza per grandezza: un processo può essere ergodico nella media e non nell'autocorrelazione."
+  },
+  "worked_example": {
+    "titolo": "Stazionario ma non ergodico, con i numeri",
+    "problema": "Il processo è $x(t) = A$ con $A$ che vale $0$ o $2$ con probabilità metà e metà, costante nel tempo in ogni realizzazione. Calcolare media statistica e media temporale di una realizzazione con $A = 2$.",
+    "passi": [
+      "Media statistica: $E[x(t)] = 0 \\cdot \\frac{1}{2} + 2 \\cdot \\frac{1}{2} = 1$, indipendente da $t$: il processo è stazionario (anche in senso stretto).",
+      "Media temporale della realizzazione con $A = 2$: $\\langle x(t) \\rangle = 2$ per qualunque durata di osservazione.",
+      "Confronto: $2 \\ne 1$: la singola realizzazione non rappresenta l'insieme; il processo non è ergodico nella media."
+    ],
+    "soluzione": "$E[x] = 1$ ma $\\langle x \\rangle = 2$ in quella realizzazione: stazionarietà sì, ergodicità no.",
+    "perche_funziona": "Funziona come controesempio perché l'aleatorietà è congelata all'inizio: osservare più a lungo la stessa realizzazione non esplora gli altri valori di $A$."
+  },
+  "completion_problem": {
+    "titolo": "Dal $C(0)$ alla potenza",
+    "testo": "Un processo stazionario ergodico ha $C(\\tau) = 4 e^{-|\\tau|}$ (con $\\tau$ in secondi) e valor medio $1$. La potenza è ____ e la varianza è ____.",
+    "passi_mancanti": [
+      "Valutare l'autocorrelazione in zero",
+      "Sottrarre il quadrato della media per la varianza"
+    ],
+    "soluzione": "Potenza: $C(0) = 4$. Varianza: $C(0) - m^2 = 4 - 1 = 3$. Senza ergodicità non potresti leggere $C(\\tau)$ da una sola registrazione e pretendere che descriva il processo."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Che ordine serve?",
+    "testo": "Per ciascuna quantità indica l'ordine minimo della densità che la determina: (a) probabilità che un campione superi una soglia; (b) potenza del processo; (c) spettro di potenza.",
+    "suggerimento": "Ricorda che potenza e spettro vivono nel mondo delle coppie di campioni.",
+    "soluzione_attesa": "(a) Primo ordine. (b) Secondo ordine, perché $E[x^2]$ è un momento congiunto di due campioni coincidenti, cioè $C(0)$ statistico. (c) Secondo ordine: lo spettro è la trasformata dell'autocorrelazione (stesso messaggio del tema M6)."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Dire che stazionarietà ed ergodicità sono la stessa cosa, o che la prima implica la seconda",
+      "perche_sbagliato": "Il controesempio della costante aleatoria è stazionario ma non ergodico: la stazionarietà è necessaria e non sufficiente (tema M10)."
+    },
+    {
+      "errore": "Confondere $C(0)$ con la varianza quando la media non è zero",
+      "perche_sbagliato": "$C(0)$ è la potenza $E[x^2]$; la varianza è $C(0) - m^2$: coincidono solo a valor medio zero, come nei passaggi centrati di T5."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Quale densità dà la conoscenza energetica completa? (M6)",
+        "risposta": "Quella del secondo ordine: da essa discendono autocorrelazione, potenza e spettro di potenza."
+      },
+      {
+        "domanda": "Stazionarietà rispetto all'ergodicità: condizione di che tipo? (M10)",
+        "risposta": "Necessaria ma non sufficiente: esistono processi stazionari non ergodici, come la costante aleatoria."
+      },
+      {
+        "domanda": "Che cosa misura $C(0)$ e come si ottiene la varianza?",
+        "risposta": "$C(0) = E[x^2]$ è la potenza; la varianza è $C(0) - m^2$."
+      },
+      {
+        "domanda": "Perché in T5 si può usare l'autocorrelazione temporale $\\langle x(t)x(t+\\tau)\\rangle$?",
+        "risposta": "Perché gli sviluppi lavorano con segnali di potenza trattati come ergodici nelle quantità del secondo ordine: le medie temporali sugli indici dei simboli esistono per l'ipotesi di parziale coerenza."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega con parole tue il controesempio stazionario ma non ergodico e che cosa si rompe nella misura da una sola registrazione."
+  },
+  "riepilogo": "Primo ordine: distribuzione del singolo campione. Secondo ordine: coppie, autocorrelazione, potenza e spettro (M6). Stazionarietà: statistiche ferme nel tempo; ergodicità: una realizzazione lunga basta a misurarle. La prima è necessaria e non sufficiente per la seconda (M10).",
+  "flashcard": [
+    {
+      "fronte": "Conoscenza energetica completa?",
+      "retro": "Densità di probabilità del secondo ordine (M6)."
+    },
+    {
+      "fronte": "Stazionarietà per l'ergodicità?",
+      "retro": "Necessaria, non sufficiente (M10)."
+    },
+    {
+      "fronte": "$C(0)$ è?",
+      "retro": "La potenza $E[x^2]$; varianza $= C(0) - m^2$."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "calcolare potenza e varianza da $C(\\tau)$ e media",
+      "produrre il controesempio stazionario non ergodico"
+    ],
+    "so_dire": [
+      "che cosa sanno le densità del primo e del secondo ordine",
+      "perché l'ergodicità è un'ipotesi da dichiarare e non un teorema gratis"
+    ]
+  },
+  "figure": [
+    {
+      "id": "autocorrelazione-triangolare",
+      "tipo": "grafico",
+      "titolo": "Autocorrelazione: massimo nell'origine e simmetria pari",
+      "descrizione": "Esempio di funzione di autocorrelazione triangolare: è pari, vale il massimo nell'origine dove coincide con la potenza del processo, qui due, e si annulla oltre un ritardo di tre secondi. Il valore in zero è il primo controllo numerico da fare sempre.",
+      "asse_x": {
+        "etichetta": "τ (s)",
+        "min": -4,
+        "max": 4,
+        "tacche": [
+          {
+            "valore": -3,
+            "etichetta": "−3"
+          },
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 3,
+            "etichetta": "3"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "C(τ)",
+        "min": 0,
+        "max": 2.3
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -4.0,
+              0.0
+            ],
+            [
+              -3.8,
+              0.0
+            ],
+            [
+              -3.6,
+              0.0
+            ],
+            [
+              -3.4,
+              0.0
+            ],
+            [
+              -3.2,
+              0.0
+            ],
+            [
+              -3.0,
+              0.0
+            ],
+            [
+              -2.8,
+              0.1333
+            ],
+            [
+              -2.6,
+              0.2667
+            ],
+            [
+              -2.4,
+              0.4
+            ],
+            [
+              -2.2,
+              0.5333
+            ],
+            [
+              -2.0,
+              0.6667
+            ],
+            [
+              -1.8,
+              0.8
+            ],
+            [
+              -1.6,
+              0.9333
+            ],
+            [
+              -1.4,
+              1.0667
+            ],
+            [
+              -1.2,
+              1.2
+            ],
+            [
+              -1.0,
+              1.3333
+            ],
+            [
+              -0.8,
+              1.4667
+            ],
+            [
+              -0.6,
+              1.6
+            ],
+            [
+              -0.4,
+              1.7333
+            ],
+            [
+              -0.2,
+              1.8667
+            ],
+            [
+              0.0,
+              2.0
+            ],
+            [
+              0.2,
+              1.8667
+            ],
+            [
+              0.4,
+              1.7333
+            ],
+            [
+              0.6,
+              1.6
+            ],
+            [
+              0.8,
+              1.4667
+            ],
+            [
+              1.0,
+              1.3333
+            ],
+            [
+              1.2,
+              1.2
+            ],
+            [
+              1.4,
+              1.0667
+            ],
+            [
+              1.6,
+              0.9333
+            ],
+            [
+              1.8,
+              0.8
+            ],
+            [
+              2.0,
+              0.6667
+            ],
+            [
+              2.2,
+              0.5333
+            ],
+            [
+              2.4,
+              0.4
+            ],
+            [
+              2.6,
+              0.2667
+            ],
+            [
+              2.8,
+              0.1333
+            ],
+            [
+              3.0,
+              0.0
+            ],
+            [
+              3.2,
+              0.0
+            ],
+            [
+              3.4,
+              0.0
+            ],
+            [
+              3.6,
+              0.0
+            ],
+            [
+              3.8,
+              0.0
+            ],
+            [
+              4.0,
+              0.0
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

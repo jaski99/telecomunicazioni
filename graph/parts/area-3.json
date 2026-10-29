@@ -1,0 +1,351 @@
+[
+  {
+    "id": "serie-temporali-trasformata",
+    "titolo": "Serie temporali e loro trasformata: ripetizione periodica dello spettro",
+    "area": 3,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W3",
+    "sapere": "Devi saper definire la trasformata di una serie temporale come serie di esponenziali complessi, dimostrare che è periodica in pulsazione e collegarla alla ripetizione periodica della trasformata del segnale tempo-continuo da cui i campioni provengono, con il fattore di scala corretto.",
+    "saper_fare": [
+      "so scrivere la trasformata della serie temporale e verificarne la periodicità in pulsazione",
+      "so disegnare la ripetizione periodica dello spettro indicando indice di replica e fattore uno diviso il periodo",
+      "so recuperare i campioni dalla trasformata della serie con l'integrale su un periodo"
+    ],
+    "prerequisiti": [
+      {
+        "id": "trasformata-fourier",
+        "forza": "hard",
+        "motivo": "La trasformata della serie si costruisce dalla trasformata del segnale e dalla proprietà di campionamento degli impulsi."
+      }
+    ],
+    "tempo_studio_min": 60,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "È prerequisito diretto della dimostrazione T1 sul campionamento e sostiene criterio di Nyquist e segnali PAM."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 4-10 (pp. 2.35 e 2.40, rif. dello studente)"
+      },
+      {
+        "chiave": "FILE3",
+        "rif": "file3 pp. 1-2 e pp. 33-35"
+      }
+    ],
+    "risorse": [
+      {
+        "titolo": "Teorema del campionamento (Baraniuk e altri), sezione aperta",
+        "url": "https://eng.libretexts.org/Bookshelves/Electrical_Engineering/Signal_Processing_and_Modeling/Signals_and_Systems_(Baraniuk_et_al.)/10%3A_Sampling_and_Reconstruction/10.02%3A_Sampling_Theorem",
+        "verificato": true
+      }
+    ],
+    "checklist_ripasso": [
+      "Scrivere la formula della ripetizione con il fattore giusto",
+      "Disegnare tre repliche dello spettro triangolare"
+    ]
+  },
+  {
+    "id": "dim-teorema-campionamento",
+    "titolo": "Teorema del campionamento nel dominio dei tempi",
+    "area": 3,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W3",
+    "sapere": "Devi saper enunciare e dimostrare il teorema del campionamento nel dominio dei tempi: dalla ripetizione periodica dello spettro alla condizione di separazione delle repliche, fino alla ricostruzione del segnale come serie di funzioni seno cardinale con coefficienti uguali ai campioni.",
+    "saper_fare": [
+      "so riscrivere la dimostrazione T1 a schermo vuoto, con figure di spettro originario e repliche",
+      "so ricavare la condizione sulla frequenza di campionamento nelle tre forme equivalenti (pulsazioni, frequenze, periodo)",
+      "so scrivere la formula di ricostruzione e verificare che negli istanti di campionamento restituisce i campioni"
+    ],
+    "prerequisiti": [
+      {
+        "id": "serie-temporali-trasformata",
+        "forza": "hard",
+        "motivo": "La dimostrazione parte dalla trasformata della serie temporale e dalla sua ripetizione periodica in pulsazione."
+      },
+      {
+        "id": "dim-impulso-dirac-trasformata",
+        "forza": "hard",
+        "motivo": "La lettura dei campioni come somma di impulsi pesati usa la funzione impulsiva e la sua trasformata."
+      }
+    ],
+    "tempo_studio_min": 80,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "È la dimostrazione chiesta dalla prova di teoria T1; il punteggio di T1 è NON TROVATO nel materiale d'esame raccolto."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "file3 pp. 1-2"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 7-10 (p. 2.40, rif. dello studente)"
+      }
+    ],
+    "risorse": [
+      {
+        "titolo": "Teorema del campionamento (Baraniuk e altri), sezione aperta",
+        "url": "https://eng.libretexts.org/Bookshelves/Electrical_Engineering/Signal_Processing_and_Modeling/Signals_and_Systems_(Baraniuk_et_al.)/10%3A_Sampling_and_Reconstruction/10.02%3A_Sampling_Theorem",
+        "verificato": true
+      },
+      {
+        "titolo": "Video-lezioni Signals and Systems (MIT OpenCourseWare)",
+        "url": "https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/video_galleries/video-lectures/",
+        "verificato": true
+      }
+    ],
+    "checklist_ripasso": [
+      "Disegnare repliche separate e sovrapposte",
+      "Completare la ricostruzione a buchi e dire la versione a voce"
+    ]
+  },
+  {
+    "id": "criterio-nyquist-isi",
+    "titolo": "Criterio di Nyquist: condizione in frequenza per annullare l'interferenza intersimbolica",
+    "area": 3,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W3",
+    "sapere": "Devi saper tradurre in frequenza la condizione che un impulso valga un valore diverso da zero nell'origine e zero in tutti gli altri istanti multipli del periodo di simbolo, e discutere i tre casi di banda rispetto alla banda di Nyquist, fino ai raccordi antisimmetrici e al coseno rialzato.",
+    "saper_fare": [
+      "so ricavare la condizione necessaria e sufficiente come somma periodica dello spettro costante (temi M25 e M26)",
+      "so discutere i tre casi di banda minore, uguale e maggiore della banda di Nyquist con i relativi grafici",
+      "so spiegare perché alla banda minima l'unica soluzione è lo spettro rettangolare, cioè il seno cardinale nel tempo"
+    ],
+    "prerequisiti": [
+      {
+        "id": "serie-temporali-trasformata",
+        "forza": "hard",
+        "motivo": "La condizione si ottiene imponendo che la trasformata della serie dei campioni dell'impulso sia costante."
+      }
+    ],
+    "tempo_studio_min": 65,
+    "priorita": {
+      "livello": "media",
+      "motivazione": "Gruppo A con temi di quiz M25 e M26 e alla base dell'esercizio E4; non è prerequisito diretto di una dimostrazione T nel contratto."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 4-6 (p. 2.35, rif. dello studente)"
+      },
+      {
+        "chiave": "FILE3",
+        "rif": "file3 pp. 33-35"
+      }
+    ],
+    "risorse": [
+      {
+        "titolo": "Teorema del campionamento (Baraniuk e altri), sezione aperta",
+        "url": "https://eng.libretexts.org/Bookshelves/Electrical_Engineering/Signal_Processing_and_Modeling/Signals_and_Systems_(Baraniuk_et_al.)/10%3A_Sampling_and_Reconstruction/10.02%3A_Sampling_Theorem",
+        "verificato": true
+      }
+    ],
+    "checklist_ripasso": [
+      "Enunciare la condizione in frequenza a voce",
+      "Disegnare i tre casi di banda"
+    ]
+  },
+  {
+    "id": "processi-aleatori-stazionarieta-ergodicita",
+    "titolo": "Processi aleatori: medie, stazionarietà ed ergodicità",
+    "area": 3,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W3",
+    "sapere": "Devi saper descrivere un processo aleatorio con densità di probabilità del primo e del secondo ordine, medie statistiche e temporali, autocorrelazione e spettro di potenza, distinguendo stazionarietà in senso stretto e in senso lato ed ergodicità, con la stazionarietà come condizione necessaria e non sufficiente per l'ergodicità.",
+    "saper_fare": [
+      "so calcolare valor medio, potenza e autocorrelazione temporale di un segnale dato (temi M6 e M10)",
+      "so dire quando medie temporali e medie statistiche coincidono e che cosa resta da verificare oltre la stazionarietà",
+      "so collegare autocorrelazione e spettro di potenza nella convenzione unilaterale del sito"
+    ],
+    "prerequisiti": [
+      {
+        "id": "energia-potenza-spettri",
+        "forza": "hard",
+        "motivo": "Autocorrelazione e spettro di potenza dei processi riprendono le definizioni per i segnali di potenza."
+      }
+    ],
+    "tempo_studio_min": 70,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "È prerequisito diretto della dimostrazione T5 sui PAM e copre i temi di quiz M6 e M10."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 19-23 (pp. 4.30 e 5.29, rif. dello studente)"
+      },
+      {
+        "chiave": "PROGRAMMA",
+        "rif": "programma del corso, voce su processi aleatori, stazionarietà ed ergodicità (rif. in R1)"
+      }
+    ],
+    "risorse": [
+      {
+        "titolo": "Dispense di Teoria dei segnali (Università di Siena)",
+        "url": "https://www3.diism.unisi.it/~giambene/fondamenti/dispense/dispense_tds.pdf",
+        "verificato": true
+      }
+    ],
+    "checklist_ripasso": [
+      "Distinguere a voce i tre livelli: stazionario stretto, senso lato, ergodico",
+      "Scrivere il legame fra autocorrelazione e spettro"
+    ]
+  },
+  {
+    "id": "processi-gaussiani-funzione-errore",
+    "titolo": "Processi gaussiani e funzione errore",
+    "area": 3,
+    "tipo": "concetto",
+    "gruppo": "B",
+    "worker": "W3",
+    "sapere": "Devi saper riconoscere un processo gaussiano dalle densità di ogni ordine, usare la conservazione della gaussianità attraverso reti lineari e calcolare probabilità di superamento di una soglia con la funzione errore, sapendo che la definizione puntuale nel testo del docente è NON TROVATO e qui si usa la definizione standard dichiarata.",
+    "saper_fare": [
+      "so scrivere la densità del primo ordine di un processo gaussiano a valor medio zero data la sua varianza",
+      "so calcolare la varianza in uscita da una rete lineare integrando lo spettro di potenza unilaterale pesato dal modulo quadro della funzione di trasferimento",
+      "so esprimere una probabilità di coda con la funzione errore complementare e leggerne un valore numerico"
+    ],
+    "prerequisiti": [
+      {
+        "id": "processi-aleatori-stazionarieta-ergodicita",
+        "forza": "hard",
+        "motivo": "I processi gaussiani sono il caso particolare in cui bastano valor medio e autocorrelazione a descrivere tutto."
+      }
+    ],
+    "tempo_studio_min": 55,
+    "priorita": {
+      "livello": "media",
+      "motivazione": "Gruppo B del programma ufficiale; sostiene l'esercizio E7 sul derivatore senza essere chiesto da una prova di teoria."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 p. 23 (p. 5.29, rif. dello studente)"
+      },
+      {
+        "chiave": "RICOSTRUZIONE",
+        "rif": "definizione standard della funzione errore; corrispondenza con il testo del docente NON TROVATO"
+      }
+    ],
+    "risorse": [
+      {
+        "titolo": "Dispense di Teoria dei segnali (Università di Siena)",
+        "url": "https://www3.diism.unisi.it/~giambene/fondamenti/dispense/dispense_tds.pdf",
+        "verificato": true
+      }
+    ],
+    "checklist_ripasso": [
+      "Scrivere la gaussiana normalizzata e verificarne l'integrale",
+      "Fare un calcolo di probabilità di coda con la funzione errore"
+    ]
+  },
+  {
+    "id": "segnali-pam",
+    "titolo": "Segnali PAM: definizione, serie temporale e impulso formatore",
+    "area": 3,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W3",
+    "sapere": "Devi saper definire un segnale PAM come successione di impulsi formatori traslati di multipli del periodo di simbolo e pesati dai simboli della serie temporale, scriverlo come convoluzione fra serie e impulso e scomporlo in componente periodica legata al valor medio e componente a valor medio zero.",
+    "saper_fare": [
+      "so disegnare un segnale PAM dati simboli e forma dell'impulso, anche con impulsi parzialmente sovrapposti",
+      "so scomporre il segnale nelle due componenti e dire quale spettro nasce da ciascuna",
+      "so calcolare valor medio temporale e potenza della serie dei simboli in casi semplici"
+    ],
+    "prerequisiti": [
+      {
+        "id": "serie-temporali-trasformata",
+        "forza": "hard",
+        "motivo": "Il PAM è la convoluzione fra una serie temporale e una funzione tempo-continua."
+      },
+      {
+        "id": "energia-potenza-spettri",
+        "forza": "hard",
+        "motivo": "Occorrono autocorrelazione dell'impulso, suo spettro di energia e spettro di potenza del segnale risultante."
+      }
+    ],
+    "tempo_studio_min": 55,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "È prerequisito diretto della dimostrazione T5 da 10 punti, l'unica con punteggio dichiarato fra quelle di questo worker."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 19-22 (p. 4.30, rif. dello studente)"
+      },
+      {
+        "chiave": "FILE3",
+        "rif": "file3 pp. 12-15"
+      }
+    ],
+    "risorse": [
+      {
+        "titolo": "Teorema del campionamento (Baraniuk e altri), sezione aperta",
+        "url": "https://eng.libretexts.org/Bookshelves/Electrical_Engineering/Signal_Processing_and_Modeling/Signals_and_Systems_(Baraniuk_et_al.)/10%3A_Sampling_and_Reconstruction/10.02%3A_Sampling_Theorem",
+        "verificato": true
+      }
+    ],
+    "checklist_ripasso": [
+      "Scrivere definizione e scomposizione a memoria",
+      "Disegnare tre impulsi PAM consecutivi"
+    ]
+  },
+  {
+    "id": "dim-pam-due-spettri",
+    "titolo": "Segnali PAM: definizione e calcolo dei due spettri",
+    "area": 3,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W3",
+    "sapere": "Devi saper svolgere per intero la dimostrazione T5: definizione del segnale PAM, scomposizione in componente periodica e componente a valor medio zero, spettro a righe della prima e spettro di potenza distribuito della seconda tramite autocorrelazione, nella convenzione unilaterale dichiarata.",
+    "saper_fare": [
+      "so riscrivere la dimostrazione T5 (10 punti) a schermo vuoto, dal calcolo dell'autocorrelazione alla formula finale",
+      "so disegnare spettro a righe e spettro distribuito sovrapposti e commentare il ruolo del valor medio dei simboli",
+      "so specializzare la formula al caso di simboli a valor medio zero e incorrelati a distanza diversa da zero"
+    ],
+    "prerequisiti": [
+      {
+        "id": "segnali-pam",
+        "forza": "hard",
+        "motivo": "Serve la definizione del PAM e la sua scomposizione nelle due componenti."
+      },
+      {
+        "id": "processi-aleatori-stazionarieta-ergodicita",
+        "forza": "hard",
+        "motivo": "Lo spettro distribuito si ottiene dall'autocorrelazione temporale e dalle medie dei prodotti dei simboli."
+      }
+    ],
+    "tempo_studio_min": 110,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "È la dimostrazione della prova T5, una delle due sole prove con punteggio dichiarato nel materiale raccolto: 10 punti."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "file3 pp. 12-15"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 19-22 (p. 4.30, rif. dello studente)"
+      }
+    ],
+    "risorse": [
+      {
+        "titolo": "Teorema del campionamento (Baraniuk e altri), sezione aperta",
+        "url": "https://eng.libretexts.org/Bookshelves/Electrical_Engineering/Signal_Processing_and_Modeling/Signals_and_Systems_(Baraniuk_et_al.)/10%3A_Sampling_and_Reconstruction/10.02%3A_Sampling_Theorem",
+        "verificato": true
+      }
+    ],
+    "checklist_ripasso": [
+      "Rifare il calcolo dell'autocorrelazione cambiando variabile di somma",
+      "Dire la versione a voce in novanta secondi"
+    ]
+  }
+]

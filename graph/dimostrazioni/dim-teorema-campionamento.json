@@ -1,0 +1,1199 @@
+{
+  "id": "dim-teorema-campionamento",
+  "titolo": "Teorema del campionamento nel dominio dei tempi (T1)",
+  "domande_esame": [
+    "T1"
+  ],
+  "enunciato": "Sia $x(t)$ un segnale passa-basso la cui trasformata $X(\\omega)$ è apprezzabile solo per $|\\omega| \\le \\omega_m$. Se lo si campiona a istanti equispaziati $t_n = nT$ con frequenza di campionamento $f_s = 1/T$ almeno doppia della massima frequenza del segnale, $f_s \\ge 2 f_m$ (cioè $\\omega_s \\ge 2\\omega_m$, $T \\le 1/(2 f_m)$), allora la conoscenza dei soli campioni $x(nT)$ individua in maniera univoca l'intera forma d'onda, che si ricostruisce come $x(t) = \\sum_{n} x(nT)\\, \\operatorname{sinc}\\frac{t-nT}{T}$. Punteggio della prova T1: NON TROVATO.",
+  "ipotesi": [
+    "Il segnale è limitato in banda: esiste una pulsazione massima $\\omega_m$ oltre la quale lo spettro è trascurabile (negli sviluppi si tratta come banda rigorosamente limitata).",
+    "Gli istanti di campionamento sono equispaziati di un intervallo costante $T$ e l'origine dei tempi è posta in uno di essi, così $t_n = nT$.",
+    "Vale la relazione fra trasformata della serie temporale dei campioni e trasformata del segnale (nodo sulle serie temporali), con il fattore $1/T$.",
+    "La ricostruzione usa un filtro passa-basso ideale con banda $\\pi/T$: è un modello matematico, senza pretese di realizzabilità fisica esatta."
+  ],
+  "notazione": [
+    {
+      "simbolo": "x_n = x(nT)",
+      "significato": "campione del segnale all'istante $nT$; la successione dei campioni è la serie temporale"
+    },
+    {
+      "simbolo": "T,\\; f_s = 1/T,\\; \\omega_s = 2\\pi/T",
+      "significato": "intervallo, frequenza e pulsazione di campionamento"
+    },
+    {
+      "simbolo": "X_s(\\omega) = \\sum_{n} x_n e^{-j n \\omega T}",
+      "significato": "trasformata della serie temporale dei campioni, periodica in $\\omega$ di periodo $\\omega_s$"
+    },
+    {
+      "simbolo": "\\omega_m,\\; f_m = \\omega_m/(2\\pi)",
+      "significato": "massima pulsazione (e frequenza) a cui lo spettro del segnale è apprezzabile"
+    },
+    {
+      "simbolo": "\\operatorname{sinc} z = \\frac{\\sin \\pi z}{\\pi z}",
+      "significato": "seno cardinale nella definizione usata in file1; vale 1 in $z=0$ e zero negli altri interi"
+    }
+  ],
+  "varianti_notazione": [
+    {
+      "canonica": "ωs = 2π/T, fs = 1/T",
+      "variante": "ω0 = 2π/T e f0 = 1/T per la pulsazione e la frequenza di campionamento",
+      "fonte": "FILE1 pp. 7-9; FILE3 pp. 1-2 (in file3 anche m al posto di ω)"
+    },
+    {
+      "canonica": "ω per la pulsazione generica",
+      "variante": "m per la pulsazione generica",
+      "fonte": "FILE3 pp. 1-2"
+    }
+  ],
+  "idea": "Campionare ripete lo spettro ogni ωs: se le copie non si toccano, un passa-basso isola l'originale e antitrasformando nascono i seni cardinali.",
+  "passi": [
+    {
+      "n": 1,
+      "testo": "Si fissano gli istanti di lettura $t_n = nT$ e i valori campionati $x_n = x(nT)$, che formano la serie temporale; senza altre condizioni infinite funzioni passano per gli stessi campioni, quindi serve un'ipotesi in più.",
+      "formula": "x_n = x(nT), \\qquad n = \\dots, -1, 0, 1, \\dots",
+      "perche": "È la definizione di campionamento uniforme; l'origine si può porre in un istante di campionamento senza perdere generalità."
+    },
+    {
+      "n": 2,
+      "testo": "Si richiama la trasformata della serie temporale: conoscere i campioni equivale a conoscere la ripetizione periodica della trasformata del segnale con periodo $\\omega_s = 2\\pi/T$, scalata di $1/T$.",
+      "formula": "X_s(\\omega) = \\frac{1}{T} \\sum_{k=-\\infty}^{+\\infty} X(\\omega + k\\omega_s)",
+      "perche": "È il risultato già dimostrato per le serie temporali a partire dalla rappresentazione del segnale campionato come somma di impulsi pesati.",
+      "figura": "spettro-e-repliche"
+    },
+    {
+      "n": 3,
+      "testo": "Si disegna in modulo lo spettro del segnale, concentrato fra $-\\omega_m$ e $\\omega_m$, e le repliche traslate di multipli di $\\omega_s$: in generale dalla loro somma non si risale allo spettro originario.",
+      "perche": "Se le repliche si sovrappongono, in ogni pulsazione arrivano contributi di più repliche e l'informazione sulle singole è persa (aliasing)."
+    },
+    {
+      "n": 4,
+      "testo": "Si impone che le repliche occupino bande distinte: il bordo destro della replica centrale non deve superare il bordo sinistro della successiva.",
+      "formula": "\\omega_m \\le \\omega_s - \\omega_m \\;\\Longrightarrow\\; \\omega_s \\ge 2\\omega_m \\;\\Longleftrightarrow\\; f_s \\ge 2 f_m \\;\\Longleftrightarrow\\; T \\le \\frac{1}{2 f_m}",
+      "perche": "La replica con $k=-1$ è centrata in $\\omega_s$ e inizia a $\\omega_s - \\omega_m$; la separazione è la condizione geometrica che le due bande non si tocchino.",
+      "figura": "catena-campionamento-ricostruzione"
+    },
+    {
+      "n": 5,
+      "testo": "Con le repliche separate, nella banda centrale la somma periodica coincide con il solo termine $k=0$: si risale così allo spettro originario moltiplicando per $T$ e azzerando fuori banda, con banda di ricostruzione scelta in $\\Omega = \\omega_s/2 = \\pi/T$.",
+      "formula": "X(\\omega) = \\begin{cases} T\\, X_s(\\omega) & |\\omega| < \\dfrac{\\omega_s}{2} = \\dfrac{\\pi}{T} \\\\ 0 & \\text{altrove} \\end{cases}",
+      "perche": "Dentro $(-\\Omega, \\Omega)$, con $\\omega_m \\le \\Omega \\le \\omega_s - \\omega_m$, contribuisce solo la replica centrale; il fattore $T$ compensa esattamente il fattore $1/T$ del passo 2 (punto A3, verificato in file1 p. 9)."
+    },
+    {
+      "n": 6,
+      "testo": "Si antitrasforma sostituendo a $X_s(\\omega)$ la sua definizione come serie di esponenziali e scambiando serie e integrale.",
+      "formula": "x(t) = \\frac{T}{2\\pi} \\int_{-\\pi/T}^{\\pi/T} X_s(\\omega) e^{j\\omega t}\\, d\\omega = \\frac{T}{2\\pi} \\sum_{n} x_n \\int_{-\\pi/T}^{\\pi/T} e^{j\\omega (t-nT)}\\, d\\omega",
+      "perche": "L'antitrasformata è lineare e l'intervallo di integrazione è finito; la definizione di $X_s$ è quella del nodo sulle serie temporali."
+    },
+    {
+      "n": 7,
+      "testo": "L'integrale elementare dà il seno cardinale traslato in $nT$, e si ottiene la formula di ricostruzione; in $t = mT$ tutti i termini con $n \\ne m$ si annullano e resta proprio il campione $x(mT)$, come deve essere.",
+      "formula": "x(t) = \\sum_{n=-\\infty}^{+\\infty} x(nT)\\, \\frac{\\sin \\frac{\\pi}{T}(t-nT)}{\\frac{\\pi}{T}(t-nT)} = \\sum_{n} x(nT)\\, \\operatorname{sinc}\\frac{t-nT}{T}",
+      "perche": "L'antitrasformata di uno spettro rettangolare è il seno cardinale (già calcolata nel nodo sulla trasformata) e $\\operatorname{sinc}(0)=1$, mentre si annulla negli altri multipli interi di $T$.",
+      "figura": "seno-cardinale-ricostruzione"
+    },
+    {
+      "n": 8,
+      "testo": "Chiusura interpretativa, presente in file1: le funzioni seno cardinale traslate sono fra loro ortogonali, quindi la ricostruzione è uno sviluppo in serie di funzioni ortogonali i cui coefficienti sono gli stessi campioni; il campionamento è il primo passo della conversione analogico-numerica.",
+      "formula": "\\int_{-\\infty}^{+\\infty} \\operatorname{sinc}\\frac{t-nT}{T}\\, \\operatorname{sinc}\\frac{t-mT}{T}\\, dt = \\begin{cases} 0 & m \\ne n \\\\ T & m = n \\end{cases}",
+      "perche": "Segue dal teorema di Parseval generalizzato applicato agli spettri rettangolari traslati, come svolto in file1 p. 10; è un commento, non serve alla tesi."
+    }
+  ],
+  "formula_finale": "f_s \\ge 2 f_m, \\qquad x(t) = \\sum_{n=-\\infty}^{+\\infty} x(nT)\\, \\operatorname{sinc}\\frac{t-nT}{T}, \\qquad \\operatorname{sinc} z = \\frac{\\sin \\pi z}{\\pi z}",
+  "figure": [
+    {
+      "id": "spettro-e-repliche",
+      "tipo": "grafico",
+      "titolo": "Spettro del segnale e sue repliche dopo il campionamento",
+      "descrizione": "Grafico in modulo: al centro lo spettro triangolare del segnale, largo da meno omega emme a più omega emme e alto uno; ai lati, tratteggiate, le repliche centrate in più e meno omega esse. Le repliche sono separate perché omega esse vale il triplo di omega emme, più del doppio richiesto.",
+      "asse_x": {
+        "etichetta": "ω (rad/s, unità arbitrarie)",
+        "min": -9,
+        "max": 9,
+        "tacche": [
+          {
+            "valore": -6,
+            "etichetta": "−ωs"
+          },
+          {
+            "valore": -2,
+            "etichetta": "−ωm"
+          },
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 2,
+            "etichetta": "ωm"
+          },
+          {
+            "valore": 6,
+            "etichetta": "ωs"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "|X(ω)| (unità arbitrarie)",
+        "min": 0,
+        "max": 1.15
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -2.0,
+              0.0
+            ],
+            [
+              -1.8,
+              0.1
+            ],
+            [
+              -1.6,
+              0.2
+            ],
+            [
+              -1.4,
+              0.3
+            ],
+            [
+              -1.2,
+              0.4
+            ],
+            [
+              -1.0,
+              0.5
+            ],
+            [
+              -0.8,
+              0.6
+            ],
+            [
+              -0.6,
+              0.7
+            ],
+            [
+              -0.4,
+              0.8
+            ],
+            [
+              -0.2,
+              0.9
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.2,
+              0.9
+            ],
+            [
+              0.4,
+              0.8
+            ],
+            [
+              0.6,
+              0.7
+            ],
+            [
+              0.8,
+              0.6
+            ],
+            [
+              1.0,
+              0.5
+            ],
+            [
+              1.2,
+              0.4
+            ],
+            [
+              1.4,
+              0.3
+            ],
+            [
+              1.6,
+              0.2
+            ],
+            [
+              1.8,
+              0.1
+            ],
+            [
+              2.0,
+              0.0
+            ]
+          ],
+          "etichetta": "spettro originario (k = 0)"
+        },
+        {
+          "stile": "tratteggio",
+          "punti": [
+            [
+              4.0,
+              0.0
+            ],
+            [
+              4.2,
+              0.1
+            ],
+            [
+              4.4,
+              0.2
+            ],
+            [
+              4.6,
+              0.3
+            ],
+            [
+              4.8,
+              0.4
+            ],
+            [
+              5.0,
+              0.5
+            ],
+            [
+              5.2,
+              0.6
+            ],
+            [
+              5.4,
+              0.7
+            ],
+            [
+              5.6,
+              0.8
+            ],
+            [
+              5.8,
+              0.9
+            ],
+            [
+              6.0,
+              1.0
+            ],
+            [
+              6.2,
+              0.9
+            ],
+            [
+              6.4,
+              0.8
+            ],
+            [
+              6.6,
+              0.7
+            ],
+            [
+              6.8,
+              0.6
+            ],
+            [
+              7.0,
+              0.5
+            ],
+            [
+              7.2,
+              0.4
+            ],
+            [
+              7.4,
+              0.3
+            ],
+            [
+              7.6,
+              0.2
+            ],
+            [
+              7.8,
+              0.1
+            ],
+            [
+              8.0,
+              0.0
+            ]
+          ],
+          "etichetta": "replica k = −1"
+        },
+        {
+          "stile": "tratteggio",
+          "punti": [
+            [
+              -8.0,
+              0.0
+            ],
+            [
+              -7.8,
+              0.1
+            ],
+            [
+              -7.6,
+              0.2
+            ],
+            [
+              -7.4,
+              0.3
+            ],
+            [
+              -7.2,
+              0.4
+            ],
+            [
+              -7.0,
+              0.5
+            ],
+            [
+              -6.8,
+              0.6
+            ],
+            [
+              -6.6,
+              0.7
+            ],
+            [
+              -6.4,
+              0.8
+            ],
+            [
+              -6.2,
+              0.9
+            ],
+            [
+              -6.0,
+              1.0
+            ],
+            [
+              -5.8,
+              0.9
+            ],
+            [
+              -5.6,
+              0.8
+            ],
+            [
+              -5.4,
+              0.7
+            ],
+            [
+              -5.2,
+              0.6
+            ],
+            [
+              -5.0,
+              0.5
+            ],
+            [
+              -4.8,
+              0.4
+            ],
+            [
+              -4.6,
+              0.3
+            ],
+            [
+              -4.4,
+              0.2
+            ],
+            [
+              -4.2,
+              0.1
+            ],
+            [
+              -4.0,
+              0.0
+            ]
+          ],
+          "etichetta": "replica k = 1"
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": 0,
+          "y": 1.06,
+          "testo": "k = 0"
+        },
+        {
+          "x": 6,
+          "y": 1.06,
+          "testo": "k = −1"
+        },
+        {
+          "x": -6,
+          "y": 1.06,
+          "testo": "k = 1"
+        }
+      ]
+    },
+    {
+      "id": "seno-cardinale-ricostruzione",
+      "tipo": "grafico",
+      "titolo": "Funzione seno cardinale usata nella ricostruzione",
+      "descrizione": "Una funzione seno cardinale centrata in zero: vale uno nell'origine, si annulla in tutti gli altri multipli interi del periodo di campionamento e oscilla con lobi decrescenti. È la forma che, traslata in ogni istante di campionamento e pesata con il campione, ricostruisce il segnale.",
+      "asse_x": {
+        "etichetta": "t (in unità di T)",
+        "min": -3.5,
+        "max": 3.5,
+        "tacche": [
+          {
+            "valore": -2,
+            "etichetta": "−2T"
+          },
+          {
+            "valore": -1,
+            "etichetta": "−T"
+          },
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 1,
+            "etichetta": "T"
+          },
+          {
+            "valore": 2,
+            "etichetta": "2T"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "sinc(t/T)",
+        "min": -0.35,
+        "max": 1.1
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -3.5,
+              -0.0909
+            ],
+            [
+              -3.45,
+              -0.0911
+            ],
+            [
+              -3.4,
+              -0.089
+            ],
+            [
+              -3.35,
+              -0.0847
+            ],
+            [
+              -3.3,
+              -0.078
+            ],
+            [
+              -3.25,
+              -0.0693
+            ],
+            [
+              -3.2,
+              -0.0585
+            ],
+            [
+              -3.15,
+              -0.0459
+            ],
+            [
+              -3.1,
+              -0.0317
+            ],
+            [
+              -3.05,
+              -0.0163
+            ],
+            [
+              -3.0,
+              0.0
+            ],
+            [
+              -2.95,
+              0.0169
+            ],
+            [
+              -2.9,
+              0.0339
+            ],
+            [
+              -2.85,
+              0.0507
+            ],
+            [
+              -2.8,
+              0.0668
+            ],
+            [
+              -2.75,
+              0.0818
+            ],
+            [
+              -2.7,
+              0.0954
+            ],
+            [
+              -2.65,
+              0.107
+            ],
+            [
+              -2.6,
+              0.1164
+            ],
+            [
+              -2.55,
+              0.1233
+            ],
+            [
+              -2.5,
+              0.1273
+            ],
+            [
+              -2.45,
+              0.1283
+            ],
+            [
+              -2.4,
+              0.1261
+            ],
+            [
+              -2.35,
+              0.1207
+            ],
+            [
+              -2.3,
+              0.112
+            ],
+            [
+              -2.25,
+              0.1
+            ],
+            [
+              -2.2,
+              0.085
+            ],
+            [
+              -2.15,
+              0.0672
+            ],
+            [
+              -2.1,
+              0.0468
+            ],
+            [
+              -2.05,
+              0.0243
+            ],
+            [
+              -2.0,
+              -0.0
+            ],
+            [
+              -1.95,
+              -0.0255
+            ],
+            [
+              -1.9,
+              -0.0518
+            ],
+            [
+              -1.85,
+              -0.0781
+            ],
+            [
+              -1.8,
+              -0.1039
+            ],
+            [
+              -1.75,
+              -0.1286
+            ],
+            [
+              -1.7,
+              -0.1515
+            ],
+            [
+              -1.65,
+              -0.1719
+            ],
+            [
+              -1.6,
+              -0.1892
+            ],
+            [
+              -1.55,
+              -0.2028
+            ],
+            [
+              -1.5,
+              -0.2122
+            ],
+            [
+              -1.45,
+              -0.2168
+            ],
+            [
+              -1.4,
+              -0.2162
+            ],
+            [
+              -1.35,
+              -0.2101
+            ],
+            [
+              -1.3,
+              -0.1981
+            ],
+            [
+              -1.25,
+              -0.1801
+            ],
+            [
+              -1.2,
+              -0.1559
+            ],
+            [
+              -1.15,
+              -0.1257
+            ],
+            [
+              -1.1,
+              -0.0894
+            ],
+            [
+              -1.05,
+              -0.0474
+            ],
+            [
+              -1.0,
+              0.0
+            ],
+            [
+              -0.95,
+              0.0524
+            ],
+            [
+              -0.9,
+              0.1093
+            ],
+            [
+              -0.85,
+              0.17
+            ],
+            [
+              -0.8,
+              0.2339
+            ],
+            [
+              -0.75,
+              0.3001
+            ],
+            [
+              -0.7,
+              0.3679
+            ],
+            [
+              -0.65,
+              0.4363
+            ],
+            [
+              -0.6,
+              0.5046
+            ],
+            [
+              -0.55,
+              0.5716
+            ],
+            [
+              -0.5,
+              0.6366
+            ],
+            [
+              -0.45,
+              0.6986
+            ],
+            [
+              -0.4,
+              0.7568
+            ],
+            [
+              -0.35,
+              0.8103
+            ],
+            [
+              -0.3,
+              0.8584
+            ],
+            [
+              -0.25,
+              0.9003
+            ],
+            [
+              -0.2,
+              0.9355
+            ],
+            [
+              -0.15,
+              0.9634
+            ],
+            [
+              -0.1,
+              0.9836
+            ],
+            [
+              -0.05,
+              0.9959
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.05,
+              0.9959
+            ],
+            [
+              0.1,
+              0.9836
+            ],
+            [
+              0.15,
+              0.9634
+            ],
+            [
+              0.2,
+              0.9355
+            ],
+            [
+              0.25,
+              0.9003
+            ],
+            [
+              0.3,
+              0.8584
+            ],
+            [
+              0.35,
+              0.8103
+            ],
+            [
+              0.4,
+              0.7568
+            ],
+            [
+              0.45,
+              0.6986
+            ],
+            [
+              0.5,
+              0.6366
+            ],
+            [
+              0.55,
+              0.5716
+            ],
+            [
+              0.6,
+              0.5046
+            ],
+            [
+              0.65,
+              0.4363
+            ],
+            [
+              0.7,
+              0.3679
+            ],
+            [
+              0.75,
+              0.3001
+            ],
+            [
+              0.8,
+              0.2339
+            ],
+            [
+              0.85,
+              0.17
+            ],
+            [
+              0.9,
+              0.1093
+            ],
+            [
+              0.95,
+              0.0524
+            ],
+            [
+              1.0,
+              0.0
+            ],
+            [
+              1.05,
+              -0.0474
+            ],
+            [
+              1.1,
+              -0.0894
+            ],
+            [
+              1.15,
+              -0.1257
+            ],
+            [
+              1.2,
+              -0.1559
+            ],
+            [
+              1.25,
+              -0.1801
+            ],
+            [
+              1.3,
+              -0.1981
+            ],
+            [
+              1.35,
+              -0.2101
+            ],
+            [
+              1.4,
+              -0.2162
+            ],
+            [
+              1.45,
+              -0.2168
+            ],
+            [
+              1.5,
+              -0.2122
+            ],
+            [
+              1.55,
+              -0.2028
+            ],
+            [
+              1.6,
+              -0.1892
+            ],
+            [
+              1.65,
+              -0.1719
+            ],
+            [
+              1.7,
+              -0.1515
+            ],
+            [
+              1.75,
+              -0.1286
+            ],
+            [
+              1.8,
+              -0.1039
+            ],
+            [
+              1.85,
+              -0.0781
+            ],
+            [
+              1.9,
+              -0.0518
+            ],
+            [
+              1.95,
+              -0.0255
+            ],
+            [
+              2.0,
+              -0.0
+            ],
+            [
+              2.05,
+              0.0243
+            ],
+            [
+              2.1,
+              0.0468
+            ],
+            [
+              2.15,
+              0.0672
+            ],
+            [
+              2.2,
+              0.085
+            ],
+            [
+              2.25,
+              0.1
+            ],
+            [
+              2.3,
+              0.112
+            ],
+            [
+              2.35,
+              0.1207
+            ],
+            [
+              2.4,
+              0.1261
+            ],
+            [
+              2.45,
+              0.1283
+            ],
+            [
+              2.5,
+              0.1273
+            ],
+            [
+              2.55,
+              0.1233
+            ],
+            [
+              2.6,
+              0.1164
+            ],
+            [
+              2.65,
+              0.107
+            ],
+            [
+              2.7,
+              0.0954
+            ],
+            [
+              2.75,
+              0.0818
+            ],
+            [
+              2.8,
+              0.0668
+            ],
+            [
+              2.85,
+              0.0507
+            ],
+            [
+              2.9,
+              0.0339
+            ],
+            [
+              2.95,
+              0.0169
+            ],
+            [
+              3.0,
+              0.0
+            ],
+            [
+              3.05,
+              -0.0163
+            ],
+            [
+              3.1,
+              -0.0317
+            ],
+            [
+              3.15,
+              -0.0459
+            ],
+            [
+              3.2,
+              -0.0585
+            ],
+            [
+              3.25,
+              -0.0693
+            ],
+            [
+              3.3,
+              -0.078
+            ],
+            [
+              3.35,
+              -0.0847
+            ],
+            [
+              3.4,
+              -0.089
+            ],
+            [
+              3.45,
+              -0.0911
+            ],
+            [
+              3.5,
+              -0.0909
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "catena-campionamento-ricostruzione",
+      "tipo": "blocchi",
+      "titolo": "Catena di campionamento e ricostruzione ideale",
+      "descrizione": "Schema a blocchi: il segnale tempo-continuo entra in un campionatore ideale di periodo T, che produce la serie dei campioni; un filtro passa-basso ideale con guadagno T e banda pi greco diviso T isola la replica centrale e restituisce il segnale originario.",
+      "blocchi": [
+        {
+          "id": "in",
+          "etichetta": "x(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 2
+        },
+        {
+          "id": "camp",
+          "etichetta": "Campionatore ideale, periodo T",
+          "forma": "rettangolo",
+          "colonna": 3,
+          "riga": 2
+        },
+        {
+          "id": "serie-campioni",
+          "etichetta": "Serie temporale x(nT)",
+          "forma": "rettangolo",
+          "colonna": 6,
+          "riga": 2
+        },
+        {
+          "id": "lpf",
+          "etichetta": "Passa-basso ideale: guadagno T, banda π/T",
+          "forma": "rettangolo",
+          "colonna": 9,
+          "riga": 2
+        },
+        {
+          "id": "out",
+          "etichetta": "x(t) ricostruita",
+          "forma": "uscita",
+          "colonna": 12,
+          "riga": 2
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "in",
+          "a": "camp"
+        },
+        {
+          "da": "camp",
+          "a": "serie-campioni"
+        },
+        {
+          "da": "serie-campioni",
+          "a": "lpf"
+        },
+        {
+          "da": "lpf",
+          "a": "out"
+        }
+      ]
+    }
+  ],
+  "a_voce": "Parto dai campioni x di nT e ricordo che la loro trasformata è la ripetizione periodica dello spettro del segnale, con periodo omega esse uguale a due pi greco diviso T e fattore uno diviso T. Disegno lo spettro triangolare e le sue copie: se le copie si sovrappongono è finita, perché in ogni pulsazione si sommano contributi diversi e non posso più separarli. La condizione perché stiano separate è che omega emme non superi omega esse meno omega emme, cioè omega esse almeno doppia di omega emme: in frequenza, campionare almeno al doppio della massima frequenza. Quando vale, nella banda centrale resta solo la replica zero, quindi lo spettro vero è T volte la trasformata della serie dentro la banda e zero fuori: il fattore T cancella l'uno diviso T di prima. Antitrasformando, ogni campione produce un seno cardinale centrato nel suo istante, e la somma ricostruisce il segnale; negli istanti di campionamento i seni cardinali degli altri campioni valgono zero, così ritrovo esattamente i campioni. In pratica ho sostituito una funzione tempo-continua con una serie temporale senza perdere informazione.",
+  "errori_frequenti": [
+    {
+      "errore": "Scrivere la condizione come $T \\ge 1/(2 f_m)$ oppure dire che basta campionare alla frequenza massima del segnale.",
+      "perche_sbagliato": "Aumentare $T$ avvicina le repliche e le fa sovrapporre; la separazione richiede $\\omega_s \\ge 2\\omega_m$.",
+      "correzione": "$f_s \\ge 2 f_m$, equivalentemente $T \\le 1/(2 f_m)$: periodo più piccolo, repliche più lontane."
+    },
+    {
+      "errore": "Dimenticare il fattore $T$ nella ricostruzione dello spettro, scrivendo $X(\\omega) = X_s(\\omega)$ in banda.",
+      "perche_sbagliato": "La ripetizione periodica porta il fattore $1/T$; senza compensarlo il segnale ricostruito è scalato in ampiezza.",
+      "correzione": "$X(\\omega) = T X_s(\\omega)$ per $|\\omega| < \\pi/T$ e zero altrove, come in file1 p. 9 (punto A3)."
+    },
+    {
+      "errore": "Usare nella ricostruzione la definizione $\\operatorname{sinc}(z) = \\sin z / z$ senza dirlo, mescolandola con quella degli appunti.",
+      "perche_sbagliato": "Con l'altra definizione gli zeri non cadono più nei multipli di $T$ e la verifica sui campioni fallisce.",
+      "correzione": "Qui $\\operatorname{sinc} z = \\sin(\\pi z)/(\\pi z)$ (file1 p. 9): se si cambia definizione va cambiata anche la scrittura della formula."
+    }
+  ],
+  "versione_compatta": [
+    "Campioni: $x_n = x(nT)$, trasformata della serie $X_s(\\omega) = \\sum_n x_n e^{-jn\\omega T}$.",
+    "Ripetizione: $X_s(\\omega) = \\frac{1}{T}\\sum_k X(\\omega + k\\omega_s)$, $\\omega_s = 2\\pi/T$.",
+    "Separazione repliche: $\\omega_m \\le \\omega_s - \\omega_m$, cioè $f_s \\ge 2 f_m$, $T \\le 1/(2f_m)$.",
+    "In banda resta solo $k=0$: $X(\\omega) = T X_s(\\omega)$ per $|\\omega| < \\pi/T$, zero altrove.",
+    "Antitrasformando: $x(t) = \\sum_n x(nT)\\, \\operatorname{sinc}\\frac{t-nT}{T}$.",
+    "Verifica: in $t = mT$ sopravvive solo il termine $n = m$ e si ritrova $x(mT)$."
+  ],
+  "a_buchi": {
+    "testo": "La trasformata della serie dei campioni è la ripetizione periodica dello spettro con fattore ___1___. Le repliche sono separate se ___2___, cioè se la frequenza di campionamento è almeno ___3___ della massima frequenza del segnale. In banda si ha $X(\\omega) = \\; $___4___$\\; X_s(\\omega)$; antitrasformando ogni campione genera un ___5___ centrato nel suo istante, e la ricostruzione funziona perché tale funzione vale ___6___ negli altri istanti di campionamento.",
+    "soluzioni": {
+      "1": [
+        "1/T",
+        "uno diviso T"
+      ],
+      "2": [
+        "ωm ≤ ωs − ωm",
+        "omega_s >= 2 omega_m",
+        "ωs ≥ 2ωm"
+      ],
+      "3": [
+        "il doppio",
+        "doppia",
+        "2 volte"
+      ],
+      "4": [
+        "T"
+      ],
+      "5": [
+        "seno cardinale",
+        "sinc"
+      ],
+      "6": [
+        "zero",
+        "0"
+      ]
+    }
+  },
+  "richiamo_attivo": [
+    {
+      "domanda": "Perché conoscere i campioni equivale a conoscere una ripetizione dello spettro?",
+      "risposta": "Perché la trasformata della serie temporale dei campioni è $(1/T)\\sum_k X(\\omega + k\\omega_s)$: dai campioni si calcola quella somma, non il singolo $X(\\omega)$."
+    },
+    {
+      "domanda": "Da quale disuguaglianza geometrica nasce la condizione $f_s \\ge 2 f_m$?",
+      "risposta": "Il bordo della replica centrale, $\\omega_m$, non deve superare l'inizio della replica successiva, $\\omega_s - \\omega_m$: quindi $\\omega_s \\ge 2\\omega_m$."
+    },
+    {
+      "domanda": "Che cosa succede se $f_s$ è appena sotto $2 f_m$?",
+      "risposta": "Le repliche si sovrappongono (aliasing): la somma misurata non permette più di separare i contributi e la ricostruzione non è univoca."
+    },
+    {
+      "domanda": "Perché nella ricostruzione compare il fattore $T$ davanti a $X_s$?",
+      "risposta": "Perché la ripetizione periodica è scalata di $1/T$; moltiplicare per $T$ ripristina l'ampiezza corretta dello spettro originario (punto A3)."
+    }
+  ],
+  "collegamenti": [
+    "criterio-nyquist-isi",
+    "serie-temporali-trasformata",
+    "segnali-pam"
+  ],
+  "fonti": [
+    {
+      "chiave": "FILE3",
+      "rif": "file3 pp. 1-2"
+    },
+    {
+      "chiave": "FILE1",
+      "rif": "file1 pp. 7-10 (p. 2.40, rif. dello studente)"
+    }
+  ],
+  "verifica": {
+    "stato": "verificata_file1_file3",
+    "data": "2026-10-29",
+    "note": "Confronto pagina per pagina sulle immagini renderizzate di file1 e file3 (appunti di studenti, non il libro); il testo di Calandrino e Immovilli non è stato consultato direttamente e la sua edizione è NON TROVATO, quindi non si dichiara identità con il testo del docente. La ricostruzione con il seno cardinale e il fattore T sono presenti solo in file1 pp. 9-10; file3 si ferma alla condizione di separazione. Punto A3 risolto sulle immagini: in file1 p. 9 si legge X(ω) = T·Xs(ω) per |ω| < ω0/2 = π/T (con ω0 variante per ωs).",
+    "punti_aperti": [
+      "Confronto con il libro di Calandrino e Immovilli non ancora fatto: edizione e pagine effettive NON TROVATO; i riferimenti del tipo p. x.y sono quelli riportati dallo studente in file1 (IPOTESI: capitolo.pagina).",
+      "In file3 la formula di ricostruzione con il seno cardinale è assente: il passo 7 segue il solo file1 pp. 9-10."
+    ]
+  }
+}
