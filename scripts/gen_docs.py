@@ -98,8 +98,9 @@ def genera_mappa_esame(graph: dict) -> str:
                 dom = ", ".join(c.get("domande_esame", [])) or "—"
                 lines.append(f"| `{c['id']}` | {c['area']} | {c['tipo']} | {dom} |")
             lines.append("")
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"FAIL mappa contratto: {e}", file=sys.stderr)
+            sys.exit(1)
         return "\n".join(lines)
     gruppi = {"teoria": [], "esercizio": [], "quiz": [], "intro_reti": []}
     for p in esame:

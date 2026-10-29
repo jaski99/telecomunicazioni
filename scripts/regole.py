@@ -91,8 +91,8 @@ def valida_dimostrazioni(dims: dict, present_map: dict, contratto_ids: set, meta
         verifica = dim.get("verifica", {})
         stato = verifica.get("stato")
         punti_aperti = verifica.get("punti_aperti", [])
-        if stato in ("verificata_testo_prof", "verificata_file1_file3") and punti_aperti:
-            raise ValueError(f"Dimostrazione {did}: con stato {stato} punti_aperti deve essere vuoto")
+        if stato in ("solo_file3", "ricostruzione_non_del_prof", "da_verificare") and not punti_aperti:
+            raise ValueError(f"Dimostrazione {did}: con stato {stato} punti_aperti non può essere vuoto")
         for f in dim.get("fonti", []):
             if f["chiave"] not in meta["fonti"]:
                 raise ValueError(f"Dimostrazione {did}: fonte {f['chiave']} non in meta.fonti")

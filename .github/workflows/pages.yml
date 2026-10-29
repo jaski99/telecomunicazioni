@@ -19,8 +19,14 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-24.04
+    outputs:
+      has_web: ${{ steps.check_web.outputs.has_web }}
     steps:
       - uses: actions/checkout@v4
+
+      - id: check_web
+        run: |
+          if [ -f web/package.json ]; then echo "has_web=true" >> $GITHUB_OUTPUT; else echo "has_web=false" >> $GITHUB_OUTPUT; fi
 
       - uses: actions/setup-python@v5
         with:
@@ -64,13 +70,13 @@ jobs:
           if grep -q "no tests collected" /tmp/pytest.log; then echo "no tests collected — fail"; exit 1; fi
 
       - name: Upload artifact
-        if: github.ref == 'refs/heads/main'
+        if: hashFiles('web/package.json') != '' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: web
 
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && needs.build.outputs.has_web == 'true'
     needs: build
     runs-on: ubuntu-24.04
     environment:

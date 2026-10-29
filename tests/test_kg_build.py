@@ -44,6 +44,46 @@ def _nodo_base(id_: str, area: int, tipo: str, worker: str, prereq=None, risorse
     }
 
 
+def _dim_valida(stato: str, punti_aperti: list) -> dict:
+    return {
+        "id": "dim-impulso-dirac-trasformata",
+        "titolo": "Titolo dimostrazione valida per test",
+        "domande_esame": ["T2"],
+        "enunciato": "Enunciato lungo almeno quaranta caratteri per soddisfare il vincolo dello schema della dimostrazione.",
+        "ipotesi": ["ipotesi 1"],
+        "notazione": [{"simbolo": "a", "significato": "b"}, {"simbolo": "c", "significato": "d"}],
+        "idea": "Idea di venti caratteri minimo qui",
+        "passi": [
+            {"n": 1, "testo": "t1", "perche": "perche abbastanza lungo per vincolo"},
+            {"n": 2, "testo": "t2", "perche": "perche abbastanza lungo per vincolo"},
+            {"n": 3, "testo": "t3", "perche": "perche abbastanza lungo per vincolo"},
+            {"n": 4, "testo": "t4", "perche": "perche abbastanza lungo per vincolo"},
+        ],
+        "formula_finale": "x",
+        "figure": [
+            {
+                "id": "fig1",
+                "tipo": "grafico",
+                "titolo": "Titolo figura grafico",
+                "descrizione": "Descrizione lunga almeno trenta caratteri per figura grafico di test",
+                "asse_x": {"etichetta": "x", "min": 0, "max": 1},
+                "asse_y": {"etichetta": "y", "min": 0, "max": 1},
+                "serie": [{"stile": "linea", "punti": [[0, 0], [1, 1]]}],
+            }
+        ],
+        "a_voce": "a" * 500,
+        "errori_frequenti": [
+            {"errore": "e", "perche_sbagliato": "p", "correzione": "c"},
+            {"errore": "e2", "perche_sbagliato": "p2", "correzione": "c2"},
+        ],
+        "versione_compatta": ["a", "b", "c"],
+        "a_buchi": {"testo": "___1___ ___2___ ___3___", "soluzioni": {"1": ["a"], "2": ["b"], "3": ["c"]}},
+        "richiamo_attivo": [{"domanda": "d", "risposta": "r"}, {"domanda": "d2", "risposta": "r2"}, {"domanda": "d3", "risposta": "r3"}],
+        "fonti": [{"chiave": "LIBRO_CI", "rif": "p.1"}],
+        "verifica": {"stato": stato, "data": "2026-10-29", "note": "n", "punti_aperti": punti_aperti},
+    }
+
+
 def _scrivi_parts(tmp_path: Path, nodi: list):
     graph_dir = tmp_path / "graph"
     parts = graph_dir / "parts"
@@ -137,6 +177,17 @@ def test_tipo_worker_diversi(tmp_path):
         build_graph(base=base)
 
 
+def test_worker_diverso(tmp_path):
+    from scripts.kg import build_graph
+
+    base = tmp_path
+    _setup_base(base)
+    n = _nodo_base("segnali-deterministici", 1, "concetto", "W5", [])
+    _scrivi_parts(base, [n])
+    with pytest.raises(ValueError, match="campo 'worker'"):
+        build_graph(base=base)
+
+
 def test_prerequisito_fuori_contratto(tmp_path):
     from scripts.kg import build_graph
 
@@ -168,10 +219,21 @@ def test_ciclo_via_pendente(tmp_path):
     # Creiamo due nodi che formano ciclo via pendente:
     # segnali-deterministici normalmente non ha prereq, ma lo facciamo dipendere da serie-fourier (hard)
     # serie-fourier dipende da segnali-deterministici -> ciclo
-    # Però serie-fourier ha hard segnali-deterministici, quindi se aggiungiamo a segnali un prereq verso serie, ciclo hard+soft
     n1 = _nodo_base("segnali-deterministici", 1, "concetto", "W3", [{"id": "serie-fourier", "forza": "soft", "motivo": "ciclo"}])
     n2 = _nodo_base("serie-fourier", 1, "concetto", "W3", [{"id": "segnali-deterministici", "forza": "hard", "motivo": "ciclo"}])
     _scrivi_parts(base, [n1, n2])
+    with pytest.raises(ValueError, match="Ciclo"):
+        build_graph(base=base)
+
+
+def test_ciclo_via_pendente_solo_segnali(tmp_path):
+    from scripts.kg import build_graph
+
+    base = tmp_path
+    _setup_base(base)
+    # solo segnali presente con arco soft verso serie-fourier assente (ciclo tramite hard di CONTRACTS 4)
+    n1 = _nodo_base("segnali-deterministici", 1, "concetto", "W3", [{"id": "serie-fourier", "forza": "soft", "motivo": "ciclo via pendente"}])
+    _scrivi_parts(base, [n1])
     with pytest.raises(ValueError, match="Ciclo"):
         build_graph(base=base)
 
@@ -265,43 +327,13 @@ def test_passi_non_consecutivi(tmp_path):
     n2 = _nodo_base("trasformata-fourier", 1, "concetto", "W3", [{"id": "serie-fourier", "forza": "hard", "motivo": "x"}])
     n3 = _nodo_base("dim-impulso-dirac-trasformata", 1, "dimostrazione", "W3", [{"id": "trasformata-fourier", "forza": "hard", "motivo": "x"}])
     _scrivi_parts(base2, [n0, n1, n2, n3])
-    dim = {
-        "id": "dim-impulso-dirac-trasformata",
-        "titolo": "Titolo dimostrazione valida per test",
-        "domande_esame": ["T2"],
-        "enunciato": "Enunciato lungo almeno quaranta caratteri per soddisfare il vincolo dello schema della dimostrazione.",
-        "ipotesi": ["ipotesi 1"],
-        "notazione": [{"simbolo": "a", "significato": "b"}, {"simbolo": "c", "significato": "d"}],
-        "idea": "Idea di venti caratteri minimo qui",
-        "passi": [
-            {"n": 1, "testo": "t1", "perche": "perche abbastanza lungo per vincolo"},
-            {"n": 3, "testo": "t3", "perche": "perche abbastanza lungo per vincolo"},
-            {"n": 4, "testo": "t4", "perche": "perche abbastanza lungo per vincolo"},
-            {"n": 5, "testo": "t5", "perche": "perche abbastanza lungo per vincolo"},
-        ],
-        "formula_finale": "x",
-        "figure": [
-            {
-                "id": "fig1",
-                "tipo": "grafico",
-                "titolo": "Titolo figura grafico",
-                "descrizione": "Descrizione lunga almeno trenta caratteri per figura grafico di test",
-                "asse_x": {"etichetta": "x", "min": 0, "max": 1},
-                "asse_y": {"etichetta": "y", "min": 0, "max": 1},
-                "serie": [{"stile": "linea", "punti": [[0, 0], [1, 1]]}],
-            }
-        ],
-        "a_voce": "a" * 500,
-        "errori_frequenti": [
-            {"errore": "e", "perche_sbagliato": "p", "correzione": "c"},
-            {"errore": "e2", "perche_sbagliato": "p2", "correzione": "c2"},
-        ],
-        "versione_compatta": ["a", "b", "c"],
-        "a_buchi": {"testo": "___1___ ___2___ ___3___", "soluzioni": {"1": ["a"], "2": ["b"], "3": ["c"]}},
-        "richiamo_attivo": [{"domanda": "d", "risposta": "r"}, {"domanda": "d2", "risposta": "r2"}, {"domanda": "d3", "risposta": "r3"}],
-        "fonti": [{"chiave": "LIBRO_CI", "rif": "p.1"}],
-        "verifica": {"stato": "da_verificare", "data": "2026-10-29", "note": "n", "punti_aperti": ["a"]},
-    }
+    dim = _dim_valida("da_verificare", ["a"])
+    dim["passi"] = [
+        {"n": 1, "testo": "t1", "perche": "perche abbastanza lungo per vincolo"},
+        {"n": 3, "testo": "t3", "perche": "perche abbastanza lungo per vincolo"},
+        {"n": 4, "testo": "t4", "perche": "perche abbastanza lungo per vincolo"},
+        {"n": 5, "testo": "t5", "perche": "perche abbastanza lungo per vincolo"},
+    ]
     (base2 / "graph" / "dimostrazioni" / "dim-impulso-dirac-trasformata.json").write_text(json.dumps(dim, ensure_ascii=False, indent=2), encoding="utf-8")
     with pytest.raises(ValueError, match="consecutivi"):
         build_graph(base=base2)
@@ -317,43 +349,44 @@ def test_chiavi_a_buchi_diverse(tmp_path):
     n2 = _nodo_base("trasformata-fourier", 1, "concetto", "W3", [{"id": "serie-fourier", "forza": "hard", "motivo": "x"}])
     n3 = _nodo_base("dim-impulso-dirac-trasformata", 1, "dimostrazione", "W3", [{"id": "trasformata-fourier", "forza": "hard", "motivo": "x"}])
     _scrivi_parts(base, [n0, n1, n2, n3])
-    dim = {
-        "id": "dim-impulso-dirac-trasformata",
-        "titolo": "Titolo dimostrazione valida per test",
-        "domande_esame": ["T2"],
-        "enunciato": "Enunciato lungo almeno quaranta caratteri per soddisfare il vincolo dello schema della dimostrazione.",
-        "ipotesi": ["ipotesi 1"],
-        "notazione": [{"simbolo": "a", "significato": "b"}, {"simbolo": "c", "significato": "d"}],
-        "idea": "Idea di venti caratteri minimo qui",
-        "passi": [
-            {"n": 1, "testo": "t1", "perche": "perche abbastanza lungo per vincolo"},
-            {"n": 2, "testo": "t2", "perche": "perche abbastanza lungo per vincolo"},
-            {"n": 3, "testo": "t3", "perche": "perche abbastanza lungo per vincolo"},
-            {"n": 4, "testo": "t4", "perche": "perche abbastanza lungo per vincolo"},
-        ],
-        "formula_finale": "x",
-        "figure": [
-            {
-                "id": "fig1",
-                "tipo": "grafico",
-                "titolo": "Titolo figura grafico",
-                "descrizione": "Descrizione lunga almeno trenta caratteri per figura grafico di test",
-                "asse_x": {"etichetta": "x", "min": 0, "max": 1},
-                "asse_y": {"etichetta": "y", "min": 0, "max": 1},
-                "serie": [{"stile": "linea", "punti": [[0, 0], [1, 1]]}],
-            }
-        ],
-        "a_voce": "a" * 500,
-        "errori_frequenti": [
-            {"errore": "e", "perche_sbagliato": "p", "correzione": "c"},
-            {"errore": "e2", "perche_sbagliato": "p2", "correzione": "c2"},
-        ],
-        "versione_compatta": ["a", "b", "c"],
-        "a_buchi": {"testo": "___1___ ___2___ ___3___", "soluzioni": {"1": ["a"], "2": ["b"]}},
-        "richiamo_attivo": [{"domanda": "d", "risposta": "r"}, {"domanda": "d2", "risposta": "r2"}, {"domanda": "d3", "risposta": "r3"}],
-        "fonti": [{"chiave": "LIBRO_CI", "rif": "p.1"}],
-        "verifica": {"stato": "da_verificare", "data": "2026-10-29", "note": "n", "punti_aperti": ["a"]},
-    }
+    dim = _dim_valida("da_verificare", ["a"])
+    dim["a_buchi"] = {"testo": "___1___ ___2___ ___3___", "soluzioni": {"1": ["a"], "2": ["b"]}}
     (base / "graph" / "dimostrazioni" / "dim-impulso-dirac-trasformata.json").write_text(json.dumps(dim, ensure_ascii=False, indent=2), encoding="utf-8")
     with pytest.raises(ValueError, match="chiavi soluzioni"):
         build_graph(base=base)
+
+
+def test_verifica_non_verificato_vuoto_fallisce(tmp_path):
+    from scripts.kg import build_graph
+
+    base = tmp_path
+    _setup_base(base)
+    n0 = _nodo_base("segnali-deterministici", 1, "concetto", "W3", [])
+    n1 = _nodo_base("serie-fourier", 1, "concetto", "W3", [{"id": "segnali-deterministici", "forza": "hard", "motivo": "x"}])
+    n2 = _nodo_base("trasformata-fourier", 1, "concetto", "W3", [{"id": "serie-fourier", "forza": "hard", "motivo": "x"}])
+    n3 = _nodo_base("dim-impulso-dirac-trasformata", 1, "dimostrazione", "W3", [{"id": "trasformata-fourier", "forza": "hard", "motivo": "x"}])
+    _scrivi_parts(base, [n0, n1, n2, n3])
+    dim = _dim_valida("da_verificare", [])
+    (base / "graph" / "dimostrazioni" / "dim-impulso-dirac-trasformata.json").write_text(json.dumps(dim, ensure_ascii=False, indent=2), encoding="utf-8")
+    with pytest.raises(ValueError, match="punti_aperti"):
+        build_graph(base=base)
+
+
+def test_verifica_verificato_con_punti_valido(tmp_path):
+    from scripts.kg import build_graph
+
+    base = tmp_path
+    _setup_base(base)
+    n0 = _nodo_base("segnali-deterministici", 1, "concetto", "W3", [])
+    n1 = _nodo_base("serie-fourier", 1, "concetto", "W3", [{"id": "segnali-deterministici", "forza": "hard", "motivo": "x"}])
+    n2 = _nodo_base("trasformata-fourier", 1, "concetto", "W3", [{"id": "serie-fourier", "forza": "hard", "motivo": "x"}])
+    n3 = _nodo_base("dim-impulso-dirac-trasformata", 1, "dimostrazione", "W3", [{"id": "trasformata-fourier", "forza": "hard", "motivo": "x"}])
+    _scrivi_parts(base, [n0, n1, n2, n3])
+    dim = _dim_valida("verificata_testo_prof", ["punto aperto residuo"])
+    (base / "graph" / "dimostrazioni" / "dim-impulso-dirac-trasformata.json").write_text(json.dumps(dim, ensure_ascii=False, indent=2), encoding="utf-8")
+    g = build_graph(base=base)
+    assert len(g["nodi"]) == 4
+    nodo_dim = next(n for n in g["nodi"] if n["id"] == "dim-impulso-dirac-trasformata")
+    dim_out = nodo_dim["dimostrazione"]
+    assert dim_out["verifica"]["stato"] == "verificata_testo_prof"
+    assert dim_out["verifica"]["punti_aperti"] == ["punto aperto residuo"]

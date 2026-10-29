@@ -35,8 +35,9 @@ def _collect_urls() -> list:
                     for nodo in data:
                         for r in nodo.get("risorse", []):
                             urls.append((r.get("url"), f"nodo {nodo.get('id')} in {f.name}"))
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"FAIL {f}: JSON illeggibile ({e})", file=sys.stderr)
+                sys.exit(1)
     # dedup mantendo provenienza
     seen = {}
     for url, prov in urls:

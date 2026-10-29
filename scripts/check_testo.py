@@ -44,8 +44,9 @@ def _cerca_parole_vietate(testo: str) -> list:
 def _raccogli_testo_da_json(path: Path) -> list:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
-        return []
+    except Exception as e:
+        print(f"FAIL {path}: JSON non valido ({e})", file=sys.stderr)
+        sys.exit(1)
     strings = []
 
     def walk(obj, prefix=""):
