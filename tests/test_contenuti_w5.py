@@ -270,11 +270,8 @@ def check_figures(figures):
     assert len(ids) == len(set(ids))
     for fig in figures:
         validate(FIGURE, fig)
-        for path, label in strings(fig):
-            assert "<svg" not in label.lower(), label
-            # Only SVG labels stay Unicode-only; accessible descriptions are Markdown text.
-            if path and (path[-1] == "etichetta" or ("annotazioni" in path and path[-1] == "testo")):
-                assert "$" not in label, label
+        for _, label in strings(fig):
+            assert "$" not in label and "<svg" not in label.lower(), label
         if fig["tipo"] == "grafico":
             for axis_name in ("asse_x", "asse_y"):
                 axis = fig[axis_name]

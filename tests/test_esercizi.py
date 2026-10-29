@@ -74,7 +74,8 @@ def _frazioni_in_testo(testo):
 def _normalizza_latex(testo):
     """Normalizza solo la sintassi LaTeX per mantenere leggibili i test numerici."""
     backslash = chr(92)
-    testo = _frazioni_in_testo(testo.replace("$", ""))
+    testo = testo.replace("$", "").replace("{,}", ",")
+    testo = _frazioni_in_testo(testo)
     for funzione in ("sinc", "arg"):
         testo = testo.replace(backslash + "operatorname{" + funzione + "}", funzione)
     testo = testo.replace(backslash + "mathrm{k}", "k").replace(backslash + "mathrm{F}", "F")
@@ -201,7 +202,7 @@ def test_worked_example_results_are_recomputed_from_json_parameters():
     zero_step = next(line for line in pulse_passi if "primo è ω=" in line)
     zero_reported = float(re.search(r"≈\s*([0-9]+,[0-9]+) rad/s", zero_step).group(1).replace(",", "."))
     assert math.isclose(zero_reported, 2 * math.pi / tau, rel_tol=1e-5)
-    sample_step = next(line for line in pulse_passi if "0,00382" in line and "Aτ" in line)
+    sample_step = next(line for line in pulse_passi if re.search(r"Aτ·\s*2/\(?π\)?", line))
     sample_reported = float(re.search(r"≈\s*([0-9]+,[0-9]+)", sample_step).group(1).replace(",", "."))
     assert math.isclose(sample_reported, amp * tau * 2 / math.pi, rel_tol=1e-3)
 
@@ -211,7 +212,7 @@ def test_worked_example_results_are_recomputed_from_json_parameters():
     inverse_passi = [_normalizza_latex(line) for line in inverse["passi"]]
     x0 = float(re.search(r"X₀=(\d+(?:[.,]\d+)?)", inverse_problem).group(1).replace(",", "."))
     omega_m = float(re.search(r"ωₘ=(\d+(?:[.,]\d+)?)", inverse_problem).group(1).replace(",", "."))
-    limit_step = next(line for line in inverse_passi if "x(0)=" in line and "2,546" in line)
+    limit_step = next(line for line in inverse_passi if re.search(r"x\(0\)=X₀ωₘ/\(?π\)?", line))
     limit_reported = float(re.search(r"≈\s*([0-9]+,[0-9]+)", limit_step).group(1).replace(",", "."))
     assert math.isclose(limit_reported, x0 * omega_m / math.pi, rel_tol=2e-4)
     assert "primi sono ±π/4 s" in next(line for line in inverse_passi if "primi sono" in line)
@@ -235,7 +236,7 @@ def test_worked_example_results_are_recomputed_from_json_parameters():
     g0 = float(re.search(r"G₀=(\d+(?:[.,]\d+)?)", problem).group(1).replace(",", "."))
     omega_m = float(re.search(r"ωₘ=(\d+(?:[.,]\d+)?)", problem).group(1).replace(",", "."))
     variance = g0 * omega_m**3 / 3
-    variance_step = next(line for line in steps if "σ²=" in line and "18" in line)
+    variance_step = next(line for line in steps if re.search(r"σ²=G₀ωₘ³/3=", line))
     variance_reported = float(re.search(r"=([0-9]+)\.$", variance_step).group(1))
     assert math.isclose(variance_reported, variance)
     density_step = next(line for line in steps if "pᵧ(y)=" in line)

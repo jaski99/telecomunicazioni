@@ -32,6 +32,7 @@ ATOMO_FRAZIONE = r"(?:\([^()]*\)|\|[^|]*\||[A-Za-z0-9]+(?:_[A-Za-z0-9]+)?(?:\^[A
 FRAZIONE_RE = re.compile(
     rf"(?<![\w/])(?P<num>{ATOMO_FRAZIONE})\s*/\s*(?P<den>{ATOMO_FRAZIONE})(?![\w/])"
 )
+ESONENTE_PEDICE_PARENTESE_RE = re.compile(r"[_^]\(")
 UNDERSCORE_MATEMATICO_RE = re.compile(
     r"(?<![A-Za-z0-9\\])[A-Za-z]_(?:[A-Za-z0-9]+|\{[^{}]+\})(?![A-Za-z0-9])|(?<![A-Za-z0-9\\])[A-Za-z]{2,}_(?:[A-Za-z0-9]|\{(?:[A-Za-z0-9]|max|min)\}|max|min)(?![A-Za-z0-9])"
 )
@@ -80,6 +81,31 @@ def _segmenti_fuori_dai_dollari(testo: str) -> Iterable[tuple[int, int, str]]:
     # Se manca la chiusura, non trattare il resto della stringa come LaTeX.
     if inizio < len(testo):
         yield inizio, len(testo), testo[inizio:]
+
+
+def _segmenti_dentro_dai_dollari(testo: str) -> Iterable[str]:
+    """Restituisce i corpi delle formule chiuse tra $...$ o $$...$$."""
+    i = 0
+    inizio = 0
+    delimitatore: str | None = None
+    while i < len(testo):
+        if testo[i] != "$" or (i > 0 and testo[i - 1] == "\\"):
+            i += 1
+            continue
+
+        token = "$$" if testo.startswith("$$", i) else "$"
+        if delimitatore is None:
+            delimitatore = token
+            i += len(token)
+            inizio = i
+        elif token == delimitatore:
+            yield testo[inizio:i]
+            delimitatore = None
+            i += len(token)
+            inizio = i
+        else:
+            # Un singolo $ non chiude un blocco $$ e viceversa.
+            i += len(token)
 
 
 def _e_greca(c: str) -> bool:
@@ -157,12 +183,9 @@ def _campo_escluso(percorso: tuple[str, ...]) -> bool:
         return True
     if ultimo == "simbolo" and "notazione" in percorso:
         return True
-    # Le etichette incorporate negli SVG restano Unicode. Le descrizioni
-    # accessibili, invece, sono testo e vengono controllate normalmente.
-    dentro_figura = "figure" in percorso
-    if dentro_figura and ultimo == "etichetta":
-        return True
-    if dentro_figura and ultimo == "testo" and "annotazioni" in percorso:
+    # L'intero oggetto figura viene usato in aria-label e SVG title/desc:
+    # tutte le sue stringhe restano testo Unicode, senza delimitatori LaTeX.
+    if "figure" in percorso:
         return True
 
     return False
@@ -202,6 +225,8 @@ def _cammina(
         for motivo in _motivi(segmento):
             if motivo not in motivi:
                 motivi.append(motivo)
+    if any(ESONENTE_PEDICE_PARENTESE_RE.search(segmento) for segmento in _segmenti_dentro_dai_dollari(oggetto)):
+        motivi.append("apice o pedice con parentesi tonde nel LaTeX")
     if motivi:
         trovati.append(
             Occorrenza(

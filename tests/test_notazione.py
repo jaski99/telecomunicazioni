@@ -73,13 +73,33 @@ def test_finder_copre_notazione_greca_indici_operatori_frazioni_e_underscore(tmp
     ]
 
 
-def test_notazione_dentro_dollari_non_e_segnalata(tmp_path):
+def test_notazione_dentro_dollari_non_e_segnalata_e_figure_esclusa(tmp_path):
     _prepara_grafo(
         tmp_path,
         {
-            "testo": "La formula è $\\omega_0 = \\sum_k x_k$.",
+            "testo": r"La formula è $\omega_0 = \sum_k x_k$.",
             "descrizione": "Il rapporto di trasmissione è rad/s.",
-            "figure": [{"asse_x": {"etichetta": "ω₀ → ω₁"}}],
+            "figure": [
+                {
+                    "asse_x": {"etichetta": "ω₀ → ω₁"},
+                    "titolo": "$y^(2)$",
+                    "descrizione": "La figura contiene $x_(n)$ senza delimitatori da correggere.",
+                }
+            ],
         },
     )
     assert trova_occorrenze(tmp_path) == []
+
+
+def test_finder_segnala_apici_e_pedici_con_parentesi_dentro_i_dollari(tmp_path):
+    testo = r"La formula errata è $e^(-j\omega t_{c})$ e anche $x_(n)$"
+    _prepara_grafo(tmp_path, {"testo": testo})
+
+    assert trova_occorrenze(tmp_path) == [
+        Occorrenza(
+            file="graph/lezioni/notazione.json",
+            campo="testo",
+            testo=testo,
+            motivo="apice o pedice con parentesi tonde nel LaTeX",
+        )
+    ]
