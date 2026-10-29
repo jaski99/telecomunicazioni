@@ -1,0 +1,96 @@
+{
+  "id": "code-mm1-little",
+  "perche_ti_serve": "Gruppo C: approfondisce la teoria del traffico e usa l’equilibrio di T14 e la legge di Little.",
+  "scenario": "Un processore riceve pacchetti casuali, ne serve uno alla volta e mantiene gli altri in attesa: vogliamo dimensionare il servizio.",
+  "definizione_esame": {
+    "definizione": "Una coda M/M/1 ha arrivi Poisson, tempi di servizio esponenziali indipendenti e un solo servitore.",
+    "scopo": "Stimare occupazione e tempi medi nel regime stazionario, quando esiste.",
+    "esempio": "Con $\\lambda=2$/min e $\\mu=3$/min, il carico è $2/3$."
+  },
+  "spiegazione": "### Modello e stabilità\nIn M/M/1 il numero di clienti nel sistema comprende quello eventualmente in servizio. Gli arrivi hanno tasso $\\lambda$ e il servizio, quando il servitore è occupato, ha tasso $\\mu$, entrambi per unità di tempo. Il modello nascita–morte ha $\\lambda_k=\\lambda$ e $\\mu_k=\\mu$ per $k\\ge1$, con $\\mu_0=0$. Assumiamo capacità di attesa illimitata, indipendenza e disciplina di servizio adeguata. Per una distribuzione stazionaria normalizzabile occorre $0\\le\\rho=\\lambda/\\mu<1$: se gli arrivi medi raggiungono o superano la capacità di servizio, le formule di equilibrio non si applicano.\n\n### Distribuzione e grandezze medie\nDal bilancio locale $p_k\\lambda=p_{k+1}\\mu$ segue $p_k=(1-\\rho)\\rho^k$. Normalizzando la serie geometrica otteniamo $p_0=1-\\rho$. Il numero medio nel sistema è $L=\\rho/(1-\\rho)$; il numero medio nella sola coda è $L_q=\\rho^2/(1-\\rho)$. I tempi medi sono $W=1/(\\mu-\\lambda)$ per permanenza nel sistema e $W_q=\\rho/(\\mu-\\lambda)$ per attesa prima del servizio. Le unità sono coerenti se tassi e tempi usano la stessa unità.\n\n### Legge di Little e limiti\nIn regime stabile, usando il tasso effettivo di arrivo, la legge di Little scrive $L=\\lambda W$ e, per la sola coda, $L_q=\\lambda W_q$. Non è una formula esclusiva di M/M/1, ma richiede definizioni coerenti e condizioni di stabilità appropriate. Il tempo nel sistema include servizio e attesa; quello in coda esclude il servizio. Un buffer finito, perdite, servizi non esponenziali o più servitori richiedono un altro modello. Queste formule sono una ricostruzione didattica standard, non una dimostrazione attribuita ai lucidi del docente.",
+  "analogia": {
+    "testo": "Una fila davanti a uno sportello contiene persone in attesa e, se occupato, una persona servita.",
+    "limite": "Le persone reali non arrivano necessariamente con un processo di Poisson né richiedono servizi esponenziali."
+  },
+  "worked_example": {
+    "titolo": "Sistema stabile",
+    "problema": "Considera $\\lambda=2$/min e $\\mu=3$/min.",
+    "passi": [
+      "Verifica $\\rho=2/3<1$.",
+      "Calcola $W=1/(3-2)=1$ min.",
+      "Applica Little: $L=\\lambda W=2$ clienti.",
+      "Per la sola coda, $W_q=2/3$ min e $L_q=4/3$."
+    ],
+    "soluzione": "In media ci sono 2 clienti nel sistema e la permanenza media è 1 min; la sola attesa media è 2/3 min.",
+    "perche_funziona": "La stabilità è verificata e il numero nel sistema include anche il cliente in servizio."
+  },
+  "completion_problem": {
+    "titolo": "Controlla stabilità",
+    "testo": "Sia $\\lambda=5$/s e $\\mu=4$/s.",
+    "passi_mancanti": [
+      "Calcola $\\rho$ e decidi se la formula stazionaria è utilizzabile."
+    ],
+    "soluzione": "$\\rho=1{,}25$: il modello infinito non ha equilibrio normalizzabile e le formule stazionarie indicate non si applicano."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Little",
+    "testo": "Un sistema stabile ha tasso effettivo 3 clienti/min e permanenza media 2 min. Qual è L?",
+    "suggerimento": "Usa $L=\\lambda W$ con unità coerenti.",
+    "soluzione_attesa": "Il numero medio nel sistema è 6 clienti."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Applicare M/M/1 con $\\lambda\\ge\\mu$.",
+      "perche_sbagliato": "La normalizzazione richiesta non converge nel modello a capacità infinita."
+    },
+    {
+      "errore": "Confondere $W$ e $W_q$.",
+      "perche_sbagliato": "La permanenza nel sistema comprende anche il tempo di servizio."
+    },
+    {
+      "errore": "Usare il tasso offerto al posto di quello effettivo in presenza di perdite.",
+      "perche_sbagliato": "Little usa il flusso effettivamente entrato nel sistema considerato."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Quale condizione richiede M/M/1 infinito?",
+        "risposta": "$\\lambda<\\mu$ per un regime stazionario normalizzabile."
+      },
+      {
+        "domanda": "Che cosa include L?",
+        "risposta": "I clienti in coda e quello eventualmente in servizio."
+      },
+      {
+        "domanda": "Come si scrive la legge di Little?",
+        "risposta": "$L=\\lambda W$, con tasso effettivo e definizioni coerenti."
+      }
+    ],
+    "spiega_con_parole_tue": "Per una M/M/1 con $\\lambda=2$/min e $\\mu=3$/min, verifica la stabilità e ricava occupazione e tempo medio nel sistema con la legge di Little."
+  },
+  "riepilogo": "M/M/1 richiede $\\lambda<\\mu$. In equilibrio Little lega numero e permanenza; separa sistema e sola coda.",
+  "flashcard": [
+    {
+      "fronte": "Quale condizione richiede M/M/1 infinito?",
+      "retro": "$\\lambda<\\mu$ per un regime stazionario normalizzabile."
+    },
+    {
+      "fronte": "Che cosa include L?",
+      "retro": "I clienti in coda e quello eventualmente in servizio."
+    },
+    {
+      "fronte": "Come si scrive la legge di Little?",
+      "retro": "$L=\\lambda W$, con tasso effettivo e definizioni coerenti."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "So verificare il carico.",
+      "So calcolare L e W con unità coerenti."
+    ],
+    "so_dire": [
+      "So distinguere M/M/1 e legge generale di Little."
+    ]
+  }
+}

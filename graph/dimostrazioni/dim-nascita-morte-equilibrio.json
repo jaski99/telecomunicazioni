@@ -1,0 +1,289 @@
+{
+  "id": "dim-nascita-morte-equilibrio",
+  "titolo": "Equilibrio di un processo nascita–morte",
+  "domande_esame": [
+    "T14"
+  ],
+  "enunciato": "In un processo nascita–morte irriducibile con stati finiti $0,\\ldots,N$ e tassi positivi $\\lambda_i$ di nascita e $\\mu_{i+1}$ di morte, le probabilità stazionarie soddisfano $p_k=p_0\\prod_{i=0}^{k-1}\\frac{\\lambda_i}{\\mu_{i+1}}$ per $1\\le k\\le N$, con normalizzazione $p_0=\\left(1+\\sum_{k=1}^{N}\\prod_{i=0}^{k-1}\\frac{\\lambda_i}{\\mu_{i+1}}\\right)^{-1}$. Per infiniti stati occorrono non esplosività e convergenza della serie di normalizzazione.",
+  "ipotesi": [
+    "Catena di Markov a tempo continuo sugli stati finiti $0,1,\\ldots,N$ con sole transizioni tra vicini.",
+    "$\\lambda_k>0$ per $0\\le k<N$, $\\mu_k>0$ per $1\\le k\\le N$, $\\mu_0=0$ e $\\lambda_N=0$.",
+    "All’equilibrio $p_k$ non dipende dal tempo; per estendere agli infiniti stati servono non esplosività e serie di normalizzazione finita."
+  ],
+  "notazione": [
+    {
+      "simbolo": "\\lambda_k",
+      "significato": "Tasso di nascita dallo stato k allo stato k+1."
+    },
+    {
+      "simbolo": "\\mu_k",
+      "significato": "Tasso di morte dallo stato k allo stato k−1."
+    },
+    {
+      "simbolo": "p_k(t),p_k",
+      "significato": "Probabilità transitoria e probabilità stazionaria dello stato k."
+    },
+    {
+      "simbolo": "N",
+      "significato": "Ultimo stato nella versione finita."
+    },
+    {
+      "simbolo": "\\Delta t",
+      "significato": "Piccolo intervallo di osservazione."
+    }
+  ],
+  "varianti_notazione": [],
+  "idea": "Scrivi entrate e uscite, imponi equilibrio ai confini e normalizza il prodotto dei rapporti tra tassi.",
+  "passi": [
+    {
+      "n": 1,
+      "testo": "Costruisci i tassi infinitesimi degli spostamenti adiacenti.",
+      "formula": "P_{k,k+1}(\\Delta t)=\\lambda_k\\Delta t+o(\\Delta t),\\quad P_{k,k-1}(\\Delta t)=\\mu_k\\Delta t+o(\\Delta t)",
+      "perche": "Per una catena a tassi finiti le transizioni multiple contribuiscono termini di ordine inferiore a $\\Delta t$.",
+      "figura": "catena-nascita-morte"
+    },
+    {
+      "n": 2,
+      "testo": "Somma gli ingressi in k e sottrai le uscite, poi passa al limite.",
+      "formula": "\\frac{dp_k(t)}{dt}=\\lambda_{k-1}p_{k-1}(t)+\\mu_{k+1}p_{k+1}(t)-(\\lambda_k+\\mu_k)p_k(t)",
+      "perche": "In un intervallo piccolo si può entrare solo dai due stati adiacenti oppure restare nello stato."
+    },
+    {
+      "n": 3,
+      "testo": "Allo stato zero e in equilibrio ottieni la prima uguaglianza dei flussi.",
+      "formula": "0=-\\lambda_0p_0+\\mu_1p_1,\\qquad \\lambda_0p_0=\\mu_1p_1",
+      "perche": "Nello stato zero non esiste una transizione di morte verso uno stato negativo."
+    },
+    {
+      "n": 4,
+      "testo": "Usa il bilancio degli stati successivi per ricavare la relazione tra vicini.",
+      "formula": "\\lambda_kp_k=\\mu_{k+1}p_{k+1},\\qquad p_{k+1}=p_k\\frac{\\lambda_k}{\\mu_{k+1}}",
+      "perche": "Il flusso netto è costante tra frontiere e quello a sinistra dello zero è zero."
+    },
+    {
+      "n": 5,
+      "testo": "Itera e imponi che le probabilità sommino a uno.",
+      "formula": "p_k=p_0\\prod_{i=0}^{k-1}\\frac{\\lambda_i}{\\mu_{i+1}},\\qquad p_0=\\left(1+\\sum_{k=1}^{N}\\prod_{i=0}^{k-1}\\frac{\\lambda_i}{\\mu_{i+1}}\\right)^{-1}",
+      "perche": "L’induzione dà il prodotto; la somma finita delle probabilità determina univocamente $p_0$."
+    }
+  ],
+  "formula_finale": "p_k=p_0\\prod_{i=0}^{k-1}\\frac{\\lambda_i}{\\mu_{i+1}},\\qquad p_0=\\left(1+\\sum_{k=1}^{N}\\prod_{i=0}^{k-1}\\frac{\\lambda_i}{\\mu_{i+1}}\\right)^{-1}\\quad(1\\le k\\le N).",
+  "figure": [
+    {
+      "id": "catena-nascita-morte",
+      "tipo": "blocchi",
+      "titolo": "Stati e transizioni nascita–morte",
+      "descrizione": "Gli stati 0, 1, 2 e 3 sono collegati da percorsi distinti: i rami superiori sono nascite λ₀, λ₁, λ₂; quelli inferiori morti μ₁, μ₂, μ₃. La catena può proseguire.",
+      "blocchi": [
+        {
+          "id": "stato-0",
+          "etichetta": "0",
+          "forma": "nodo",
+          "colonna": 0,
+          "riga": 1
+        },
+        {
+          "id": "stato-1",
+          "etichetta": "1",
+          "forma": "nodo",
+          "colonna": 4,
+          "riga": 1
+        },
+        {
+          "id": "stato-2",
+          "etichetta": "2",
+          "forma": "nodo",
+          "colonna": 8,
+          "riga": 1
+        },
+        {
+          "id": "stato-3",
+          "etichetta": "3",
+          "forma": "nodo",
+          "colonna": 12,
+          "riga": 1
+        },
+        {
+          "id": "nascita-0",
+          "etichetta": "λ₀",
+          "forma": "rettangolo",
+          "colonna": 2,
+          "riga": 0
+        },
+        {
+          "id": "morte-1",
+          "etichetta": "μ₁",
+          "forma": "rettangolo",
+          "colonna": 2,
+          "riga": 2
+        },
+        {
+          "id": "nascita-1",
+          "etichetta": "λ₁",
+          "forma": "rettangolo",
+          "colonna": 6,
+          "riga": 0
+        },
+        {
+          "id": "morte-2",
+          "etichetta": "μ₂",
+          "forma": "rettangolo",
+          "colonna": 6,
+          "riga": 2
+        },
+        {
+          "id": "nascita-2",
+          "etichetta": "λ₂",
+          "forma": "rettangolo",
+          "colonna": 10,
+          "riga": 0
+        },
+        {
+          "id": "morte-3",
+          "etichetta": "μ₃",
+          "forma": "rettangolo",
+          "colonna": 10,
+          "riga": 2
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "stato-0",
+          "a": "nascita-0"
+        },
+        {
+          "da": "nascita-0",
+          "a": "stato-1"
+        },
+        {
+          "da": "stato-1",
+          "a": "morte-1"
+        },
+        {
+          "da": "morte-1",
+          "a": "stato-0"
+        },
+        {
+          "da": "stato-1",
+          "a": "nascita-1"
+        },
+        {
+          "da": "nascita-1",
+          "a": "stato-2"
+        },
+        {
+          "da": "stato-2",
+          "a": "morte-2"
+        },
+        {
+          "da": "morte-2",
+          "a": "stato-1"
+        },
+        {
+          "da": "stato-2",
+          "a": "nascita-2"
+        },
+        {
+          "da": "nascita-2",
+          "a": "stato-3"
+        },
+        {
+          "da": "stato-3",
+          "a": "morte-3"
+        },
+        {
+          "da": "morte-3",
+          "a": "stato-2"
+        }
+      ]
+    }
+  ],
+  "a_voce": "Rappresento gli stati come nodi consecutivi: da k una nascita porta a k più uno e una morte porta a k meno uno. Nel piccolo intervallo di tempo scrivo la probabilità di entrare dai vicini e quella di uscire, trascurando solo i termini di ordine superiore. Dividendo per la durata e passando al limite ottengo le equazioni differenziali. All’equilibrio le derivate sono zero; alla frontiera zero il flusso di nascita verso uno uguaglia quello di morte in senso inverso. Ripetendo la relazione tra stati vicini ricavo ciascuna probabilità come p zero moltiplicato per un prodotto di rapporti tra tassi. Infine determino p zero imponendo che la somma sia uno. Per infiniti stati devo verificare convergenza e non esplosività.",
+  "errori_frequenti": [
+    {
+      "errore": "Dividere per $\\mu_k$ invece di $\\mu_{k+1}$.",
+      "perche_sbagliato": "La morte che bilancia la nascita da k parte dallo stato k+1.",
+      "correzione": "Usa $\\lambda_k p_k=\\mu_{k+1}p_{k+1}$."
+    },
+    {
+      "errore": "Usare il prodotto stazionario come probabilità transitoria.",
+      "perche_sbagliato": "Il bilancio locale è stato imposto solo dopo avere annullato le derivate.",
+      "correzione": "Distingui $p_k(t)$ da $p_k$."
+    },
+    {
+      "errore": "Normalizzare comunque una serie infinita divergente.",
+      "perche_sbagliato": "Non esiste una distribuzione stazionaria di probabilità con tale normalizzazione.",
+      "correzione": "Verifica convergenza e non esplosività prima di usare il limite infinito."
+    }
+  ],
+  "versione_compatta": [
+    "$\\dot p_k=\\lambda_{k-1}p_{k-1}+\\mu_{k+1}p_{k+1}-(\\lambda_k+\\mu_k)p_k$.",
+    "All’equilibrio: $\\lambda_kp_k=\\mu_{k+1}p_{k+1}$.",
+    "$p_k=p_0\\prod_{i=0}^{k-1}\\lambda_i/\\mu_{i+1}$.",
+    "$p_0$ si trova da $\\sum p_k=1$."
+  ],
+  "a_buchi": {
+    "testo": "Il flusso $k\\to k+1$ è ___1___ e quello inverso è ___2___. Sono uguali perché ___3___. Iterando si ottiene ___4___.",
+    "soluzioni": {
+      "1": [
+        "$\\lambda_k p_k$",
+        "\\lambda_k p_k"
+      ],
+      "2": [
+        "$\\mu_{k+1}p_{k+1}$",
+        "\\mu_{k+1}p_{k+1}"
+      ],
+      "3": [
+        "il flusso netto alle frontiere è zero",
+        "bilancio all’equilibrio"
+      ],
+      "4": [
+        "$p_k=p_0\\prod_{i=0}^{k-1}\\lambda_i/\\mu_{i+1}$"
+      ]
+    }
+  },
+  "richiamo_attivo": [
+    {
+      "domanda": "Che cosa garantisce il bilancio locale?",
+      "risposta": "Gli stati sono adiacenti e, all’equilibrio, il flusso netto attraverso ogni frontiera è zero."
+    },
+    {
+      "domanda": "Qual è la condizione al bordo zero?",
+      "risposta": "$\\mu_0=0$ e $\\lambda_0p_0=\\mu_1p_1$."
+    },
+    {
+      "domanda": "Come si determina $p_0$?",
+      "risposta": "Con la normalizzazione della somma delle probabilità."
+    },
+    {
+      "domanda": "Che cosa cambia con infiniti stati?",
+      "risposta": "Occorrono una serie normalizzabile e ipotesi di non esplosività."
+    }
+  ],
+  "collegamenti": [
+    "processo-poisson",
+    "code-mm1-little"
+  ],
+  "fonti": [
+    {
+      "chiave": "FILE2",
+      "rif": "file2 p. 1: T14, titolo riformulato; punteggio NON TROVATO"
+    },
+    {
+      "chiave": "FILE3",
+      "rif": "file3 pp. 48–49: nascita–morte; numerazione interna stampata 41–42"
+    },
+    {
+      "chiave": "FILE1",
+      "rif": "file1 pp. 54–55: slide 110 Reti citata, non consultata"
+    }
+  ],
+  "verifica": {
+    "stato": "verificata_file1_file3",
+    "data": "2026-10-28",
+    "note": "A15: individuate le pagine fisiche 48–49 di file3. I bilanci sono rielaborati e resi espliciti; libro e lucidi non consultati.",
+    "punti_aperti": [
+      "Confronto diretto con la slide del docente: NON TROVATO."
+    ]
+  }
+}

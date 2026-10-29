@@ -1,0 +1,91 @@
+{
+  "id": "commutazione-circuito-pacchetto",
+  "perche_ti_serve": "Gruppo B: chiarisce il percorso di rete e il significato dei ritardi prima degli accessi multipli.",
+  "scenario": "Un flusso vocale deve attraversare due collegamenti: puoi riservare risorse o suddividere l’informazione in pacchetti.",
+  "definizione_esame": {
+    "definizione": "La commutazione assegna risorse e determina come l’informazione attraversa una rete di nodi.",
+    "scopo": "Confrontare circuito riservato e inoltro per pacchetti senza confondere condivisione e ritardo.",
+    "esempio": "Un nodo store-and-forward riceve un pacchetto completo prima di ritrasmetterlo."
+  },
+  "spiegazione": "### Circuito: fase di instaurazione e risorse\nNella commutazione di circuito si stabilisce un percorso e si riservano risorse per la comunicazione, seguite dall'utilizzo e dal rilascio. La risorsa riservata può restare inutilizzata durante pause della sorgente. Un circuito non implica che il mezzo fisico sia esclusivo: un sistema può suddividerlo in risorse logiche separate. Il ritardo complessivo dipende anche dall'instaurazione e dalla propagazione; non si può attribuire un valore numerico senza specificare questi contributi.\n\n### Pacchetti e inoltro\nNella commutazione di pacchetto l'informazione è suddivisa in unità con informazioni di controllo; più flussi condividono capacità e possono incontrare attese. Nello store-and-forward un nodo aspetta il pacchetto completo prima di inviarlo sul collegamento successivo. Per $b$ bit su una linea di capacità $C$, la serializzazione richiede $b/C$ secondi. Con due collegamenti uguali in serie e senza propagazione, elaborazione o coda, il primo pacchetto richiede $2b/C$ dalla partenza iniziale alla ricezione completa. I pacchetti seguenti possono essere sovrapposti in pipeline: non moltiplicare questo risultato per il loro numero senza calcolare gli istanti.\n\n### Quando il confronto cambia\nIl ritardo reale può includere elaborazione, trasmissione, propagazione e coda. La condivisione a pacchetti sfrutta bene la capacità durante traffico discontinuo, ma il tempo d'attesa dipende dal carico e dal criterio di servizio. Circuito e pacchetto non determinano automaticamente qualità o affidabilità: occorrono parametri del sistema, risorse e condizioni di traffico. Nei confronti indicare sempre se si misura il tempo del primo bit, dell'ultimo bit o dell'intero messaggio.",
+  "analogia": {
+    "testo": "Una corsia riservata assomiglia a un circuito, una strada condivisa a una rete a pacchetti.",
+    "limite": "La riserva di capacità e le attese in una rete non sono riprodotte fedelmente da una strada."
+  },
+  "worked_example": {
+    "titolo": "Un pacchetto su due tratte",
+    "problema": "Un pacchetto da 1200 bit attraversa due link da 600 bit/s; ignora propagazione e code.",
+    "passi": [
+      "Calcola la serializzazione su una tratta: $1200/600=2$ s.",
+      "Il nodo attende la ricezione completa prima di inoltrare.",
+      "Somma due trasmissioni da 2 s."
+    ],
+    "soluzione": "L’ultimo bit giunge dopo 4 s dalla partenza.",
+    "perche_funziona": "Lo store-and-forward non può iniziare la seconda trasmissione prima della ricezione completa."
+  },
+  "completion_problem": {
+    "titolo": "Un link cambia",
+    "testo": "Nel caso precedente il secondo link diventa 1200 bit/s.",
+    "passi_mancanti": [
+      "Calcola i due tempi di serializzazione."
+    ],
+    "soluzione": "I tempi sono 2 s e 1 s, quindi il ritardo ideale è 3 s."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Pipeline",
+    "testo": "Due pacchetti consecutivi da 1200 bit attraversano i due link originari. Quando arriva il secondo?",
+    "suggerimento": "Il secondo link può trasmettere il primo mentre il primo riceve il secondo.",
+    "soluzione_attesa": "Il secondo termina a 6 s, assumendo link disponibili e nessuna attesa aggiuntiva."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Confondere circuito con un cavo fisicamente esclusivo.",
+      "perche_sbagliato": "La risorsa riservata può essere una porzione logica del mezzo."
+    },
+    {
+      "errore": "Scordare lo store-and-forward.",
+      "perche_sbagliato": "Il nodo deve ricevere l’intero pacchetto prima di iniziare la trasmissione successiva."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Che cosa si riserva nel circuito?",
+        "risposta": "Una risorsa lungo un percorso per la durata della comunicazione."
+      },
+      {
+        "domanda": "Che cosa significa store-and-forward?",
+        "risposta": "Ricevere tutto il pacchetto prima di inoltrarlo."
+      },
+      {
+        "domanda": "Quando vale $2b/C$?",
+        "risposta": "Solo per due link uguali e senza propagazione, elaborazione o coda."
+      }
+    ],
+    "spiega_con_parole_tue": "Confronta instaurazione del circuito e inoltro store-and-forward; spiega quando due link introducono un tempo di serializzazione $2b/C$."
+  },
+  "riepilogo": "Il circuito riserva risorse; i pacchetti condividono capacità. I ritardi richiedono sempre un modello esplicito.",
+  "flashcard": [
+    {
+      "fronte": "Che cosa si riserva nel circuito?",
+      "retro": "Una risorsa lungo un percorso per la durata della comunicazione."
+    },
+    {
+      "fronte": "Che cosa significa store-and-forward?",
+      "retro": "Ricevere tutto il pacchetto prima di inoltrarlo."
+    },
+    {
+      "fronte": "Quando vale $2b/C$?",
+      "retro": "Solo per due link uguali e senza propagazione, elaborazione o coda."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "So calcolare la serializzazione.",
+      "So disegnare due tratte store-and-forward."
+    ],
+    "so_dire": [
+      "So spiegare riserva, condivisione e coda."
+    ]
+  }
+}

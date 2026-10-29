@@ -1,0 +1,91 @@
+{
+  "id": "codici-rivelazione-errore",
+  "perche_ti_serve": "M28 e gruppo B: comprendi il ruolo dei bit ridondanti nei codici sistematici e nei controlli di linea.",
+  "scenario": "Un frame attraversa un mezzo rumoroso: il ricevitore confronta i bit ricevuti con una regola condivisa prima di accettarlo.",
+  "definizione_esame": {
+    "definizione": "Un codice di rivelazione aggiunge ridondanza per individuare alcune alterazioni del messaggio.",
+    "scopo": "Permettere al ricevitore di distinguere sequenze sicuramente incompatibili dal codice previsto.",
+    "esempio": "Un controllo di parità aggiunge un bit in modo da imporre parità pari."
+  },
+  "spiegazione": "### Informazione, ridondanza e sindrome\nUn codice sistematico mantiene riconoscibili i $k$ bit di informazione e aggiunge $r$ bit di controllo, per una parola di $n=k+r$ bit. La ridondanza non aggiunge contenuto informativo indipendente: consente un controllo. Il ricevitore verifica un vincolo e ottiene una sindrome. Una sindrome incompatibile con una parola valida rivela un errore; sindrome compatibile non dimostra che nessun errore sia avvenuto, perché alcune alterazioni possono trasformare una parola valida in un'altra.\n\n### Polinomi binari e CRC\nPer un controllo polinomiale si rappresentano le sequenze come polinomi a coefficienti binari. Addizione e sottrazione coincidono con XOR: $1+1=0$ in $\\mathrm{GF}(2)$. Se il generatore $G(x)$ ha grado $r$, si moltiplica il messaggio $M(x)$ per $x^r$, si divide per $G(x)$ e si inserisce il resto nei $r$ posti di controllo. La parola costruita è $T(x)=x^rM(x)+R(x)$ ed è divisibile per $G(x)$, perché sottrarre e sommare sono la stessa operazione binaria. Il ricevitore controlla il resto della parola ricevuta usando lo stesso generatore.\n\n### Cosa garantisce il controllo\nUn errore non viene rilevato se il suo polinomio è divisibile per il generatore. Con il semplice generatore $x+1$ si controlla la parità: un numero dispari di inversioni viene rilevato, ma alcune alterazioni con numero pari di bit non lo sono. Un CRC rivela certe classi di errori in base al generatore; non si deve promettere correzione automatica né affidabilità assoluta. La divisione avviene sui bit secondo la convenzione concordata per ordine e campi; cambiare la convenzione senza comunicarlo cambia il risultato.",
+  "analogia": {
+    "testo": "La ridondanza è come un sigillo che può mostrare alcune manomissioni.",
+    "limite": "Un sigillo non permette sempre di riparare il contenuto né di rilevare tutte le possibili alterazioni."
+  },
+  "worked_example": {
+    "titolo": "Parità come polinomio",
+    "problema": "Usa messaggio 101 e generatore 11, cioè $G(x)=x+1$.",
+    "passi": [
+      "Il messaggio è $M(x)=x^2+1$ e il grado del generatore è 1.",
+      "Aggiungi uno zero: $xM(x)=x^3+x$, cioè 1010.",
+      "La parità dei bit di 1010 è pari: il resto per $x+1$ è zero."
+    ],
+    "soluzione": "La parola sistematica è 1010; invertire il bit finale produce 1011 e una parità dispari.",
+    "perche_funziona": "Per il generatore $x+1$ la divisibilità equivale a parità pari dei coefficienti."
+  },
+  "completion_problem": {
+    "titolo": "Completa il codice",
+    "testo": "Il messaggio 100 usa il generatore 11.",
+    "passi_mancanti": [
+      "Aggiungi uno zero e trova il bit di parità."
+    ],
+    "soluzione": "Il messaggio ha un solo uno: il controllo è 1 e la parola è 1001."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Due errori",
+    "testo": "La parola 1010 diventa 0000 dopo due inversioni: il controllo di parità le rileva?",
+    "suggerimento": "Confronta la parità delle due parole.",
+    "soluzione_attesa": "No: entrambe hanno parità pari, quindi questo controllo non distingue l’errore."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Trattare la ridondanza come correzione garantita.",
+      "perche_sbagliato": "Il controllo può rivelare errori senza poter individuare o correggere il bit."
+    },
+    {
+      "errore": "Fare addizioni decimali nella divisione binaria.",
+      "perche_sbagliato": "In $\\mathrm{GF}(2)$ si usano XOR e coefficienti modulo due."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Che cosa significa sistematico?",
+        "risposta": "I bit informativi rimangono distinguibili dai bit ridondanti."
+      },
+      {
+        "domanda": "Che cosa indica un resto diverso da zero?",
+        "risposta": "La parola ricevuta viola il vincolo del generatore e viene rilevato un errore."
+      },
+      {
+        "domanda": "Il resto zero esclude ogni errore?",
+        "risposta": "No: alcuni errori sono multipli del generatore."
+      }
+    ],
+    "spiega_con_parole_tue": "Applica il controllo CRC al messaggio 101 con generatore $x+1$, ricava il bit di controllo e spiega perché un resto zero non esclude ogni errore."
+  },
+  "riepilogo": "Un codice aggiunge ridondanza; un CRC verifica la divisibilità binaria. Rivelazione e correzione sono capacità differenti.",
+  "flashcard": [
+    {
+      "fronte": "Che cosa significa sistematico?",
+      "retro": "I bit informativi rimangono distinguibili dai bit ridondanti."
+    },
+    {
+      "fronte": "Che cosa indica un resto diverso da zero?",
+      "retro": "La parola ricevuta viola il vincolo del generatore e viene rilevato un errore."
+    },
+    {
+      "fronte": "Il resto zero esclude ogni errore?",
+      "retro": "No: alcuni errori sono multipli del generatore."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "So calcolare una semplice parità.",
+      "So identificare informazione e ridondanza."
+    ],
+    "so_dire": [
+      "So spiegare perché resto zero non garantisce assenza di errori."
+    ]
+  }
+}
