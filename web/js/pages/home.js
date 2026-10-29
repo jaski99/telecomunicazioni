@@ -4,7 +4,7 @@
  */
 
 import { testoSicuro, escapeHtml } from '../core/math.js';
-import { chipNodoLink } from './grafo.js';
+import { chipNodoLink, formattaParoleIntere } from './grafo.js';
 
 const TIPI_PROVA = {
   teoria: 'Teoria',
@@ -84,7 +84,7 @@ export function render(ctx) {
     ? `<li class="card"><p>Nessuna prova d'esame caricata nel grafo corrente.</p></li>`
     : prove.map((pr) => {
       const id = escapeHtml(testoSicuro(pr.id));
-      const titolo = escapeHtml(testoSicuro(pr.titolo || ''));
+      const titolo = formattaParoleIntere(pr.titolo || '');
       const nodiChips = Array.isArray(pr.nodi) && pr.nodi.length
         ? pr.nodi.map((nid) => chipNodoLink(nid, mappa)).join('')
         : '<span class="chip">Nessun nodo collegato</span>';
@@ -104,7 +104,7 @@ export function render(ctx) {
     ? `<tr><td colspan="5">Nessuna prova d'esame caricata nel grafo corrente.</td></tr>`
     : prove.map((pr) => {
       const id = escapeHtml(testoSicuro(pr.id));
-      const titolo = escapeHtml(testoSicuro(pr.titolo || ''));
+      const titolo = formattaParoleIntere(pr.titolo || '');
       const nodiChips = Array.isArray(pr.nodi) && pr.nodi.length
         ? `<div class="chip-row">${pr.nodi.map((nid) => chipNodoLink(nid, mappa)).join('')}</div>`
         : '<span class="chip">Nessun nodo</span>';

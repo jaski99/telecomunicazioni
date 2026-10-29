@@ -32,42 +32,64 @@ test('fonti: etichettaFonte converte chiavi interne in nomi umani senza undersco
   assert.equal(fontiPage.etichettaFonte(null), 'Fonte');
 });
 
-test('fonti: render mostra stack-list mobile, tabella in scroll-x desktop e avviso diritti', () => {
+test('fonti: render mostra stack-list mobile, tabella in scroll-x desktop, etichette URL leggibili e avviso diritti', () => {
+  assert.equal(
+    fontiPage.etichettaUrlFonte('https://web.ing.unimo.it/wiki/index.php/Libro_di_Testo'),
+    'Apri pagina (web.ing.unimo.it)'
+  );
   const html = fontiPage.render({ graph: realGraph });
   assert.match(html, /class="stack-list fonti-mobile"/);
   assert.match(html, /class="scroll-x fonti-desktop"/);
   assert.match(html, /class="table tabella"/);
+  assert.match(html, /Apri pagina \(web\.ing\.unimo\.it\)/);
+  assert.match(html, /href="https:\/\/web\.ing\.unimo\.it\/wiki\/index\.php\/Libro_di_Testo"/);
   assert.match(html, /NON TROVATO/);
   assert.match(html, /Avviso sui diritti/);
-  assert.doesNotMatch(html, /LIBRO_CI|LUCIDI_CASONI|ESSE3_2016/);
+  const visibile = html.replace(/<[^>]+>/g, ' ');
+  assert.doesNotMatch(visibile, /LIBRO_CI|LUCIDI_CASONI|ESSE3_2016|Libro_di_Testo|Materiale_Didattico|jsessionid/);
 });
 
-test('grafo: etichette umane e chipNodoLink tollerante ai nodi pendenti', () => {
+test('grafo: etichette umane, parola-intera nowrap e chipNodoLink tollerante ai nodi pendenti', () => {
   assert.equal(grafoPage.etichettaTipo('concetto'), 'Concetto');
   assert.equal(grafoPage.etichettaTipo('dimostrazione'), 'Dimostrazione');
   assert.equal(grafoPage.etichettaTipo('tipo_esercizio'), 'Esercizio guidato');
   assert.equal(grafoPage.etichettaPriorita('alta'), 'Priorità alta');
   assert.match(grafoPage.nomeArea(realGraph, 1), /Fourier/);
+  assert.equal(
+    grafoPage.formattaParoleIntere('Probabilità di equilibrio nascita–morte'),
+    'Probabilità di equilibrio <span class="parola-intera">nascita–morte</span>'
+  );
+  assert.equal(
+    grafoPage.formattaParoleIntere('Filtro passa-basso e CSMA/CD'),
+    'Filtro <span class="parola-intera">passa-basso</span> e <span class="parola-intera">CSMA/CD</span>'
+  );
 
-  const mappa = new Map([['serie-fourier', { id: 'serie-fourier', titolo: 'Serie di Fourier' }]]);
+  const mappa = new Map([
+    ['serie-fourier', { id: 'serie-fourier', titolo: 'Serie di Fourier' }],
+    ['dim-nascita-morte-equilibrio', { id: 'dim-nascita-morte-equilibrio', titolo: 'Probabilità di equilibrio nascita–morte' }],
+  ]);
   const ok = grafoPage.chipNodoLink('serie-fourier', mappa);
   assert.match(ok, /href="#\/nodo\/serie-fourier"/);
   assert.match(ok, /Serie di Fourier/);
+  const composto = grafoPage.chipNodoLink('dim-nascita-morte-equilibrio', mappa);
+  assert.match(composto, /<span class="parola-intera">nascita–morte<\/span>/);
   const pendente = grafoPage.chipNodoLink('nodo-futuro', mappa);
   assert.doesNotMatch(pendente, /href=/);
   assert.match(pendente, /in arrivo/);
 });
 
-test('grafo: render raggruppa per area con card, filtri e zero ID grezzi', () => {
+test('grafo: render raggruppa per area con card, Apri dimostrazione, filtri e zero ID grezzi', () => {
   const html = grafoPage.render({ graph: realGraph });
   assert.match(html, /id="grafo-ricerca"/);
   assert.match(html, /id="grafo-area"/);
   assert.match(html, /Area 1 —/);
   assert.match(html, /class="card nodo-card"/);
+  assert.match(html, />Apri dimostrazione<\/a>/);
+  assert.doesNotMatch(html, />Dimostrazione<\/a>/);
   assert.doesNotMatch(html, /tipo_esercizio|\bW[1-6]\b/);
 });
 
-test('home: render include Da dove partire (T5, T11, esercizi), stack-list e tabella in scroll-x', () => {
+test('home: render include Da dove partire (T5, T11, esercizi), parola-intera e tabella in scroll-x', () => {
   const html = homePage.render({ graph: realGraph });
   assert.match(html, /Da dove partire/);
   assert.match(html, /Prova T5 · 10 punti/);
@@ -76,17 +98,22 @@ test('home: render include Da dove partire (T5, T11, esercizi), stack-list e tab
   assert.match(html, /class="stack-list prove-mobile"/);
   assert.match(html, /class="scroll-x prove-desktop"/);
   assert.match(html, /class="table tabella"/);
+  assert.match(html, /<span class="parola-intera">nascita–morte<\/span>/);
   assert.doesNotMatch(html, /tipo_esercizio|\bW[1-6]\b/);
 });
 
-test('esercizi: calcolaDifficolta e paragrafoConFormule usano formulaBlock e formulaInline', () => {
+test('esercizi: calcolaDifficolta e paragrafoConFormule unificato avvolgono punteggiatura in formula-gruppo', () => {
   assert.equal(eserciziPage.calcolaDifficolta({ area: 1, tempo_studio_min: 35, prerequisiti: [{}] }), 1);
   assert.equal(eserciziPage.calcolaDifficolta({ area: 3, tempo_studio_min: 35, prerequisiti: [{}] }), 2);
   assert.equal(eserciziPage.calcolaDifficolta({ area: 3, tempo_studio_min: 35, prerequisiti: [{}, {}] }), 3);
   assert.equal(eserciziPage.calcolaDifficolta({ difficolta: 2 }), 2);
 
-  const inline = eserciziPage.paragrafoConFormule('Valore $x=1$ nel punto.');
-  assert.match(inline, /class="formula-inline"/);
+  for (const segno of ['.', ',', ';', ':', ')']) {
+    const inline = eserciziPage.paragrafoConFormule(`Valore $x=1$${segno} successivo.`);
+    assert.match(inline, new RegExp(`<span class="formula-gruppo"><span class="formula-inline"[\\s\\S]*?<\\/span>\\${segno}<\\/span>`));
+  }
+  const voce = eserciziPage.paragrafoConFormule('Caso ($f_0$): attivo.', { blocchi: false });
+  assert.match(voce, /<span class="formula-gruppo"><span class="formula-inline"[\s\S]*?<\/span>\):<\/span>/);
   const display = eserciziPage.paragrafoConFormule('Risultato $$\\int_0^T x(t)\\,dt$$ finale.');
   assert.match(display, /class="formula-box"/);
   assert.doesNotMatch(display, /<p>[^<]*<div class="formula-box"/);
@@ -96,11 +123,13 @@ test('esercizi: calcolaDifficolta e paragrafoConFormule usano formulaBlock e for
   assert.match(html, /Difficoltà 2\/3/);
   assert.match(html, /Difficoltà 3\/3/);
   assert.match(html, /Prova E3/);
+  assert.match(html, /class="formula-gruppo"/);
 });
 
-test('nodo: renderizza colonna prose, checklist, chip prerequisiti, btn--primary dimostrazione e lezione', () => {
+test('nodo: renderizza colonna prose, formula-gruppo anche in markdown, checklist, prerequisiti e dimostrazione', () => {
   const htmlConcetto = nodoPage.render({ graph: realGraph }, { id: 'serie-fourier' });
   assert.match(htmlConcetto, /class="nodo-checklist"/);
+  assert.match(htmlConcetto, /class="formula-gruppo"/);
   assert.match(htmlConcetto, /Richiamo attivo/);
   assert.doesNotMatch(htmlConcetto, /\bW[1-6]\b|LIBRO_CI|tipo_esercizio/);
 
@@ -111,7 +140,7 @@ test('nodo: renderizza colonna prose, checklist, chip prerequisiti, btn--primary
   assert.match(htmlAssente, /in arrivo/);
 });
 
-test('ripasso: prossimoIntervallo segue 1-3-7-14 e renderizza card mobile + tabella desktop', () => {
+test('ripasso: prossimoIntervallo segue 1-3-7-14 e protegge parole composte nella tabella', () => {
   assert.equal(ripassoPage.prossimoIntervallo(0, true), 1);
   assert.equal(ripassoPage.prossimoIntervallo(1, true), 3);
   assert.equal(ripassoPage.prossimoIntervallo(3, true), 7);
@@ -123,6 +152,7 @@ test('ripasso: prossimoIntervallo segue 1-3-7-14 e renderizza card mobile + tabe
   assert.match(html, /class="stack-list ripasso-mobile"/);
   assert.match(html, /class="scroll-x ripasso-desktop"/);
   assert.match(html, /class="table tabella"/);
+  assert.match(html, /<span class="parola-intera">nascita–morte<\/span>/);
 });
 
 test('quiz page: render espone #quiz-root con intro prose', async () => {

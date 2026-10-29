@@ -25,23 +25,34 @@ export function nomeArea(graph, areaNum) {
   return '';
 }
 
+/** Avvolge parole composte con trattino, lineetta o barra in .parola-intera nowrap. */
+export function formattaParoleIntere(testo) {
+  return testoSicuro(testo)
+    .split(/(\S*(?:[-\u2010-\u2015/]\S+)+)/g)
+    .map((parte, idx) => (idx % 2 === 1
+      ? `<span class="parola-intera">${escapeHtml(parte)}</span>`
+      : escapeHtml(parte)))
+    .join('');
+}
+
 export function chipNodoLink(id, mappaNodi) {
   const chiave = testoSicuro(id).trim();
   const nodo = mappaNodi && mappaNodi.get(chiave);
-  const etichetta = escapeHtml(testoSicuro((nodo && nodo.titolo) || chiave || 'Argomento'));
+  const grezza = testoSicuro((nodo && nodo.titolo) || chiave || 'Argomento');
+  const etichettaHtml = formattaParoleIntere(grezza);
   return nodo
-    ? `<a class="chip chip--info link-nodo-chip" href="#/nodo/${escapeHtml(chiave)}">${etichetta}</a>`
-    : `<span class="chip chip--warn" aria-label="${etichetta}, in arrivo">${etichetta} · in arrivo</span>`;
+    ? `<a class="chip chip--info link-nodo-chip" href="#/nodo/${escapeHtml(chiave)}">${etichettaHtml}</a>`
+    : `<span class="chip chip--warn" aria-label="${escapeHtml(grezza)}, in arrivo">${etichettaHtml} · in arrivo</span>`;
 }
 
 function renderCardNodo(n, mappa) {
   const id = escapeHtml(testoSicuro(n.id));
-  const titolo = escapeHtml(testoSicuro(n.titolo || n.id));
+  const titolo = formattaParoleIntere(n.titolo || n.id);
   const prereq = Array.isArray(n.prerequisiti) ? n.prerequisiti : [];
   const nPre = prereq.length;
   const testoPre = nPre === 0 ? 'Nessun prerequisito' : nPre === 1 ? '1 prerequisito' : `${nPre} prerequisiti`;
   const chipDim = (Boolean(n.dimostrazione) || n.tipo === 'dimostrazione')
-    ? `<a class="chip chip--info link-nodo-chip" href="#/dim/${id}">Dimostrazione</a>` : '';
+    ? `<a class="chip chip--info link-nodo-chip" href="#/dim/${id}">Apri dimostrazione</a>` : '';
   const ricerca = escapeHtml(`${testoSicuro(n.titolo)} ${etichettaTipo(n.tipo)}`.toLocaleLowerCase('it-IT'));
   const prereqHtml = nPre > 0
     ? `<div class="nodo-card__prereq"><span class="nodo-card__label">Prerequisiti:</span><div class="chip-row">${prereq.map((p) => chipNodoLink(p && p.id, mappa)).join('')}</div></div>`

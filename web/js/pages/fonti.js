@@ -4,6 +4,7 @@
  */
 
 import { testoSicuro, escapeHtml } from '../core/math.js';
+import { formattaParoleIntere } from './grafo.js';
 
 const NOMI_FONTI = {
   LIBRO_CI: 'Libro di testo (Calandrino, Immovilli)',
@@ -24,10 +25,22 @@ export function etichettaFonte(chiave) {
   return k.replace(/_/g, ' ');
 }
 
+/** Costruisce un'etichetta leggibile per un indirizzo esterno senza esporre path grezzi o jsessionid. */
+export function etichettaUrlFonte(url) {
+  const raw = testoSicuro(url).trim();
+  try {
+    const host = new URL(raw).hostname;
+    return host ? `Apri pagina (${host})` : 'Apri pagina';
+  } catch (_err) {
+    return 'Apri pagina';
+  }
+}
+
 function renderUrlFonte(url) {
   if (!url) return '<span class="chip chip--danger">NON TROVATO</span>';
-  const u = escapeHtml(testoSicuro(url));
-  return `<a class="fonte-url" href="${u}" rel="noopener" target="_blank">${u}</a>`;
+  const u = escapeHtml(testoSicuro(url).trim());
+  const etichetta = escapeHtml(etichettaUrlFonte(url));
+  return `<a class="fonte-url" href="${u}" rel="noopener" target="_blank">${etichetta}</a>`;
 }
 
 export function render(ctx) {
@@ -39,9 +52,9 @@ export function render(ctx) {
   const cardsHtml = voci.length === 0
     ? `<li class="card"><p>Nessuna fonte dichiarata nel grafo corrente.</p></li>`
     : voci.map(([chiave, f]) => {
-      const nome = escapeHtml(etichettaFonte(chiave));
-      const desc = escapeHtml(testoSicuro(f.descrizione || 'NON TROVATO'));
-      const nota = escapeHtml(testoSicuro(f.nota || 'Nessuna nota aggiuntiva.'));
+      const nome = formattaParoleIntere(etichettaFonte(chiave));
+      const desc = formattaParoleIntere(f.descrizione || 'NON TROVATO');
+      const nota = formattaParoleIntere(f.nota || 'Nessuna nota aggiuntiva.');
       return `<li class="card fonte-card">
         <div class="card__title">${nome}</div>
         <p>${desc}</p>
@@ -53,9 +66,9 @@ export function render(ctx) {
   const righeHtml = voci.length === 0
     ? `<tr><td colspan="4">Nessuna fonte dichiarata nel grafo corrente.</td></tr>`
     : voci.map(([chiave, f]) => {
-      const nome = escapeHtml(etichettaFonte(chiave));
-      const desc = escapeHtml(testoSicuro(f.descrizione || 'NON TROVATO'));
-      const nota = escapeHtml(testoSicuro(f.nota || ''));
+      const nome = formattaParoleIntere(etichettaFonte(chiave));
+      const desc = formattaParoleIntere(f.descrizione || 'NON TROVATO');
+      const nota = formattaParoleIntere(f.nota || '');
       return `<tr>
         <td><strong>${nome}</strong></td>
         <td>${desc}</td>

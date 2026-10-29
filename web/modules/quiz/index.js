@@ -2,25 +2,6 @@ import { leggiEsiti, registraEsito } from './esiti.js';
 import { RISPOSTA_ASSENTE, el, listaQuiz, rispostaUtente, rispostaCorretta, renderDomanda } from './logica.js';
 import { costruisciStrutturaQuiz, mostraEsitoAllenamento, mostraRiepilogoFinale } from './vista.js';
 
-function completaCacheQuiz() {
-  if (typeof navigator === 'undefined' || !navigator.serviceWorker || typeof caches === 'undefined') return;
-  const urls = ['./logica.js', './vista.js'].map((f) => new URL(f, import.meta.url).href);
-  const salva = async () => {
-    if (navigator.onLine === false) return;
-    await navigator.serviceWorker.ready;
-    if (navigator.onLine === false) return;
-    const nomi = (await caches.keys()).filter((n) => n.startsWith('tlc-kg-'));
-    const risposte = await Promise.all(urls.map((u) => fetch(`${u}?tlc-precache=1`, { cache: 'no-store' })));
-    for (const nome of nomi) {
-      const cache = await caches.open(nome);
-      await Promise.all(risposte.map((r, i) => (r.ok ? cache.put(urls[i], r.clone()) : Promise.resolve())));
-    }
-  };
-  navigator.serviceWorker.addEventListener('controllerchange', () => { salva().catch(() => {}); });
-  salva().catch(() => {});
-}
-completaCacheQuiz();
-
 /** Monta le modalità allenamento e simulazione in un contenitore esistente. */
 export function montaQuiz(radice, { quiz, graph, storage = globalThis.localStorage, renderMath = () => {}, naviga = () => {} } = {}) {
   if (!radice || typeof radice.replaceChildren !== 'function') throw new TypeError('Contenitore quiz non valido.');

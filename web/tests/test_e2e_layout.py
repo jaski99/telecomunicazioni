@@ -281,6 +281,39 @@ def test_a11_formula_box_e_a18_pagine_d4(layout_env, width, height, route):
         }"""
     )
     assert not anomalie_a18, (route, width, anomalie_a18)
+
+    # Nessuna punteggiatura [.,;:)] dopo .formula-inline va a capo o resta fuori da .formula-gruppo nowrap
+    punteggiatura_orfana = page.evaluate(
+        """() => {
+          const out = [];
+          for (const f of document.querySelectorAll('main .formula-inline')) {
+            if (!f.getClientRects().length) continue;
+            const gruppo = f.parentElement && f.parentElement.classList.contains('formula-gruppo')
+              ? f.parentElement
+              : null;
+            const candidati = [f.nextSibling, gruppo && gruppo.nextSibling].filter(Boolean);
+            for (const succ of candidati) {
+              if (succ.nodeType !== 3) continue;
+              const m = succ.data.match(/^([.,;:)]+)/);
+              if (!m) continue;
+              if (!gruppo || succ.parentElement !== gruppo || getComputedStyle(gruppo).whiteSpace !== 'nowrap') {
+                out.push(['senza_gruppo_nowrap', succ.data.slice(0, 16)]);
+                continue;
+              }
+              const fr = f.getBoundingClientRect();
+              const range = document.createRange();
+              range.setStart(succ, 0);
+              range.setEnd(succ, m[1].length);
+              const pr = range.getBoundingClientRect();
+              if (pr.width && pr.height && (pr.top > fr.bottom - 1 || pr.left < fr.right - 2)) {
+                out.push(['a_capo', succ.data.slice(0, 16), Math.round(fr.top), Math.round(pr.top)]);
+              }
+            }
+          }
+          return out;
+        }"""
+    )
+    assert not punteggiatura_orfana, (route, width, punteggiatura_orfana)
     assert not errs, (route, width, errs)
 
 

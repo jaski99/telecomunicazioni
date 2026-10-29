@@ -50,6 +50,11 @@
   word-break: normal;
 }
 
+.fonti-desktop .table th:nth-child(3),
+.fonti-desktop .table td:nth-child(3) {
+  min-width: calc(var(--s-8) * 7);
+}
+
 .fonti-desktop .table th {
   background: var(--c-surface-2);
 }

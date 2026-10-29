@@ -50,7 +50,9 @@
 
 .ripasso-desktop .table td:nth-child(2),
 .ripasso-desktop .table td:nth-child(3),
-.ripasso-azioni .btn {
+.ripasso-azioni .btn,
+.parola-intera,
+.tabella .chip {
   white-space: nowrap;
 }
 

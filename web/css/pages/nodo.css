@@ -142,3 +142,11 @@
   padding: var(--s-4);
   margin-block: var(--s-3);
 }
+
+.formula-gruppo {
+  white-space: nowrap;
+}
+
+.formula-gruppo > .formula-inline {
+  margin-right: 0;
+}

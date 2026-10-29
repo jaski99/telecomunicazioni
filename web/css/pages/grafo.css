@@ -100,6 +100,10 @@
   justify-content: center;
 }
 
+.parola-intera {
+  white-space: nowrap;
+}
+
 .nodo-card__prereq {
   display: flex;
   flex-direction: column;

@@ -4,6 +4,7 @@
  * Desktop (>= 768 px): .table in .scroll-x. Impostazioni e backup JSON.
  */
 import { testoSicuro, escapeHtml } from '../core/math.js';
+import { formattaParoleIntere } from './grafo.js';
 import { leggiEsiti } from '../../modules/quiz/esiti.js';
 import { leggiChiave, scriviChiave, KEY_RIPASSO, KEY_IMPOSTAZIONI, backupTutteChiavi, importaChiavi } from '../core/store.js';
 
@@ -50,13 +51,13 @@ export function render(ctx) {
     const p = padronanza[String(n.id)] || { ok: 0, tot: 0 };
     return {
       id: escapeHtml(String(n.id)),
-      tit: escapeHtml(testoSicuro(n.titolo || n.id)),
+      tit: formattaParoleIntere(n.titolo || n.id),
       area: escapeHtml(String(n.area || 1)),
       intervallo: Number(r.intervallo || 0),
       prossimo,
       scaduto,
-      dataStr: escapeHtml(prossimo ? formatData(prossimo) : 'Mai revisionato'),
-      pad: escapeHtml(p.tot > 0 ? `${Math.round((p.ok / p.tot) * 100)}% (${p.ok}/${p.tot})` : 'Nessun esito'),
+      dataStr: formattaParoleIntere(prossimo ? formatData(prossimo) : 'Mai revisionato'),
+      pad: formattaParoleIntere(p.tot > 0 ? `${Math.round((p.ok / p.tot) * 100)}% (${p.ok}/${p.tot})` : 'Nessun esito'),
     };
   }).sort((a, b) => (Number(b.scaduto) - Number(a.scaduto))
     || (Number(!b.prossimo) - Number(!a.prossimo))

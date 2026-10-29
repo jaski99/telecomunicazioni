@@ -387,7 +387,7 @@ def test_offline_quiz(server, browser, width, height):
         errori = []
         registra_listener_js(page, errori)
 
-        page.goto(f"{BASE_URL}/index.html#/quiz", wait_until="networkidle")
+        page.goto(f"{BASE_URL}/index.html#/", wait_until="networkidle")
         page.wait_for_function(
             """async () => {
               await navigator.serviceWorker.ready;
@@ -396,7 +396,7 @@ def test_offline_quiz(server, browser, width, height):
             }"""
         )
         context.set_offline(True)
-        page.reload(wait_until="load")
+        page.goto(f"{BASE_URL}/index.html#/quiz", wait_until="load")
         page.wait_for_timeout(200)
 
         errore_pagina = page.locator(".errore, h1:has-text('Errore di pagina')").count()

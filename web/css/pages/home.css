@@ -73,6 +73,10 @@
   background: var(--c-surface-2);
 }
 
+.prove-desktop .tabella .chip {
+  white-space: nowrap;
+}
+
 .prova-tipo-cell {
   font-size: var(--fs-small);
   color: var(--c-text-muted);

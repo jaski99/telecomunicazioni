@@ -1,43 +1,39 @@
 /** Pagina #/nodo/<id>: colonna .prose, checklist criteri, prerequisiti, dimostrazione e lezione. */
 import { renderMarkdown } from '../ui.js';
-import { testoSicuro, escapeHtml, tokenizzaMatematica, formulaBlock, formulaInline, devePromuovereInDisplay, formulaIsolata } from '../core/math.js';
+import { testoSicuro, escapeHtml, tokenizzaMatematica, formulaBlock, devePromuovereInDisplay } from '../core/math.js';
 import { renderFigura } from '../figure/index.js';
-import { etichettaTipo, etichettaPriorita, nomeArea, chipNodoLink } from './grafo.js';
-import { etichettaFonte } from './fonti.js';
+import { etichettaTipo, etichettaPriorita, nomeArea, chipNodoLink, formattaParoleIntere } from './grafo.js';
+import { etichettaFonte, etichettaUrlFonte } from './fonti.js';
+import { puliziaTesto, formulaConPunteggiatura, paragrafoConFormule } from './esercizi.js';
 
-function puliziaTesto(testo) {
-  return testoSicuro(testo).replace(/_{2,}/g, '[…]').replace(/(?:,\s*di competenza di|\s+da)\s+W[1-6]\b/g, '');
-}
+const blocchi = (testo, prefisso = '') => paragrafoConFormule(testo, { blocchi: true, prefisso });
+const voce = (testo, soloInline = false) => paragrafoConFormule(testo, { blocchi: false, soloInline });
 
-function blocchiFormule(testo, prefisso = '') {
-  const s = puliziaTesto(testo);
-  if (!s) return '';
-  const tokens = tokenizzaMatematica(s);
-  const isolata = !prefisso && formulaIsolata(tokens);
-  const out = [];
-  let buf = prefisso ? `<strong>${escapeHtml(prefisso)}</strong> ` : '';
-  let dopoBox = false;
-  const chiudi = () => { if (buf.trim()) out.push(`<p>${buf}</p>`); buf = ''; };
-  for (const t of tokens) {
-    if (t.type === 'text') {
-      const txt = dopoBox ? t.body.replace(/^[.,;:]+\s*/, (m) => (m.trim() === t.body.trim() ? '' : '')).replace(/^([a-zà-ÿ])/, (c) => c.toUpperCase()) : t.body;
-      if (txt) { buf += escapeHtml(txt); dopoBox = false; }
-    } else if (t.type === 'display' || isolata || t.body.length > 48 || devePromuovereInDisplay(t.body)) { chiudi(); out.push(formulaBlock(t.body)); dopoBox = true; }
-    else { buf += formulaInline(t.body); dopoBox = false; }
-  }
-  chiudi();
-  return out.join('');
-}
-
-function voceListaFormule(testo) {
-  const tokens = tokenizzaMatematica(puliziaTesto(testo));
-  return tokens.map((t) => (t.type === 'text' ? escapeHtml(t.body)
-    : (t.type === 'display' || t.body.length > 48 || devePromuovereInDisplay(t.body)) ? formulaBlock(t.body) : formulaInline(t.body))).join('');
+function renderProsaMarkdown(testo) {
+  const formule = [];
+  const protetto = tokenizzaMatematica(puliziaTesto(testo))
+    .map((t) => (t.type === 'text' ? t.body : `@@TLCF${formule.push(t) - 1}@@`))
+    .join('');
+  const html = renderMarkdown(protetto).replace(/@@TLCF(\d+)@@([.,;:)]*)/g, (_, idx, punct) => {
+    const f = formule[Number(idx)];
+    if (f.type === 'display' || f.body.length > 48 || devePromuovereInDisplay(f.body)) {
+      const resto = punct.replace(/^[.,;:]+/, '');
+      return `@@BOX_START@@${formulaBlock(f.body)}@@BOX_END@@${escapeHtml(resto)}`;
+    }
+    return formulaConPunteggiatura(f.body, punct);
+  });
+  return html
+    .replace(/<p>([\s\S]*?)<\/p>/g, (_, inner) => (inner.includes('@@BOX_START@@')
+      ? inner.split(/@@BOX_START@@([\s\S]*?)@@BOX_END@@/).map((seg, i) => (
+        i % 2 === 1 ? seg : (seg.trim() ? `<p>${seg.replace(/^[.,;:]+\s*/, '').trimStart()}</p>` : '')
+      )).join('')
+      : `<p>${inner}</p>`))
+    .replace(/@@BOX_(?:START|END)@@/g, '');
 }
 
 function renderChecklist(voci) {
   if (!Array.isArray(voci) || !voci.length) return '';
-  return `<ul class="nodo-checklist">${voci.map((v) => `<li>${voceListaFormule(v)}</li>`).join('')}</ul>`;
+  return `<ul class="nodo-checklist">${voci.map((v) => `<li>${voce(v)}</li>`).join('')}</ul>`;
 }
 
 function bottoneRivelatore(id, etichettaMostra, contenutoHtml) {
@@ -64,20 +60,20 @@ function renderLezione(L) {
   return `<section class="nodo-sezione">
     <div class="prose">
       <h2>Contesto e obiettivo</h2>
-      ${L.perche_ti_serve ? renderMarkdown(puliziaTesto(L.perche_ti_serve)) : ''}
-      ${L.scenario ? `<h3>Scenario concreto</h3>${renderMarkdown(puliziaTesto(L.scenario))}` : ''}
+      ${L.perche_ti_serve ? renderProsaMarkdown(L.perche_ti_serve) : ''}
+      ${L.scenario ? `<h3>Scenario concreto</h3>${renderProsaMarkdown(L.scenario)}` : ''}
     </div>
-    ${def.definizione ? `<div class="card nodo-card-blocco"><div class="prose"><h3>Definizione per l'esame</h3>${blocchiFormule(def.definizione, 'Definizione:')}${blocchiFormule(def.scopo, 'Scopo:')}${blocchiFormule(def.esempio, 'Esempio:')}</div></div>` : ''}
-    ${L.spiegazione ? `<div class="prose nodo-spiegazione"><h2>Spiegazione</h2>${renderMarkdown(puliziaTesto(L.spiegazione))}</div>` : ''}
+    ${def.definizione ? `<div class="card nodo-card-blocco"><div class="prose"><h3>Definizione per l'esame</h3>${blocchi(def.definizione, 'Definizione:')}${blocchi(def.scopo, 'Scopo:')}${blocchi(def.esempio, 'Esempio:')}</div></div>` : ''}
+    ${L.spiegazione ? `<div class="prose nodo-spiegazione"><h2>Spiegazione</h2>${renderProsaMarkdown(L.spiegazione)}</div>` : ''}
     ${Array.isArray(L.figure) && L.figure.length ? `<div class="nodo-figure"><h2>Figure</h2>${L.figure.map((f) => renderFigura(f, L.figure)).join('')}</div>` : ''}
-    ${an.testo ? `<div class="callout"><div class="callout__title">Analogia</div>${blocchiFormule(an.testo)}${blocchiFormule(an.limite, 'Limite:')}</div>` : ''}
-    ${ex.problema ? `<div class="card nodo-card-blocco"><div class="prose"><h3>Esempio svolto: ${voceListaFormule(ex.titolo)}</h3>${blocchiFormule(ex.problema)}${Array.isArray(ex.passi) && ex.passi.length ? `<ol>${ex.passi.map((p) => `<li>${voceListaFormule(p)}</li>`).join('')}</ol>` : ''}${blocchiFormule(ex.soluzione, 'Soluzione:')}${blocchiFormule(ex.perche_funziona, 'Perché funziona:')}</div></div>` : ''}
-    ${cp.testo ? `<div class="card nodo-card-blocco"><div class="prose"><h3>Problema di completamento: ${voceListaFormule(cp.titolo)}</h3>${blocchiFormule(cp.testo)}${renderChecklist(cp.passi_mancanti)}</div>${bottoneRivelatore('nodo-cp-sol', 'Mostra soluzione', blocchiFormule(cp.soluzione))}</div>` : ''}
-    ${ea.testo ? `<div class="card nodo-card-blocco"><div class="prose"><h3>Esercizio autonomo: ${voceListaFormule(ea.titolo)}</h3>${blocchiFormule(ea.testo)}${blocchiFormule(ea.suggerimento, 'Suggerimento:')}</div>${bottoneRivelatore('nodo-ea-sol', 'Mostra soluzione attesa', blocchiFormule(ea.soluzione_attesa))}</div>` : ''}
-    ${errori.length ? `<div class="nodo-errori"><h2>Errori frequenti</h2>${errori.map((e) => `<div class="callout callout--error"><div class="callout__title">${voceListaFormule(e.errore)}</div>${blocchiFormule(e.perche_sbagliato)}</div>`).join('')}</div>` : ''}
-    ${domande.length ? `<div class="nodo-richiamo"><h2>Richiamo attivo</h2>${spiegaTue ? `<div class="prose">${blocchiFormule(spiegaTue)}</div>` : ''}${domande.map((r, i) => `<div class="card nodo-card-blocco"><div class="prose">${blocchiFormule(r.domanda, `Domanda ${i + 1}:`)}</div>${bottoneRivelatore(`nodo-rich-${i}`, 'Mostra risposta', blocchiFormule(r.risposta))}</div>`).join('')}</div>` : ''}
-    ${L.riepilogo ? `<div class="callout"><div class="callout__title">Riepilogo</div>${blocchiFormule(L.riepilogo)}</div>` : ''}
-    ${flash.length ? `<div class="nodo-flash"><h2>Flashcard</h2>${flash.map((f, i) => `<div class="card nodo-card-blocco"><div class="prose">${blocchiFormule(f.fronte)}</div>${bottoneRivelatore(`nodo-fc-${i}`, 'Mostra retro', blocchiFormule(f.retro))}</div>`).join('')}</div>` : ''}
+    ${an.testo ? `<div class="callout"><div class="callout__title">Analogia</div>${blocchi(an.testo)}${blocchi(an.limite, 'Limite:')}</div>` : ''}
+    ${ex.problema ? `<div class="card nodo-card-blocco"><div class="prose"><h3>Esempio svolto: ${voce(ex.titolo, true)}</h3>${blocchi(ex.problema)}${Array.isArray(ex.passi) && ex.passi.length ? `<ol>${ex.passi.map((p) => `<li>${voce(p)}</li>`).join('')}</ol>` : ''}${blocchi(ex.soluzione, 'Soluzione:')}${blocchi(ex.perche_funziona, 'Perché funziona:')}</div></div>` : ''}
+    ${cp.testo ? `<div class="card nodo-card-blocco"><div class="prose"><h3>Problema di completamento: ${voce(cp.titolo, true)}</h3>${blocchi(cp.testo)}${renderChecklist(cp.passi_mancanti)}</div>${bottoneRivelatore('nodo-cp-sol', 'Mostra soluzione', blocchi(cp.soluzione))}</div>` : ''}
+    ${ea.testo ? `<div class="card nodo-card-blocco"><div class="prose"><h3>Esercizio autonomo: ${voce(ea.titolo, true)}</h3>${blocchi(ea.testo)}${blocchi(ea.suggerimento, 'Suggerimento:')}</div>${bottoneRivelatore('nodo-ea-sol', 'Mostra soluzione attesa', blocchi(ea.soluzione_attesa))}</div>` : ''}
+    ${errori.length ? `<div class="nodo-errori"><h2>Errori frequenti</h2>${errori.map((e) => `<div class="callout callout--error"><div class="callout__title">${voce(e.errore, true)}</div>${blocchi(e.perche_sbagliato)}</div>`).join('')}</div>` : ''}
+    ${domande.length ? `<div class="nodo-richiamo"><h2>Richiamo attivo</h2>${spiegaTue ? `<div class="prose">${blocchi(spiegaTue)}</div>` : ''}${domande.map((r, i) => `<div class="card nodo-card-blocco"><div class="prose">${blocchi(r.domanda, `Domanda ${i + 1}:`)}</div>${bottoneRivelatore(`nodo-rich-${i}`, 'Mostra risposta', blocchi(r.risposta))}</div>`).join('')}</div>` : ''}
+    ${L.riepilogo ? `<div class="callout"><div class="callout__title">Riepilogo</div>${blocchi(L.riepilogo)}</div>` : ''}
+    ${flash.length ? `<div class="nodo-flash"><h2>Flashcard</h2>${flash.map((f, i) => `<div class="card nodo-card-blocco"><div class="prose">${blocchi(f.fronte)}</div>${bottoneRivelatore(`nodo-fc-${i}`, 'Mostra retro', blocchi(f.retro))}</div>`).join('')}</div>` : ''}
     ${(cl.so_fare || cl.so_dire) ? `<div class="prose"><h2>Checklist di autovalutazione</h2>${cl.so_fare ? `<h3>So fare</h3>${renderChecklist(cl.so_fare)}` : ''}${cl.so_dire ? `<h3>So dire</h3>${renderChecklist(cl.so_dire)}` : ''}</div>` : ''}
   </section>`;
 }
@@ -101,7 +97,7 @@ export function render(ctx, params) {
     : '';
 
   return `<div class="nodo-testata">
-  <h1>${escapeHtml(testoSicuro(nodo.titolo || nodo.id))}</h1>
+  <h1>${formattaParoleIntere(nodo.titolo || nodo.id)}</h1>
   <div class="chip-row">
     <span class="chip">Area ${escapeHtml(String(nodo.area || 1))}${titArea ? ' · ' + escapeHtml(titArea) : ''}</span>
     <span class="chip chip--info">${escapeHtml(etichettaTipo(nodo.tipo))}</span>
@@ -113,7 +109,7 @@ export function render(ctx, params) {
 </div>
 <section class="nodo-sezione prose">
   <h2>Cosa si deve sapere</h2>
-  ${blocchiFormule(nodo.sapere)}
+  ${blocchi(nodo.sapere)}
   <h2>Criteri osservabili</h2>
   ${renderChecklist(nodo.saper_fare)}
 </section>
@@ -125,7 +121,7 @@ ${renderLezione(nodo.lezione)}
 <section class="nodo-sezione prose">
   <h2>Fonti</h2>
   ${fonti.length ? `<ul>${fonti.map((f) => `<li><strong>${escapeHtml(etichettaFonte(f.chiave))}</strong>: ${escapeHtml(testoSicuro(f.rif))}</li>`).join('')}</ul>` : '<p>Nessuna fonte dichiarata.</p>'}
-  ${risorse.length ? `<h3>Risorse di approfondimento</h3><div class="chip-row">${risorse.map((r) => `<a class="btn btn--ghost" href="${escapeHtml(String(r.url))}" rel="noopener" target="_blank">${escapeHtml(testoSicuro(r.titolo || r.url))}</a>`).join('')}</div>` : ''}
+  ${risorse.length ? `<h3>Risorse di approfondimento</h3><div class="chip-row">${risorse.map((r) => `<a class="btn btn--ghost" href="${escapeHtml(String(r.url))}" rel="noopener" target="_blank">${escapeHtml(testoSicuro(r.titolo || etichettaUrlFonte(r.url)))}</a>`).join('')}</div>` : ''}
 </section>`;
 }
 
