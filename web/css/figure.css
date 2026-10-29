@@ -1,1 +1,51 @@
-/* Owner: D2. */
+/* web/css/figure.css — D2: stili figure SVG (.figure) e .scroll-x.
+   Token con fallback (tokens.css è di D1). Nessuna mask-image sui contenitori. */
+
+/* Contenitore unico per contenuti più larghi dello schermo (tabelle, formule, figure). */
+.scroll-x {
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  padding-block: 0;
+}
+.scroll-x::-webkit-scrollbar { height: 8px; }
+.scroll-x::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+/* Componente .figure */
+.figure {
+  display: block;
+  max-width: var(--figure-max, 720px);
+  margin: var(--s-6, 32px) auto;
+  border: 1px solid var(--c-border, #d4dbe6);
+  border-radius: var(--radius, 10px);
+  background: var(--c-bg, #ffffff);
+  color: var(--c-text, #17202e);
+  overflow: visible;
+  padding-block: 0;
+}
+.figure figcaption, .figure .figure__caption { margin: var(--s-3, 12px) var(--s-4, 16px) var(--s-4, 16px); }
+.figure__caption-title { display: block; font-weight: 700; font-size: var(--fs-body, 1.0625rem); color: var(--c-text, #17202e); margin-bottom: var(--s-1, 4px); }
+.figure__caption-desc { display: block; font-size: var(--fs-small, 0.9375rem); color: var(--c-text-muted, #4a5568); line-height: var(--lh-body, 1.7); }
+
+/* La larghezza intrinseca conserva il font leggibile; lo scroll resta nella figura. */
+.figure .figura-svg {
+  display: block; min-width: 0; max-width: none; width: auto; height: auto;
+  margin-inline: 0; border: inherit; border-radius: var(--radius-sm, 6px); overflow: visible;
+}
+
+/* Legenda fuori dal disegno, in HTML sotto il grafico. */
+.figure__legend {
+  display: flex; flex-wrap: wrap; gap: var(--s-4, 16px);
+  padding: var(--s-3, 12px) var(--s-4, 16px) var(--s-2, 8px);
+  background: var(--c-surface, #f6f8fb); border-bottom: 1px solid var(--c-border, #d4dbe6);
+  border-radius: 0 0 var(--radius, 10px) var(--radius, 10px); margin: 0;
+}
+.figure__legend-item { display: inline-flex; align-items: center; gap: var(--s-2, 8px); font-size: var(--fs-small, 0.9375rem); color: var(--c-text, #17202e); margin: 0; }
+.figure__legend-sample { display: block; }
+
+/* Fallback figura non disponibile. */
+.figura-non-disponibile {
+  border: 1px dashed var(--c-border, #d4dbe6); border-radius: var(--radius, 10px);
+  padding: var(--s-4, 16px); background: var(--c-surface, #f6f8fb); color: var(--c-text-muted, #4a5568);
+  text-align: center; max-width: var(--figure-max, 720px); margin: var(--s-6, 32px) auto;
+}

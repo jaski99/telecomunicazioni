@@ -1,1 +1,48 @@
-/* Owner: D2. */
+/* web/css/math.css — D2: stili KaTeX e .formula-box. Token con fallback (tokens.css è di D1). */
+
+/* Font KaTeX locali con font-display: swap (sovrascrive katex.min.css). */
+@font-face { font-family: 'KaTeX_Main'; font-style: normal; font-weight: 400; src: url('../vendor/katex/fonts/KaTeX_Main-Regular.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'KaTeX_Math'; font-style: italic; font-weight: 400; src: url('../vendor/katex/fonts/KaTeX_Math-Italic.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'KaTeX_Size1'; font-style: normal; font-weight: 400; src: url('../vendor/katex/fonts/KaTeX_Size1-Regular.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'KaTeX_Size2'; font-style: normal; font-weight: 400; src: url('../vendor/katex/fonts/KaTeX_Size2-Regular.woff2') format('woff2'); font-display: swap; }
+
+.katex { font-size: 1.1em; color: var(--c-text, #17202e); }
+
+/* Katex inline ovunque: niente padding-block, niente overflow nascosto, niente a capo.
+   Specificita' sufficiente per battere legacy.css main .katex (carica dopo). */
+main .katex { display: inline; padding-block: 0; overflow: visible; }
+/* I simboli di Notazione sono compilati direttamente: niente a capo o tagli verticali. */
+main .sempre-visibile li > strong:has(> .katex) {
+  display: inline-block; max-width: 100%; overflow-x: auto; vertical-align: middle;
+  padding-block: var(--s-1, 4px);
+}
+main .sempre-visibile li > strong > .katex { white-space: nowrap; }
+/* Formule inline nel testo: mai a capo, scorrono dentro .formula-box o .scroll-x */
+.formula-inline .katex { padding-block: 0; white-space: nowrap; }
+/* Formule inline nei titoli h1: font più piccolo per non rompere la riga */
+main h1 .formula-inline .katex { font-size: 0.9em; }
+
+/* Componente .formula-box: padding-block azzerato (evita katex inline > 2.4em). */
+.formula-box {
+  display: block; margin: 0; padding-block: 0;
+  padding-inline: var(--s-4, 16px);
+  background: var(--c-formula-bg, #f4f7ff); border: 1px solid var(--c-formula-border, #b9c9f5);
+  border-radius: var(--radius, 10px); color: var(--c-text, #17202e);
+}
+.formula-box__label { font-size: var(--fs-small, 0.9375rem); font-weight: 600; color: var(--c-text-muted, #4a5568); margin-bottom: var(--s-2, 8px); text-align: left; }
+
+.formula-box .scroll-x { overflow-x: auto; }
+.formula-box .katex-display { display: block; margin: 0 auto; text-align: center; overflow: visible; }
+.formula-box .katex-display > .katex { overflow: visible; padding-block: 0.4em; font-size: 1.15em; }
+@media (min-width: 600px) { .formula-box .katex-display > .katex { font-size: 1.25em; } }
+
+.formula-box--key { background: var(--c-primary-weak, #eaf0ff); border-color: var(--c-primary, #1d4ed8); }
+.formula-box--key .katex-display > .katex { font-size: 1.2em; }
+@media (min-width: 600px) { .formula-box--key .katex-display > .katex { font-size: 1.35em; } }
+
+/* Errore di parse: classe CSS, niente style inline. */
+.katex-err { color: var(--c-danger, #b42318); background: var(--c-danger-bg, #fef3f2); border: 1px solid var(--c-danger, #b42318); border-radius: var(--radius-sm, 6px); padding: 0 var(--s-1, 4px); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.95em; padding-block: 0; }
+
+/* Formula inline nella prosa: padding-block azzerato, niente aria-hidden. */
+.formula-inline { display: inline-block; margin: 0 var(--s-1, 4px); vertical-align: middle; padding-block: 0; }
+.formula-inline .katex { font-size: 1.1em; }
