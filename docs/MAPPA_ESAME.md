@@ -16,6 +16,7 @@ Struttura prevista (da file2):
 
 | Nodo | Area | Tipo | Domande |
 |---|---|---|---|
+
 | `dim-impulso-dirac-trasformata` | 1 | dimostrazione | T2 |
 | `energia-potenza-spettri` | 1 | concetto | M29 |
 | `es-antitrasformata-rettangolare` | 1 | tipo_esercizio | E3 |

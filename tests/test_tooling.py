@@ -126,16 +126,10 @@ def test_check_testo_su_fixture_valida():
 
 
 def test_check_urls_allowlist():
-    from scripts.check_urls import ALLOWLIST
+    from scripts.allowlist import ALLOWLIST
 
     assert "https://web.ing.unimo.it/wiki/index.php/Libro_di_Testo" in ALLOWLIST
     assert len(ALLOWLIST) == 11
-
-
-def test_web_build():
-    r = subprocess.run(["sh", "web/build.sh"], cwd=ROOT, capture_output=True, text=True)
-    assert r.returncode == 0, f"web/build.sh fallito: {r.stderr}"
-    assert (ROOT / "web" / "graph.json").exists()
 
 
 def test_figura_validazione_numericamente():

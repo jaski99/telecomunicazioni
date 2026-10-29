@@ -241,6 +241,49 @@
     {
       "if": { "properties": { "tipo": { "const": "temporale" } } },
       "then": { "required": ["asse_t", "corsie", "intervalli"] }
+    },
+    {
+      "if": { "properties": { "tipo": { "const": "grafico" } } },
+      "then": {
+        "properties": {
+          "blocchi": false,
+          "collegamenti": false,
+          "asse_t": false,
+          "corsie": false,
+          "intervalli": false,
+          "frecce": false,
+          "marcatori": false
+        }
+      }
+    },
+    {
+      "if": { "properties": { "tipo": { "const": "blocchi" } } },
+      "then": {
+        "properties": {
+          "asse_x": false,
+          "asse_y": false,
+          "serie": false,
+          "annotazioni": false,
+          "asse_t": false,
+          "corsie": false,
+          "intervalli": false,
+          "frecce": false,
+          "marcatori": false
+        }
+      }
+    },
+    {
+      "if": { "properties": { "tipo": { "const": "temporale" } } },
+      "then": {
+        "properties": {
+          "asse_x": false,
+          "asse_y": false,
+          "serie": false,
+          "annotazioni": false,
+          "blocchi": false,
+          "collegamenti": false
+        }
+      }
     }
   ]
 }

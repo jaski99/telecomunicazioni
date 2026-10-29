@@ -44,17 +44,23 @@ jobs:
 
       - name: Node tests
         if: hashFiles('web/package.json') != ''
+        shell: bash
         run: |
+          set -o pipefail
           npm test --prefix web 2>&1 | tee /tmp/node-test.log
-          if grep -q "0 passing\|passing" /tmp/node-test.log; then echo "node tests passed"; else echo "node tests failed"; exit 1; fi
-          if grep -q "skipped" /tmp/node-test.log; then echo "node tests skipped found — fail"; exit 1; fi
+          status=${PIPESTATUS[0]}
+          if [ $status -ne 0 ]; then exit $status; fi
+          if grep -Eq "skipped [1-9]|todo [1-9]" /tmp/node-test.log; then echo "skipped/todo tests found — fail"; exit 1; fi
+          if grep -q "no tests" /tmp/node-test.log; then echo "no tests found — fail"; exit 1; fi
 
       - name: Pytest
+        shell: bash
         run: |
+          set -o pipefail
           pytest -q 2>&1 | tee /tmp/pytest.log
           status=${PIPESTATUS[0]}
           if [ $status -ne 0 ]; then exit $status; fi
-          if grep -q "skipped" /tmp/pytest.log; then echo "skipped tests found — fail"; exit 1; fi
+          if grep -Eq " [1-9][0-9]* skipped" /tmp/pytest.log; then echo "skipped tests found — fail"; exit 1; fi
           if grep -q "no tests collected" /tmp/pytest.log; then echo "no tests collected — fail"; exit 1; fi
 
       - name: Upload artifact

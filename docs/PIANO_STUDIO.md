@@ -11,6 +11,7 @@ Totale nodi: 0 — pendenti: 0
 | # | ID | Titolo | Area | Tipo | Priorità | Tempo | Prerequisiti |
 |---|---|---|---|---|---|---|---|
 
+
 ## Note
 
 - L'ordine rispetta le dipendenze: un nodo compare sempre dopo i suoi prerequisiti.

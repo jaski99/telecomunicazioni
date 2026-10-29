@@ -1,6 +1,6 @@
 """Ordinamento topologico deterministico (Kahn) per il knowledge graph."""
 
-from collections import defaultdict, deque
+from collections import defaultdict
 from typing import Dict, List
 
 
