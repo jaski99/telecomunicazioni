@@ -4,7 +4,7 @@
   "domande_esame": [
     "T11"
   ],
-  "enunciato": "Ricavare la risposta di un quadripolo lineare tempo-invariante a un’oscillazione modulata e definire la funzione equivalente passa-basso che lega gli inviluppi complessi di ingresso e uscita. T11: 10 punti nella raccolta di studenti.",
+  "enunciato": "Un segnale passa-banda $s(t)=\\operatorname{Re}\\{i(t)e^{j\\omega_0t}\\}$ applicato a un quadripolo lineare tempo-invariante ha inviluppo di uscita con trasformata $I_r(\\omega)=H_0(\\omega)I(\\omega)$, dove $H_0(\\omega)=H(\\omega+\\omega_0)$ per $\\omega+\\omega_0\\geq 0$ e $H_0(\\omega)=0$ altrove. In generale $H_0(-\\omega)\\ne H_0^*(\\omega)$: l’equivalente non rappresenta necessariamente una rete reale fisicamente realizzabile.",
   "ipotesi": [
     "Il quadripolo è lineare, tempo-invariante e reale, con funzione di trasferimento H nota.",
     "Il segnale reale è passa-banda, con bande positive e negative disgiunte e portante ω₀; l’inviluppo ha supporto entro la semibanda Bω/2.",

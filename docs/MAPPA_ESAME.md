@@ -11,12 +11,12 @@
 | T1 | Teorema del campionamento nel tempo | NON TROVATO | `dim-teorema-campionamento` | dim-teorema-campionamento:verificata_file1_file3 |
 | T10 | Modulazione a prodotto, QAM ed errore di fase | NON TROVATO | `dim-modulazione-prodotto-qam-errore-fase` | dim-modulazione-prodotto-qam-errore-fase:da_verificare |
 | T11 | Quadripoli e passa-basso equivalente | 10 | `dim-quadripoli-passa-basso-equivalente` | dim-quadripoli-passa-basso-equivalente:verificata_file1_file3 |
-| T12 | Efficienza sliding window senza errori | NON TROVATO | `dim-sliding-window-efficienza` | — |
-| T13 | Tempo residuo in un processo di Poisson | NON TROVATO | `dim-poisson-tempo-residuo` | — |
-| T14 | Equilibrio dei processi nascita-morte | NON TROVATO | `dim-nascita-morte-equilibrio` | — |
-| T15 | Throughput normalizzato ALOHA | NON TROVATO | `dim-aloha-throughput` | — |
-| T16 | Throughput CSMA/CD e parametro a | NON TROVATO | `dim-csma-cd-throughput` | — |
-| T17 | Ritardo medio TDMA rispetto a FDMA | NON TROVATO | `dim-ritardo-tdma-fdma` | — |
+| T12 | Efficienza sliding window senza errori | NON TROVATO | `dim-sliding-window-efficienza` | dim-sliding-window-efficienza:da_verificare |
+| T13 | Tempo residuo in un processo di Poisson | NON TROVATO | `dim-poisson-tempo-residuo` | dim-poisson-tempo-residuo:verificata_file1_file3 |
+| T14 | Equilibrio dei processi nascita-morte | NON TROVATO | `dim-nascita-morte-equilibrio` | dim-nascita-morte-equilibrio:verificata_file1_file3 |
+| T15 | Throughput normalizzato ALOHA | NON TROVATO | `dim-aloha-throughput` | dim-aloha-throughput:verificata_file1_file3 |
+| T16 | Throughput CSMA/CD e parametro a | NON TROVATO | `dim-csma-cd-throughput` | dim-csma-cd-throughput:da_verificare |
+| T17 | Ritardo medio TDMA rispetto a FDMA | NON TROVATO | `dim-ritardo-tdma-fdma` | dim-ritardo-tdma-fdma:da_verificare |
 | T2 | Trasformata della funzione impulsiva | NON TROVATO | `dim-impulso-dirac-trasformata` | dim-impulso-dirac-trasformata:verificata_file1_file3 |
 | T3 | Filtro trasversale e funzione di trasferimento | NON TROVATO | `dim-filtro-trasversale` | dim-filtro-trasversale:verificata_file1_file3 |
 | T4 | Risposta impulsiva e funzione di trasferimento | NON TROVATO | `dim-risposta-impulsiva-h` | dim-risposta-impulsiva-h:verificata_file1_file3 |
@@ -57,7 +57,7 @@
 | M17 | Concetto: filtro ricorsivo puro | NON TROVATO | `filtri-ricorrenti-trasversali` | — |
 | M18 | Concetto: filtro trasversale | NON TROVATO | `filtri-ricorrenti-trasversali` | — |
 | M19 | Concetto: rapporto propagazione-trasmissione | NON TROVATO | `parametro-a-propagazione-trasmissione` | — |
-| M2 | Concetto: massimo slotted ALOHA | NON TROVATO | `dim-aloha-throughput` | — |
+| M2 | Concetto: massimo slotted ALOHA | NON TROVATO | `dim-aloha-throughput` | dim-aloha-throughput:verificata_file1_file3 |
 | M20 | Concetto: conversione di frequenza | NON TROVATO | `modulazione-prodotto-dsb-ssb` | — |
 | M21 | Concetto: demodulazione coerente | NON TROVATO | `demodulazione-coerente-non-coerente` | — |
 | M22 | Concetto: demodulazione non coerente | NON TROVATO | `demodulazione-coerente-non-coerente` | — |
@@ -68,7 +68,7 @@
 | M27 | Concetto: altro nome di AM | NON TROVATO | `modulazione-prodotto-dsb-ssb` | — |
 | M28 | Concetto: codice sistematico | NON TROVATO | `codici-rivelazione-errore` | — |
 | M29 | Concetto: spettro energia e autocorrelazione | NON TROVATO | `energia-potenza-spettri` | — |
-| M3 | Concetto: confronto slotted e puro ALOHA | NON TROVATO | `dim-aloha-throughput` | — |
+| M3 | Concetto: confronto slotted e puro ALOHA | NON TROVATO | `dim-aloha-throughput` | dim-aloha-throughput:verificata_file1_file3 |
 | M30 | Concetto: ritardo TDMA e FDMA | NON TROVATO | `accesso-multiplo-deterministico-casuale` | — |
 | M31 | Concetto: velocità FDMA e TDMA | NON TROVATO | `accesso-multiplo-deterministico-casuale` | — |
 | M32 | Concetto: conversione PM-FM | NON TROVATO | `modulazioni-angolo-pm-fm` | — |

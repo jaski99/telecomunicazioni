@@ -4,7 +4,7 @@
   "domande_esame": [
     "T9"
   ],
-  "enunciato": "Un modulatore PM preceduto da un integratore realizza una FM; un modulatore FM preceduto da un derivatore realizza una PM, scegliendo guadagni e condizioni iniziali compatibili. Punteggio: NON TROVATO.",
+  "enunciato": "Un modulatore PM preceduto da un integratore realizza una FM; un modulatore FM preceduto da un derivatore realizza una PM, scegliendo guadagni e condizioni iniziali compatibili.",
   "ipotesi": [
     "Modulatori ideali con sensibilità costanti non nulle.",
     "Il messaggio è derivabile per la catena con derivatore; le condizioni iniziali e la fase costante sono controllate.",

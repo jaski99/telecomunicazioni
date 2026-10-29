@@ -6,7 +6,7 @@
     "M13",
     "M14"
   ],
-  "enunciato": "La regola di Carson stima la banda occupata di una modulazione angolare come il doppio della somma tra la massima deviazione di pulsazione e la massima pulsazione modulante. Punteggio: NON TROVATO.",
+  "enunciato": "La regola di Carson stima la banda occupata di una modulazione angolare mediante $B_\\omega\\approx2(\\Delta\\omega_{\\max}+\\omega_m)$: il doppio della somma della massima deviazione di pulsazione e della massima pulsazione modulante.",
   "ipotesi": [
     "Stima approssimata di banda occupata, non supporto spettrale esatto.",
     "Per la motivazione si considera una modulante sinusoidale di pulsazione positiva e indice di modulazione β."

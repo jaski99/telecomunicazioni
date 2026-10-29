@@ -1,0 +1,91 @@
+{
+  "id": "processo-poisson",
+  "perche_ti_serve": "T13 e T15, gruppo A: descrive conteggi e attese prima del tempo residuo e del throughput ALOHA.",
+  "scenario": "Un nodo osserva arrivi casuali di pacchetti: vogliamo stimare quanti arriveranno in un intervallo e quanto attendere il prossimo.",
+  "definizione_esame": {
+    "definizione": "Un processo di Poisson omogeneo conta eventi con incrementi indipendenti e tasso costante $\\lambda>0$.",
+    "scopo": "Calcolare conteggi e tempi di attesa sotto un modello probabilistico esplicito.",
+    "esempio": "Se $\\lambda=2$ arrivi/s, in mezzo secondo il numero medio di arrivi è uno."
+  },
+  "spiegazione": "### Legge dei conteggi\nPer un processo di Poisson omogeneo con intensità $\\lambda>0$, il numero $N(t)$ di arrivi in un intervallo di durata $t\\ge0$ ha probabilità $P(N(t)=k)=e^{-\\lambda t}(\\lambda t)^k/k!$, per $k=0,1,2,\\ldots$. La media e la varianza sono entrambe $\\lambda t$. Il prodotto $\\lambda t$ è adimensionale: non si possono sommare un tasso e una durata. Gli incrementi su intervalli disgiunti sono indipendenti e la loro distribuzione dipende solo dalla durata, non dalla posizione dell'intervallo.\n\n### Interarrivo e tempo residuo\nSia $X$ il tempo tra due eventi successivi. L'evento $X>t$ equivale a osservare zero arrivi nei successivi $t$ secondi: quindi $P(X>t)=e^{-\\lambda t}$, $F_X(t)=1-e^{-\\lambda t}$ e $f_X(t)=\\lambda e^{-\\lambda t}$ per $t\\ge0$. La media è $E[X]=1/\\lambda$. Condizionando sul fatto che si sia già atteso $t_0$ senza un arrivo, il tempo residuo $R=X-t_0$ ha ancora $P(R>r\\mid X>t_0)=e^{-\\lambda r}$. Non è una proprietà di una distribuzione di attesa qualsiasi né di un tasso che varia nel tempo.\n\n### Composizione e applicazioni\nSovrapporre processi di Poisson indipendenti produce un processo di Poisson con tasso pari alla somma dei tassi. Se ogni arrivo è assegnato indipendentemente a una classe con probabilità $p_i$, gli arrivi della classe hanno tasso $p_i\\lambda$. In ALOHA la supposizione che tutti i tentativi, comprese le ritrasmissioni, siano Poisson è un modello ideale: ritrasmissioni correlate possono violarla. Distingui il carico misurato in tentativi per durata di pacchetto dal numero medio di arrivi nell'intervallo considerato.",
+  "analogia": {
+    "testo": "Un contatore registra quante gocce arrivano, mentre un cronometro misura l’intervallo tra due gocce.",
+    "limite": "La legge di Poisson richiede indipendenza e tasso costante: gocce reali possono non rispettarli."
+  },
+  "worked_example": {
+    "titolo": "Zero o un arrivo",
+    "problema": "Con $\\lambda=2$ arrivi/s, considera un intervallo di 0,5 s.",
+    "passi": [
+      "Il numero medio è $\\lambda t=1$.",
+      "La probabilità di zero è $e^{-1}$.",
+      "La probabilità di uno è $e^{-1}\\cdot1/1!$."
+    ],
+    "soluzione": "Entrambe le probabilità valgono circa 0,368; almeno un arrivo ha probabilità circa 0,632.",
+    "perche_funziona": "Si usa la legge Poisson con parametro $\\lambda t=1$, non il solo tasso."
+  },
+  "completion_problem": {
+    "titolo": "Un altro intervallo",
+    "testo": "Se $\\lambda=3$ arrivi/s e $t=2$ s, trova il numero medio.",
+    "passi_mancanti": [
+      "Moltiplica il tasso per la durata."
+    ],
+    "soluzione": "Il numero medio è 6 arrivi."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Tempo medio",
+    "testo": "Con $\\lambda=4$ arrivi/s, quanto vale il tempo medio fra arrivi?",
+    "suggerimento": "L’interarrivo è esponenziale e ha media inversa del tasso.",
+    "soluzione_attesa": "La media è $1/4$ s, cioè 0,25 s."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Usare $\\lambda$ da solo come numero medio per ogni intervallo.",
+      "perche_sbagliato": "Il valore medio dipende dalla durata: $\\lambda t$."
+    },
+    {
+      "errore": "Applicare la memoria assente a ogni distribuzione.",
+      "perche_sbagliato": "È una proprietà dell’esponenziale nel modello omogeneo, non di un’attesa generica."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Che probabilità ha zero arrivi in t?",
+        "risposta": "$e^{-\\lambda t}$."
+      },
+      {
+        "domanda": "Quali sono media e varianza del conteggio?",
+        "risposta": "Entrambe valgono $\\lambda t$."
+      },
+      {
+        "domanda": "Il tempo già atteso modifica il residuo esponenziale?",
+        "risposta": "No, sotto le ipotesi di Poisson omogeneo."
+      }
+    ],
+    "spiega_con_parole_tue": "Con tasso $\\lambda=2$ arrivi/s, calcola la probabilità di nessun arrivo in mezzo secondo e spiega perché il tempo residuo non dipende dall’attesa trascorsa."
+  },
+  "riepilogo": "Poisson descrive conteggi, esponenziale gli interarrivi. Tasso costante e incrementi indipendenti sono essenziali.",
+  "flashcard": [
+    {
+      "fronte": "Che probabilità ha zero arrivi in t?",
+      "retro": "$e^{-\\lambda t}$."
+    },
+    {
+      "fronte": "Quali sono media e varianza del conteggio?",
+      "retro": "Entrambe valgono $\\lambda t$."
+    },
+    {
+      "fronte": "Il tempo già atteso modifica il residuo esponenziale?",
+      "retro": "No, sotto le ipotesi di Poisson omogeneo."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "So calcolare una probabilità di conteggio.",
+      "So ricavare il tempo medio interarrivo."
+    ],
+    "so_dire": [
+      "So spiegare le ipotesi di indipendenza e tasso costante."
+    ]
+  }
+}

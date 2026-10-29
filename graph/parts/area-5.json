@@ -14,7 +14,7 @@
       {
         "id": "modulazioni-angolo-pm-fm",
         "forza": "hard",
-        "motivo": "Servono le definizioni di fase e frequenza istantanea."
+        "motivo": "Le leggi di fase PM e FM consentono di ricavare le reti integratrice e derivatrice."
       }
     ],
     "tempo_studio_min": 45,
@@ -45,7 +45,7 @@
       {
         "id": "modulazioni-angolo-pm-fm",
         "forza": "hard",
-        "motivo": "Servono le definizioni di fase e frequenza istantanea."
+        "motivo": "La deviazione massima di pulsazione della modulazione d’angolo entra nella stima di banda."
       }
     ],
     "tempo_studio_min": 45,

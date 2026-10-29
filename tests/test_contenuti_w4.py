@@ -227,7 +227,13 @@ def test_nessun_testo_lungo_ripetuto_tra_file_w4():
                 visit(item, path, key)
 
     for path in files:
-        visit(json.loads(path.read_text(encoding='utf-8')), path)
+        data = json.loads(path.read_text(encoding='utf-8'))
+        if path.parent.name == 'parts':
+            for node in data:
+                # Ogni nodo è una sorgente distinta, anche nello stesso file part.
+                visit(node, path / node['id'])
+        else:
+            visit(data, path)
     repeated = {value: sorted(paths) for value, paths in occurrences.items() if len(paths) > 1}
     assert not repeated, repeated
 
@@ -238,7 +244,15 @@ def test_enunciati_con_risultato():
         'dim-conversione-ad': ('quantizza', 'PCM', 'omega_s', 'log_2'),
         'dim-conversione-da': ('S(', 'G(', 'equalizzatore', 'quantizzazione'),
         'dim-modulazione-prodotto-qam-errore-fase': ('cos', 'sin', 'Delta', 'ruotate'),
+        'dim-quadripoli-passa-basso-equivalente': ('H_0', 'H(', 'I_r', 'geq', 'altrove', 'ne'),
+        'dim-pm-fm-trasformazione': ('integratore', 'derivatore', 'PM', 'FM'),
+        'dim-formula-carson': ('B_', 'Delta', 'omega_m', 'approx'),
     }
     for id, terms in expected.items():
         enunciato = load(f'graph/dimostrazioni/{id}.json')['enunciato']
         assert all(term in enunciato for term in terms), (id, enunciato)
+
+
+def test_niente_punteggio_negli_enunciati_pm_fm_e_carson():
+    for id in ('dim-pm-fm-trasformazione', 'dim-formula-carson'):
+        assert 'Punteggio' not in load(f'graph/dimostrazioni/{id}.json')['enunciato']
