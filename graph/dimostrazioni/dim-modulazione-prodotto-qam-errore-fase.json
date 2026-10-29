@@ -25,6 +25,10 @@
     {
       "simbolo": "\\Delta",
       "significato": "Errore di fase locale nella convenzione cos(ω₀t−Δ)."
+    },
+    {
+      "simbolo": "x(t)",
+      "significato": "Messaggio nel caso DSB-SC a un ramo."
     }
   ],
   "varianti_notazione": [
@@ -38,37 +42,51 @@
   "passi": [
     {
       "n": 1,
+      "testo": "Demodulare una singola modulazione DSB-SC con riferimento coerente.",
+      "formula": "2x(t)\\cos(\\omega_0t)\\cos(\\omega_0t-\\Delta)=x(t)\\cos\\Delta+x(t)\\cos(2\\omega_0t-\\Delta)",
+      "perche": "La formula prodotto-somma separa il termine in banda base e quello alla doppia portante.",
+      "figura": "catena"
+    },
+    {
+      "n": 2,
+      "testo": "Eliminare la componente attorno a due volte la portante.",
+      "formula": "\\hat{x}(t)=x(t)\\cos\\Delta",
+      "perche": "Il passa-basso conserva solo la banda base quando gli spettri sono separati."
+    },
+    {
+      "n": 3,
       "testo": "Formare la QAM con portanti ortogonali.",
       "formula": "s(t)=x_1(t)\\cos\\omega_0t-x_2(t)\\sin\\omega_0t",
       "perche": "La somma di due prodotti trasporta i due messaggi in quadratura.",
       "figura": "modulatore-qam"
     },
     {
-      "n": 2,
+      "n": 4,
       "testo": "Moltiplicare per le due portanti locali.",
       "formula": "u_1=2s(t)\\cos(\\omega_0t-\\Delta),\\quad u_2=-2s(t)\\sin(\\omega_0t-\\Delta)",
-      "perche": "La stessa fase locale alimenta i due rami separati da un quarto di periodo."
+      "perche": "La stessa fase locale alimenta i due rami separati da un quarto di periodo.",
+      "figura": "demodulatore-qam"
     },
     {
-      "n": 3,
+      "n": 5,
       "testo": "Separare i termini costanti dal doppio della portante.",
       "formula": "2\\cos A\\cos B=\\cos(A-B)+\\cos(A+B)",
       "perche": "Le identità trigonometriche scompongono ciascun prodotto in differenza e somma."
     },
     {
-      "n": 4,
+      "n": 6,
       "testo": "Filtrare il primo ramo.",
       "formula": "\\hat{x}_1=x_1\\cos\\Delta-x_2\\sin\\Delta",
       "perche": "Il passa-basso elimina i termini centrati a 2ω₀ e conserva la componente in banda base."
     },
     {
-      "n": 5,
+      "n": 7,
       "testo": "Filtrare il secondo ramo.",
       "formula": "\\hat{x}_2=x_2\\cos\\Delta+x_1\\sin\\Delta",
       "perche": "Le identità prodotto-somma e il filtro lasciano la seconda combinazione lineare."
     },
     {
-      "n": 6,
+      "n": 8,
       "testo": "Considerare la demodulazione coerente ideale.",
       "formula": "\\Delta=0\\ \\Longrightarrow\\ (\\hat{x}_1,\\hat{x}_2)=(x_1,x_2)",
       "perche": "Per fase corretta cos Δ vale uno e sin Δ vale zero."
@@ -195,6 +213,89 @@
         {
           "da": "somma",
           "a": "out"
+        }
+      ]
+    },
+    {
+      "id": "demodulatore-qam",
+      "tipo": "blocchi",
+      "titolo": "Demodulatore coerente QAM",
+      "descrizione": "Il segnale ricevuto è distribuito ai due moltiplicatori con riferimenti in quadratura, seguiti da filtri passa-basso e uscite I e Q.",
+      "blocchi": [
+        {
+          "id": "input",
+          "etichetta": "s(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 1
+        },
+        {
+          "id": "mix-i",
+          "etichetta": "× 2 cos(ω₀t − Δ)",
+          "forma": "moltiplicatore",
+          "colonna": 1,
+          "riga": 0
+        },
+        {
+          "id": "mix-q",
+          "etichetta": "× −2 sin(ω₀t − Δ)",
+          "forma": "moltiplicatore",
+          "colonna": 1,
+          "riga": 2
+        },
+        {
+          "id": "filtro-i",
+          "etichetta": "Passa-basso",
+          "forma": "rettangolo",
+          "colonna": 2,
+          "riga": 0
+        },
+        {
+          "id": "filtro-q",
+          "etichetta": "Passa-basso",
+          "forma": "rettangolo",
+          "colonna": 2,
+          "riga": 2
+        },
+        {
+          "id": "uscita-i",
+          "etichetta": "x̂₁",
+          "forma": "uscita",
+          "colonna": 3,
+          "riga": 0
+        },
+        {
+          "id": "uscita-q",
+          "etichetta": "x̂₂",
+          "forma": "uscita",
+          "colonna": 3,
+          "riga": 2
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "input",
+          "a": "mix-i"
+        },
+        {
+          "da": "input",
+          "a": "mix-q"
+        },
+        {
+          "da": "mix-i",
+          "a": "filtro-i"
+        },
+        {
+          "da": "mix-q",
+          "a": "filtro-q"
+        },
+        {
+          "da": "filtro-i",
+          "a": "uscita-i"
+        },
+        {
+          "da": "filtro-q",
+          "a": "uscita-q"
         }
       ]
     }

@@ -1,0 +1,90 @@
+{
+  "id": "conversione-ad-quantizzazione-pcm",
+  "perche_ti_serve": "Prerequisito di T7 e T8; gruppo A. Punteggio delle prove: NON TROVATO.",
+  "scenario": "In un collegamento di telecomunicazioni un segnale di voce o un flusso di dati deve attraversare trasmettitore, canale e ricevitore: Portare campioni di un segnale analogico su un collegamento numerico.",
+  "definizione_esame": {
+    "definizione": "La conversione A/D rappresenta un segnale analogico mediante una sequenza di parole binarie, tramite campionamento, quantizzazione e codifica.",
+    "scopo": "Portare campioni di un segnale analogico su un collegamento numerico.",
+    "esempio": "Una voce limitata a $4\\,\\mathrm{kHz}$ può essere campionata a $8\\,\\mathrm{kHz}$ se sono soddisfatte le condizioni al bordo della banda."
+  },
+  "spiegazione": "### Dal tempo continuo ai campioni\nIl campionatore osserva il segnale $x(t)$ a intervalli $T$ e produce $x_n=x(nT)$. La frequenza è $f_s=1/T$ e la pulsazione corrispondente è $\\omega_s=2\\pi/T$. Per una ricostruzione ideale senza sovrapposizione di repliche si assume $\\omega_s>2\\omega_m$: l'uguaglianza richiede attenzione alle condizioni ai bordi. Un filtro antialias limita la banda prima del campionamento. Se l'ingresso contiene componenti oltre la banda consentita, le loro repliche si sovrappongono al segnale utile e non basta aumentare la precisione dei campioni per separarle.\n\n### Quantizzazione e codifica\nIl quantizzatore sostituisce ogni campione con uno fra $L$ livelli. Nel caso uniforme, su un intervallo di ampiezza complessiva $2M$, il passo è $\\Delta=2M/L$. In assenza di sovraccarico, con arrotondamento al livello centrale di ogni intervallo l'errore ha modulo al più $\\Delta/2$. È un limite deterministico: trattare l'errore come rumore uniforme e indipendente richiede ipotesi aggiuntive, non è sempre vero. La codifica assegna parole binarie distinte ai livelli e richiede $b=\\lceil\\log_2 L\\rceil$ bit. Campionamento e quantizzazione non sono sinonimi: il primo discretizza il tempo, la seconda i valori.\n\n### PCM e ricostruzione\nLa sequenza delle parole di codice forma un flusso PCM. Senza bit ausiliari la velocità è $R_b=bf_s$. Un decodificatore riceve le parole e ripristina i livelli quantizzati, mentre un filtro di ricostruzione produce una forma d'onda continua. La quantizzazione è irreversibile: un filtro ideale non può stabilire quale fra più campioni originari abbia dato lo stesso livello. Il sovraccarico, quando l'ingresso supera l'intervallo previsto, non è coperto dal limite $\\Delta/2$. T7 chiede i tre passi e T8 la ricostruzione.",
+  "analogia": {
+    "testo": "Misurare una grandezza a intervalli regolari e arrotondarla alle tacche di un righello.",
+    "limite": "Non descrive né l’aliasing né l’elettronica del campionatore."
+  },
+  "worked_example": {
+    "titolo": "Esempio svolto",
+    "problema": "Un PCM usa 256 livelli e 8000 campioni al secondo. Calcolare bit per campione e velocità senza overhead.",
+    "passi": [
+      "$256=2^8$, quindi ogni parola richiede 8 bit.",
+      "Ogni secondo si producono 8000 parole.",
+      "La velocità è $8\\cdot8000=64000$ bit/s."
+    ],
+    "soluzione": "8 bit per campione e 64 kbit/s.",
+    "perche_funziona": "Una parola distinta per livello viene emessa a ogni campione."
+  },
+  "completion_problem": {
+    "titolo": "Completa il ragionamento",
+    "testo": "Con 16 livelli e 1000 campioni al secondo completare bit per campione e velocità.",
+    "passi_mancanti": [
+      "Calcolare $\\lceil\\log_2 16\\rceil$ e moltiplicare per 1000."
+    ],
+    "soluzione": "4 bit e 4 kbit/s."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Prova da solo",
+    "testo": "Per un quantizzatore uniforme su $[-1,1)$ con 4 intervalli, calcolare passo e limite di errore senza saturazione.",
+    "suggerimento": "Dividere l’ampiezza totale per il numero di intervalli.",
+    "soluzione_attesa": "$\\Delta=0{,}5$ e $|e|\\le 0{,}25$."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Campionare a frequenza appena maggiore della massima frequenza del segnale.",
+      "perche_sbagliato": "Non garantisce la separazione delle repliche."
+    },
+    {
+      "errore": "Ritenere reversibile la quantizzazione.",
+      "perche_sbagliato": "Più valori di ingresso possono essere associati allo stesso livello."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Quali sono i tre passi?",
+        "risposta": "Campionamento, quantizzazione, codifica."
+      },
+      {
+        "domanda": "Che cosa misura il passo?",
+        "risposta": "La larghezza di ciascun intervallo uniforme di quantizzazione."
+      },
+      {
+        "domanda": "Che cosa produce aliasing?",
+        "risposta": "Sovrapposizione delle repliche spettrali."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega con parole tue: Portare campioni di un segnale analogico su un collegamento numerico."
+  },
+  "riepilogo": "Il PCM campiona, quantizza e codifica; il bit rate senza overhead è $bf_s$. Aliasing e quantizzazione sono errori distinti.",
+  "flashcard": [
+    {
+      "fronte": "Quali sono i tre passi?",
+      "retro": "Campionamento, quantizzazione, codifica."
+    },
+    {
+      "fronte": "Che cosa misura il passo?",
+      "retro": "La larghezza di ciascun intervallo uniforme di quantizzazione."
+    },
+    {
+      "fronte": "Che cosa produce aliasing?",
+      "retro": "Sovrapposizione delle repliche spettrali."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "Un PCM usa 256 livelli e 8000 campioni al secondo. Calcolare bit per campione e velocità senza overhead."
+    ],
+    "so_dire": [
+      "La conversione A/D rappresenta un segnale analogico mediante una sequenza di parole binarie, tramite campionamento, quantizzazione e codifica."
+    ]
+  }
+}

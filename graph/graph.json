@@ -10781,6 +10781,265 @@
       "domande_esame": []
     },
     {
+      "id": "collegamento-numerico-tdm-pcm",
+      "titolo": "Collegamento numerico TDM e PCM",
+      "area": 4,
+      "tipo": "concetto",
+      "gruppo": "B",
+      "worker": "W4",
+      "sapere": "Il TDM assegna a flussi diversi intervalli temporali distinti su un collegamento condiviso; il PCM fornisce parole binarie ai flussi digitalizzati.",
+      "saper_fare": [
+        "Combinare più sorgenti senza confondere i loro campioni.",
+        "Quattro sorgenti PCM, ognuna a 8 kcampioni/s con 8 bit a campione: trovare il carico utile totale."
+      ],
+      "prerequisiti": [
+        {
+          "id": "dim-conversione-ad",
+          "forza": "hard",
+          "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        },
+        {
+          "id": "criterio-nyquist-isi",
+          "forza": "hard",
+          "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        }
+      ],
+      "tempo_studio_min": 60,
+      "priorita": {
+        "livello": "media",
+        "motivazione": "Gruppo B: collegamento tra conversione A/D e criterio di Nyquist per la trasmissione numerica."
+      },
+      "fonti": [
+        {
+          "chiave": "RICOSTRUZIONE",
+          "rif": "NON TROVATO"
+        },
+        {
+          "chiave": "PROGRAMMA",
+          "rif": "NON TROVATO"
+        }
+      ],
+      "risorse": [],
+      "lezione": {
+        "id": "collegamento-numerico-tdm-pcm",
+        "perche_ti_serve": "Gruppo B: collegamento tra conversione A/D e criterio di Nyquist per la trasmissione numerica.",
+        "scenario": "In un collegamento di telecomunicazioni un segnale di voce o un flusso di dati deve attraversare trasmettitore, canale e ricevitore: Combinare più sorgenti senza confondere i loro campioni.",
+        "definizione_esame": {
+          "definizione": "Il TDM assegna a flussi diversi intervalli temporali distinti su un collegamento condiviso; il PCM fornisce parole binarie ai flussi digitalizzati.",
+          "scopo": "Combinare più sorgenti senza confondere i loro campioni.",
+          "esempio": "Quattro sorgenti con parole di 8 bit per campione possono essere distribuite in quattro slot per trama."
+        },
+        "spiegazione": "### Multiplexare nel tempo\nDopo conversione A/D ogni sorgente produce una successione di parole. Nel multiplatore a divisione di tempo, TDM, una trama contiene slot assegnati alle diverse sorgenti. Se ogni sorgente fornisce un campione a ogni trama e tutte hanno frequenza $f_s$, la frequenza di trama è $f_s$. Con $N$ sorgenti, ciascuna di $b$ bit per campione, il carico utile è $R_{utile}=Nbf_s$. Questo calcolo esclude sincronizzazione, segnalazione e altre informazioni aggiuntive: un sistema reale può quindi richiedere una velocità maggiore.\n\n### Ricezione e sincronizzazione\nIl ricevitore deve individuare l'inizio della trama e conoscere l'associazione fra slot e sorgenti. Il demultiplatore invia ciascuna parola al proprio ramo, poi decodifica e ricostruisce i segnali. Se la sincronizzazione di trama è persa, anche bit ricevuti correttamente possono essere assegnati alla sorgente sbagliata. Uno slot di tempo non è una banda di frequenza riservata: questa è la distinzione essenziale rispetto a FDMA. La definizione di una specifica struttura di trama dipende dallo standard; per quella del corso la struttura precisa è NON TROVATO.\n\n### Simboli e interferenza\nSul mezzo fisico i bit devono essere rappresentati da impulsi o simboli e il ricevitore campiona la forma d'onda ricevuta. Un canale con memoria può produrre interferenza intersimbolica: impulsi vicini contribuiscono allo stesso istante di decisione. La condizione di Nyquist riguarda l'assenza di tali contributi agli istanti di campionamento, non va confusa con il criterio antialias della conversione A/D. In assenza di codifica aggiuntiva, se ogni simbolo trasporta $k$ bit, la frequenza simbolica è $R_s=R_b/k$. La banda richiesta dipende anche dalla forma degli impulsi e dal canale, non solo dal numero di sorgenti.",
+        "analogia": {
+          "testo": "Un giro di tavolo in cui ciascuno parla nel proprio turno.",
+          "limite": "Gli slot sono rigorosamente temporizzati e contengono bit, non frasi."
+        },
+        "worked_example": {
+          "titolo": "Esempio svolto",
+          "problema": "Quattro sorgenti PCM, ognuna a 8 kcampioni/s con 8 bit a campione: trovare il carico utile totale.",
+          "passi": [
+            "Ogni sorgente produce $8\\cdot8000=64000$ bit/s.",
+            "Ci sono quattro parole per ogni trama.",
+            "Il carico utile è $4\\cdot64000=256000$ bit/s."
+          ],
+          "soluzione": "256 kbit/s, escluso ogni overhead.",
+          "perche_funziona": "Gli slot sono distinti e il carico totale è la somma dei quattro flussi."
+        },
+        "completion_problem": {
+          "titolo": "Completa il ragionamento",
+          "testo": "Con due sorgenti da 10 kbit/s, trovare il carico utile.",
+          "passi_mancanti": [
+            "Sommare i due flussi."
+          ],
+          "soluzione": "20 kbit/s senza overhead."
+        },
+        "esercizio_autonomo": {
+          "titolo": "Prova da solo",
+          "testo": "Con tre sorgenti da 4 kcampioni/s e 8 bit a campione, calcolare il carico utile.",
+          "suggerimento": "Moltiplicare sorgenti, campioni e bit.",
+          "soluzione_attesa": "96 kbit/s."
+        },
+        "errori_trappole": [
+          {
+            "errore": "Trascurare la sincronizzazione di trama.",
+            "perche_sbagliato": "Il ricevitore può assegnare parole a sorgenti errate."
+          },
+          {
+            "errore": "Identificare sempre bit rate e symbol rate.",
+            "perche_sbagliato": "Con più bit per simbolo le due grandezze differiscono."
+          }
+        ],
+        "richiamo_attivo": {
+          "domande": [
+            {
+              "domanda": "A che cosa serve il demultiplatore?",
+              "risposta": "Assegna gli slot ricevuti alle sorgenti appropriate."
+            },
+            {
+              "domanda": "Che cosa esclude il carico utile?",
+              "risposta": "Overhead di sincronizzazione e altri bit aggiuntivi."
+            },
+            {
+              "domanda": "Che cosa è l’interferenza intersimbolica?",
+              "risposta": "Il contributo di simboli vicini a un istante di decisione."
+            }
+          ],
+          "spiega_con_parole_tue": "Spiega con parole tue: Combinare più sorgenti senza confondere i loro campioni."
+        },
+        "riepilogo": "TDM separa i flussi nel tempo; PCM produce parole. La trama richiede sincronizzazione e il collegamento deve gestire l’interferenza intersimbolica.",
+        "flashcard": [
+          {
+            "fronte": "A che cosa serve il demultiplatore?",
+            "retro": "Assegna gli slot ricevuti alle sorgenti appropriate."
+          },
+          {
+            "fronte": "Che cosa esclude il carico utile?",
+            "retro": "Overhead di sincronizzazione e altri bit aggiuntivi."
+          },
+          {
+            "fronte": "Che cosa è l’interferenza intersimbolica?",
+            "retro": "Il contributo di simboli vicini a un istante di decisione."
+          }
+        ],
+        "checklist": {
+          "so_fare": [
+            "Quattro sorgenti PCM, ognuna a 8 kcampioni/s con 8 bit a campione: trovare il carico utile totale."
+          ],
+          "so_dire": [
+            "Il TDM assegna a flussi diversi intervalli temporali distinti su un collegamento condiviso; il PCM fornisce parole binarie ai flussi digitalizzati."
+          ]
+        }
+      },
+      "domande_esame": []
+    },
+    {
+      "id": "conversione-ad-quantizzazione-pcm",
+      "titolo": "Conversione A/D, quantizzazione e PCM",
+      "area": 4,
+      "tipo": "concetto",
+      "gruppo": "A",
+      "worker": "W4",
+      "sapere": "La conversione A/D rappresenta un segnale analogico mediante una sequenza di parole binarie, tramite campionamento, quantizzazione e codifica.",
+      "saper_fare": [
+        "Portare campioni di un segnale analogico su un collegamento numerico.",
+        "Un PCM usa 256 livelli e 8000 campioni al secondo. Calcolare bit per campione e velocità senza overhead."
+      ],
+      "prerequisiti": [
+        {
+          "id": "dim-teorema-campionamento",
+          "forza": "hard",
+          "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        }
+      ],
+      "tempo_studio_min": 60,
+      "priorita": {
+        "livello": "alta",
+        "motivazione": "Prerequisito di T7 e T8; gruppo A. Punteggio delle prove: NON TROVATO."
+      },
+      "fonti": [
+        {
+          "chiave": "FILE3",
+          "rif": "pp. 7-11 del PDF"
+        },
+        {
+          "chiave": "FILE1",
+          "rif": "pp. 32-36 del PDF"
+        }
+      ],
+      "risorse": [],
+      "lezione": {
+        "id": "conversione-ad-quantizzazione-pcm",
+        "perche_ti_serve": "Prerequisito di T7 e T8; gruppo A. Punteggio delle prove: NON TROVATO.",
+        "scenario": "In un collegamento di telecomunicazioni un segnale di voce o un flusso di dati deve attraversare trasmettitore, canale e ricevitore: Portare campioni di un segnale analogico su un collegamento numerico.",
+        "definizione_esame": {
+          "definizione": "La conversione A/D rappresenta un segnale analogico mediante una sequenza di parole binarie, tramite campionamento, quantizzazione e codifica.",
+          "scopo": "Portare campioni di un segnale analogico su un collegamento numerico.",
+          "esempio": "Una voce limitata a $4\\,\\mathrm{kHz}$ può essere campionata a $8\\,\\mathrm{kHz}$ se sono soddisfatte le condizioni al bordo della banda."
+        },
+        "spiegazione": "### Dal tempo continuo ai campioni\nIl campionatore osserva il segnale $x(t)$ a intervalli $T$ e produce $x_n=x(nT)$. La frequenza è $f_s=1/T$ e la pulsazione corrispondente è $\\omega_s=2\\pi/T$. Per una ricostruzione ideale senza sovrapposizione di repliche si assume $\\omega_s>2\\omega_m$: l'uguaglianza richiede attenzione alle condizioni ai bordi. Un filtro antialias limita la banda prima del campionamento. Se l'ingresso contiene componenti oltre la banda consentita, le loro repliche si sovrappongono al segnale utile e non basta aumentare la precisione dei campioni per separarle.\n\n### Quantizzazione e codifica\nIl quantizzatore sostituisce ogni campione con uno fra $L$ livelli. Nel caso uniforme, su un intervallo di ampiezza complessiva $2M$, il passo è $\\Delta=2M/L$. In assenza di sovraccarico, con arrotondamento al livello centrale di ogni intervallo l'errore ha modulo al più $\\Delta/2$. È un limite deterministico: trattare l'errore come rumore uniforme e indipendente richiede ipotesi aggiuntive, non è sempre vero. La codifica assegna parole binarie distinte ai livelli e richiede $b=\\lceil\\log_2 L\\rceil$ bit. Campionamento e quantizzazione non sono sinonimi: il primo discretizza il tempo, la seconda i valori.\n\n### PCM e ricostruzione\nLa sequenza delle parole di codice forma un flusso PCM. Senza bit ausiliari la velocità è $R_b=bf_s$. Un decodificatore riceve le parole e ripristina i livelli quantizzati, mentre un filtro di ricostruzione produce una forma d'onda continua. La quantizzazione è irreversibile: un filtro ideale non può stabilire quale fra più campioni originari abbia dato lo stesso livello. Il sovraccarico, quando l'ingresso supera l'intervallo previsto, non è coperto dal limite $\\Delta/2$. T7 chiede i tre passi e T8 la ricostruzione.",
+        "analogia": {
+          "testo": "Misurare una grandezza a intervalli regolari e arrotondarla alle tacche di un righello.",
+          "limite": "Non descrive né l’aliasing né l’elettronica del campionatore."
+        },
+        "worked_example": {
+          "titolo": "Esempio svolto",
+          "problema": "Un PCM usa 256 livelli e 8000 campioni al secondo. Calcolare bit per campione e velocità senza overhead.",
+          "passi": [
+            "$256=2^8$, quindi ogni parola richiede 8 bit.",
+            "Ogni secondo si producono 8000 parole.",
+            "La velocità è $8\\cdot8000=64000$ bit/s."
+          ],
+          "soluzione": "8 bit per campione e 64 kbit/s.",
+          "perche_funziona": "Una parola distinta per livello viene emessa a ogni campione."
+        },
+        "completion_problem": {
+          "titolo": "Completa il ragionamento",
+          "testo": "Con 16 livelli e 1000 campioni al secondo completare bit per campione e velocità.",
+          "passi_mancanti": [
+            "Calcolare $\\lceil\\log_2 16\\rceil$ e moltiplicare per 1000."
+          ],
+          "soluzione": "4 bit e 4 kbit/s."
+        },
+        "esercizio_autonomo": {
+          "titolo": "Prova da solo",
+          "testo": "Per un quantizzatore uniforme su $[-1,1)$ con 4 intervalli, calcolare passo e limite di errore senza saturazione.",
+          "suggerimento": "Dividere l’ampiezza totale per il numero di intervalli.",
+          "soluzione_attesa": "$\\Delta=0{,}5$ e $|e|\\le 0{,}25$."
+        },
+        "errori_trappole": [
+          {
+            "errore": "Campionare a frequenza appena maggiore della massima frequenza del segnale.",
+            "perche_sbagliato": "Non garantisce la separazione delle repliche."
+          },
+          {
+            "errore": "Ritenere reversibile la quantizzazione.",
+            "perche_sbagliato": "Più valori di ingresso possono essere associati allo stesso livello."
+          }
+        ],
+        "richiamo_attivo": {
+          "domande": [
+            {
+              "domanda": "Quali sono i tre passi?",
+              "risposta": "Campionamento, quantizzazione, codifica."
+            },
+            {
+              "domanda": "Che cosa misura il passo?",
+              "risposta": "La larghezza di ciascun intervallo uniforme di quantizzazione."
+            },
+            {
+              "domanda": "Che cosa produce aliasing?",
+              "risposta": "Sovrapposizione delle repliche spettrali."
+            }
+          ],
+          "spiega_con_parole_tue": "Spiega con parole tue: Portare campioni di un segnale analogico su un collegamento numerico."
+        },
+        "riepilogo": "Il PCM campiona, quantizza e codifica; il bit rate senza overhead è $bf_s$. Aliasing e quantizzazione sono errori distinti.",
+        "flashcard": [
+          {
+            "fronte": "Quali sono i tre passi?",
+            "retro": "Campionamento, quantizzazione, codifica."
+          },
+          {
+            "fronte": "Che cosa misura il passo?",
+            "retro": "La larghezza di ciascun intervallo uniforme di quantizzazione."
+          },
+          {
+            "fronte": "Che cosa produce aliasing?",
+            "retro": "Sovrapposizione delle repliche spettrali."
+          }
+        ],
+        "checklist": {
+          "so_fare": [
+            "Un PCM usa 256 livelli e 8000 campioni al secondo. Calcolare bit per campione e velocità senza overhead."
+          ],
+          "so_dire": [
+            "La conversione A/D rappresenta un segnale analogico mediante una sequenza di parole binarie, tramite campionamento, quantizzazione e codifica."
+          ]
+        }
+      },
+      "domande_esame": []
+    },
+    {
       "id": "dim-conversione-ad",
       "titolo": "Descrivere i tre passi della conversione A/D e il segnale numerico ottenuto",
       "area": 4,
@@ -10871,7 +11130,8 @@
             "n": 2,
             "testo": "Prelevare i campioni.",
             "formula": "x_n=x(nT)",
-            "perche": "La lettura agli istanti nT discretizza il tempo senza ancora quantizzare le ampiezze."
+            "perche": "La lettura agli istanti nT discretizza il tempo senza ancora quantizzare le ampiezze.",
+            "figura": "campionamento"
           },
           {
             "n": 3,
@@ -10952,6 +11212,716 @@
               {
                 "da": "b3",
                 "a": "b4"
+              }
+            ]
+          },
+          {
+            "id": "campionamento",
+            "tipo": "grafico",
+            "titolo": "Campioni di una sinusoide",
+            "descrizione": "Una sinusoide e i campioni presi a intervalli regolari T; i punti mostrano la discretizzazione del tempo prima della quantizzazione.",
+            "asse_x": {
+              "etichetta": "Tempo (periodi T)",
+              "min": 0,
+              "max": 8
+            },
+            "asse_y": {
+              "etichetta": "Ampiezza normalizzata",
+              "min": -1.1,
+              "max": 1.1
+            },
+            "serie": [
+              {
+                "stile": "linea",
+                "etichetta": "Segnale continuo",
+                "punti": [
+                  [
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.05,
+                    0.03926
+                  ],
+                  [
+                    0.1,
+                    0.07846
+                  ],
+                  [
+                    0.15,
+                    0.11754
+                  ],
+                  [
+                    0.2,
+                    0.15643
+                  ],
+                  [
+                    0.25,
+                    0.19509
+                  ],
+                  [
+                    0.3,
+                    0.23345
+                  ],
+                  [
+                    0.35,
+                    0.27144
+                  ],
+                  [
+                    0.4,
+                    0.30902
+                  ],
+                  [
+                    0.45,
+                    0.34612
+                  ],
+                  [
+                    0.5,
+                    0.38268
+                  ],
+                  [
+                    0.55,
+                    0.41866
+                  ],
+                  [
+                    0.6,
+                    0.45399
+                  ],
+                  [
+                    0.65,
+                    0.48862
+                  ],
+                  [
+                    0.7,
+                    0.5225
+                  ],
+                  [
+                    0.75,
+                    0.55557
+                  ],
+                  [
+                    0.8,
+                    0.58779
+                  ],
+                  [
+                    0.85,
+                    0.61909
+                  ],
+                  [
+                    0.9,
+                    0.64945
+                  ],
+                  [
+                    0.95,
+                    0.6788
+                  ],
+                  [
+                    1.0,
+                    0.70711
+                  ],
+                  [
+                    1.05,
+                    0.73432
+                  ],
+                  [
+                    1.1,
+                    0.76041
+                  ],
+                  [
+                    1.15,
+                    0.78532
+                  ],
+                  [
+                    1.2,
+                    0.80902
+                  ],
+                  [
+                    1.25,
+                    0.83147
+                  ],
+                  [
+                    1.3,
+                    0.85264
+                  ],
+                  [
+                    1.35,
+                    0.8725
+                  ],
+                  [
+                    1.4,
+                    0.89101
+                  ],
+                  [
+                    1.45,
+                    0.90814
+                  ],
+                  [
+                    1.5,
+                    0.92388
+                  ],
+                  [
+                    1.55,
+                    0.93819
+                  ],
+                  [
+                    1.6,
+                    0.95106
+                  ],
+                  [
+                    1.65,
+                    0.96246
+                  ],
+                  [
+                    1.7,
+                    0.97237
+                  ],
+                  [
+                    1.75,
+                    0.98079
+                  ],
+                  [
+                    1.8,
+                    0.98769
+                  ],
+                  [
+                    1.85,
+                    0.99307
+                  ],
+                  [
+                    1.9,
+                    0.99692
+                  ],
+                  [
+                    1.95,
+                    0.99923
+                  ],
+                  [
+                    2.0,
+                    1.0
+                  ],
+                  [
+                    2.05,
+                    0.99923
+                  ],
+                  [
+                    2.1,
+                    0.99692
+                  ],
+                  [
+                    2.15,
+                    0.99307
+                  ],
+                  [
+                    2.2,
+                    0.98769
+                  ],
+                  [
+                    2.25,
+                    0.98079
+                  ],
+                  [
+                    2.3,
+                    0.97237
+                  ],
+                  [
+                    2.35,
+                    0.96246
+                  ],
+                  [
+                    2.4,
+                    0.95106
+                  ],
+                  [
+                    2.45,
+                    0.93819
+                  ],
+                  [
+                    2.5,
+                    0.92388
+                  ],
+                  [
+                    2.55,
+                    0.90814
+                  ],
+                  [
+                    2.6,
+                    0.89101
+                  ],
+                  [
+                    2.65,
+                    0.8725
+                  ],
+                  [
+                    2.7,
+                    0.85264
+                  ],
+                  [
+                    2.75,
+                    0.83147
+                  ],
+                  [
+                    2.8,
+                    0.80902
+                  ],
+                  [
+                    2.85,
+                    0.78532
+                  ],
+                  [
+                    2.9,
+                    0.76041
+                  ],
+                  [
+                    2.95,
+                    0.73432
+                  ],
+                  [
+                    3.0,
+                    0.70711
+                  ],
+                  [
+                    3.05,
+                    0.6788
+                  ],
+                  [
+                    3.1,
+                    0.64945
+                  ],
+                  [
+                    3.15,
+                    0.61909
+                  ],
+                  [
+                    3.2,
+                    0.58779
+                  ],
+                  [
+                    3.25,
+                    0.55557
+                  ],
+                  [
+                    3.3,
+                    0.5225
+                  ],
+                  [
+                    3.35,
+                    0.48862
+                  ],
+                  [
+                    3.4,
+                    0.45399
+                  ],
+                  [
+                    3.45,
+                    0.41866
+                  ],
+                  [
+                    3.5,
+                    0.38268
+                  ],
+                  [
+                    3.55,
+                    0.34612
+                  ],
+                  [
+                    3.6,
+                    0.30902
+                  ],
+                  [
+                    3.65,
+                    0.27144
+                  ],
+                  [
+                    3.7,
+                    0.23345
+                  ],
+                  [
+                    3.75,
+                    0.19509
+                  ],
+                  [
+                    3.8,
+                    0.15643
+                  ],
+                  [
+                    3.85,
+                    0.11754
+                  ],
+                  [
+                    3.9,
+                    0.07846
+                  ],
+                  [
+                    3.95,
+                    0.03926
+                  ],
+                  [
+                    4.0,
+                    0.0
+                  ],
+                  [
+                    4.05,
+                    -0.03926
+                  ],
+                  [
+                    4.1,
+                    -0.07846
+                  ],
+                  [
+                    4.15,
+                    -0.11754
+                  ],
+                  [
+                    4.2,
+                    -0.15643
+                  ],
+                  [
+                    4.25,
+                    -0.19509
+                  ],
+                  [
+                    4.3,
+                    -0.23345
+                  ],
+                  [
+                    4.35,
+                    -0.27144
+                  ],
+                  [
+                    4.4,
+                    -0.30902
+                  ],
+                  [
+                    4.45,
+                    -0.34612
+                  ],
+                  [
+                    4.5,
+                    -0.38268
+                  ],
+                  [
+                    4.55,
+                    -0.41866
+                  ],
+                  [
+                    4.6,
+                    -0.45399
+                  ],
+                  [
+                    4.65,
+                    -0.48862
+                  ],
+                  [
+                    4.7,
+                    -0.5225
+                  ],
+                  [
+                    4.75,
+                    -0.55557
+                  ],
+                  [
+                    4.8,
+                    -0.58779
+                  ],
+                  [
+                    4.85,
+                    -0.61909
+                  ],
+                  [
+                    4.9,
+                    -0.64945
+                  ],
+                  [
+                    4.95,
+                    -0.6788
+                  ],
+                  [
+                    5.0,
+                    -0.70711
+                  ],
+                  [
+                    5.05,
+                    -0.73432
+                  ],
+                  [
+                    5.1,
+                    -0.76041
+                  ],
+                  [
+                    5.15,
+                    -0.78532
+                  ],
+                  [
+                    5.2,
+                    -0.80902
+                  ],
+                  [
+                    5.25,
+                    -0.83147
+                  ],
+                  [
+                    5.3,
+                    -0.85264
+                  ],
+                  [
+                    5.35,
+                    -0.8725
+                  ],
+                  [
+                    5.4,
+                    -0.89101
+                  ],
+                  [
+                    5.45,
+                    -0.90814
+                  ],
+                  [
+                    5.5,
+                    -0.92388
+                  ],
+                  [
+                    5.55,
+                    -0.93819
+                  ],
+                  [
+                    5.6,
+                    -0.95106
+                  ],
+                  [
+                    5.65,
+                    -0.96246
+                  ],
+                  [
+                    5.7,
+                    -0.97237
+                  ],
+                  [
+                    5.75,
+                    -0.98079
+                  ],
+                  [
+                    5.8,
+                    -0.98769
+                  ],
+                  [
+                    5.85,
+                    -0.99307
+                  ],
+                  [
+                    5.9,
+                    -0.99692
+                  ],
+                  [
+                    5.95,
+                    -0.99923
+                  ],
+                  [
+                    6.0,
+                    -1.0
+                  ],
+                  [
+                    6.05,
+                    -0.99923
+                  ],
+                  [
+                    6.1,
+                    -0.99692
+                  ],
+                  [
+                    6.15,
+                    -0.99307
+                  ],
+                  [
+                    6.2,
+                    -0.98769
+                  ],
+                  [
+                    6.25,
+                    -0.98079
+                  ],
+                  [
+                    6.3,
+                    -0.97237
+                  ],
+                  [
+                    6.35,
+                    -0.96246
+                  ],
+                  [
+                    6.4,
+                    -0.95106
+                  ],
+                  [
+                    6.45,
+                    -0.93819
+                  ],
+                  [
+                    6.5,
+                    -0.92388
+                  ],
+                  [
+                    6.55,
+                    -0.90814
+                  ],
+                  [
+                    6.6,
+                    -0.89101
+                  ],
+                  [
+                    6.65,
+                    -0.8725
+                  ],
+                  [
+                    6.7,
+                    -0.85264
+                  ],
+                  [
+                    6.75,
+                    -0.83147
+                  ],
+                  [
+                    6.8,
+                    -0.80902
+                  ],
+                  [
+                    6.85,
+                    -0.78532
+                  ],
+                  [
+                    6.9,
+                    -0.76041
+                  ],
+                  [
+                    6.95,
+                    -0.73432
+                  ],
+                  [
+                    7.0,
+                    -0.70711
+                  ],
+                  [
+                    7.05,
+                    -0.6788
+                  ],
+                  [
+                    7.1,
+                    -0.64945
+                  ],
+                  [
+                    7.15,
+                    -0.61909
+                  ],
+                  [
+                    7.2,
+                    -0.58779
+                  ],
+                  [
+                    7.25,
+                    -0.55557
+                  ],
+                  [
+                    7.3,
+                    -0.5225
+                  ],
+                  [
+                    7.35,
+                    -0.48862
+                  ],
+                  [
+                    7.4,
+                    -0.45399
+                  ],
+                  [
+                    7.45,
+                    -0.41866
+                  ],
+                  [
+                    7.5,
+                    -0.38268
+                  ],
+                  [
+                    7.55,
+                    -0.34612
+                  ],
+                  [
+                    7.6,
+                    -0.30902
+                  ],
+                  [
+                    7.65,
+                    -0.27144
+                  ],
+                  [
+                    7.7,
+                    -0.23345
+                  ],
+                  [
+                    7.75,
+                    -0.19509
+                  ],
+                  [
+                    7.8,
+                    -0.15643
+                  ],
+                  [
+                    7.85,
+                    -0.11754
+                  ],
+                  [
+                    7.9,
+                    -0.07846
+                  ],
+                  [
+                    7.95,
+                    -0.03926
+                  ],
+                  [
+                    8.0,
+                    -0.0
+                  ]
+                ]
+              },
+              {
+                "stile": "punti",
+                "etichetta": "Campioni",
+                "punti": [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    0.70711
+                  ],
+                  [
+                    2,
+                    1.0
+                  ],
+                  [
+                    3,
+                    0.70711
+                  ],
+                  [
+                    4,
+                    0.0
+                  ],
+                  [
+                    5,
+                    -0.70711
+                  ],
+                  [
+                    6,
+                    -1.0
+                  ],
+                  [
+                    7,
+                    -0.70711
+                  ],
+                  [
+                    8,
+                    -0.0
+                  ]
+                ]
               }
             ]
           }
@@ -11376,6 +12346,136 @@
       ]
     },
     {
+      "id": "demodulazione-coerente-non-coerente",
+      "titolo": "Demodulazione coerente e non coerente",
+      "area": 5,
+      "tipo": "concetto",
+      "gruppo": "A",
+      "worker": "W4",
+      "sapere": "La demodulazione estrae il messaggio dal segnale ricevuto; quella coerente usa un riferimento locale sincronizzato in frequenza e fase.",
+      "saper_fare": [
+        "Recuperare la banda base e capire gli effetti del disallineamento della portante.",
+        "Per DSB-SC e riferimento con $\\Delta=60^\\circ$, calcolare il guadagno in banda base."
+      ],
+      "prerequisiti": [
+        {
+          "id": "modulazione-prodotto-dsb-ssb",
+          "forza": "hard",
+          "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        }
+      ],
+      "tempo_studio_min": 60,
+      "priorita": {
+        "livello": "alta",
+        "motivazione": "Gruppo A: prerequisito di T10 e quiz M21-M22. Punteggi: NON TROVATO."
+      },
+      "fonti": [
+        {
+          "chiave": "FILE3",
+          "rif": "pp. 23-24 e 27-28 del PDF"
+        },
+        {
+          "chiave": "FILE1",
+          "rif": "pp. 37-40 del PDF"
+        }
+      ],
+      "risorse": [],
+      "lezione": {
+        "id": "demodulazione-coerente-non-coerente",
+        "perche_ti_serve": "Gruppo A: prerequisito di T10 e quiz M21-M22. Punteggi: NON TROVATO.",
+        "scenario": "In un collegamento di telecomunicazioni un segnale di voce o un flusso di dati deve attraversare trasmettitore, canale e ricevitore: Recuperare la banda base e capire gli effetti del disallineamento della portante.",
+        "definizione_esame": {
+          "definizione": "La demodulazione estrae il messaggio dal segnale ricevuto; quella coerente usa un riferimento locale sincronizzato in frequenza e fase.",
+          "scopo": "Recuperare la banda base e capire gli effetti del disallineamento della portante.",
+          "esempio": "Moltiplicando $x(t)\\cos\\omega_0t$ per $2\\cos\\omega_0t$ e filtrando si recupera $x(t)$."
+        },
+        "spiegazione": "### Rivelazione coerente\nPer la DSB-SC, $s(t)=x(t)\\cos\\omega_0t$. Il ricevitore moltiplica per $2\\cos\\omega_0t$ e ottiene $2s(t)\\cos\\omega_0t=x(t)+x(t)\\cos 2\\omega_0t$. Se le bande sono separate, un passa-basso elimina il secondo termine e restituisce il messaggio. Il fattore due compensa il mezzo prodotto dall'identità trigonometrica. Il riferimento locale deve avere frequenza e fase opportune, oltre a un guadagno calibrato.\n\n### Errore di fase e quadratura\nSe il riferimento è $2\\cos(\\omega_0t-\\Delta)$, il termine in banda base diventa $x(t)\\cos\\Delta$. Per $\\Delta=\\pi/2$ il ramo desiderato si annulla idealmente; con errore di frequenza la fase relativa varia nel tempo e produce una distorsione variabile. In QAM due messaggi condividono la stessa portante tramite coseno e meno seno: un errore di fase ruota le due componenti e introduce interferenza reciproca. Non è dunque corretto dire che in QAM l'unico effetto è attenuare entrambe indipendentemente. T10 ricava la matrice con una convenzione di segno esplicita.\n\n### Rivelazione non coerente\nUn rivelatore di inviluppo può ricostruire l'ampiezza di una modulazione AM con portante sufficientemente grande e inviluppo non negativo, senza un oscillatore locale agganciato in fase. Se l'inviluppo attraversa zero o se si usa DSB-SC, il modulo non conserva in generale il segno del messaggio: il rivelatore di inviluppo semplice non recupera correttamente qualsiasi segnale. La rivelazione non coerente è una famiglia di metodi e non equivale sempre a un semplice rivelatore di inviluppo. La risposta dipende dalla modulazione e dalle ipotesi sul ricevitore.",
+        "analogia": {
+          "testo": "Un ricevitore che scandisce il ritmo insieme al trasmettitore.",
+          "limite": "Il sincronismo riguarda la fase della portante, non soltanto gli istanti di parola."
+        },
+        "worked_example": {
+          "titolo": "Esempio svolto",
+          "problema": "Per DSB-SC e riferimento con $\\Delta=60^\\circ$, calcolare il guadagno in banda base.",
+          "passi": [
+            "L’uscita ideale filtrata è $x\\cos\\Delta$.",
+            "Calcolare $\\cos60^\\circ=0{,}5$.",
+            "Il risultato è metà del messaggio."
+          ],
+          "soluzione": "$0{,}5x(t)$, nel modello ideale.",
+          "perche_funziona": "I termini alla doppia portante vengono eliminati e rimane il fattore coseno della differenza di fase."
+        },
+        "completion_problem": {
+          "titolo": "Completa il ragionamento",
+          "testo": "Per $\\Delta=90^\\circ$ completare il valore del ramo coerente.",
+          "passi_mancanti": [
+            "Calcolare il coseno della differenza di fase."
+          ],
+          "soluzione": "Zero nel modello ideale."
+        },
+        "esercizio_autonomo": {
+          "titolo": "Prova da solo",
+          "testo": "Che cosa accade a una DSB-SC negativa con un rivelatore di inviluppo semplice?",
+          "suggerimento": "Considerare il modulo.",
+          "soluzione_attesa": "Il segno del messaggio non è recuperato in generale."
+        },
+        "errori_trappole": [
+          {
+            "errore": "Usare un rivelatore di inviluppo su DSB-SC senza condizioni.",
+            "perche_sbagliato": "Il modulo perde il segno del messaggio."
+          },
+          {
+            "errore": "Dimenticare il fattore due nel riferimento coerente.",
+            "perche_sbagliato": "Il risultato filtrato ha un guadagno diverso da quello previsto."
+          }
+        ],
+        "richiamo_attivo": {
+          "domande": [
+            {
+              "domanda": "Che cosa elimina il passa-basso?",
+              "risposta": "I termini centrati attorno a $2\\omega_0$."
+            },
+            {
+              "domanda": "Che cosa richiede il metodo coerente?",
+              "risposta": "Un riferimento locale sincronizzato."
+            },
+            {
+              "domanda": "Quando il modulo può perdere informazione?",
+              "risposta": "Quando il messaggio o l’inviluppo cambia segno."
+            }
+          ],
+          "spiega_con_parole_tue": "Spiega con parole tue: Recuperare la banda base e capire gli effetti del disallineamento della portante."
+        },
+        "riepilogo": "Il ricevitore coerente usa una portante locale e un filtro; il rivelatore di inviluppo richiede condizioni sulla modulazione.",
+        "flashcard": [
+          {
+            "fronte": "Che cosa elimina il passa-basso?",
+            "retro": "I termini centrati attorno a $2\\omega_0$."
+          },
+          {
+            "fronte": "Che cosa richiede il metodo coerente?",
+            "retro": "Un riferimento locale sincronizzato."
+          },
+          {
+            "fronte": "Quando il modulo può perdere informazione?",
+            "retro": "Quando il messaggio o l’inviluppo cambia segno."
+          }
+        ],
+        "checklist": {
+          "so_fare": [
+            "Per DSB-SC e riferimento con $\\Delta=60^\\circ$, calcolare il guadagno in banda base."
+          ],
+          "so_dire": [
+            "La demodulazione estrae il messaggio dal segnale ricevuto; quella coerente usa un riferimento locale sincronizzato in frequenza e fase."
+          ]
+        }
+      },
+      "domande_esame": [
+        "M21",
+        "M22"
+      ]
+    },
+    {
       "id": "dim-formula-carson",
       "titolo": "Regola di Carson",
       "area": 5,
@@ -11670,6 +12770,10 @@
           {
             "simbolo": "\\Delta",
             "significato": "Errore di fase locale nella convenzione cos(ω₀t−Δ)."
+          },
+          {
+            "simbolo": "x(t)",
+            "significato": "Messaggio nel caso DSB-SC a un ramo."
           }
         ],
         "varianti_notazione": [
@@ -11683,37 +12787,51 @@
         "passi": [
           {
             "n": 1,
+            "testo": "Demodulare una singola modulazione DSB-SC con riferimento coerente.",
+            "formula": "2x(t)\\cos(\\omega_0t)\\cos(\\omega_0t-\\Delta)=x(t)\\cos\\Delta+x(t)\\cos(2\\omega_0t-\\Delta)",
+            "perche": "La formula prodotto-somma separa il termine in banda base e quello alla doppia portante.",
+            "figura": "catena"
+          },
+          {
+            "n": 2,
+            "testo": "Eliminare la componente attorno a due volte la portante.",
+            "formula": "\\hat{x}(t)=x(t)\\cos\\Delta",
+            "perche": "Il passa-basso conserva solo la banda base quando gli spettri sono separati."
+          },
+          {
+            "n": 3,
             "testo": "Formare la QAM con portanti ortogonali.",
             "formula": "s(t)=x_1(t)\\cos\\omega_0t-x_2(t)\\sin\\omega_0t",
             "perche": "La somma di due prodotti trasporta i due messaggi in quadratura.",
             "figura": "modulatore-qam"
           },
           {
-            "n": 2,
+            "n": 4,
             "testo": "Moltiplicare per le due portanti locali.",
             "formula": "u_1=2s(t)\\cos(\\omega_0t-\\Delta),\\quad u_2=-2s(t)\\sin(\\omega_0t-\\Delta)",
-            "perche": "La stessa fase locale alimenta i due rami separati da un quarto di periodo."
+            "perche": "La stessa fase locale alimenta i due rami separati da un quarto di periodo.",
+            "figura": "demodulatore-qam"
           },
           {
-            "n": 3,
+            "n": 5,
             "testo": "Separare i termini costanti dal doppio della portante.",
             "formula": "2\\cos A\\cos B=\\cos(A-B)+\\cos(A+B)",
             "perche": "Le identità trigonometriche scompongono ciascun prodotto in differenza e somma."
           },
           {
-            "n": 4,
+            "n": 6,
             "testo": "Filtrare il primo ramo.",
             "formula": "\\hat{x}_1=x_1\\cos\\Delta-x_2\\sin\\Delta",
             "perche": "Il passa-basso elimina i termini centrati a 2ω₀ e conserva la componente in banda base."
           },
           {
-            "n": 5,
+            "n": 7,
             "testo": "Filtrare il secondo ramo.",
             "formula": "\\hat{x}_2=x_2\\cos\\Delta+x_1\\sin\\Delta",
             "perche": "Le identità prodotto-somma e il filtro lasciano la seconda combinazione lineare."
           },
           {
-            "n": 6,
+            "n": 8,
             "testo": "Considerare la demodulazione coerente ideale.",
             "formula": "\\Delta=0\\ \\Longrightarrow\\ (\\hat{x}_1,\\hat{x}_2)=(x_1,x_2)",
             "perche": "Per fase corretta cos Δ vale uno e sin Δ vale zero."
@@ -11840,6 +12958,89 @@
               {
                 "da": "somma",
                 "a": "out"
+              }
+            ]
+          },
+          {
+            "id": "demodulatore-qam",
+            "tipo": "blocchi",
+            "titolo": "Demodulatore coerente QAM",
+            "descrizione": "Il segnale ricevuto è distribuito ai due moltiplicatori con riferimenti in quadratura, seguiti da filtri passa-basso e uscite I e Q.",
+            "blocchi": [
+              {
+                "id": "input",
+                "etichetta": "s(t)",
+                "forma": "ingresso",
+                "colonna": 0,
+                "riga": 1
+              },
+              {
+                "id": "mix-i",
+                "etichetta": "× 2 cos(ω₀t − Δ)",
+                "forma": "moltiplicatore",
+                "colonna": 1,
+                "riga": 0
+              },
+              {
+                "id": "mix-q",
+                "etichetta": "× −2 sin(ω₀t − Δ)",
+                "forma": "moltiplicatore",
+                "colonna": 1,
+                "riga": 2
+              },
+              {
+                "id": "filtro-i",
+                "etichetta": "Passa-basso",
+                "forma": "rettangolo",
+                "colonna": 2,
+                "riga": 0
+              },
+              {
+                "id": "filtro-q",
+                "etichetta": "Passa-basso",
+                "forma": "rettangolo",
+                "colonna": 2,
+                "riga": 2
+              },
+              {
+                "id": "uscita-i",
+                "etichetta": "x̂₁",
+                "forma": "uscita",
+                "colonna": 3,
+                "riga": 0
+              },
+              {
+                "id": "uscita-q",
+                "etichetta": "x̂₂",
+                "forma": "uscita",
+                "colonna": 3,
+                "riga": 2
+              }
+            ],
+            "collegamenti": [
+              {
+                "da": "input",
+                "a": "mix-i"
+              },
+              {
+                "da": "input",
+                "a": "mix-q"
+              },
+              {
+                "da": "mix-i",
+                "a": "filtro-i"
+              },
+              {
+                "da": "mix-q",
+                "a": "filtro-q"
+              },
+              {
+                "da": "filtro-i",
+                "a": "uscita-i"
+              },
+              {
+                "da": "filtro-q",
+                "a": "uscita-q"
               }
             ]
           }
@@ -12897,14 +14098,537 @@
       "domande_esame": [
         "T6"
       ]
+    },
+    {
+      "id": "modulazione-prodotto-dsb-ssb",
+      "titolo": "Modulazione a prodotto, DSB e SSB",
+      "area": 5,
+      "tipo": "concetto",
+      "gruppo": "A",
+      "worker": "W4",
+      "sapere": "La modulazione a prodotto moltiplica il messaggio per una portante; nella DSB-SC produce due bande laterali e, nella SSB, se ne trasmette una sola.",
+      "saper_fare": [
+        "Traslare un messaggio in una banda adatta al canale.",
+        "Tono a 1 kHz modulato con portante a 100 kHz: individuare le componenti positive."
+      ],
+      "prerequisiti": [
+        {
+          "id": "segnali-passa-banda-inviluppo-complesso",
+          "forza": "hard",
+          "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        }
+      ],
+      "tempo_studio_min": 60,
+      "priorita": {
+        "livello": "alta",
+        "motivazione": "Gruppo A: T6 e quiz M1, M11, M20, M23, M27, M34. Punteggi: NON TROVATO."
+      },
+      "fonti": [
+        {
+          "chiave": "FILE3",
+          "rif": "pp. 18-19 e 27 del PDF"
+        },
+        {
+          "chiave": "FILE1",
+          "rif": "pp. 28-31 e 37 del PDF"
+        }
+      ],
+      "risorse": [],
+      "lezione": {
+        "id": "modulazione-prodotto-dsb-ssb",
+        "perche_ti_serve": "Gruppo A: T6 e quiz M1, M11, M20, M23, M27, M34. Punteggi: NON TROVATO.",
+        "scenario": "In un collegamento di telecomunicazioni un segnale di voce o un flusso di dati deve attraversare trasmettitore, canale e ricevitore: Traslare un messaggio in una banda adatta al canale.",
+        "definizione_esame": {
+          "definizione": "La modulazione a prodotto moltiplica il messaggio per una portante; nella DSB-SC produce due bande laterali e, nella SSB, se ne trasmette una sola.",
+          "scopo": "Traslare un messaggio in una banda adatta al canale.",
+          "esempio": "Un tono a 1 kHz modulato su una portante a 100 kHz produce righe a 99 e 101 kHz."
+        },
+        "spiegazione": "### Prodotto e traslazione\nPer un messaggio reale limitato a $|\\omega|\\le\\omega_m$, la modulazione DSB a portante soppressa è $s(t)=x(t)\\cos\\omega_0t$. Espandendo il coseno e usando la trasformata bilaterale si ricava $S(\\omega)=\\frac12[X(\\omega-\\omega_0)+X(\\omega+\\omega_0)]$. Le repliche sono centrate a $\\pm\\omega_0$; il fattore un mezzo è indispensabile con questa convenzione. Il termine portante non è aggiunto separatamente: un'eventuale componente continua del messaggio può comunque generare una riga alla portante.\n\n### Ampiezza e fase\nSe $\\omega_0>\\omega_m$, nella banda positiva le componenti a $\\omega_0+\\Omega$ e $\\omega_0-\\Omega$ derivano rispettivamente da $X(\\Omega)$ e $X(-\\Omega)$. Poiché il messaggio è reale, $X(-\\Omega)=X^*(\\Omega)$: la banda inferiore è ribaltata rispetto alla superiore e la fase cambia segno, dove il modulo è diverso da zero. La banda occupata positiva DSB è larga $2\\omega_m$ per un messaggio passa-basso con estensione massima $\\omega_m$. La larghezza si esprime in radianti al secondo se si usano pulsazioni.\n\n### Una sola banda laterale\nIn SSB si seleziona la banda superiore oppure inferiore; per lo stesso messaggio ideale la larghezza occupata diventa $\\omega_m$. Si riduce la banda rispetto alla DSB, ma il filtro o il metodo di generazione devono separare accuratamente la banda voluta. Un ricevitore coerente usa una portante locale sincronizzata; senza sincronismo la fase del messaggio ricostruito cambia. SSB e DSB sono diversi modi di impiegare le bande laterali, non sinonimi di modulazione numerica. T6 richiede il disegno delle ampiezze e delle fasi.",
+        "analogia": {
+          "testo": "Spostare il contenuto di una cartella a una posizione diversa su una scala.",
+          "limite": "La modulazione reale crea anche una replica a frequenza negativa e cambia la fase della banda inferiore."
+        },
+        "worked_example": {
+          "titolo": "Esempio svolto",
+          "problema": "Tono a 1 kHz modulato con portante a 100 kHz: individuare le componenti positive.",
+          "passi": [
+            "Applicare il prodotto di due coseni.",
+            "La somma delle frequenze è 101 kHz.",
+            "La differenza delle frequenze è 99 kHz; ciascun coseno ha metà ampiezza."
+          ],
+          "soluzione": "Due toni a 99 e 101 kHz con metà ampiezza del prodotto delle ampiezze.",
+          "perche_funziona": "L’identità prodotto-somma genera le due bande laterali."
+        },
+        "completion_problem": {
+          "titolo": "Completa il ragionamento",
+          "testo": "Per una DSB con messaggio fino a 3 kHz, completare la banda occupata positiva.",
+          "passi_mancanti": [
+            "Raddoppiare la massima frequenza del messaggio."
+          ],
+          "soluzione": "6 kHz."
+        },
+        "esercizio_autonomo": {
+          "titolo": "Prova da solo",
+          "testo": "Una SSB usa un messaggio fino a 5 kHz: stimare la banda ideale.",
+          "suggerimento": "È trasmessa una sola banda laterale.",
+          "soluzione_attesa": "5 kHz."
+        },
+        "errori_trappole": [
+          {
+            "errore": "Dire che DSB-SC contiene sempre una portante pura.",
+            "perche_sbagliato": "Non è aggiunta una portante separata; può apparire se il messaggio ha una componente continua."
+          },
+          {
+            "errore": "Copiare la fase della banda superiore su quella inferiore.",
+            "perche_sbagliato": "La simmetria coniugata cambia il segno della fase."
+          }
+        ],
+        "richiamo_attivo": {
+          "domande": [
+            {
+              "domanda": "Quanto vale la banda DSB di un messaggio passa-basso fino a B?",
+              "risposta": "2B."
+            },
+            {
+              "domanda": "Quanto vale la banda SSB ideale?",
+              "risposta": "B."
+            },
+            {
+              "domanda": "Che cosa fa il prodotto con la portante?",
+              "risposta": "Trasla lo spettro verso le pulsazioni della portante."
+            }
+          ],
+          "spiega_con_parole_tue": "Spiega con parole tue: Traslare un messaggio in una banda adatta al canale."
+        },
+        "riepilogo": "Il prodotto crea due repliche bilaterali; la DSB usa due bande laterali e la SSB una, con fase inferiore coniugata.",
+        "flashcard": [
+          {
+            "fronte": "Quanto vale la banda DSB di un messaggio passa-basso fino a B?",
+            "retro": "2B."
+          },
+          {
+            "fronte": "Quanto vale la banda SSB ideale?",
+            "retro": "B."
+          },
+          {
+            "fronte": "Che cosa fa il prodotto con la portante?",
+            "retro": "Trasla lo spettro verso le pulsazioni della portante."
+          }
+        ],
+        "checklist": {
+          "so_fare": [
+            "Tono a 1 kHz modulato con portante a 100 kHz: individuare le componenti positive."
+          ],
+          "so_dire": [
+            "La modulazione a prodotto moltiplica il messaggio per una portante; nella DSB-SC produce due bande laterali e, nella SSB, se ne trasmette una sola."
+          ]
+        }
+      },
+      "domande_esame": [
+        "M1",
+        "M11",
+        "M20",
+        "M23",
+        "M27",
+        "M34"
+      ]
+    },
+    {
+      "id": "modulazioni-angolo-pm-fm",
+      "titolo": "Modulazioni d’angolo PM e FM",
+      "area": 5,
+      "tipo": "concetto",
+      "gruppo": "A",
+      "worker": "W4",
+      "sapere": "In PM la fase eccedente segue il messaggio; in FM la derivata della fase eccedente, cioè la deviazione di pulsazione, segue il messaggio.",
+      "saper_fare": [
+        "Distinguere le dipendenze dal messaggio e collegare fase, frequenza e banda.",
+        "Con deviazione massima 75 kHz e massima frequenza modulante 15 kHz, stimare la banda in hertz."
+      ],
+      "prerequisiti": [
+        {
+          "id": "segnali-passa-banda-inviluppo-complesso",
+          "forza": "hard",
+          "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        }
+      ],
+      "tempo_studio_min": 60,
+      "priorita": {
+        "livello": "alta",
+        "motivazione": "Gruppo A: T9 e quiz M7, M8, M32, M33; Carson M12-M14. Punteggi: NON TROVATO."
+      },
+      "fonti": [
+        {
+          "chiave": "FILE3",
+          "rif": "pp. 28 e 58-59 del PDF"
+        },
+        {
+          "chiave": "FILE1",
+          "rif": "p. 41 del PDF"
+        },
+        {
+          "chiave": "RICOSTRUZIONE",
+          "rif": "NON TROVATO"
+        }
+      ],
+      "risorse": [],
+      "lezione": {
+        "id": "modulazioni-angolo-pm-fm",
+        "perche_ti_serve": "Gruppo A: T9 e quiz M7, M8, M32, M33; Carson M12-M14. Punteggi: NON TROVATO.",
+        "scenario": "In un collegamento di telecomunicazioni un segnale di voce o un flusso di dati deve attraversare trasmettitore, canale e ricevitore: Distinguere le dipendenze dal messaggio e collegare fase, frequenza e banda.",
+        "definizione_esame": {
+          "definizione": "In PM la fase eccedente segue il messaggio; in FM la derivata della fase eccedente, cioè la deviazione di pulsazione, segue il messaggio.",
+          "scopo": "Distinguere le dipendenze dal messaggio e collegare fase, frequenza e banda.",
+          "esempio": "Un tono in FM produce una fase eccedente sinusoidale integrata rispetto al messaggio."
+        },
+        "spiegazione": "### Fase e pulsazione istantanea\nUn'oscillazione modulata in angolo può essere scritta $s(t)=A\\cos[\\omega_0t+\\theta(t)]$, con ampiezza $A$ costante nel modello ideale. La pulsazione istantanea è $\\omega_i(t)=\\omega_0+\\theta'(t)$ e la deviazione è $\\Delta\\omega(t)=\\theta'(t)$. In PM si pone $\\theta(t)=k_pm(t)$; in FM si pone $\\theta'(t)=k_fm(t)$, con sensibilità e unità dichiarate. Fase e frequenza sono legate da derivazione e integrazione, ma non sono grandezze intercambiabili.\n\n### Realizzare un tipo mediante l'altro\nUn modulatore PM preceduto da un integratore può realizzare una FM: l'integratore fornisce una fase proporzionale all'integrale del messaggio. Viceversa, un modulatore FM preceduto da un derivatore realizza una PM: l'integrazione interna recupera il messaggio, a meno della costante iniziale. Occorre adattare i guadagni e controllare la fase iniziale. Le croci CROP 7 e 8 della raccolta sono indicate come errate nel piano; file2 non è stato allegato qui, quindi la verifica diretta delle croci è NON TROVATO. La dimostrazione T9 è una ricostruzione non verificata sul testo del docente.\n\n### Banda e regola di Carson\nLa regola di Carson stima la banda occupata come $B_\\omega\\approx 2(\\Delta\\omega_{\\max}+\\omega_m)$, con pulsazioni espresse nelle stesse unità. È una stima pratica, non un supporto spettrale esatto: per una modulante sinusoidale le bande laterali possono proseguire oltre la banda stimata. La deviazione massima si ricava dalla derivata della fase; in PM dipende quindi anche dalla rapidità di variazione del messaggio. Per una FM sinusoidale l'indice $\\beta=\\Delta\\omega_{\\max}/\\omega_m$ misura la deviazione rispetto alla pulsazione del tono.",
+        "analogia": {
+          "testo": "La fase è come la posizione di una lancetta, la frequenza come la sua velocità angolare.",
+          "limite": "Una modulazione reale può avere limiti di banda e rumore che l’analogia non rappresenta."
+        },
+        "worked_example": {
+          "titolo": "Esempio svolto",
+          "problema": "Con deviazione massima 75 kHz e massima frequenza modulante 15 kHz, stimare la banda in hertz.",
+          "passi": [
+            "Usare la versione in hertz della regola di Carson.",
+            "Sommare $75+15=90$ kHz.",
+            "Moltiplicare per due: 180 kHz."
+          ],
+          "soluzione": "Circa 180 kHz.",
+          "perche_funziona": "Deviazione e frequenza modulante sono entrambe espresse in hertz."
+        },
+        "completion_problem": {
+          "titolo": "Completa il ragionamento",
+          "testo": "Per trasformare un modulatore FM in PM, quale operatore si antepone?",
+          "passi_mancanti": [
+            "La fase FM integra il suo ingresso."
+          ],
+          "soluzione": "Un derivatore, con guadagno e fase iniziale opportuni."
+        },
+        "esercizio_autonomo": {
+          "titolo": "Prova da solo",
+          "testo": "Con deviazione 20 kHz e tono 5 kHz trovare indice e banda di Carson.",
+          "suggerimento": "Dividere deviazione per frequenza e applicare Carson.",
+          "soluzione_attesa": "$\\beta=4$ e circa 50 kHz."
+        },
+        "errori_trappole": [
+          {
+            "errore": "Anteporre il derivatore alla PM per ottenere FM.",
+            "perche_sbagliato": "La FM richiede la fase integrale del messaggio."
+          },
+          {
+            "errore": "Trattare la banda di Carson come limite spettrale esatto.",
+            "perche_sbagliato": "È una stima pratica delle componenti significative."
+          }
+        ],
+        "richiamo_attivo": {
+          "domande": [
+            {
+              "domanda": "Che cosa segue il messaggio in PM?",
+              "risposta": "La fase eccedente."
+            },
+            {
+              "domanda": "Che cosa segue il messaggio in FM?",
+              "risposta": "La deviazione di pulsazione."
+            },
+            {
+              "domanda": "Quale operatore precede la PM per ottenere FM?",
+              "risposta": "Un integratore con guadagno opportuno."
+            }
+          ],
+          "spiega_con_parole_tue": "Spiega con parole tue: Distinguere le dipendenze dal messaggio e collegare fase, frequenza e banda."
+        },
+        "riepilogo": "PM lega fase e messaggio; FM lega deviazione di pulsazione e messaggio. Carson stima la banda, non il supporto esatto.",
+        "flashcard": [
+          {
+            "fronte": "Che cosa segue il messaggio in PM?",
+            "retro": "La fase eccedente."
+          },
+          {
+            "fronte": "Che cosa segue il messaggio in FM?",
+            "retro": "La deviazione di pulsazione."
+          },
+          {
+            "fronte": "Quale operatore precede la PM per ottenere FM?",
+            "retro": "Un integratore con guadagno opportuno."
+          }
+        ],
+        "checklist": {
+          "so_fare": [
+            "Con deviazione massima 75 kHz e massima frequenza modulante 15 kHz, stimare la banda in hertz."
+          ],
+          "so_dire": [
+            "In PM la fase eccedente segue il messaggio; in FM la derivata della fase eccedente, cioè la deviazione di pulsazione, segue il messaggio."
+          ]
+        }
+      },
+      "domande_esame": [
+        "M7",
+        "M8",
+        "M32",
+        "M33"
+      ]
+    },
+    {
+      "id": "modulazioni-numeriche",
+      "titolo": "Modulazioni numeriche e costellazioni",
+      "area": 5,
+      "tipo": "concetto",
+      "gruppo": "B",
+      "worker": "W4",
+      "sapere": "Una modulazione numerica associa gruppi di bit a simboli e forme d’onda, distinguibili per ampiezza, fase o frequenza.",
+      "saper_fare": [
+        "Trasmettere dati su un canale passa-banda e recuperarli mediante decisioni sui simboli.",
+        "Un flusso a 120 kbit/s usa QPSK senza overhead. Calcolare il numero di bit per simbolo e il symbol rate."
+      ],
+      "prerequisiti": [
+        {
+          "id": "modulazione-prodotto-dsb-ssb",
+          "forza": "hard",
+          "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        },
+        {
+          "id": "segnali-pam",
+          "forza": "hard",
+          "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        }
+      ],
+      "tempo_studio_min": 60,
+      "priorita": {
+        "livello": "media",
+        "motivazione": "Gruppo B: approfondimento della trasmissione numerica e della rappresentazione I-Q della T10."
+      },
+      "fonti": [
+        {
+          "chiave": "RICOSTRUZIONE",
+          "rif": "NON TROVATO"
+        },
+        {
+          "chiave": "PROGRAMMA",
+          "rif": "NON TROVATO"
+        }
+      ],
+      "risorse": [],
+      "lezione": {
+        "id": "modulazioni-numeriche",
+        "perche_ti_serve": "Gruppo B: approfondimento della trasmissione numerica e della rappresentazione I-Q della T10.",
+        "scenario": "In un collegamento di telecomunicazioni un segnale di voce o un flusso di dati deve attraversare trasmettitore, canale e ricevitore: Trasmettere dati su un canale passa-banda e recuperarli mediante decisioni sui simboli.",
+        "definizione_esame": {
+          "definizione": "Una modulazione numerica associa gruppi di bit a simboli e forme d’onda, distinguibili per ampiezza, fase o frequenza.",
+          "scopo": "Trasmettere dati su un canale passa-banda e recuperarli mediante decisioni sui simboli.",
+          "esempio": "Una costellazione QPSK usa quattro punti e può rappresentare due bit per simbolo."
+        },
+        "spiegazione": "### Bit, simboli e costellazioni\nUna sorgente produce bit, che un modulatore raggruppa in simboli. Con $M$ simboli equiprobabili e $M=2^k$, ogni simbolo rappresenta $k=\\log_2 M$ bit. La velocità simbolica è $R_s=R_b/k$ se non sono aggiunti bit di codifica o overhead. Questo non significa che tutte le modulazioni con lo stesso $R_s$ richiedano la stessa banda: contano forma d'impulso, filtro e canale. Nel piano I-Q un simbolo può essere rappresentato da un punto della costellazione, cioè da due coefficienti reali.\n\n### ASK, PSK e QAM\nNella ASK varia l'ampiezza di un insieme di segnali; nella PSK varia la fase; nella QAM si usano più combinazioni di componenti in fase e quadratura. La QPSK ideale usa quattro fasi distinte, e può essere rappresentata anche come quattro punti I-Q; la scelta della fase iniziale e la mappatura dei bit vanno dichiarate. Con $u=I+jQ$ il segnale passa-banda può essere scritto $s(t)=I\\cos\\omega_0t-Q\\sin\\omega_0t$ durante l'intervallo simbolico, nel modello a coefficienti costanti. L'inviluppo cambia invece quando vengono considerati forma d'impulso e transizioni.\n\n### Ricezione ed errori\nIl ricevitore stima le componenti ricevute e decide quale punto della costellazione è stato trasmesso. Rumore, interferenza, distorsione e errore di fase possono spostare o ruotare il punto, fino a oltrepassare un confine di decisione. Aumentare il numero di punti a parità di potenza può ridurre la separazione tra punti e rendere più difficile la decisione: il confronto preciso richiede modello di rumore, potenza e criteri espliciti. Una mappatura Gray assegna parole che differiscono per un solo bit a vicini scelti, riducendo gli errori di bit associati ad alcuni errori di simbolo, ma non cambia da sola il canale.",
+        "analogia": {
+          "testo": "Una mappa in cui ogni punto è un messaggio breve e il ricevitore sceglie il punto più vicino.",
+          "limite": "La distanza rilevante e la regola ottima dipendono dal modello di rumore e di canale."
+        },
+        "worked_example": {
+          "titolo": "Esempio svolto",
+          "problema": "Un flusso a 120 kbit/s usa QPSK senza overhead. Calcolare il numero di bit per simbolo e il symbol rate.",
+          "passi": [
+            "QPSK ha quattro simboli.",
+            "$k=\\log_2 4=2$ bit per simbolo.",
+            "$R_s=120000/2=60000$ simboli/s."
+          ],
+          "soluzione": "2 bit per simbolo e 60 ksimboli/s.",
+          "perche_funziona": "Ogni simbolo trasporta esattamente due bit nel modello senza overhead."
+        },
+        "completion_problem": {
+          "titolo": "Completa il ragionamento",
+          "testo": "Per 16 simboli equiprobabili, quanti bit per simbolo?",
+          "passi_mancanti": [
+            "Calcolare il logaritmo in base due."
+          ],
+          "soluzione": "4 bit."
+        },
+        "esercizio_autonomo": {
+          "titolo": "Prova da solo",
+          "testo": "Per 8 simboli e 90 kbit/s senza overhead, trovare il symbol rate.",
+          "suggerimento": "Ogni simbolo rappresenta tre bit.",
+          "soluzione_attesa": "30 ksimboli/s."
+        },
+        "errori_trappole": [
+          {
+            "errore": "Equiparare sempre symbol rate e bit rate.",
+            "perche_sbagliato": "Un simbolo può rappresentare più bit."
+          },
+          {
+            "errore": "Promettere meno errori solo aumentando M.",
+            "perche_sbagliato": "A potenza e rumore fissati la separazione dei punti può diminuire."
+          }
+        ],
+        "richiamo_attivo": {
+          "domande": [
+            {
+              "domanda": "Quanti bit porta un simbolo in QPSK?",
+              "risposta": "Due nel modello a quattro simboli."
+            },
+            {
+              "domanda": "Che cosa rappresentano gli assi I e Q?",
+              "risposta": "Le componenti in fase e quadratura."
+            },
+            {
+              "domanda": "Che cosa può fare un errore di fase?",
+              "risposta": "Ruotare la costellazione ricevuta."
+            }
+          ],
+          "spiega_con_parole_tue": "Spiega con parole tue: Trasmettere dati su un canale passa-banda e recuperarli mediante decisioni sui simboli."
+        },
+        "riepilogo": "Le modulazioni numeriche mappano bit in simboli; rate simbolico, costellazione e condizioni di decisione sono distinti.",
+        "flashcard": [
+          {
+            "fronte": "Quanti bit porta un simbolo in QPSK?",
+            "retro": "Due nel modello a quattro simboli."
+          },
+          {
+            "fronte": "Che cosa rappresentano gli assi I e Q?",
+            "retro": "Le componenti in fase e quadratura."
+          },
+          {
+            "fronte": "Che cosa può fare un errore di fase?",
+            "retro": "Ruotare la costellazione ricevuta."
+          }
+        ],
+        "checklist": {
+          "so_fare": [
+            "Un flusso a 120 kbit/s usa QPSK senza overhead. Calcolare il numero di bit per simbolo e il symbol rate."
+          ],
+          "so_dire": [
+            "Una modulazione numerica associa gruppi di bit a simboli e forme d’onda, distinguibili per ampiezza, fase o frequenza."
+          ]
+        }
+      },
+      "domande_esame": []
+    },
+    {
+      "id": "segnali-passa-banda-inviluppo-complesso",
+      "titolo": "Segnali passa-banda e inviluppo complesso",
+      "area": 5,
+      "tipo": "concetto",
+      "gruppo": "A",
+      "worker": "W4",
+      "sapere": "Un segnale reale passa-banda si può rappresentare come parte reale di un inviluppo complesso moltiplicato per una portante complessa.",
+      "saper_fare": [
+        "Descrivere ampiezza e fase variabili in banda base e studiare l’effetto dei quadripoli.",
+        "Per $u(t)=3+j4$ e portante unitaria trovare modulo, fase e segnale reale."
+      ],
+      "prerequisiti": [
+        {
+          "id": "trasformata-fourier",
+          "forza": "hard",
+          "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        }
+      ],
+      "tempo_studio_min": 60,
+      "priorita": {
+        "livello": "alta",
+        "motivazione": "Gruppo A, prerequisito di T11 e delle modulazioni in quadratura. T11 vale 10 punti nella raccolta."
+      },
+      "fonti": [
+        {
+          "chiave": "FILE3",
+          "rif": "pp. 23-24, 50-51 del PDF"
+        },
+        {
+          "chiave": "FILE1",
+          "rif": "pp. 39-44 del PDF"
+        }
+      ],
+      "risorse": [],
+      "lezione": {
+        "id": "segnali-passa-banda-inviluppo-complesso",
+        "perche_ti_serve": "Gruppo A, prerequisito di T11 e delle modulazioni in quadratura. T11 vale 10 punti nella raccolta.",
+        "scenario": "In un collegamento di telecomunicazioni un segnale di voce o un flusso di dati deve attraversare trasmettitore, canale e ricevitore: Descrivere ampiezza e fase variabili in banda base e studiare l’effetto dei quadripoli.",
+        "definizione_esame": {
+          "definizione": "Un segnale reale passa-banda si può rappresentare come parte reale di un inviluppo complesso moltiplicato per una portante complessa.",
+          "scopo": "Descrivere ampiezza e fase variabili in banda base e studiare l’effetto dei quadripoli.",
+          "esempio": "$s(t)=I(t)\\cos\\omega_0t-Q(t)\\sin\\omega_0t$ ha inviluppo $I(t)+jQ(t)$."
+        },
+        "spiegazione": "### Dalla portante alle due componenti\nSi sceglie una pulsazione di riferimento $\\omega_0$ e si scrive $s(t)=\\operatorname{Re}\\{u(t)e^{j\\omega_0t}\\}$. L'inviluppo complesso $u(t)=I(t)+jQ(t)$ contiene una componente in fase e una in quadratura. Sviluppando la parte reale si ottiene $s(t)=I(t)\\cos\\omega_0t-Q(t)\\sin\\omega_0t$: il segno meno deriva da $j^2=-1$. Per un inviluppo $u=Ae^{j\\phi}$, modulo e argomento descrivono l'ampiezza istantanea e la fase eccedente, dove il modulo non si annulla.\n\n### Bande spettrali\nIl segnale fisico $s(t)$ è reale, dunque la sua trasformata bilaterale soddisfa $S(-\\omega)=S^*(\\omega)$. Le bande positive e negative si corrispondono ma non sono due messaggi indipendenti. Per un segnale passa-banda con banda positiva isolata si costruisce il segnale analitico raddoppiando quella banda e annullando quella negativa; traslandolo di $-\\omega_0$ si ottiene l'inviluppo. Con la convenzione $s=\\operatorname{Re}(u e^{j\\omega_0t})$, nel supporto di banda base vale $U(\\Omega)=2S(\\omega_0+\\Omega)$. Il fattore due dipende da questa normalizzazione.\n\n### Modello equivalente\nUn sistema lineare tempo-invariante con trasferimento $H(\\omega)$ moltiplica lo spettro d'ingresso. Nella banda dell'inviluppo, il sistema equivalente ha trasferimento $H_0(\\Omega)=H(\\omega_0+\\Omega)$ e collega gli inviluppi in ingresso e uscita. È uno strumento matematico complesso, non necessariamente una rete fisica reale: in generale non possiede la simmetria coniugata della risposta di un sistema reale. T11 sviluppa la relazione, mentre T10 usa le componenti I e Q. La scelta della portante determina il riferimento di fase e deve essere dichiarata.",
+        "analogia": {
+          "testo": "Un vettore nel piano che ruota lentamente mentre una lancetta comune ruota rapidamente alla portante.",
+          "limite": "Il vettore è una rappresentazione complessa, non una seconda onda fisica."
+        },
+        "worked_example": {
+          "titolo": "Esempio svolto",
+          "problema": "Per $u(t)=3+j4$ e portante unitaria trovare modulo, fase e segnale reale.",
+          "passi": [
+            "Modulo: $|u|=\\sqrt{3^2+4^2}=5$.",
+            "Fase: $\\phi=\\operatorname{atan2}(4,3)\\approx0{,}927$ rad.",
+            "Parte reale: $s(t)=3\\cos\\omega_0t-4\\sin\\omega_0t$."
+          ],
+          "soluzione": "Ampiezza 5, fase circa 0,927 rad e segnale $3\\cos\\omega_0t-4\\sin\\omega_0t$.",
+          "perche_funziona": "Il prodotto complesso con la portante dà componenti coseno e meno seno."
+        },
+        "completion_problem": {
+          "titolo": "Completa il ragionamento",
+          "testo": "Con $u=2+j$ completare $s(t)=2\\cos\\omega_0t$ meno quale termine?",
+          "passi_mancanti": [
+            "Moltiplicare per $e^{j\\omega_0t}$ e prendere la parte reale."
+          ],
+          "soluzione": "$\\sin\\omega_0t$."
+        },
+        "esercizio_autonomo": {
+          "titolo": "Prova da solo",
+          "testo": "Per $u=1-j$ trovare modulo e fase.",
+          "suggerimento": "Usare il quadrante corretto.",
+          "soluzione_attesa": "$\\sqrt{2}$ e $-\\pi/4$."
+        },
+        "errori_trappole": [
+          {
+            "errore": "Scrivere il termine in quadratura con segno più.",
+            "perche_sbagliato": "Con $u=I+jQ$ la parte reale produce meno Q seno."
+          },
+          {
+            "errore": "Dimenticare il fattore due nella relazione con la banda positiva.",
+            "perche_sbagliato": "La parte reale distribuisce lo spettro tra le due bande."
+          }
+        ],
+        "richiamo_attivo": {
+          "domande": [
+            {
+              "domanda": "Qual è l’inviluppo di $I\\cos\\omega_0t-Q\\sin\\omega_0t$?",
+              "risposta": "$I+jQ$."
+            },
+            {
+              "domanda": "Perché la banda negativa non è indipendente?",
+              "risposta": "Il segnale reale impone simmetria coniugata."
+            },
+            {
+              "domanda": "H equivalente è sempre una rete reale?",
+              "risposta": "No, può non soddisfare la simmetria coniugata."
+            }
+          ],
+          "spiega_con_parole_tue": "Spiega con parole tue: Descrivere ampiezza e fase variabili in banda base e studiare l’effetto dei quadripoli."
+        },
+        "riepilogo": "L’inviluppo complesso riporta il passa-banda in banda base e consente di studiare le componenti I e Q e il quadripolo equivalente.",
+        "flashcard": [
+          {
+            "fronte": "Qual è l’inviluppo di $I\\cos\\omega_0t-Q\\sin\\omega_0t$?",
+            "retro": "$I+jQ$."
+          },
+          {
+            "fronte": "Perché la banda negativa non è indipendente?",
+            "retro": "Il segnale reale impone simmetria coniugata."
+          },
+          {
+            "fronte": "H equivalente è sempre una rete reale?",
+            "retro": "No, può non soddisfare la simmetria coniugata."
+          }
+        ],
+        "checklist": {
+          "so_fare": [
+            "Per $u(t)=3+j4$ e portante unitaria trovare modulo, fase e segnale reale."
+          ],
+          "so_dire": [
+            "Un segnale reale passa-banda si può rappresentare come parte reale di un inviluppo complesso moltiplicato per una portante complessa."
+          ]
+        }
+      },
+      "domande_esame": []
     }
   ],
   "esame": [],
-  "pendenti": [
-    "conversione-ad-quantizzazione-pcm",
-    "demodulazione-coerente-non-coerente",
-    "modulazione-prodotto-dsb-ssb",
-    "modulazioni-angolo-pm-fm",
-    "segnali-passa-banda-inviluppo-complesso"
-  ]
+  "pendenti": []
 }

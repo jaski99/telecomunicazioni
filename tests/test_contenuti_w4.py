@@ -1,4 +1,4 @@
-"""Verifiche sulle schede W4 presenti; copertura W4 ancora parziale."""
+"""Verifiche dei 14 nodi W4 e dei relativi contenuti."""
 import json
 import math
 import re
@@ -8,6 +8,10 @@ ROOT = Path(__file__).resolve().parents[1]
 IDS = {'dim-pm-fm-trasformazione', 'dim-formula-carson',
        'dim-quadripoli-passa-basso-equivalente', 'dim-conversione-ad', 'dim-conversione-da',
        'dim-spettri-modulazione-prodotto', 'dim-modulazione-prodotto-qam-errore-fase'}
+CONCETTI = {'conversione-ad-quantizzazione-pcm', 'collegamento-numerico-tdm-pcm',
+            'segnali-passa-banda-inviluppo-complesso', 'modulazione-prodotto-dsb-ssb',
+            'demodulazione-coerente-non-coerente', 'modulazioni-angolo-pm-fm',
+            'modulazioni-numeriche'}
 
 def load(path):
     return json.loads((ROOT / path).read_text(encoding='utf-8'))
@@ -19,7 +23,8 @@ def contract():
 
 def test_nodes_contract():
     nodes = load('graph/parts/area-4.json') + load('graph/parts/area-5.json')
-    assert {n['id'] for n in nodes} == IDS
+    assert {n['id'] for n in nodes} == IDS | CONCETTI
+    assert IDS | CONCETTI == {id for id, n in contract().items() if n['worker'] == 'W4'}
     for node in nodes:
         ref = contract()[node['id']]
         for key in ('area', 'tipo', 'gruppo', 'worker'):
@@ -61,7 +66,9 @@ def test_demos_structure():
                 assert all(len(p) == 2 and all(isinstance(x, (int, float)) and math.isfinite(x) for x in p) for s in f['serie'] for p in s['punti'])
 
 def test_text_and_delimiters():
-    for path in list((ROOT / 'graph/dimostrazioni').glob('*.json')) + [ROOT / 'graph/parts/area-4.json', ROOT / 'graph/parts/area-5.json']:
+    for path in ([ROOT / 'graph/dimostrazioni' / f'{id}.json' for id in IDS]
+                 + [ROOT / 'graph/lezioni' / f'{id}.json' for id in CONCETTI]
+                 + [ROOT / 'graph/parts/area-4.json', ROOT / 'graph/parts/area-5.json']):
         text = path.read_text(encoding='utf-8')
         assert not re.search(r"\b(?:null|undefined|NaN)\b|\b(?:perche|piu|gia|puo|e)'", text, re.I)
         assert text.count('$') % 2 == 0
@@ -72,9 +79,13 @@ def test_schema_dei_file_presenti():
     nodes = load('graph/parts/area-4.json') + load('graph/parts/area-5.json')
     node_validator = validator_for(load_schema('node.schema.json'))
     dim_validator = validator_for(load_schema('dimostrazione.schema.json'))
+    lesson_validator = validator_for(load_schema('lezione.schema.json'))
     for node in nodes:
         node_validator.validate(node)
-        dim_validator.validate(load(f"graph/dimostrazioni/{node['id']}.json"))
+        if node['tipo'] == 'dimostrazione':
+            dim_validator.validate(load(f"graph/dimostrazioni/{node['id']}.json"))
+        else:
+            lesson_validator.validate(load(f"graph/lezioni/{node['id']}.json"))
 
 
 def test_numeric_relations():
@@ -151,3 +162,54 @@ def test_spettro_prodotto_numerico():
     upper, lower = dft(carrier+tone), dft(carrier-tone)
     assert abs(upper-0.25*cmath.exp(1j*phase)) < 1e-12
     assert abs(lower-0.25*cmath.exp(-1j*phase)) < 1e-12
+
+
+def test_lezioni_complete():
+    for id in CONCETTI:
+        lesson = load(f'graph/lezioni/{id}.json')
+        assert lesson['id'] == id
+        assert len(lesson['spiegazione']) >= 1200
+        assert lesson['spiegazione'].count('### ') >= 2
+        assert '$' in lesson['spiegazione']
+        assert len(lesson['worked_example']['passi']) >= 3
+        assert lesson['completion_problem']['passi_mancanti']
+        assert len(lesson['errori_trappole']) >= 2
+        assert 3 <= len(lesson['richiamo_attivo']['domande']) <= 5
+        assert len(lesson['riepilogo'].splitlines()) <= 5
+        assert lesson['checklist']['so_fare'] and lesson['checklist']['so_dire']
+
+
+def test_esempi_numerici_concetti():
+    assert 4 * 8000 * 8 == 256000  # TDM
+    assert math.hypot(3, 4) == 5  # inviluppo complesso
+    assert math.isclose(math.atan2(4, 3), 0.927295218, abs_tol=1e-9)
+    assert math.isclose(math.cos(math.pi/3), 0.5, abs_tol=1e-12)
+    assert 120000 / math.log2(4) == 60000  # QPSK
+    assert 2 * (75000 + 15000) == 180000  # Carson in Hz
+    assert (100 - 1, 100 + 1) == (99, 101)  # bande tono DSB, kHz
+
+
+def test_latex_puro_e_delimitatori_lezioni():
+    def strings(value):
+        if isinstance(value, str):
+            yield value
+        elif isinstance(value, list):
+            for item in value:
+                yield from strings(item)
+        elif isinstance(value, dict):
+            for item in value.values():
+                yield from strings(item)
+
+    for id in IDS:
+        dim = load(f'graph/dimostrazioni/{id}.json')
+        formulas = [dim['formula_finale']] + [x['simbolo'] for x in dim['notazione']]
+        formulas += [x['formula'] for x in dim['passi']]
+        for formula in formulas:
+            assert '$' not in formula
+            assert formula.count('{') == formula.count('}'), formula
+    for id in CONCETTI:
+        lesson = load(f'graph/lezioni/{id}.json')
+        for text in strings(lesson):
+            assert text.count('$') % 2 == 0, text
+            for formula in re.findall(r'\${1,2}(.*?)\${1,2}', text, re.S):
+                assert formula.count('{') == formula.count('}'), formula

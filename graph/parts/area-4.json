@@ -70,5 +70,82 @@
       }
     ],
     "risorse": []
+  },
+  {
+    "id": "conversione-ad-quantizzazione-pcm",
+    "titolo": "Conversione A/D, quantizzazione e PCM",
+    "area": 4,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W4",
+    "sapere": "La conversione A/D rappresenta un segnale analogico mediante una sequenza di parole binarie, tramite campionamento, quantizzazione e codifica.",
+    "saper_fare": [
+      "Portare campioni di un segnale analogico su un collegamento numerico.",
+      "Un PCM usa 256 livelli e 8000 campioni al secondo. Calcolare bit per campione e velocità senza overhead."
+    ],
+    "prerequisiti": [
+      {
+        "id": "dim-teorema-campionamento",
+        "forza": "hard",
+        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+      }
+    ],
+    "tempo_studio_min": 60,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Prerequisito di T7 e T8; gruppo A. Punteggio delle prove: NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "pp. 7-11 del PDF"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "pp. 32-36 del PDF"
+      }
+    ],
+    "risorse": []
+  },
+  {
+    "id": "collegamento-numerico-tdm-pcm",
+    "titolo": "Collegamento numerico TDM e PCM",
+    "area": 4,
+    "tipo": "concetto",
+    "gruppo": "B",
+    "worker": "W4",
+    "sapere": "Il TDM assegna a flussi diversi intervalli temporali distinti su un collegamento condiviso; il PCM fornisce parole binarie ai flussi digitalizzati.",
+    "saper_fare": [
+      "Combinare più sorgenti senza confondere i loro campioni.",
+      "Quattro sorgenti PCM, ognuna a 8 kcampioni/s con 8 bit a campione: trovare il carico utile totale."
+    ],
+    "prerequisiti": [
+      {
+        "id": "dim-conversione-ad",
+        "forza": "hard",
+        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+      },
+      {
+        "id": "criterio-nyquist-isi",
+        "forza": "hard",
+        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+      }
+    ],
+    "tempo_studio_min": 60,
+    "priorita": {
+      "livello": "media",
+      "motivazione": "Gruppo B: collegamento tra conversione A/D e criterio di Nyquist per la trasmissione numerica."
+    },
+    "fonti": [
+      {
+        "chiave": "RICOSTRUZIONE",
+        "rif": "NON TROVATO"
+      },
+      {
+        "chiave": "PROGRAMMA",
+        "rif": "NON TROVATO"
+      }
+    ],
+    "risorse": []
   }
 ]

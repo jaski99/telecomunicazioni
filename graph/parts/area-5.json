@@ -180,5 +180,194 @@
       }
     ],
     "risorse": []
+  },
+  {
+    "id": "segnali-passa-banda-inviluppo-complesso",
+    "titolo": "Segnali passa-banda e inviluppo complesso",
+    "area": 5,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W4",
+    "sapere": "Un segnale reale passa-banda si può rappresentare come parte reale di un inviluppo complesso moltiplicato per una portante complessa.",
+    "saper_fare": [
+      "Descrivere ampiezza e fase variabili in banda base e studiare l’effetto dei quadripoli.",
+      "Per $u(t)=3+j4$ e portante unitaria trovare modulo, fase e segnale reale."
+    ],
+    "prerequisiti": [
+      {
+        "id": "trasformata-fourier",
+        "forza": "hard",
+        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+      }
+    ],
+    "tempo_studio_min": 60,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Gruppo A, prerequisito di T11 e delle modulazioni in quadratura. T11 vale 10 punti nella raccolta."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "pp. 23-24, 50-51 del PDF"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "pp. 39-44 del PDF"
+      }
+    ],
+    "risorse": []
+  },
+  {
+    "id": "modulazione-prodotto-dsb-ssb",
+    "titolo": "Modulazione a prodotto, DSB e SSB",
+    "area": 5,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W4",
+    "sapere": "La modulazione a prodotto moltiplica il messaggio per una portante; nella DSB-SC produce due bande laterali e, nella SSB, se ne trasmette una sola.",
+    "saper_fare": [
+      "Traslare un messaggio in una banda adatta al canale.",
+      "Tono a 1 kHz modulato con portante a 100 kHz: individuare le componenti positive."
+    ],
+    "prerequisiti": [
+      {
+        "id": "segnali-passa-banda-inviluppo-complesso",
+        "forza": "hard",
+        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+      }
+    ],
+    "tempo_studio_min": 60,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Gruppo A: T6 e quiz M1, M11, M20, M23, M27, M34. Punteggi: NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "pp. 18-19 e 27 del PDF"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "pp. 28-31 e 37 del PDF"
+      }
+    ],
+    "risorse": []
+  },
+  {
+    "id": "demodulazione-coerente-non-coerente",
+    "titolo": "Demodulazione coerente e non coerente",
+    "area": 5,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W4",
+    "sapere": "La demodulazione estrae il messaggio dal segnale ricevuto; quella coerente usa un riferimento locale sincronizzato in frequenza e fase.",
+    "saper_fare": [
+      "Recuperare la banda base e capire gli effetti del disallineamento della portante.",
+      "Per DSB-SC e riferimento con $\\Delta=60^\\circ$, calcolare il guadagno in banda base."
+    ],
+    "prerequisiti": [
+      {
+        "id": "modulazione-prodotto-dsb-ssb",
+        "forza": "hard",
+        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+      }
+    ],
+    "tempo_studio_min": 60,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Gruppo A: prerequisito di T10 e quiz M21-M22. Punteggi: NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "pp. 23-24 e 27-28 del PDF"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "pp. 37-40 del PDF"
+      }
+    ],
+    "risorse": []
+  },
+  {
+    "id": "modulazioni-angolo-pm-fm",
+    "titolo": "Modulazioni d’angolo PM e FM",
+    "area": 5,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W4",
+    "sapere": "In PM la fase eccedente segue il messaggio; in FM la derivata della fase eccedente, cioè la deviazione di pulsazione, segue il messaggio.",
+    "saper_fare": [
+      "Distinguere le dipendenze dal messaggio e collegare fase, frequenza e banda.",
+      "Con deviazione massima 75 kHz e massima frequenza modulante 15 kHz, stimare la banda in hertz."
+    ],
+    "prerequisiti": [
+      {
+        "id": "segnali-passa-banda-inviluppo-complesso",
+        "forza": "hard",
+        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+      }
+    ],
+    "tempo_studio_min": 60,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Gruppo A: T9 e quiz M7, M8, M32, M33; Carson M12-M14. Punteggi: NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "pp. 28 e 58-59 del PDF"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "p. 41 del PDF"
+      },
+      {
+        "chiave": "RICOSTRUZIONE",
+        "rif": "NON TROVATO"
+      }
+    ],
+    "risorse": []
+  },
+  {
+    "id": "modulazioni-numeriche",
+    "titolo": "Modulazioni numeriche e costellazioni",
+    "area": 5,
+    "tipo": "concetto",
+    "gruppo": "B",
+    "worker": "W4",
+    "sapere": "Una modulazione numerica associa gruppi di bit a simboli e forme d’onda, distinguibili per ampiezza, fase o frequenza.",
+    "saper_fare": [
+      "Trasmettere dati su un canale passa-banda e recuperarli mediante decisioni sui simboli.",
+      "Un flusso a 120 kbit/s usa QPSK senza overhead. Calcolare il numero di bit per simbolo e il symbol rate."
+    ],
+    "prerequisiti": [
+      {
+        "id": "modulazione-prodotto-dsb-ssb",
+        "forza": "hard",
+        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+      },
+      {
+        "id": "segnali-pam",
+        "forza": "hard",
+        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+      }
+    ],
+    "tempo_studio_min": 60,
+    "priorita": {
+      "livello": "media",
+      "motivazione": "Gruppo B: approfondimento della trasmissione numerica e della rappresentazione I-Q della T10."
+    },
+    "fonti": [
+      {
+        "chiave": "RICOSTRUZIONE",
+        "rif": "NON TROVATO"
+      },
+      {
+        "chiave": "PROGRAMMA",
+        "rif": "NON TROVATO"
+      }
+    ],
+    "risorse": []
   }
 ]

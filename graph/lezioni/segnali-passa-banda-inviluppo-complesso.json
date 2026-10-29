@@ -1,0 +1,90 @@
+{
+  "id": "segnali-passa-banda-inviluppo-complesso",
+  "perche_ti_serve": "Gruppo A, prerequisito di T11 e delle modulazioni in quadratura. T11 vale 10 punti nella raccolta.",
+  "scenario": "In un collegamento di telecomunicazioni un segnale di voce o un flusso di dati deve attraversare trasmettitore, canale e ricevitore: Descrivere ampiezza e fase variabili in banda base e studiare l’effetto dei quadripoli.",
+  "definizione_esame": {
+    "definizione": "Un segnale reale passa-banda si può rappresentare come parte reale di un inviluppo complesso moltiplicato per una portante complessa.",
+    "scopo": "Descrivere ampiezza e fase variabili in banda base e studiare l’effetto dei quadripoli.",
+    "esempio": "$s(t)=I(t)\\cos\\omega_0t-Q(t)\\sin\\omega_0t$ ha inviluppo $I(t)+jQ(t)$."
+  },
+  "spiegazione": "### Dalla portante alle due componenti\nSi sceglie una pulsazione di riferimento $\\omega_0$ e si scrive $s(t)=\\operatorname{Re}\\{u(t)e^{j\\omega_0t}\\}$. L'inviluppo complesso $u(t)=I(t)+jQ(t)$ contiene una componente in fase e una in quadratura. Sviluppando la parte reale si ottiene $s(t)=I(t)\\cos\\omega_0t-Q(t)\\sin\\omega_0t$: il segno meno deriva da $j^2=-1$. Per un inviluppo $u=Ae^{j\\phi}$, modulo e argomento descrivono l'ampiezza istantanea e la fase eccedente, dove il modulo non si annulla.\n\n### Bande spettrali\nIl segnale fisico $s(t)$ è reale, dunque la sua trasformata bilaterale soddisfa $S(-\\omega)=S^*(\\omega)$. Le bande positive e negative si corrispondono ma non sono due messaggi indipendenti. Per un segnale passa-banda con banda positiva isolata si costruisce il segnale analitico raddoppiando quella banda e annullando quella negativa; traslandolo di $-\\omega_0$ si ottiene l'inviluppo. Con la convenzione $s=\\operatorname{Re}(u e^{j\\omega_0t})$, nel supporto di banda base vale $U(\\Omega)=2S(\\omega_0+\\Omega)$. Il fattore due dipende da questa normalizzazione.\n\n### Modello equivalente\nUn sistema lineare tempo-invariante con trasferimento $H(\\omega)$ moltiplica lo spettro d'ingresso. Nella banda dell'inviluppo, il sistema equivalente ha trasferimento $H_0(\\Omega)=H(\\omega_0+\\Omega)$ e collega gli inviluppi in ingresso e uscita. È uno strumento matematico complesso, non necessariamente una rete fisica reale: in generale non possiede la simmetria coniugata della risposta di un sistema reale. T11 sviluppa la relazione, mentre T10 usa le componenti I e Q. La scelta della portante determina il riferimento di fase e deve essere dichiarata.",
+  "analogia": {
+    "testo": "Un vettore nel piano che ruota lentamente mentre una lancetta comune ruota rapidamente alla portante.",
+    "limite": "Il vettore è una rappresentazione complessa, non una seconda onda fisica."
+  },
+  "worked_example": {
+    "titolo": "Esempio svolto",
+    "problema": "Per $u(t)=3+j4$ e portante unitaria trovare modulo, fase e segnale reale.",
+    "passi": [
+      "Modulo: $|u|=\\sqrt{3^2+4^2}=5$.",
+      "Fase: $\\phi=\\operatorname{atan2}(4,3)\\approx0{,}927$ rad.",
+      "Parte reale: $s(t)=3\\cos\\omega_0t-4\\sin\\omega_0t$."
+    ],
+    "soluzione": "Ampiezza 5, fase circa 0,927 rad e segnale $3\\cos\\omega_0t-4\\sin\\omega_0t$.",
+    "perche_funziona": "Il prodotto complesso con la portante dà componenti coseno e meno seno."
+  },
+  "completion_problem": {
+    "titolo": "Completa il ragionamento",
+    "testo": "Con $u=2+j$ completare $s(t)=2\\cos\\omega_0t$ meno quale termine?",
+    "passi_mancanti": [
+      "Moltiplicare per $e^{j\\omega_0t}$ e prendere la parte reale."
+    ],
+    "soluzione": "$\\sin\\omega_0t$."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Prova da solo",
+    "testo": "Per $u=1-j$ trovare modulo e fase.",
+    "suggerimento": "Usare il quadrante corretto.",
+    "soluzione_attesa": "$\\sqrt{2}$ e $-\\pi/4$."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Scrivere il termine in quadratura con segno più.",
+      "perche_sbagliato": "Con $u=I+jQ$ la parte reale produce meno Q seno."
+    },
+    {
+      "errore": "Dimenticare il fattore due nella relazione con la banda positiva.",
+      "perche_sbagliato": "La parte reale distribuisce lo spettro tra le due bande."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Qual è l’inviluppo di $I\\cos\\omega_0t-Q\\sin\\omega_0t$?",
+        "risposta": "$I+jQ$."
+      },
+      {
+        "domanda": "Perché la banda negativa non è indipendente?",
+        "risposta": "Il segnale reale impone simmetria coniugata."
+      },
+      {
+        "domanda": "H equivalente è sempre una rete reale?",
+        "risposta": "No, può non soddisfare la simmetria coniugata."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega con parole tue: Descrivere ampiezza e fase variabili in banda base e studiare l’effetto dei quadripoli."
+  },
+  "riepilogo": "L’inviluppo complesso riporta il passa-banda in banda base e consente di studiare le componenti I e Q e il quadripolo equivalente.",
+  "flashcard": [
+    {
+      "fronte": "Qual è l’inviluppo di $I\\cos\\omega_0t-Q\\sin\\omega_0t$?",
+      "retro": "$I+jQ$."
+    },
+    {
+      "fronte": "Perché la banda negativa non è indipendente?",
+      "retro": "Il segnale reale impone simmetria coniugata."
+    },
+    {
+      "fronte": "H equivalente è sempre una rete reale?",
+      "retro": "No, può non soddisfare la simmetria coniugata."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "Per $u(t)=3+j4$ e portante unitaria trovare modulo, fase e segnale reale."
+    ],
+    "so_dire": [
+      "Un segnale reale passa-banda si può rappresentare come parte reale di un inviluppo complesso moltiplicato per una portante complessa."
+    ]
+  }
+}
