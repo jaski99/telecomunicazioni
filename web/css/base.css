@@ -1,0 +1,11 @@
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font: var(--fs-body)/var(--lh-body) system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif; color: var(--c-text); background: var(--c-bg); overflow-wrap: break-word; }
+h1, h2, h3, h4 { line-height: var(--lh-tight); }
+h1 { font-size: var(--fs-h1); margin: var(--s-6) 0 var(--s-4); }
+h2 { font-size: var(--fs-h2); margin: var(--s-7) 0 var(--s-3); }
+h3 { font-size: var(--fs-h3); margin: var(--s-6) 0 var(--s-2); }
+p, ul, ol { margin: 0 0 var(--s-4); }
+a { color: var(--c-primary); }
+:focus-visible { outline: var(--focus-width) solid var(--c-focus); outline-offset: var(--s-1); }
+button, input, select, textarea { font: inherit; }
+[hidden] { display: none !important; }
