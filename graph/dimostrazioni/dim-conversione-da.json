@@ -4,11 +4,12 @@
   "domande_esame": [
     "T8"
   ],
-  "enunciato": "Descrivere la conversione D/A e la ricostruzione tramite filtro passa-basso. Punteggio: NON TROVATO.",
+  "enunciato": "Trascurando la quantizzazione, il PAM ottenuto dai campioni ha spettro $S(\\omega)=\\frac{G(\\omega)}{T}\\sum_k X(\\omega-k\\omega_s)$. Il passa-basso isola la replica centrale e l’equalizzatore $T/G(\\omega)$ compensa la forma d’impulso; per un impulso rettangolare breve $\\tau\\ll T$ può essere omesso se basta una ricostruzione a meno di un guadagno. La quantizzazione lascia un errore, detto rumore di quantizzazione.",
   "ipotesi": [
     "Parole ricevute senza errori, codifica nota e campionamento senza aliasing nel caso ideale non quantizzato.",
     "Impulso di ricostruzione g noto e G(ω) diverso da zero nella banda utile; si trascurano ritardi e rumore di canale.",
-    "La formula spettrale con X vale trascurando la quantizzazione: con campioni quantizzati il risultato differisce dal segnale originale."
+    "La formula spettrale con X vale trascurando la quantizzazione: con campioni quantizzati il risultato differisce dal segnale originale.",
+    "Per omettere l’equalizzatore si assume un impulso rettangolare centrato di durata τ molto minore di T e si ammette un guadagno costante."
   ],
   "notazione": [
     {
@@ -74,6 +75,12 @@
     },
     {
       "n": 6,
+      "testo": "Considerare un impulso rettangolare centrato sufficientemente breve.",
+      "formula": "G(\\omega)=\\tau\\,\\frac{\\sin(\\omega\\tau/2)}{\\omega\\tau/2}\\approx\\tau,\\quad |\\omega|\\le\\omega_m,\\quad \\tau\\ll T",
+      "perche": "Con campionamento sopra Nyquist, nella banda utile il prodotto ωτ è piccolo; resta un guadagno circa costante."
+    },
+    {
+      "n": 7,
       "testo": "Riconoscere l’effetto della quantizzazione.",
       "formula": "e(t)=x_r(t)-x(t)",
       "perche": "La decodifica ripristina i livelli quantizzati, non i valori originali perduti."
@@ -84,8 +91,8 @@
     {
       "id": "catena",
       "tipo": "blocchi",
-      "titolo": "Catena di conversione",
-      "descrizione": "Schema funzionale della conversione: i blocchi sono disposti nell’ordine in cui il segnale viene elaborato.",
+      "titolo": "Conversione digitale-analogica",
+      "descrizione": "Le parole PCM sono decodificate e ricostruite con un filtro passa-basso e una compensazione della risposta dell’impulso.",
       "blocchi": [
         {
           "id": "b0",
@@ -159,7 +166,7 @@
       "titolo": "Replica centrale e repliche laterali",
       "descrizione": "Esempio schematico di replica centrale isolata e repliche laterali separate quando la pulsazione di campionamento supera il doppio della banda.",
       "asse_x": {
-        "etichetta": "Pulsazione ω (unità arbitrarie)",
+        "etichetta": "Pulsazione delle repliche ω",
         "min": -8,
         "max": 8
       },
@@ -228,7 +235,7 @@
       ]
     }
   ],
-  "a_voce": "Il decodificatore trasforma ogni parola in un livello quantizzato. I livelli comandano impulsi traslati e producono un segnale PAM. Se considero il caso ideale senza errore di quantizzazione, il suo spettro è il prodotto della trasformata dell’impulso per le repliche periodiche dello spettro originale, con fattore uno su T. Se la frequenza di campionamento è sufficiente, le repliche sono separate e il filtro passa-basso isola quella centrale. Un equalizzatore con risposta T diviso G compensa la forma dell’impulso nella banda utile, a condizione che G non si annulli. In pratica la decodifica restituisce i livelli quantizzati, non i campioni esatti: il segnale ricostruito può quindi differire dall’originale anche con filtro ideale.",
+  "a_voce": "Il decodificatore trasforma ogni parola in un livello quantizzato. I livelli comandano impulsi traslati e producono un segnale PAM. Se considero il caso ideale senza errore di quantizzazione, il suo spettro è il prodotto della trasformata dell’impulso per le repliche periodiche dello spettro originale, con fattore uno su T. Se la frequenza di campionamento è sufficiente, le repliche sono separate e il filtro passa-basso isola quella centrale. Un equalizzatore con risposta T diviso G compensa la forma dell’impulso nella banda utile, a condizione che G non si annulli. In pratica la decodifica restituisce i livelli quantizzati, non i campioni esatti: il segnale ricostruito può quindi differire dall’originale anche con filtro ideale. Per un impulso rettangolare molto breve la sua risposta è quasi costante sulla banda utile: se è sufficiente una ricostruzione a meno di guadagno, l’equalizzatore può essere omesso.",
   "errori_frequenti": [
     {
       "errore": "Ritenere che la decodifica cancelli l’errore di quantizzazione.",
@@ -245,6 +252,7 @@
     "Decodificare le parole in livelli quantizzati.",
     "Generare il PAM e isolare la replica centrale.",
     "Equalizzare con T/G dove G è non nullo.",
+    "Per impulso rettangolare breve G è quasi costante: può bastare il passa-basso.",
     "La quantizzazione lascia un errore residuo."
   ],
   "a_buchi": {
@@ -295,10 +303,10 @@
   "verifica": {
     "stato": "da_verificare",
     "data": "2026-10-29",
-    "note": "Ordine e formule confrontati con file3 pp. 10-11 e file1 p. 35; la formula con X è dichiarata ideale per non confonderla con i campioni quantizzati.",
+    "note": "File3 p. 10 e file1 pp. 35-36 mostrano replica centrale, equalizzatore e approssimazione per impulso breve.",
     "punti_aperti": [
-      "Confronto completo con il testo del docente: NON TROVATO.",
-      "Verifica puntuale dell’intero sviluppo su file1: NON TROVATO."
+      "La formula con X vale trascurando l’errore di quantizzazione; la validità dell’approssimazione di G dipende dalla forma dell’impulso.",
+      "Confronto del riferimento p. 7.8 con il libro adottato: NON TROVATO."
     ]
   }
 }

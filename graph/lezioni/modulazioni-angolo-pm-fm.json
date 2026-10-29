@@ -58,7 +58,7 @@
         "risposta": "La deviazione di pulsazione."
       },
       {
-        "domanda": "Quale operatore precede la PM per ottenere FM?",
+        "domanda": "Come si ricava una FM a partire da un modulatore di fase?",
         "risposta": "Un integratore con guadagno opportuno."
       }
     ],
@@ -75,7 +75,7 @@
       "retro": "La deviazione di pulsazione."
     },
     {
-      "fronte": "Quale operatore precede la PM per ottenere FM?",
+      "fronte": "Come si ottiene FM usando un modulatore PM?",
       "retro": "Un integratore con guadagno opportuno."
     }
   ],

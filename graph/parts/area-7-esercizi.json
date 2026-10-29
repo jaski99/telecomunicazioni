@@ -1,0 +1,39 @@
+[
+  {
+    "id": "es-teoria-traffico-extra",
+    "titolo": "Traffico extra: Little, tempi di linea e stabilità delle code",
+    "area": 7,
+    "tipo": "tipo_esercizio",
+    "gruppo": "C",
+    "worker": "W6",
+    "sapere": "Gli esercizi integrativi collegano λ, permanenza media W e popolazione N tramite Little, separano trasmissione da propagazione e richiedono di verificare la stabilità prima di usare formule di coda.",
+    "saper_fare": [
+      "Applicare N=λW con unità coerenti e regime stazionario.",
+      "Separare il tempo di trasmissione dal tempo di propagazione.",
+      "Verificare λ<μ prima di usare le formule M/M/1 e dichiarare i dati mancanti."
+    ],
+    "prerequisiti": [
+      {
+        "id": "code-mm1-little",
+        "forza": "hard",
+        "motivo": "Prerequisito indicato dal contratto per comprendere e svolgere l’esercizio."
+      }
+    ],
+    "tempo_studio_min": 50,
+    "priorita": {
+      "livello": "bassa",
+      "motivazione": "Approfondimento extra, non associato a quesito d’esame identificato."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "file3 pp. 44, 53-57"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "Verifico regime stazionario e unità di λ, W e N.",
+      "Controllo stabilità, servizio e capacità del buffer prima di applicare formule di coda."
+    ]
+  }
+]

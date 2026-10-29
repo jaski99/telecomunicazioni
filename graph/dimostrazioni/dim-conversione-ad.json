@@ -4,7 +4,7 @@
   "domande_esame": [
     "T7"
   ],
-  "enunciato": "Descrivere i tre passi della conversione A/D e il segnale numerico ottenuto. Punteggio: NON TROVATO.",
+  "enunciato": "La conversione A/D campiona il segnale con $\\omega_s>2\\omega_m$, quantizza i campioni su $L$ livelli e codifica ciascun livello con $b=\\lceil\\log_2 L\\rceil$ bit. La sequenza delle parole costituisce il segnale numerico PCM.",
   "ipotesi": [
     "Segnale limitato in banda a ωm e campionamento ideale con ωs > 2ωm; l’uguaglianza richiede condizioni ulteriori.",
     "Il quantizzatore ha L livelli e il segnale resta nell’intervallo di ingresso senza sovraccarico."
@@ -81,8 +81,8 @@
     {
       "id": "catena",
       "tipo": "blocchi",
-      "titolo": "Catena di conversione",
-      "descrizione": "Schema funzionale della conversione: i blocchi sono disposti nell’ordine in cui il segnale viene elaborato.",
+      "titolo": "Conversione analogico-digitale",
+      "descrizione": "La sorgente analogica attraversa campionatore, quantizzatore e codificatore per produrre parole PCM.",
       "blocchi": [
         {
           "id": "b0",
@@ -915,10 +915,10 @@
   "verifica": {
     "stato": "da_verificare",
     "data": "2026-10-29",
-    "note": "Schema e ordine confrontati con file3 pp. 7-9. File3 p. 7 indica fₛ > fₘ, condizione insufficiente; file1 p. 32 indica il doppio. La condizione rigorosamente sufficiente qui usa >.",
+    "note": "File3 pp. 7-8 descrive i tre passi ma riporta un criterio di frequenza insufficiente; file1 p. 32 riporta il doppio della banda.",
     "punti_aperti": [
-      "Confronto completo con il testo del docente: NON TROVATO.",
-      "Verifica puntuale dell’intero sviluppo su file1: NON TROVATO."
+      "File3 p. 7 indica una frequenza maggiore della sola frequenza massima: chiarire il refuso rispetto a file1 p. 32.",
+      "La condizione stretta scelta qui evita il caso critico al bordo; confronto con il libro adottato NON TROVATO."
     ]
   }
 }

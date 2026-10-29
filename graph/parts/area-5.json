@@ -71,7 +71,7 @@
   },
   {
     "id": "dim-quadripoli-passa-basso-equivalente",
-    "titolo": "Quadripoli lineari ed equivalente passa-basso",
+    "titolo": "Quadripolo ed equivalente in banda base",
     "area": 5,
     "tipo": "dimostrazione",
     "gruppo": "A",
@@ -111,27 +111,26 @@
   },
   {
     "id": "dim-spettri-modulazione-prodotto",
-    "titolo": "Ricavare gli spettri di ampiezza e fase di una modulazione a prodotto",
+    "titolo": "Spettri delle bande laterali DSB",
     "area": 5,
     "tipo": "dimostrazione",
     "gruppo": "A",
     "worker": "W4",
-    "sapere": "Usare la proprietà di traslazione spettrale e la simmetria coniugata del segnale reale. Comprendere condizioni e limiti del procedimento.",
+    "sapere": "Ricavare le repliche spettrali del segnale modulato e il ribaltamento della fase della banda inferiore.",
     "saper_fare": [
-      "Scrivere il coseno come somma di esponenziali.",
-      "Traslare X a ±ω₀ con fattore 1/2."
+      "Disegnare ampiezza e fase nelle bande laterali specificando le condizioni di separazione."
     ],
     "prerequisiti": [
       {
         "id": "modulazione-prodotto-dsb-ssb",
         "forza": "hard",
-        "motivo": "Il risultato richiede la conoscenza della modulazione indicata."
+        "motivo": "La formula di partenza è il prodotto del messaggio per la portante DSB."
       }
     ],
     "tempo_studio_min": 70,
     "priorita": {
       "livello": "alta",
-      "motivazione": "T6 richiede questa dimostrazione."
+      "motivazione": "T6 richiede la dimostrazione degli spettri a prodotto."
     },
     "fonti": [
       {
@@ -140,34 +139,33 @@
       },
       {
         "chiave": "FILE1",
-        "rif": "pp. 28-31 del PDF; p. 6.12 è un riferimento dello studente"
+        "rif": "file1 pp. 28-31; riferimento studente 6.12"
       }
     ],
     "risorse": []
   },
   {
     "id": "dim-modulazione-prodotto-qam-errore-fase",
-    "titolo": "Ricavare la demodulazione a prodotto e la QAM con errore di fase",
+    "titolo": "QAM ed errore di fase coerente",
     "area": 5,
     "tipo": "dimostrazione",
     "gruppo": "A",
     "worker": "W4",
-    "sapere": "Moltiplicare per le portanti locali in quadratura e isolare i termini in banda base. Comprendere condizioni e limiti del procedimento.",
+    "sapere": "Dimostrare la separazione coerente dei rami QAM e gli effetti della fase locale errata.",
     "saper_fare": [
-      "QAM: x₁ cos ω₀t − x₂ sin ω₀t.",
-      "Moltiplicare per 2 cos(ω₀t − Δ) e −2 sin(ω₀t − Δ)."
+      "Determinare le componenti recuperate applicando la matrice di rotazione."
     ],
     "prerequisiti": [
       {
         "id": "demodulazione-coerente-non-coerente",
         "forza": "hard",
-        "motivo": "Il risultato richiede la conoscenza della modulazione indicata."
+        "motivo": "La separazione dei rami impiega moltiplicazione coerente e filtri passa-basso."
       }
     ],
     "tempo_studio_min": 70,
     "priorita": {
       "livello": "alta",
-      "motivazione": "T10 richiede questa dimostrazione."
+      "motivazione": "T10 richiede modulatori, demodulatori e interferenza da fase."
     },
     "fonti": [
       {
@@ -176,7 +174,7 @@
       },
       {
         "chiave": "FILE1",
-        "rif": "pp. 37-40 del PDF; pp. 9.34, 9.36 sono riferimenti dello studente"
+        "rif": "file1 pp. 37-40; riferimenti studente 9.34 e 9.36"
       }
     ],
     "risorse": []
@@ -188,22 +186,21 @@
     "tipo": "concetto",
     "gruppo": "A",
     "worker": "W4",
-    "sapere": "Un segnale reale passa-banda si può rappresentare come parte reale di un inviluppo complesso moltiplicato per una portante complessa.",
+    "sapere": "Passare fra rappresentazione reale modulata e componenti complesse in fase e quadratura.",
     "saper_fare": [
-      "Descrivere ampiezza e fase variabili in banda base e studiare l’effetto dei quadripoli.",
-      "Per $u(t)=3+j4$ e portante unitaria trovare modulo, fase e segnale reale."
+      "Ricavare il segnale passa-banda a partire dal suo inviluppo e interpretarne modulo e fase."
     ],
     "prerequisiti": [
       {
         "id": "trasformata-fourier",
         "forza": "hard",
-        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        "motivo": "Le bande e la traslazione dell’inviluppo sono descritte mediante la trasformata bilaterale."
       }
     ],
     "tempo_studio_min": 60,
     "priorita": {
       "livello": "alta",
-      "motivazione": "Gruppo A, prerequisito di T11 e delle modulazioni in quadratura. T11 vale 10 punti nella raccolta."
+      "motivazione": "T11 richiede gli inviluppi complessi; la raccolta attribuisce 10 punti."
     },
     "fonti": [
       {
@@ -224,22 +221,21 @@
     "tipo": "concetto",
     "gruppo": "A",
     "worker": "W4",
-    "sapere": "La modulazione a prodotto moltiplica il messaggio per una portante; nella DSB-SC produce due bande laterali e, nella SSB, se ne trasmette una sola.",
+    "sapere": "Confrontare l’occupazione spettrale DSB e SSB e interpretare la fase delle bande laterali.",
     "saper_fare": [
-      "Traslare un messaggio in una banda adatta al canale.",
-      "Tono a 1 kHz modulato con portante a 100 kHz: individuare le componenti positive."
+      "Derivare la traslazione spettrale e determinare la banda occupata."
     ],
     "prerequisiti": [
       {
         "id": "segnali-passa-banda-inviluppo-complesso",
         "forza": "hard",
-        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        "motivo": "Il prodotto con la portante genera una rappresentazione passa-banda del messaggio."
       }
     ],
     "tempo_studio_min": 60,
     "priorita": {
       "livello": "alta",
-      "motivazione": "Gruppo A: T6 e quiz M1, M11, M20, M23, M27, M34. Punteggi: NON TROVATO."
+      "motivazione": "T6 richiede ampiezza e fase della modulazione a prodotto."
     },
     "fonti": [
       {
@@ -260,22 +256,21 @@
     "tipo": "concetto",
     "gruppo": "A",
     "worker": "W4",
-    "sapere": "La demodulazione estrae il messaggio dal segnale ricevuto; quella coerente usa un riferimento locale sincronizzato in frequenza e fase.",
+    "sapere": "Distinguere la rivelazione con riferimento sincronizzato da quella basata sull’inviluppo.",
     "saper_fare": [
-      "Recuperare la banda base e capire gli effetti del disallineamento della portante.",
-      "Per DSB-SC e riferimento con $\\Delta=60^\\circ$, calcolare il guadagno in banda base."
+      "Calcolare il guadagno di un rivelatore coerente e riconoscere quando un rivelatore di inviluppo fallisce."
     ],
     "prerequisiti": [
       {
         "id": "modulazione-prodotto-dsb-ssb",
         "forza": "hard",
-        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        "motivo": "Il rivelatore coerente deve invertire la traslazione prodotta dal modulatore."
       }
     ],
     "tempo_studio_min": 60,
     "priorita": {
       "livello": "alta",
-      "motivazione": "Gruppo A: prerequisito di T10 e quiz M21-M22. Punteggi: NON TROVATO."
+      "motivazione": "T10 richiede la demodulazione e gli effetti dell’errore di fase."
     },
     "fonti": [
       {
@@ -296,22 +291,21 @@
     "tipo": "concetto",
     "gruppo": "A",
     "worker": "W4",
-    "sapere": "In PM la fase eccedente segue il messaggio; in FM la derivata della fase eccedente, cioè la deviazione di pulsazione, segue il messaggio.",
+    "sapere": "Confrontare il legame del messaggio con la fase PM e con la deviazione di frequenza FM.",
     "saper_fare": [
-      "Distinguere le dipendenze dal messaggio e collegare fase, frequenza e banda.",
-      "Con deviazione massima 75 kHz e massima frequenza modulante 15 kHz, stimare la banda in hertz."
+      "Ricavare la relazione fra fase e pulsazione e stimare la banda con Carson."
     ],
     "prerequisiti": [
       {
         "id": "segnali-passa-banda-inviluppo-complesso",
         "forza": "hard",
-        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        "motivo": "La fase dell’inviluppo descrive la modulazione angolare rispetto alla portante."
       }
     ],
     "tempo_studio_min": 60,
     "priorita": {
       "livello": "alta",
-      "motivazione": "Gruppo A: T9 e quiz M7, M8, M32, M33; Carson M12-M14. Punteggi: NON TROVATO."
+      "motivazione": "T9 richiede la trasformazione tra le modulazioni d’angolo."
     },
     "fonti": [
       {
@@ -336,27 +330,26 @@
     "tipo": "concetto",
     "gruppo": "B",
     "worker": "W4",
-    "sapere": "Una modulazione numerica associa gruppi di bit a simboli e forme d’onda, distinguibili per ampiezza, fase o frequenza.",
+    "sapere": "Interpretare una costellazione numerica, la mappatura dei bit e i possibili errori di decisione.",
     "saper_fare": [
-      "Trasmettere dati su un canale passa-banda e recuperarli mediante decisioni sui simboli.",
-      "Un flusso a 120 kbit/s usa QPSK senza overhead. Calcolare il numero di bit per simbolo e il symbol rate."
+      "Ricavare il ritmo simbolico da bit rate e numero di punti di costellazione."
     ],
     "prerequisiti": [
       {
         "id": "modulazione-prodotto-dsb-ssb",
         "forza": "hard",
-        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        "motivo": "Le componenti di una costellazione possono modulare portanti in quadratura."
       },
       {
         "id": "segnali-pam",
         "forza": "hard",
-        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        "motivo": "La sequenza di simboli e le forme d’impulso derivano dalla rappresentazione PAM."
       }
     ],
     "tempo_studio_min": 60,
     "priorita": {
       "livello": "media",
-      "motivazione": "Gruppo B: approfondimento della trasmissione numerica e della rappresentazione I-Q della T10."
+      "motivazione": "Argomento del programma sulla trasmissione numerica passa-banda."
     },
     "fonti": [
       {

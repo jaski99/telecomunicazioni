@@ -4,7 +4,7 @@
   "domande_esame": [
     "T10"
   ],
-  "enunciato": "Ricavare la demodulazione a prodotto e la QAM con errore di fase. Punteggio: NON TROVATO.",
+  "enunciato": "La demodulazione coerente di una DSB-SC con errore di fase $\\Delta$ restituisce $\\hat{x}=x\\cos\\Delta$. In QAM, con riferimento locale $\\cos(\\omega_0t-\\Delta)$, le uscite sono $\\hat{x}_1=x_1\\cos\\Delta-x_2\\sin\\Delta$ e $\\hat{x}_2=x_1\\sin\\Delta+x_2\\cos\\Delta$: le componenti sono ruotate di $\\Delta$.",
   "ipotesi": [
     "I messaggi x₁ e x₂ sono reali e limitati in banda sotto ω₀; il filtro passa-basso elimina i termini attorno a 2ω₀.",
     "Oscillatore locale di frequenza corretta e scarto di fase costante Δ; guadagno del demodulatore pari a 2."
@@ -97,8 +97,8 @@
     {
       "id": "catena",
       "tipo": "blocchi",
-      "titolo": "Catena di conversione",
-      "descrizione": "Schema funzionale della conversione: i blocchi sono disposti nell’ordine in cui il segnale viene elaborato.",
+      "titolo": "Demodulazione coerente",
+      "descrizione": "Il segnale modulato entra nel demodulatore in quadratura e passa ai filtri che estraggono le due componenti.",
       "blocchi": [
         {
           "id": "b0",
@@ -366,10 +366,10 @@
   "verifica": {
     "stato": "da_verificare",
     "data": "2026-10-29",
-    "note": "Convenzione dei segni confrontata con file3 pp. 23-24. Il confronto completo con file1 e file3 pp. 25-27 resta da completare.",
+    "note": "File3 pp. 23-24 e 27 e file1 pp. 37 e 39 riportano il modulatore a prodotto e la QAM; i segni seguono il riferimento locale dichiarato.",
     "punti_aperti": [
-      "Confronto completo con il testo del docente: NON TROVATO.",
-      "Verifica puntuale dell’intero sviluppo su file1: NON TROVATO."
+      "Confrontare tutti i passaggi del caso con errore di fase con file1 p. 40 e con la convenzione di segno del testo adottato.",
+      "Corrispondenza dei riferimenti p. 9.34 e p. 9.36 con il libro: NON TROVATO."
     ]
   }
 }

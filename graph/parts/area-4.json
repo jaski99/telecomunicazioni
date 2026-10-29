@@ -1,27 +1,26 @@
 [
   {
     "id": "dim-conversione-ad",
-    "titolo": "Descrivere i tre passi della conversione A/D e il segnale numerico ottenuto",
+    "titolo": "Campionamento, quantizzazione e codifica",
     "area": 4,
     "tipo": "dimostrazione",
     "gruppo": "A",
     "worker": "W4",
-    "sapere": "Separare la discretizzazione del tempo da quantizzazione e codifica dei valori. Comprendere condizioni e limiti del procedimento.",
+    "sapere": "Ricostruire le operazioni e le ipotesi della trasformazione di un’onda analogica in parole PCM.",
     "saper_fare": [
-      "Campionare con ωs > 2ωm.",
-      "Quantizzare i campioni su L livelli."
+      "Determinare la frequenza di campionamento, il numero di bit e la velocità prodotta."
     ],
     "prerequisiti": [
       {
         "id": "conversione-ad-quantizzazione-pcm",
         "forza": "hard",
-        "motivo": "La conversione richiede il risultato indicato come prerequisito."
+        "motivo": "I livelli e le parole PCM sono le grandezze usate nella dimostrazione A/D."
       }
     ],
     "tempo_studio_min": 50,
     "priorita": {
       "livello": "alta",
-      "motivazione": "T7 richiede questo procedimento."
+      "motivazione": "T7 tratta i tre stadi A/D."
     },
     "fonti": [
       {
@@ -30,34 +29,33 @@
       },
       {
         "chiave": "FILE1",
-        "rif": "pp. 32-34 del PDF, riferimento p. 7.4 dello studente"
+        "rif": "file1 pp. 32-34; riferimento studente 7.4"
       }
     ],
     "risorse": []
   },
   {
     "id": "dim-conversione-da",
-    "titolo": "Descrivere la conversione D/A e la ricostruzione tramite filtro passa-basso",
+    "titolo": "Decodifica e ricostruzione analogica",
     "area": 4,
     "tipo": "dimostrazione",
     "gruppo": "A",
     "worker": "W4",
-    "sapere": "Decodificare i livelli, costruire il PAM e isolare la replica centrale con equalizzazione. Comprendere condizioni e limiti del procedimento.",
+    "sapere": "Collegare decodifica, spettro del PAM, filtro di ricostruzione ed errore di quantizzazione.",
     "saper_fare": [
-      "Decodificare le parole in livelli quantizzati.",
-      "Generare il PAM e isolare la replica centrale."
+      "Isolare la replica centrale e discutere l’equalizzazione nella banda utile."
     ],
     "prerequisiti": [
       {
         "id": "dim-conversione-ad",
         "forza": "hard",
-        "motivo": "La conversione richiede il risultato indicato come prerequisito."
+        "motivo": "La decodifica ricostruisce i livelli quantizzati generati nella conversione A/D."
       }
     ],
     "tempo_studio_min": 50,
     "priorita": {
       "livello": "alta",
-      "motivazione": "T8 richiede questo procedimento."
+      "motivazione": "T8 tratta il percorso D/A."
     },
     "fonti": [
       {
@@ -66,7 +64,7 @@
       },
       {
         "chiave": "FILE1",
-        "rif": "pp. 35-36 del PDF, riferimento p. 7.8 dello studente"
+        "rif": "file1 pp. 35-36; riferimento studente 7.8"
       }
     ],
     "risorse": []
@@ -78,22 +76,21 @@
     "tipo": "concetto",
     "gruppo": "A",
     "worker": "W4",
-    "sapere": "La conversione A/D rappresenta un segnale analogico mediante una sequenza di parole binarie, tramite campionamento, quantizzazione e codifica.",
+    "sapere": "Distinguere discretizzazione temporale, livelli di quantizzazione e rappresentazione binaria PCM.",
     "saper_fare": [
-      "Portare campioni di un segnale analogico su un collegamento numerico.",
-      "Un PCM usa 256 livelli e 8000 campioni al secondo. Calcolare bit per campione e velocità senza overhead."
+      "Dimensionare il numero di livelli e calcolare la velocità del flusso PCM."
     ],
     "prerequisiti": [
       {
         "id": "dim-teorema-campionamento",
         "forza": "hard",
-        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        "motivo": "Il teorema determina quando i campioni conservano l’informazione di un segnale limitato in banda."
       }
     ],
     "tempo_studio_min": 60,
     "priorita": {
       "livello": "alta",
-      "motivazione": "Prerequisito di T7 e T8; gruppo A. Punteggio delle prove: NON TROVATO."
+      "motivazione": "T7 e T8 richiedono la conversione e il recupero dei campioni."
     },
     "fonti": [
       {
@@ -114,27 +111,26 @@
     "tipo": "concetto",
     "gruppo": "B",
     "worker": "W4",
-    "sapere": "Il TDM assegna a flussi diversi intervalli temporali distinti su un collegamento condiviso; il PCM fornisce parole binarie ai flussi digitalizzati.",
+    "sapere": "Descrivere la formazione di trame TDM da sorgenti PCM e il ruolo dell’interferenza intersimbolica.",
     "saper_fare": [
-      "Combinare più sorgenti senza confondere i loro campioni.",
-      "Quattro sorgenti PCM, ognuna a 8 kcampioni/s con 8 bit a campione: trovare il carico utile totale."
+      "Calcolare la velocità utile aggregata distinguendo simboli, bit e overhead."
     ],
     "prerequisiti": [
       {
         "id": "dim-conversione-ad",
         "forza": "hard",
-        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        "motivo": "Il multiplex trasporta le parole generate dalla conversione delle sorgenti."
       },
       {
         "id": "criterio-nyquist-isi",
         "forza": "hard",
-        "motivo": "È necessario per comprendere il concetto e applicare le relazioni descritte."
+        "motivo": "La forma d’impulso sul collegamento deve controllare l’interferenza tra simboli."
       }
     ],
     "tempo_studio_min": 60,
     "priorita": {
       "livello": "media",
-      "motivazione": "Gruppo B: collegamento tra conversione A/D e criterio di Nyquist per la trasmissione numerica."
+      "motivazione": "Tema di programma sul multiplex numerico e sui collegamenti."
     },
     "fonti": [
       {

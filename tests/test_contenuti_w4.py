@@ -179,16 +179,6 @@ def test_lezioni_complete():
         assert lesson['checklist']['so_fare'] and lesson['checklist']['so_dire']
 
 
-def test_esempi_numerici_concetti():
-    assert 4 * 8000 * 8 == 256000  # TDM
-    assert math.hypot(3, 4) == 5  # inviluppo complesso
-    assert math.isclose(math.atan2(4, 3), 0.927295218, abs_tol=1e-9)
-    assert math.isclose(math.cos(math.pi/3), 0.5, abs_tol=1e-12)
-    assert 120000 / math.log2(4) == 60000  # QPSK
-    assert 2 * (75000 + 15000) == 180000  # Carson in Hz
-    assert (100 - 1, 100 + 1) == (99, 101)  # bande tono DSB, kHz
-
-
 def test_latex_puro_e_delimitatori_lezioni():
     def strings(value):
         if isinstance(value, str):
@@ -213,3 +203,42 @@ def test_latex_puro_e_delimitatori_lezioni():
             assert text.count('$') % 2 == 0, text
             for formula in re.findall(r'\${1,2}(.*?)\${1,2}', text, re.S):
                 assert formula.count('{') == formula.count('}'), formula
+
+
+def test_nessun_testo_lungo_ripetuto_tra_file_w4():
+    """Confronta interi valori testuali, non frammenti o riferimenti a ID."""
+    from collections import defaultdict
+
+    files = ([ROOT / 'graph/parts/area-4.json', ROOT / 'graph/parts/area-5.json']
+             + [ROOT / 'graph/lezioni' / f'{id}.json' for id in CONCETTI]
+             + [ROOT / 'graph/dimostrazioni' / f'{id}.json' for id in IDS])
+    contract_ids = set(contract())
+    occurrences = defaultdict(set)
+
+    def visit(value, path, key=''):
+        if isinstance(value, str):
+            if len(value) > 30 and key != 'id' and value not in contract_ids:
+                occurrences[value].add(str(path.relative_to(ROOT)))
+        elif isinstance(value, dict):
+            for k, item in value.items():
+                visit(item, path, k)
+        elif isinstance(value, list):
+            for item in value:
+                visit(item, path, key)
+
+    for path in files:
+        visit(json.loads(path.read_text(encoding='utf-8')), path)
+    repeated = {value: sorted(paths) for value, paths in occurrences.items() if len(paths) > 1}
+    assert not repeated, repeated
+
+
+def test_enunciati_con_risultato():
+    expected = {
+        'dim-spettri-modulazione-prodotto': ('S(', 'X(', 'fase', 'inferiore'),
+        'dim-conversione-ad': ('quantizza', 'PCM', 'omega_s', 'log_2'),
+        'dim-conversione-da': ('S(', 'G(', 'equalizzatore', 'quantizzazione'),
+        'dim-modulazione-prodotto-qam-errore-fase': ('cos', 'sin', 'Delta', 'ruotate'),
+    }
+    for id, terms in expected.items():
+        enunciato = load(f'graph/dimostrazioni/{id}.json')['enunciato']
+        assert all(term in enunciato for term in terms), (id, enunciato)

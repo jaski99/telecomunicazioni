@@ -4,7 +4,7 @@
   "domande_esame": [
     "T6"
   ],
-  "enunciato": "Ricavare gli spettri di ampiezza e fase di una modulazione a prodotto. Punteggio: NON TROVATO.",
+  "enunciato": "Per $s(t)=x(t)\\cos(\\omega_0t)$, la trasformata bilaterale è $S(\\omega)=[X(\\omega-\\omega_0)+X(\\omega+\\omega_0)]/2$. Nella banda positiva, le due bande laterali sono speculari: quella inferiore è ribaltata e la sua fase cambia segno rispetto alla superiore, dove definita.",
   "ipotesi": [
     "Il segnale x è reale e limitato a |ω| ≤ ωm, con ω₀ > ωm; la portante ha fase zero.",
     "Le espressioni della fase si riferiscono ai punti in cui lo spettro non si annulla."
@@ -79,8 +79,8 @@
     {
       "id": "catena",
       "tipo": "blocchi",
-      "titolo": "Catena di conversione",
-      "descrizione": "Schema funzionale della conversione: i blocchi sono disposti nell’ordine in cui il segnale viene elaborato.",
+      "titolo": "Modulatore a prodotto",
+      "descrizione": "Il messaggio moltiplica una portante cosinusoidale per generare un segnale DSB a portante soppressa.",
       "blocchi": [
         {
           "id": "b0",
@@ -293,10 +293,10 @@
   "verifica": {
     "stato": "da_verificare",
     "data": "2026-10-29",
-    "note": "Le immagini file3 pp. 18-19 mostrano il ribaltamento della banda inferiore e della fase. La formulazione bilaterale è una rielaborazione coerente con la convenzione di CONTRACTS §6.",
+    "note": "Le immagini file3 pp. 18-19 e file1 p. 28 rappresentano gli spettri mediante ampiezza e fase; qui si usa la trasformata bilaterale canonica.",
     "punti_aperti": [
-      "Confronto completo con il testo del docente: NON TROVATO.",
-      "Verifica puntuale dell’intero sviluppo su file1: NON TROVATO."
+      "Confrontare la conversione tra ampiezza e fase unilaterali delle fonti e la trasformata bilaterale impiegata nella scheda.",
+      "La corrispondenza del riferimento p. 6.12 con il libro è NON TROVATO."
     ]
   }
 }
