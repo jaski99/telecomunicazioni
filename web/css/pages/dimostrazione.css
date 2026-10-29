@@ -1,1 +1,115 @@
-/* Owner: D3. */
+/* Owner: D3. Pagina dimostrazione: testata, modalità, Studio, controlli, modalità interattive. */
+
+/* Varianti di callout usate solo da questa pagina (non ancora in components.css). */
+.callout--tip { border-color: var(--c-ok); background: var(--c-ok-bg); }
+.callout--ok { border-color: var(--c-ok); background: var(--c-ok-bg); }
+
+/* Testata */
+.dim-testata { display: flex; flex-direction: column; gap: var(--s-3); padding-block: var(--s-4) var(--s-2); }
+.dim-testata h1 { margin: 0; }
+.dim-chips { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.dim-chips .chip { max-width: 100%; }
+.dim-testata__azioni { margin: 0; }
+
+/* Modalità: tabs sticky in cima allo scroll */
+.dim-tabs { position: sticky; top: 0; z-index: 3; padding-block: var(--s-2); background: var(--c-bg); }
+.dim-tabs .scroll-x { padding-block: var(--s-1); }
+.dim-tab { min-height: var(--tap); padding: 0 var(--s-4); border: 1px solid var(--c-border); border-radius: var(--radius-sm); background: var(--c-bg); color: var(--c-text); font: inherit; white-space: nowrap; cursor: pointer; }
+.dim-tab.attivo { border-color: var(--c-primary); background: var(--c-primary); color: var(--c-bg); font-weight: 700; }
+
+/* Corpo: colonna unica; da 1024 px sidebar sticky + contenuto (colonna di 260 px, in token) */
+.dim-corpo { --dim-colonna: calc(var(--s-6) * 8 + var(--s-1)); display: flex; flex-direction: column; gap: var(--s-5); padding-bottom: calc(var(--header-height) * 3); }
+.dim-pannello { display: flex; flex-direction: column; gap: var(--s-4); min-width: 0; }
+.dim-pannello > .card, .dim-pannello > .callout, .dim-pannello > .formula, .dim-pannello > aside { margin: 0; }
+.dim-pannello > h2 { margin: var(--s-4) 0 0; }
+.dim-pannello h2.card__title { margin: 0; }
+.dim-pannello .card { padding: var(--s-4); }
+.dim-pannello .formula-box { padding: var(--s-4); }
+.dim-pannello .formula { margin: 0; }
+.dim-lista { margin: 0; padding-left: var(--s-5); }
+
+/* Controlli: barra fissa in basso su mobile, sopra la nav */
+.dim-controlli { position: fixed; z-index: 4; left: 0; right: 0; bottom: calc(var(--tap) + 1px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: var(--s-2); min-height: var(--header-height); padding: var(--s-2) var(--gutter); background: var(--c-bg); border-top: 1px solid var(--c-border); box-shadow: var(--shadow-1); }
+.dim-controlli__progresso { display: flex; align-items: center; gap: var(--s-3); }
+.dim-controlli__testo { margin: 0; }
+.dim-controlli__progresso .progress { flex: 1; min-width: 0; }
+.progress__bar { height: 100%; border-radius: var(--radius); background: var(--c-primary); }
+.dim-controlli__azioni { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); }
+.dim-controlli__azioni .btn { padding: 0 var(--s-2); font-size: var(--fs-small); }
+/* Indice dei passi: stili di base (anche se nascosto su mobile), display da 1024 px */
+.dim-indice { display: none; }
+.dim-indice__titolo { margin: var(--s-4) 0 var(--s-2); font-weight: 700; }
+.dim-indice__lista { display: flex; flex-direction: column; gap: var(--s-1); margin: 0; padding: 0; list-style: none; }
+.dim-indice__voce { display: flex; justify-content: space-between; width: 100%; min-height: var(--tap); margin: 0; padding: 0 var(--s-2); border: 1px solid transparent; border-radius: var(--radius-sm); background: transparent; color: var(--c-text); font: inherit; cursor: pointer; }
+.dim-indice__voce:hover:not(:disabled) { border-color: var(--c-border); }
+.dim-indice__voce:disabled { color: var(--c-text-muted); cursor: default; }
+.dim-indice__stato { font-size: var(--fs-small); }
+
+/* Studio: passi */
+.dim-passi { display: flex; flex-direction: column; gap: var(--s-5); margin: 0; padding: 0; list-style: none; }
+.step { display: flex; flex-direction: column; gap: var(--s-3); padding: var(--s-4); border: 1px solid var(--c-border); border-left: var(--s-1) solid var(--c-border); border-radius: var(--radius); background: var(--c-bg); scroll-margin-top: calc(var(--tap) * 2); }
+.step--rivelato { border-left-color: var(--c-primary); }
+.step:focus-visible { outline: var(--focus-width) solid var(--c-focus); outline-offset: var(--s-1); }
+.step__titolo { display: flex; align-items: center; gap: var(--s-3); margin: 0; font-size: var(--fs-h3); }
+.step__num { display: inline-flex; align-items: center; justify-content: center; flex: none; width: var(--s-6); height: var(--s-6); border-radius: 50%; background: var(--c-primary); color: var(--c-bg); font-size: var(--fs-small); font-weight: 700; }
+.step--nascosto .step__num { background: var(--c-surface-2); color: var(--c-text-muted); }
+.step__nascosto-testo { font-size: var(--fs-small); font-weight: 400; color: var(--c-text-muted); }
+.step--rivelato .step__nascosto-testo { display: none; }
+.step__corpo { display: flex; flex-direction: column; gap: var(--s-3); }
+.step__corpo .prose p { margin: 0; }
+.step__figura:empty { display: none; }
+.dim-attesa { margin: 0; padding: var(--s-4); border: 1px dashed var(--c-border); border-radius: var(--radius); color: var(--c-text-muted); }
+
+/* Notazione: lista a due colonne da desktop */
+.dim-notazione { display: grid; grid-template-columns: 1fr; gap: var(--s-3) var(--s-5); margin: 0; padding: 0; list-style: none; }
+.dim-notazione li { display: grid; grid-template-columns: auto 1fr; align-items: baseline; gap: var(--s-3); }
+.dim-notazione strong { font-weight: 700; }
+
+/* Errori frequenti */
+.dim-errori { display: flex; flex-direction: column; gap: var(--s-4); }
+.dim-errori .callout { margin: 0; }
+.dim-errori .callout p { margin: var(--s-2) 0 0; }
+
+/* Fonti: dettaglio chiuso */
+.dim-fonti summary { min-height: var(--tap); display: flex; align-items: center; font-weight: 700; cursor: pointer; }
+.dim-fonti h3 { font-size: var(--fs-body); margin: var(--s-4) 0 var(--s-2); }
+.dim-fonti h4 { font-size: var(--fs-small); margin: var(--s-3) 0 var(--s-1); }
+
+/* A buchi */
+.dim-abuchi__testo { line-height: var(--lh-body); }
+.dim-abuchi__azioni, .dim-esito { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.dim-esito { display: block; }
+.dim-esito:empty { display: none; }
+.dim-esito p { margin: 0; }
+.dim-esito ul { margin: var(--s-2) 0 0; padding-left: var(--s-5); }
+.dim-buco { display: inline-block; min-height: var(--tap); min-width: 8ch; max-width: 100%; margin-inline: var(--s-1); padding: 0 var(--s-2); border: 1px solid var(--c-border); border-radius: var(--radius-sm); background: var(--c-bg); color: var(--c-text); font: inherit; vertical-align: middle; }
+.dim-buco:focus-visible { outline: var(--focus-width) solid var(--c-focus); outline-offset: var(--s-1); }
+.dim-buco--ok { border-color: var(--c-ok); background: var(--c-ok-bg); }
+.dim-buco--errore { border-color: var(--c-danger); background: var(--c-danger-bg); }
+
+/* Recall */
+.dim-recall { display: flex; flex-direction: column; gap: var(--s-4); }
+.dim-recall > h2 { margin: 0; }
+.dim-recall__scheda { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-3); margin: 0; }
+.dim-recall__scheda p { margin: 0; }
+.dim-recall__risposta { max-width: 100%; }
+.dim-recall__risposta p { margin: 0; }
+
+/* Dal tablet: testata e corpo più larghi */
+@media (min-width: 768px) {
+  .dim-pannello .card, .step { padding: var(--s-5); }
+  .dim-pannello .formula-box { padding: var(--s-5); }
+  .dim-controlli__azioni { display: flex; flex-wrap: wrap; }
+}
+
+/* Da desktop: sidebar sticky a sinistra, contenuto a destra */
+@media (min-width: 1024px) {
+  .dim-notazione { grid-template-columns: 1fr 1fr; }
+  .dim-corpo { display: grid; grid-template-columns: var(--dim-colonna) minmax(0, 1fr); gap: var(--s-6); align-items: start; padding-bottom: 0; }
+  .dim-corpo:not(.dim-corpo--studio) { grid-template-columns: minmax(0, 1fr); }
+  .dim-controlli { position: sticky; top: calc(var(--tap) + var(--s-6)); z-index: 1; left: auto; right: auto; bottom: auto; min-height: 0; padding: var(--s-4); border: 1px solid var(--c-border); border-radius: var(--radius); box-shadow: none; max-height: calc(100vh - var(--tap) * 2); overflow-y: auto; }
+  .dim-controlli__progresso { flex-direction: column; align-items: stretch; }
+  .dim-controlli__azioni { display: flex; flex-direction: column; }
+  .dim-controlli__azioni .btn { width: 100%; }
+  .dim-indice { display: block; }
+}

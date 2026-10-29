@@ -1,0 +1,60 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { render, setup } from '../js/pages/dim/index.js';
+import { graphEsempio, memoria, elemento, documentoFinto } from './dim-fake-dom.js';
+
+test('render compone testata, tabs, controlli e le cinque modalità', () => {
+  const html = render({ graph: graphEsempio(), storage: memoria() }, { id: 'dim-test' });
+  assert.match(html, /<header class="dim-testata">/);
+  assert.match(html, /<div class="dim-tabs">/);
+  assert.match(html, /class="dim-corpo dim-corpo--studio"/);
+  for (const modo of ['studio', 'avocce', 'compatta', 'abuchi', 'recall']) {
+    assert.match(html, new RegExp(`id="modo-${modo}"`));
+  }
+});
+
+test('render ripristina i passi rivelati dal localStorage', () => {
+  const storage = memoria({ 'tlc-kg:dimostrazioni:v1.dim-test': JSON.stringify({ passiRivelati: 2 }) });
+  const html = render({ graph: graphEsempio(), storage }, { id: 'dim-test' });
+  assert.match(html, /Passo 2 di 3/);
+});
+
+test('una dimostrazione inesistente mostra un messaggio, senza ID grezzi né null', () => {
+  const html = render({ graph: graphEsempio(), storage: memoria() }, { id: 'dim-assente' });
+  assert.match(html, /Dimostrazione non trovata/);
+  assert.match(html, /<strong>dim-assente<\/strong>/);
+  assert.equal(setup(elemento(), { graph: graphEsempio(), storage: memoria() }, { id: 'dim-assente' }), undefined);
+});
+
+test('setup collega i listener e la funzione restituita li rimuove', () => {
+  const doc = documentoFinto();
+  globalThis.document = doc;
+  const pannello = elemento({ attrs: { id: 'modo-studio' } });
+  const contenitore = elemento({ children: { '[role="tablist"]': elemento(), '#modo-studio': pannello, '.dim-controlli': elemento() } });
+  const ctx = { graph: graphEsempio(), storage: memoria() };
+  const smonta = setup(contenitore, ctx, { id: 'dim-test' });
+  assert.equal(typeof smonta, 'function');
+  assert.equal(doc.ascoltatori(), 1);
+  smonta();
+  assert.equal(doc.ascoltatori(), 0);
+});
+
+test('tutte le 18 dimostrazioni del grafo costruito si renderizzano senza termini proibiti visibili', () => {
+  const graph = JSON.parse(fs.readFileSync(new URL('../graph.json', import.meta.url), 'utf8'));
+  const nodi = graph.nodi.filter((n) => n.dimostrazione);
+  assert.equal(nodi.length, 18);
+  for (const nodo of nodi) {
+    const html = render({ graph, storage: memoria() }, { id: nodo.id });
+    const visibile = html.replace(/<annotation[\s\S]*?<\/annotation>/g, '').replace(/<[^>]+>/g, ' ');
+    assert.doesNotMatch(visibile, /\b(undefined|null|NaN)\b|\[object Object\]/, nodo.id);
+    assert.doesNotMatch(visibile, /\bW[1-6]\b/, nodo.id);
+    assert.match(html, /<h1>/, nodo.id);
+  }
+});
+
+test('dimostrazione.js ri-esporta render e setup della nuova pagina', async () => {
+  const modulo = await import('../js/pages/dimostrazione.js');
+  assert.equal(modulo.render, render);
+  assert.equal(modulo.setup, setup);
+});
