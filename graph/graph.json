@@ -1344,7 +1344,7 @@
             "Scrivi l’antitrasformata: $x(t)=\\frac{1}{2\\pi}\\int_{-\\omega_{m}}^{\\omega_{m}} X_{0}e^{j\\omega t}\\,d\\omega$.",
             "Usa la simmetria: l’integrale diventa $\\frac{X_{0}}{\\pi} \\int_{0}^{\\omega_{m}} \\cos(\\omega t)d\\omega$.",
             "Integra rispetto a $\\omega$: $x(t)=\\frac{X_{0} \\sin(\\omega_{m} t)}{\\pi t}$, per t diverso da zero.",
-            "Valuta il limite $t\\to 0$ con $\\frac{\\sin u}{u}\\to 1$: $x(0)=\\frac{X_{0}\\omega_{m}}{\\pi}=\\frac{8}{\\pi}\\approx 2,546$.",
+            "Valuta il limite $t\\to 0$ con $\\frac{\\sin u}{u}\\to 1$: $x(0)=\\frac{X_{0}\\omega_{m}}{\\pi}=\\frac{8}{\\pi}\\approx 2{,}546$.",
             "Gli zeri non nulli soddisfano $\\omega_{m} t=k\\pi$, quindi $t=\\frac{k\\pi}{\\omega_{m}}$; i primi sono $\\frac{\\pm\\pi}{4}$ s.",
             "Il massimo è al centro; lobi laterali alternano segno e decadono come $\\frac{1}{|t|}$."
           ],
@@ -1359,7 +1359,7 @@
             "Integra il coseno tra zero e $\\omega_{m}$.",
             "Calcola il limite sin(u)/u e il primo zero."
           ],
-          "soluzione": "$x(t)=\\frac{2 \\sin(3t)}{\\pi t}$. Il limite in zero è $x(0)=\\frac{6}{\\pi}\\approx 1,9099$. Il primo zero positivo è $t=\\frac{\\pi}{3}$ s."
+          "soluzione": "$x(t)=\\frac{2 \\sin(3t)}{\\pi t}$. Il limite in zero è $x(0)=\\frac{6}{\\pi}\\approx 1{,}9099$. Il primo zero positivo è $t=\\frac{\\pi}{3}$ s."
         },
         "esercizio_autonomo": {
           "titolo": "Spettro di altezza $\\pi$ e semi-banda 2",
@@ -1381,7 +1381,7 @@
           "domande": [
             {
               "domanda": "Con $X_{0}=2$ e $\\omega_{m}=4$ rad/s, qual è il limite di x(t) in t=0?",
-              "risposta": "Il limite è $\\frac{X_{0}\\omega_{m}}{\\pi}=\\frac{8}{\\pi}\\approx 2,546$; si ottiene usando $\\frac{\\sin(\\omega_{m} t)}{t}\\to \\omega_{m}$."
+              "risposta": "Il limite è $\\frac{X_{0}\\omega_{m}}{\\pi}=\\frac{8}{\\pi}\\approx 2{,}546$; si ottiene usando $\\frac{\\sin(\\omega_{m} t)}{t}\\to \\omega_{m}$."
             },
             {
               "domanda": "Qual è il passaggio chiave?",
@@ -1402,7 +1402,7 @@
           },
           {
             "fronte": "Come si verificano centro e primi zeri di x(t)?",
-            "retro": "Con $X_{0}=2$ e $\\omega_{m}=4$, $x(0)=\\frac{8}{\\pi}\\approx 2,546$; gli zeri più vicini all’origine sono $t=\\frac{\\pm\\pi}{4}$ s."
+            "retro": "Con $X_{0}=2$ e $\\omega_{m}=4$, $x(0)=\\frac{8}{\\pi}\\approx 2{,}546$; gli zeri più vicini all’origine sono $t=\\frac{\\pm\\pi}{4}$ s."
           }
         ],
         "checklist": {
@@ -1419,7 +1419,7 @@
             "id": "spettro-rettangolare",
             "tipo": "grafico",
             "titolo": "Spettro rettangolare bilatero",
-            "descrizione": "Banda piatta da $-\\omega_{m}$ a $+\\omega_{m}$ con supporto simmetrico.",
+            "descrizione": "Banda piatta da −ωm a +ωm con supporto simmetrico.",
             "asse_x": {
               "etichetta": "ω/ωₘ",
               "min": -2,
@@ -1528,8 +1528,8 @@
             "Integra il rettangolo in un periodo: $c_{n}=(\\frac{1}{T})\\int_{-\\frac{\\tau}{2}}^{\\frac{\\tau}{2}} A e^{-j n\\omega_{0} t}\\,dt$.",
             "Per n=0, l’integrale vale $A\\tau$, dunque $c_{0}=\\frac{A\\tau}{T}=\\frac{2}{3}$.",
             "Per $n\\ne 0$, integra l’esponenziale simmetrico: $c_{n}=(\\frac{A\\tau}{T})\\operatorname{sinc}(\\frac{n\\omega_{0}\\tau}{2})=(\\frac{2}{3})\\operatorname{sinc}(\\frac{n\\pi}{3})$.",
-            "Per n=1: $c_{1}=(\\frac{2}{3})(\\frac{\\sin(\\frac{\\pi}{3})}{\\frac{\\pi}{3}})=\\frac{\\sqrt{3}}{\\pi}\\approx 0,551$; la fase è 0.",
-            "Per n=2: $c_{2}=(\\frac{2}{3})(\\frac{\\sin(\\frac{2\\pi}{3})}{\\frac{2\\pi}{3}})=\\frac{\\sqrt{3}}{2\\pi}\\approx 0,276$; fase 0.",
+            "Per n=1: $c_{1}=(\\frac{2}{3})(\\frac{\\sin(\\frac{\\pi}{3})}{\\frac{\\pi}{3}})=\\frac{\\sqrt{3}}{\\pi}\\approx 0{,}551$; la fase è 0.",
+            "Per n=2: $c_{2}=(\\frac{2}{3})(\\frac{\\sin(\\frac{2\\pi}{3})}{\\frac{2\\pi}{3}})=\\frac{\\sqrt{3}}{2\\pi}\\approx 0{,}276$; fase 0.",
             "Per n=3, il seno si annulla: $c_{3}=0$, quindi la fase non è definita su quella riga. Per un impulso traslato di $t_{c}$ moltiplica per $e^{-j n\\omega_{0} t_{c}}$ e usa sempre $\\phi_{n}=\\operatorname{arg}(c_{n})$."
           ],
           "soluzione": "Per il rettangolo centrato i coefficienti sono reali e la fase può essere 0 o $\\pi$ secondo il segno; per impulsi traslati la fase comprende il termine lineare in n. La frase “fase $0/\\pi$” non vale in generale senza dichiarare la centratura. A2 sulle densità unilaterali/bilaterali non riguarda questa serie a righe.",
@@ -1543,13 +1543,13 @@
             "Valuta $\\operatorname{sinc}(\\frac{\\pi}{4})$ e $\\operatorname{sinc}(\\frac{\\pi}{2})$.",
             "Dichiara la fase perché i coefficienti sono reali positivi."
           ],
-          "soluzione": "$c_{0}=\\frac{\\tau}{T}=\\frac{1}{4}$. $c_{1}=(\\frac{1}{4})\\operatorname{sinc}(\\frac{\\pi}{4})=\\frac{\\sqrt{2}}{2\\pi}\\approx 0,2251$; $c_{2}=(\\frac{1}{4})\\operatorname{sinc}(\\frac{\\pi}{2})=\\frac{1}{2\\pi}\\approx 0,1592$. Entrambi sono positivi e quindi $\\phi_{1}=\\phi_{2}=0$."
+          "soluzione": "$c_{0}=\\frac{\\tau}{T}=\\frac{1}{4}$. $c_{1}=(\\frac{1}{4})\\operatorname{sinc}(\\frac{\\pi}{4})=\\frac{\\sqrt{2}}{2\\pi}\\approx 0{,}2251$; $c_{2}=(\\frac{1}{4})\\operatorname{sinc}(\\frac{\\pi}{2})=\\frac{1}{2\\pi}\\approx 0{,}1592$. Entrambi sono positivi e quindi $\\phi_{1}=\\phi_{2}=0$."
         },
         "esercizio_autonomo": {
           "titolo": "Verifica una successione con $\\tau=\\frac{T}{4}$",
           "testo": "Per A=1, $\\tau=\\frac{T}{4}$ e impulsi centrati, calcola $c_{0},c_{1},c_{2}$, le fasi e il primo indice positivo con coefficiente nullo.",
           "suggerimento": "Controllo che le righe siano distanziate di $\\omega_{0}$.",
-          "soluzione_attesa": "$c_{0}=\\frac{1}{4}$. $c_{1}=\\frac{\\sqrt{2}}{2\\pi}\\approx 0,2251$ e $c_{2}=\\frac{1}{2\\pi}\\approx 0,1592$, entrambi con fase 0. Per n=4, $\\operatorname{sinc}(\\frac{n\\pi}{4})=\\operatorname{sinc}(\\pi)=0$: la quarta armonica è nulla e la fase non è definita."
+          "soluzione_attesa": "$c_{0}=\\frac{1}{4}$. $c_{1}=\\frac{\\sqrt{2}}{2\\pi}\\approx 0{,}2251$ e $c_{2}=\\frac{1}{2\\pi}\\approx 0{,}1592$, entrambi con fase 0. Per n=4, $\\operatorname{sinc}(\\frac{n\\pi}{4})=\\operatorname{sinc}(\\pi)=0$: la quarta armonica è nulla e la fase non è definita."
         },
         "errori_trappole": [
           {
@@ -1565,7 +1565,7 @@
           "domande": [
             {
               "domanda": "Con A=2 e $\\frac{\\tau}{T}=\\frac{1}{3}$, quali sono $c_{0}$ e i moduli delle prime due armoniche?",
-              "risposta": "$c_{0}=\\frac{2}{3}$, $|c_{1}|=\\frac{\\sqrt{3}}{\\pi}\\approx 0,551$ e $|c_{2}|=\\frac{\\sqrt{3}}{2\\pi}\\approx 0,276$; entrambe le fasi sono zero."
+              "risposta": "$c_{0}=\\frac{2}{3}$, $|c_{1}|=\\frac{\\sqrt{3}}{\\pi}\\approx 0{,}551$ e $|c_{2}|=\\frac{\\sqrt{3}}{2\\pi}\\approx 0{,}276$; entrambe le fasi sono zero."
             },
             {
               "domanda": "Qual è il passaggio chiave?",
@@ -1586,7 +1586,7 @@
           },
           {
             "fronte": "Quali coefficienti si ottengono per A=2 e $\\tau=\\frac{T}{3}$?",
-            "retro": "$c_{0}=\\frac{2}{3}$, $c_{1}=\\frac{\\sqrt{3}}{\\pi}\\approx 0,551$ e $c_{2}=\\frac{\\sqrt{3}}{2\\pi}\\approx 0,276$; la riga n=3 è nulla e non ha fase."
+            "retro": "$c_{0}=\\frac{2}{3}$, $c_{1}=\\frac{\\sqrt{3}}{\\pi}\\approx 0{,}551$ e $c_{2}=\\frac{\\sqrt{3}}{2\\pi}\\approx 0{,}276$; la riga n=3 è nulla e non ha fase."
           }
         ],
         "checklist": {
@@ -1603,7 +1603,7 @@
             "id": "spettro-a-righe",
             "tipo": "grafico",
             "titolo": "Righe armoniche con inviluppo sinc",
-            "descrizione": "Righe a multipli della pulsazione fondamentale; $\\frac{|c_{n}|}{c_{0}}=|\\operatorname{sinc}(\\frac{n\\pi}{3})|$ e inviluppo sinc campionato fitto. La fase è $\\operatorname{arg}(c_{n})$.",
+            "descrizione": "Righe a multipli della pulsazione fondamentale; |cₙ|/c₀=|sinc(nπ/3)| e inviluppo sinc campionato fitto. La fase è arg(cₙ).",
             "asse_x": {
               "etichetta": "ω/ω₀",
               "min": -5,
@@ -3288,7 +3288,7 @@
             "id": "fase-serie-impulsi",
             "tipo": "grafico",
             "titolo": "Fase delle righe della serie",
-            "descrizione": "Per impulsi centrati i coefficienti reali hanno fase zero se positivi e $\\pi$ se negativi; le righe nulle non hanno fase definita.",
+            "descrizione": "Per impulsi centrati i coefficienti reali hanno fase zero se positivi e π se negativi; le righe nulle non hanno fase definita.",
             "asse_x": {
               "etichetta": "n=ω/ω₀",
               "min": -5,
@@ -3398,7 +3398,7 @@
         "spiegazione": "### Trasformata e forma sinc\nPer un impulso isolato lo spettro è continuo. La simmetria temporale del rettangolo centrato consente di accoppiare gli esponenziali ai due estremi: il risultato è reale e proporzionale a una sinc. La definizione adottata è sinc(u)=sin(u)/u, con sinc(0)=1 per continuità.\n\n### Ampiezza, fase e traslazione\nLa magnitudine non cambia se il rettangolo è traslato, ma la trasformata acquista il fattore $e^{-j\\omega t_{c}}$. La fase corretta si ricava come arg(X): per il rettangolo centrato è 0 o $\\pi$ a seconda del segno della sinc e non è definita agli zeri. Se l’impulso è definito sull’intervallo $[0,\\tau]$, il fattore è $e^{-\\frac{j\\omega \\tau}{2}}$.\n\n### Lettura del grafico\nL’altezza a zero è l’area $A\\tau$; gli zeri sono a $\\omega=\\frac{\\pm2\\pi k}{\\tau}$. I lobi si alternano di segno in X, ma la magnitudine resta non negativa. Nel materiale d’esercizio la “ampiezza spettrale” è normalizzata a $\\frac{|X|}{\\pi}$: segnala esplicitamente la convenzione se riporti quel grafico.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $X(\\omega)=A\\tau\\,\\operatorname{sinc}\\!\\left(\\frac{\\omega\\tau}{2}\\right)e^{-j\\omega t_c}$.",
         "analogia": {
           "testo": "Un impulso breve lascia una traccia spettrale larga, come un colpo secco che eccita molte frequenze; la durata determina la distanza tra gli zeri della sinc.",
-          "limite": "L’immagine del colpo non determina la fase: la traslazione $t_{c}$ introduce $e^(-j\\omega t_{c})$, e la normalizzazione $V=\\frac{|X|}{\\pi}$ non coincide con X."
+          "limite": "L’immagine del colpo non determina la fase: la traslazione $t_{c}$ introduce $e^{-j\\omega t_{c}}$, e la normalizzazione $V=\\frac{|X|}{\\pi}$ non coincide con X."
         },
         "worked_example": {
           "titolo": "Esempio guidato E2",
@@ -3408,9 +3408,9 @@
             "Inserisci la definizione di Fourier: $X(\\omega)=A\\int_{-\\frac{\\tau}{2}}^{\\frac{\\tau}{2}} e^{-j\\omega t}\\,dt$.",
             "Integra: $X(\\omega)=A[\\frac{e^{-j\\omega t}}{-j\\omega}]$ agli estremi.",
             "Raccogli i termini coniugati: $X(\\omega)=\\frac{A\\cdot 2\\sin(\\frac{\\omega\\tau}{2})}{\\omega}=A\\tau \\operatorname{sinc}(\\frac{\\omega\\tau}{2})$.",
-            "Al limite $\\omega\\to 0$, sinc(0)=1, perciò $X(0)=A\\tau=0,006$.",
-            "Gli zeri positivi soddisfano $\\frac{\\omega\\tau}{2}=k\\pi$, dunque il primo è $\\omega=\\frac{2\\pi}{\\tau}\\approx 3141,59$ rad/s.",
-            "A $\\omega=\\frac{\\pi}{\\tau}$, $X=A\\tau \\operatorname{sinc}(\\frac{\\pi}{2})=\\frac{A\\tau\\cdot 2}{\\pi}\\approx 0,00382$. Per il rettangolo centrato la fase è 0 dove X>0 e $\\pi$ dove X<0; ai nodi non è definita."
+            "Al limite $\\omega\\to 0$, sinc(0)=1, perciò $X(0)=A\\tau=0{,}006$.",
+            "Gli zeri positivi soddisfano $\\frac{\\omega\\tau}{2}=k\\pi$, dunque il primo è $\\omega=\\frac{2\\pi}{\\tau}\\approx 3141{,}59$ rad/s.",
+            "A $\\omega=\\frac{\\pi}{\\tau}$, $X=A\\tau \\operatorname{sinc}(\\frac{\\pi}{2})=\\frac{A\\tau\\cdot 2}{\\pi}\\approx 0{,}00382$. Per il rettangolo centrato la fase è 0 dove X>0 e $\\pi$ dove X<0; ai nodi non è definita."
           ],
           "soluzione": "La magnitudine è $|X(\\omega)|$ e la fase è $\\operatorname{arg} X(\\omega)$. L’appunto adotta, per $\\omega\\ge 0$, una normalizzazione $V(\\omega)=\\frac{|X(\\omega)|}{\\pi}$: si mantiene questa definizione quando si chiede lo spettro di ampiezza, senza confonderla con la trasformata X.",
           "perche_funziona": "L’integrale esatto sul supporto finito genera la sinc; il limite rimuove la forma $\\frac{0}{0}$ in zero e gli zeri si ricavano dal numeratore sinusoidale."
@@ -3429,7 +3429,7 @@
           "titolo": "Impulso centrato di ampiezza uno",
           "testo": "Per A=1 e $\\tau=4$ s, determina X(0), il primo zero positivo e $X(\\frac{\\pi}{\\tau})$, mantenendo la convenzione sinc(u)=sin(u)/u.",
           "suggerimento": "Controllo X(0) con l’area del rettangolo.",
-          "soluzione_attesa": "$X(\\omega)=4 \\operatorname{sinc}(2\\omega)$. X(0)=4. Il primo zero è $\\omega=\\frac{\\pi}{2}$ rad/s. A $\\omega=\\frac{\\pi}{4}$ rad/s, $X=4 \\operatorname{sinc}(\\frac{\\pi}{2})=\\frac{8}{\\pi}\\approx 2,546$."
+          "soluzione_attesa": "$X(\\omega)=4 \\operatorname{sinc}(2\\omega)$. X(0)=4. Il primo zero è $\\omega=\\frac{\\pi}{2}$ rad/s. A $\\omega=\\frac{\\pi}{4}$ rad/s, $X=4 \\operatorname{sinc}(\\frac{\\pi}{2})=\\frac{8}{\\pi}\\approx 2{,}546$."
         },
         "errori_trappole": [
           {
@@ -3445,7 +3445,7 @@
           "domande": [
             {
               "domanda": "Per A=3 e $\\tau=2$ ms, che valore assume X(0) e qual è la sua unità?",
-              "risposta": "$X(0)=A\\tau=0,006$: è l’area dell’impulso rettangolare, con unità di ampiezza per secondo."
+              "risposta": "$X(0)=A\\tau=0{,}006$: è l’area dell’impulso rettangolare, con unità di ampiezza per secondo."
             },
             {
               "domanda": "Qual è il passaggio chiave?",
@@ -3453,7 +3453,7 @@
             },
             {
               "domanda": "Dove cade il primo zero positivo e quanto vale X alla pulsazione $\\frac{\\pi}{\\tau}$?",
-              "risposta": "Il primo zero è $\\frac{2\\pi}{\\tau}\\approx 3141,59$ rad/s; a $\\frac{\\pi}{\\tau}$, $X=\\frac{0,006\\cdot 2}{\\pi}\\approx 0,00382$."
+              "risposta": "Il primo zero è $\\frac{2\\pi}{\\tau}\\approx 3141{,}59$ rad/s; a $\\frac{\\pi}{\\tau}$, $X=\\frac{0{,}006\\cdot 2}{\\pi}\\approx 0{,}00382$."
             }
           ],
           "spiega_con_parole_tue": "Collega l’area $A\\tau$ al valore X(0), poi illustra come la durata $\\tau$ controlli zeri e larghezza del lobo sinc."
@@ -3466,7 +3466,7 @@
           },
           {
             "fronte": "Che cosa fissano area e durata del rettangolo?",
-            "retro": "Per A=3, $\\tau=2$ ms: X(0)=0,006; il primo zero è circa 3141,59 rad/s e $X(\\frac{\\pi}{\\tau})\\approx 0,00382$."
+            "retro": "Per A=3, $\\tau=2$ ms: X(0)=0,006; il primo zero è circa 3141,59 rad/s e $X(\\frac{\\pi}{\\tau})\\approx 0{,}00382$."
           }
         ],
         "checklist": {
@@ -3483,7 +3483,7 @@
             "id": "spettro-rettangolo",
             "tipo": "grafico",
             "titolo": "Modulo sinc di un impulso rettangolare",
-            "descrizione": "Spettro continuo, massimo in zero e zeri a multipli di $\\frac{2\\pi}{\\tau}$.",
+            "descrizione": "Spettro continuo, massimo in zero e zeri a multipli di 2π/τ.",
             "asse_x": {
               "etichetta": "ωτ/2",
               "min": -12,
@@ -4472,7 +4472,7 @@
             "id": "fase-rettangolo",
             "tipo": "grafico",
             "titolo": "Fase dello spettro rettangolare",
-            "descrizione": "Per il rettangolo centrato la fase è zero dove la sinc è positiva e $\\pi$ dove è negativa; ai suoi zeri non è definita.",
+            "descrizione": "Per il rettangolo centrato la fase è zero dove la sinc è positiva e π dove è negativa; ai suoi zeri non è definita.",
             "asse_x": {
               "etichetta": "ωτ/(2π)",
               "min": 0,
@@ -6333,7 +6333,7 @@
           {
             "id": "ampiezza-h-trasversale-esempio",
             "tipo": "grafico",
-            "titolo": "Esempio: ampiezza di $H(\\omega)$ per due soli pesi",
+            "titolo": "Esempio: ampiezza di H(ω) per due soli pesi",
             "descrizione": "Modulo della funzione di trasferimento di un filtro trasversale con due soli pesi, uno e zero virgola cinque, e ritardo elementare di un secondo: la curva è periodica in pulsazione con periodo due pi greco diviso T, vale uno virgola cinque in continua e zero virgola cinque a metà periodo.",
             "asse_x": {
               "etichetta": "ω (rad/s), T = 1 s",
@@ -7762,8 +7762,8 @@
         "scenario": "La rete con condensatore in serie e uscita sul resistore è un passa-alto del primo ordine. A bassa frequenza blocca, mentre ad alta frequenza trasferisce quasi tutta la tensione. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
         "definizione_esame": {
           "definizione": "Area 2 — CR con uscita sul resistore: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-          "scopo": "Per $R=2 \\mathrm{k}\\Omega$ e $C=0,25 \\mu\\mathrm{F}$, ricavare $H(\\omega)$, determinare il taglio a 2000 rad/s e verificare modulo e fase a tale pulsazione.",
-          "esempio": "Con $R=2 \\mathrm{k}\\Omega$ e $C=0,25 \\mu\\mathrm{F}$ calcola $\\omega_{c}$, modulo e fase in $\\omega_{c}$."
+          "scopo": "Per $R=2 \\mathrm{k}\\Omega$ e $C=0{,}25 \\mu\\mathrm{F}$, ricavare $H(\\omega)$, determinare il taglio a 2000 rad/s e verificare modulo e fase a tale pulsazione.",
+          "esempio": "Con $R=2 \\mathrm{k}\\Omega$ e $C=0{,}25 \\mu\\mathrm{F}$ calcola $\\omega_{c}$, modulo e fase in $\\omega_{c}$."
         },
         "spiegazione": "### Riconosci l’uscita\nQui il condensatore è in serie all’ingresso e il resistore è collegato verso il riferimento; l’uscita è sul resistore. Il partitore complesso produce $H=\\frac{R}{R+ZC}$, quindi la presenza del fattore $\\omega$ al numeratore anticipa il comportamento passa-alto.\n\n### Caratteristiche\nIl modulo cresce da zero a uno e raggiunge $\\frac{1}{\\sqrt{2}}$ in $\\omega_{c}=\\frac{1}{RC}$. L’argomento di $j\\omega RC$ è $\\frac{\\pi}{2}$, mentre quello del denominatore è $\\arctan(\\omega RC)$; sottraendoli si ottiene la fase. A taglio la fase vale $\\frac{\\pi}{4}$.\n\n### Confronto e trappole\nLa rete RC con uscita sul condensatore ha $H=\\frac{1}{1+j\\omega RC}$, modulo decrescente e fase negativa. La rete CR di questo esercizio ha il fattore $j\\omega RC$, modulo crescente e fase che scende da $\\frac{\\pi}{2}$ a zero. Non scambiare né la formula del modulo né il segno della fase. Dimensioni: $\\omega RC$ è adimensionale.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $H(\\omega)=\\frac{j\\omega RC}{1+j\\omega RC},\\qquad \\omega_c=\\frac{1}{RC}$.",
         "analogia": {
@@ -7772,7 +7772,7 @@
         },
         "worked_example": {
           "titolo": "Esempio guidato E6",
-          "problema": "Con $R=2 \\mathrm{k}\\Omega$ e $C=0,25 \\mu\\mathrm{F}$ calcola $\\omega_{c}$, modulo e fase in $\\omega_{c}$.",
+          "problema": "Con $R=2 \\mathrm{k}\\Omega$ e $C=0{,}25 \\mu\\mathrm{F}$ calcola $\\omega_{c}$, modulo e fase in $\\omega_{c}$.",
           "passi": [
             "Le impedenze sono $ZC=\\frac{1}{j\\omega C}$ e ZR=R; l’uscita è sul resistore.",
             "Applica il partitore: $H=\\frac{R}{R+\\frac{1}{j\\omega C}}$.",
@@ -7785,20 +7785,20 @@
           "perche_funziona": "L’uscita sul resistore porta al numeratore $j\\omega RC$; questo fattore distingue il passa-alto CR dalla rete RC con uscita sul condensatore."
         },
         "completion_problem": {
-          "titolo": "Valuta la rete CR al taglio per $R=2 \\mathrm{k}\\Omega$ e $C=0,25 \\mu\\mathrm{F}$",
+          "titolo": "Valuta la rete CR al taglio per $R=2 \\mathrm{k}\\Omega$ e $C=0{,}25 \\mu\\mathrm{F}$",
           "testo": "Determina $\\omega_{c}$, modulo e fase della rete CR al punto di taglio.",
           "passi_mancanti": [
             "Calcola il prodotto RC e il suo inverso.",
             "Inserisci $\\omega_{c}RC=1$ nell’espressione di H.",
             "Separa gli argomenti di numeratore e denominatore."
           ],
-          "soluzione": "RC=0,0005 s e $\\omega_{c}=2000$ rad/s. In $\\omega_{c}$ il modulo è $\\frac{1}{\\sqrt{2}}\\approx 0,7071$ e la fase è $\\frac{\\pi}{2}-\\arctan(1)=\\frac{\\pi}{4}$ rad."
+          "soluzione": "RC=0,0005 s e $\\omega_{c}=2000$ rad/s. In $\\omega_{c}$ il modulo è $\\frac{1}{\\sqrt{2}}\\approx 0{,}7071$ e la fase è $\\frac{\\pi}{2}-\\arctan(1)=\\frac{\\pi}{4}$ rad."
         },
         "esercizio_autonomo": {
-          "titolo": "CR con $R=10 \\mathrm{k}\\Omega$ e $C=0,1 \\mu\\mathrm{F}$",
+          "titolo": "CR con $R=10 \\mathrm{k}\\Omega$ e $C=0{,}1 \\mu\\mathrm{F}$",
           "testo": "Trova $\\omega_{c}$ e le caratteristiche al taglio; poi calcola |H| e la fase quando $\\omega=2\\omega_{c}$.",
           "suggerimento": "Controllo che l’uscita sia sul resistore.",
-          "soluzione_attesa": "RC=0,001 s, perciò $\\omega_{c}=1000$ rad/s. Al taglio $|H|=\\frac{1}{\\sqrt{2}}$ e fase $\\frac{\\pi}{4}$. Per $\\omega=2\\omega_{c}$, $|H|=\\frac{2}{\\sqrt{5}}\\approx 0,8944$ e fase $\\frac{\\pi}{2}-\\arctan(2)\\approx 0,46365$ rad."
+          "soluzione_attesa": "RC=0,001 s, perciò $\\omega_{c}=1000$ rad/s. Al taglio $|H|=\\frac{1}{\\sqrt{2}}$ e fase $\\frac{\\pi}{4}$. Per $\\omega=2\\omega_{c}$, $|H|=\\frac{2}{\\sqrt{5}}\\approx 0{,}8944$ e fase $\\frac{\\pi}{2}-\\arctan(2)\\approx 0{,}46365$ rad."
         },
         "errori_trappole": [
           {
@@ -7841,7 +7841,7 @@
         "checklist": {
           "so_fare": [
             "Applico il partitore con uscita R e ricavo $H=\\frac{j\\omega RC}{1+j\\omega RC}$.",
-            "Uso $R=2 \\mathrm{k}\\Omega$ e $C=0,25 \\mu\\mathrm{F}$ per calcolare $\\omega_{c}$ e verifico i due limiti del modulo."
+            "Uso $R=2 \\mathrm{k}\\Omega$ e $C=0{,}25 \\mu\\mathrm{F}$ per calcolare $\\omega_{c}$ e verifico i due limiti del modulo."
           ],
           "so_dire": [
             "Descrivo la rete CR come passa-alto e distinguo la sua fase da quella della configurazione RC."
@@ -7852,7 +7852,7 @@
             "id": "cr-modulo",
             "tipo": "grafico",
             "titolo": "Modulo del passa-alto CR",
-            "descrizione": "Il modulo cresce da zero a uno e vale $\\frac{1}{\\sqrt{2}}$ per $\\omega RC=1$.",
+            "descrizione": "Il modulo cresce da zero a uno e vale 1/√2 per ωRC=1.",
             "asse_x": {
               "etichetta": "ωRC",
               "min": 0,
@@ -8287,7 +8287,7 @@
             "id": "cr-fase",
             "tipo": "grafico",
             "titolo": "Fase del passa-alto CR",
-            "descrizione": "La fase parte da $\\frac{\\pi}{2}$, passa per $\\frac{\\pi}{4}$ al taglio e tende a zero.",
+            "descrizione": "La fase parte da π/2, passa per π/4 al taglio e tende a zero.",
             "asse_x": {
               "etichetta": "ωRC",
               "min": 0,
@@ -8782,7 +8782,7 @@
             "Poiché l’uscita è ai capi del condensatore, applica il partitore: $H=\\frac{ZC}{R+ZC}$.",
             "Dividi numeratore e denominatore per ZC: $H=\\frac{1}{1+j\\omega RC}$.",
             "La pulsazione di taglio è $\\omega_{c}=\\frac{1}{RC}=1000$ rad/s.",
-            "A $\\omega=\\omega_{c}$, il modulo è $\\frac{1}{\\sqrt{2}}\\approx 0,707$ e la fase è $-\\frac{\\pi}{4}$.",
+            "A $\\omega=\\omega_{c}$, il modulo è $\\frac{1}{\\sqrt{2}}\\approx 0{,}707$ e la fase è $-\\frac{\\pi}{4}$.",
             "Per $\\omega\\to 0$, $|H|\\to 1$ e la fase tende a 0; per $\\omega\\to \\infty$, il modulo tende a zero e la fase a $-\\frac{\\pi}{2}$."
           ],
           "soluzione": "La fase è riferita a frequenze positive. La rete passa-basso attenua le componenti rapide; non attribuire la fase positiva della configurazione CR a questa uscita.",
@@ -8796,13 +8796,13 @@
             "Sostituisci $\\omega_{c}RC=1$ in H.",
             "Valuta modulo e argomento."
           ],
-          "soluzione": "$RC=10^{-3}$ s, quindi $\\omega_{c}=1000$ rad/s. $H(\\omega_{c})=\\frac{1}{1+j}=\\frac{1-j}{2}$; $|H|=\\frac{1}{\\sqrt{2}}\\approx 0,7071$ e fase $-\\frac{\\pi}{4}$ rad."
+          "soluzione": "$RC=10^{-3}$ s, quindi $\\omega_{c}=1000$ rad/s. $H(\\omega_{c})=\\frac{1}{1+j}=\\frac{1-j}{2}$; $|H|=\\frac{1}{\\sqrt{2}}\\approx 0{,}7071$ e fase $-\\frac{\\pi}{4}$ rad."
         },
         "esercizio_autonomo": {
-          "titolo": "Rete RC con $R=2 \\mathrm{k}\\Omega$ e $C=0,5 \\mu\\mathrm{F}$",
+          "titolo": "Rete RC con $R=2 \\mathrm{k}\\Omega$ e $C=0{,}5 \\mu\\mathrm{F}$",
           "testo": "Calcola $\\omega_{c}$, $H(\\omega_{c})$, modulo e fase; indica anche i limiti del modulo agli estremi di frequenza.",
           "suggerimento": "Verifico che l’uscita sia sul condensatore.",
-          "soluzione_attesa": "RC=0,001 s e $\\omega_{c}=1000$ rad/s. $H(\\omega_{c})=\\frac{1}{1+j}=\\frac{1-j}{2}$, $|H|=\\frac{1}{\\sqrt{2}}\\approx 0,7071$ e fase $-\\frac{\\pi}{4}$. Il modulo tende a 1 per $\\omega\\to 0$ e a 0 per $\\omega\\to \\infty$."
+          "soluzione_attesa": "RC=0,001 s e $\\omega_{c}=1000$ rad/s. $H(\\omega_{c})=\\frac{1}{1+j}=\\frac{1-j}{2}$, $|H|=\\frac{1}{\\sqrt{2}}\\approx 0{,}7071$ e fase $-\\frac{\\pi}{4}$. Il modulo tende a 1 per $\\omega\\to 0$ e a 0 per $\\omega\\to \\infty$."
         },
         "errori_trappole": [
           {
@@ -8818,7 +8818,7 @@
           "domande": [
             {
               "domanda": "A $\\omega_{c}=1000$ rad/s, quali modulo e fase ha la rete RC con uscita sul condensatore?",
-              "risposta": "$H(\\omega_{c})=\\frac{1-j}{2}$: il modulo è $\\frac{1}{\\sqrt{2}}\\approx 0,707$ e la fase $-\\frac{\\pi}{4}$."
+              "risposta": "$H(\\omega_{c})=\\frac{1-j}{2}$: il modulo è $\\frac{1}{\\sqrt{2}}\\approx 0{,}707$ e la fase $-\\frac{\\pi}{4}$."
             },
             {
               "domanda": "Qual è il passaggio chiave?",
@@ -8856,7 +8856,7 @@
             "id": "rc-modulo",
             "tipo": "grafico",
             "titolo": "Modulo del passa-basso RC",
-            "descrizione": "Il modulo scende da uno a zero e vale $\\frac{1}{\\sqrt{2}}$ per $\\omega RC=1$.",
+            "descrizione": "Il modulo scende da uno a zero e vale 1/√2 per ωRC=1.",
             "asse_x": {
               "etichetta": "ωRC",
               "min": 0,
@@ -9291,7 +9291,7 @@
             "id": "rc-fase",
             "tipo": "grafico",
             "titolo": "Fase del passa-basso RC",
-            "descrizione": "La fase è negativa, passa da zero a $-\\frac{\\pi}{2}$ e vale $-\\frac{\\pi}{4}$ al taglio.",
+            "descrizione": "La fase è negativa, passa da zero a −π/2 e vale −π/4 al taglio.",
             "asse_x": {
               "etichetta": "ωRC",
               "min": 0,
@@ -13766,13 +13766,13 @@
             "Imponi altezza $x_{0}T$ e supporto $|\\omega|\\le \\frac{\\pi}{T}$.",
             "Verifica che una sola replica copra ogni punto di un periodo spettrale."
           ],
-          "soluzione": "$\\frac{\\pi}{T}=1000\\pi$ rad/s e il passo tra repliche è $\\frac{2\\pi}{T}=2000\\pi$ rad/s. Scegli $X(\\omega)=0,002$ per $|\\omega|\\le 1000\\pi$ e zero altrove: gli intervalli delle repliche contigue coprono un periodo e la loro somma è $x_{0}T=0,002$, a parte la convenzione ai bordi."
+          "soluzione": "$\\frac{\\pi}{T}=1000\\pi$ rad/s e il passo tra repliche è $\\frac{2\\pi}{T}=2000\\pi$ rad/s. Scegli $X(\\omega)=0{,}002$ per $|\\omega|\\le 1000\\pi$ e zero altrove: gli intervalli delle repliche contigue coprono un periodo e la loro somma è $x_{0}T=0{,}002$, a parte la convenzione ai bordi."
         },
         "esercizio_autonomo": {
           "titolo": "Verifica il caso limite con T=2 ms",
           "testo": "Ponendo T=2 ms e $x_{0}=3$, calcola $\\frac{\\pi}{T}$, $\\omega_{s}$ e l’altezza/supporto dello spettro rettangolare al limite.",
           "suggerimento": "Controllo che l’altezza $x_{0}T$ abbia unità di trasformata.",
-          "soluzione_attesa": "$\\frac{\\pi}{T}=500\\pi$ rad/s e $\\omega_{s}=\\frac{2\\pi}{T}=1000\\pi$ rad/s. Lo spettro di limite è $X(\\omega)=0,006$ per $|\\omega|\\le 500\\pi$ rad/s, nullo fuori. Ogni frequenza appartiene alla copertura periodica e la somma vale $x_{0}T=0,006$, con i bordi interpretati coerentemente."
+          "soluzione_attesa": "$\\frac{\\pi}{T}=500\\pi$ rad/s e $\\omega_{s}=\\frac{2\\pi}{T}=1000\\pi$ rad/s. Lo spettro di limite è $X(\\omega)=0{,}006$ per $|\\omega|\\le 500\\pi$ rad/s, nullo fuori. Ogni frequenza appartiene alla copertura periodica e la somma vale $x_{0}T=0{,}006$, con i bordi interpretati coerentemente."
         },
         "errori_trappole": [
           {
@@ -13826,7 +13826,7 @@
             "id": "nyquist-repliche",
             "tipo": "grafico",
             "titolo": "Repliche spettrali al limite di Nyquist",
-            "descrizione": "Un rettangolo di ampiezza $x_{0}T$ e larghezza $\\frac{2\\pi}{T}$ replica senza lacune; la somma periodica resta costante nel modello ideale.",
+            "descrizione": "Un rettangolo di ampiezza x₀T e larghezza 2π/T replica senza lacune; la somma periodica resta costante nel modello ideale.",
             "asse_x": {
               "etichetta": "ωT/π",
               "min": -3,
@@ -14047,7 +14047,7 @@
             "id": "derivatore-uscita",
             "tipo": "grafico",
             "titolo": "Spettro di potenza dopo derivazione",
-            "descrizione": "La densità unilaterale cresce come $\\omega^{2}$ fino a $\\omega_{m}$ e poi è nulla.",
+            "descrizione": "La densità unilaterale cresce come ω² fino a ωm e poi è nulla.",
             "asse_x": {
               "etichetta": "ω/ωₘ",
               "min": 0,
@@ -14322,7 +14322,7 @@
             "id": "pam-ami-spettro",
             "tipo": "grafico",
             "titolo": "Densità spettrale PAM AMI",
-            "descrizione": "Prodotto della sinc quadrata dell’impulso e del fattore $\\sin^{2}$ AMI, nullo in ogni $\\frac{k}{T}$.",
+            "descrizione": "Prodotto della sinc quadrata dell’impulso e del fattore sin² AMI, nullo in ogni k/T.",
             "asse_x": {
               "etichetta": "fT",
               "min": 0,
@@ -15995,7 +15995,7 @@
         "scenario": "Per simboli bipolari indipendenti ed equiprobabili, i valori hanno media zero e varianza unitaria. La componente a righe dovuta alla media scompare; resta la parte continua, pari al prodotto della densità dei simboli per $|G(\\omega)|^{2}$. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
         "definizione_esame": {
           "definizione": "Area 3 — PAM bipolare a duty cycle unitario: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-          "scopo": "Per il codice bipolare e T=1 ms, motivare l’assenza di righe, valutare $G_{s}(0)=\\frac{0,001}{\\pi}$ e localizzare i primi zeri positivi.",
+          "scopo": "Per il codice bipolare e T=1 ms, motivare l’assenza di righe, valutare $G_{s}(0)=\\frac{0{,}001}{\\pi}$ e localizzare i primi zeri positivi.",
           "esempio": "Con T=1 ms, determina la forma dello spettro, il valore in $\\omega=0$ e i primi zeri positivi, seguendo la convenzione unilaterale decisa in NOTAZIONE.md §5.2."
         },
         "spiegazione": "### Separare codice e impulso\nIl segnale PAM è la somma degli impulsi pesati dai simboli. La statistica del codice stabilisce i termini di correlazione; la forma dell’impulso stabilisce $G(\\omega)$. La convenzione è sinc(u)=sin(u)/u. Per il codice bipolare equiprobabile la media è zero, quindi non compare una riga discreta associata alla media.\n\n### Calcolo dello spettro\nLa correlazione a ritardo zero vale uno e quella a ritardi non nulli è zero per simboli indipendenti a media nulla. Rimane la densità continua, con fattore $\\frac{1}{\\pi T}$ nella convenzione unilaterale decisa in NOTAZIONE.md §5.2. L’impulso rettangolare di ampiezza uno e durata T ha trasformata T $\\operatorname{sinc}(\\frac{\\omega T}{2})$.\n\n### Forma e controlli\nIl modulo quadro genera una sinc quadrata. Il massimo è in zero e i nulli si trovano quando $\\frac{\\omega T}{2}$ è un multiplo non nullo di $\\pi$. La formula e il disegno sono unilaterali per la densità; se si mostra lo spettro bilatero, mantenere l’informazione sulla convenzione e sulla scala.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Dichiara le ipotesi del modello; per le densità spettrali applica la convenzione unilaterale fissata in NOTAZIONE.md §5.2. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $G_s(\\omega)=\\frac{T}{\\pi}\\left[\\frac{\\sin(\\omega T/2)}{\\omega T/2}\\right]^2$.",
@@ -16025,13 +16025,13 @@
             "Risolvi $\\frac{\\omega T}{2}=k\\pi$ per i primi interi positivi.",
             "Converti le pulsazioni trovate in Hz."
           ],
-          "soluzione": "$G_{s}(0)=\\frac{T}{\\pi}=\\frac{0,002}{\\pi}\\approx 6,366\\cdot 10^{-4}$. I primi zeri sono $\\omega=\\frac{2\\pi}{T}=1000\\pi$ rad/s e $2000\\pi$ rad/s, equivalenti a f=500 Hz e 1000 Hz."
+          "soluzione": "$G_{s}(0)=\\frac{T}{\\pi}=\\frac{0{,}002}{\\pi}\\approx 6{,}366\\cdot 10^{-4}$. I primi zeri sono $\\omega=\\frac{2\\pi}{T}=1000\\pi$ rad/s e $2000\\pi$ rad/s, equivalenti a f=500 Hz e 1000 Hz."
         },
         "esercizio_autonomo": {
           "titolo": "PAM bipolare con periodo T=2 ms",
           "testo": "Calcola il valore della densità in zero e i primi due zeri positivi in Hz.",
           "suggerimento": "Applico la densità unilaterale decisa in NOTAZIONE.md, senza fattore $\\frac{1}{2\\pi T}$.",
-          "soluzione_attesa": "$G_{s}(0)=\\frac{0,002}{\\pi}\\approx 6,366\\cdot 10^{-4}$. I nulli si hanno a $f=\\frac{k}{T}$: per k=1 e 2 sono 500 Hz e 1000 Hz. Non ci sono righe perché il valor medio dei simboli è zero."
+          "soluzione_attesa": "$G_{s}(0)=\\frac{0{,}002}{\\pi}\\approx 6{,}366\\cdot 10^{-4}$. I nulli si hanno a $f=\\frac{k}{T}$: per k=1 e 2 sono 500 Hz e 1000 Hz. Non ci sono righe perché il valor medio dei simboli è zero."
         },
         "errori_trappole": [
           {
@@ -16047,7 +16047,7 @@
           "domande": [
             {
               "domanda": "Con T=1 ms e impulsi bipolari unitari, quanto vale Gs(0) nella convenzione unilaterale?",
-              "risposta": "$G_{s}(0)=\\frac{T}{\\pi}=\\frac{0,001}{\\pi}\\approx 3,183\\cdot 10^{-4}$; la media nulla elimina la riga discreta."
+              "risposta": "$G_{s}(0)=\\frac{T}{\\pi}=\\frac{0{,}001}{\\pi}\\approx 3{,}183\\cdot 10^{-4}$; la media nulla elimina la riga discreta."
             },
             {
               "domanda": "Qual è il passaggio chiave?",
@@ -16068,7 +16068,7 @@
           },
           {
             "fronte": "Perché il codice bipolare non ha righe spettrali?",
-            "retro": "Per T=1 ms, $G_{s}(0)=\\frac{0,001}{\\pi}\\approx 3,183\\cdot 10^{-4}$; i primi zeri sono a $2000\\pi$ e $4000\\pi$ rad/s."
+            "retro": "Per T=1 ms, $G_{s}(0)=\\frac{0{,}001}{\\pi}\\approx 3{,}183\\cdot 10^{-4}$; i primi zeri sono a $2000\\pi$ e $4000\\pi$ rad/s."
           }
         ],
         "checklist": {
@@ -16085,7 +16085,7 @@
             "id": "pam-bipolare-spettro",
             "tipo": "grafico",
             "titolo": "Densità spettrale PAM bipolare",
-            "descrizione": "Sinc quadrata con nulli ai multipli non nulli di $\\frac{2\\pi}{T}$.",
+            "descrizione": "Sinc quadrata con nulli ai multipli non nulli di 2π/T.",
             "asse_x": {
               "etichetta": "ωT/(2π)",
               "min": 0,
@@ -20376,7 +20376,7 @@
         ],
         "varianti_notazione": [
           {
-            "canonica": "\\omega_s=2\\pi/T",
+            "canonica": "$\\omega_s=2\\pi/T$",
             "variante": "$f_{0}=\\frac{1}{T}$",
             "fonte": "file3 pp. 7-11"
           }
@@ -21336,7 +21336,7 @@
         ],
         "varianti_notazione": [
           {
-            "canonica": "\\omega_s=2\\pi/T",
+            "canonica": "$\\omega_s=2\\pi/T$",
             "variante": "$f_{0}=\\frac{1}{T}$",
             "fonte": "file3 pp. 7-11"
           }
@@ -22738,7 +22738,7 @@
         ],
         "varianti_notazione": [
           {
-            "canonica": "\\omega",
+            "canonica": "$\\omega$",
             "variante": "m",
             "fonte": "file3, notazione tipografica"
           }
@@ -22864,7 +22864,7 @@
             "id": "traslazione-spettrale",
             "tipo": "grafico",
             "titolo": "Traslazione della banda positiva",
-            "descrizione": "Esempio schematico di una banda positiva centrata su $\\omega_{0}$ e della stessa banda traslata attorno a zero per rappresentare l’equivalente passa-basso.",
+            "descrizione": "Esempio schematico di una banda positiva centrata su ω₀ e della stessa banda traslata attorno a zero per rappresentare l’equivalente passa-basso.",
             "asse_x": {
               "etichetta": "Pulsazione ω (unità arbitrarie)",
               "min": -3,
@@ -23091,7 +23091,7 @@
         ],
         "varianti_notazione": [
           {
-            "canonica": "\\omega",
+            "canonica": "$\\omega$",
             "variante": "m",
             "fonte": "file3 pp. 18-19"
           }
@@ -27759,7 +27759,7 @@
             "id": "catena-nascita-morte",
             "tipo": "blocchi",
             "titolo": "Stati e transizioni nascita–morte",
-            "descrizione": "Gli stati 0, 1, 2 e 3 sono collegati da percorsi distinti: i rami superiori sono nascite $\\lambda_{0}$, $\\lambda_{1}$, $\\lambda_{2}$; quelli inferiori morti $\\mu_{1}$, $\\mu_{2}$, $\\mu_{3}$. La catena può proseguire.",
+            "descrizione": "Gli stati 0, 1, 2 e 3 sono collegati da percorsi distinti: i rami superiori sono nascite λ₀, λ₁, λ₂; quelli inferiori morti μ₁, μ₂, μ₃. La catena può proseguire.",
             "blocchi": [
               {
                 "id": "stato-0",
@@ -28454,7 +28454,7 @@
           "titolo": "Sportello con nove utenti medi",
           "testo": "Per permanenza media 15 minuti e popolazione media desiderata pari a 9 utenti, trova il tasso d’ingresso.",
           "suggerimento": "Controllo che arrivi, permanenza e popolazione descrivano lo stesso sistema.",
-          "soluzione_attesa": "$\\lambda=\\frac{N}{W}=\\frac{9}{15}=0,6$ utenti/minuto=0,01 utenti/s. La relazione presuppone regime stazionario e lo stesso confine del sistema per N, $\\lambda$ e W."
+          "soluzione_attesa": "$\\lambda=\\frac{N}{W}=\\frac{9}{15}=0{,}6$ utenti/minuto=0,01 utenti/s. La relazione presuppone regime stazionario e lo stesso confine del sistema per N, $\\lambda$ e W."
         },
         "errori_trappole": [
           {
