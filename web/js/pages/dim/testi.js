@@ -5,10 +5,19 @@ import { paragrafi } from './dati.js';
 /** Voce che è solo una formula, con punteggiatura finale opzionale: va in un blocco formula. */
 const FORMULA_SOLA = /^\$([^$]+)\$([.,;:]?)$/;
 
-/** Testo con formule in linea: restano inline (niente promozione a display), così la punteggiatura non va a capo. */
+/** Punteggiatura che segue subito una formula: resta legata a essa e non va a capo da sola. */
+const CODA = /^[.,;:]/;
+
 function testoConFormuleInline(testo) {
   return tokenizzaMatematica(testo)
-    .map((t) => (t.type === 'text' ? escapeHtml(t.body) : formulaInline(t.body)))
+    .map((t, i, tutti) => {
+      if (t.type !== 'text') {
+        const coda = tutti[i + 1]?.type === 'text' ? (tutti[i + 1].body.match(CODA) || [''])[0] : '';
+        return `<span class="dim-compatta__nesso">${formulaInline(t.body)}${escapeHtml(coda)}</span>`;
+      }
+      const giaLegata = i > 0 && tutti[i - 1].type !== 'text' && CODA.test(t.body);
+      return escapeHtml(giaLegata ? t.body.slice(1) : t.body);
+    })
     .join('');
 }
 

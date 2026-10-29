@@ -72,6 +72,7 @@
 
 /* Compatta: righe in colonna, con lo spazio tra le voci */
 .dim-compatta li + li { margin-top: var(--s-3); }
+.dim-compatta__nesso { white-space: nowrap; }
 
 /* Errori frequenti */
 .dim-errori { display: flex; flex-direction: column; gap: var(--s-4); }

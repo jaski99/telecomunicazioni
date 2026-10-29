@@ -24,7 +24,7 @@ test('Compatta mette le voci che sono solo formula in un blocco formula, con la 
 
 test('Compatta mette le voci con testo e formule in un contenitore .scroll-x', () => {
   const html = renderCompatta(dimostrazioneEsempio({ versione_compatta: ['Uno $a$ e $b$.'] }));
-  assert.match(html, /<li><div class="scroll-x" tabindex="0" role="region" aria-label="Riga compatta"><p>Uno <span class="formula-inline">[\s\S]*<\/span> e <span class="formula-inline">[\s\S]*<\/span>\.<\/p><\/div><\/li>/);
+  assert.match(html, /<li><div class="scroll-x" tabindex="0" role="region" aria-label="Riga compatta"><p>Uno <span class="dim-compatta__nesso"><span class="formula-inline">[\s\S]*<\/span><\/span> e <span class="dim-compatta__nesso"><span class="formula-inline">[\s\S]*<\/span>\.<\/span><\/p><\/div><\/li>/);
   assert.doesNotMatch(html, /\$/);
   assert.doesNotMatch(html, /formula-box/);
 });
