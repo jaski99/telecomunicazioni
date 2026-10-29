@@ -7,7 +7,7 @@
     "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
     "esempio": "Per A=3 e τ=2 ms, considera un impulso centrato. Valuta X(0), il primo zero positivo e il valore di X alla pulsazione π/τ."
   },
-  "spiegazione": "### Trasformata e forma sinc\nPer un impulso isolato lo spettro è continuo. La simmetria temporale del rettangolo centrato consente di accoppiare gli esponenziali ai due estremi: il risultato è reale e proporzionale a una sinc. La definizione adottata è sinc(u)=sin(u)/u, con sinc(0)=1 per continuità.\n\n### Ampiezza, fase e traslazione\nLa magnitudine non cambia se il rettangolo è traslato, ma la trasformata acquista il fattore e⁻ʲωt_c. La fase corretta si ricava come arg(X): per il rettangolo centrato è 0 o π a seconda del segno della sinc e non è definita agli zeri. Se l’impulso è definito sull’intervallo [0,τ], il fattore è e⁻ʲωτ/2.\n\n### Lettura del grafico\nL’altezza a zero è l’area Aτ; gli zeri sono a ω=±2πk/τ. I lobi si alternano di segno in X, ma la magnitudine resta non negativa. Nel materiale d’esercizio la “ampiezza spettrale” è normalizzata a |X|/π: segnala esplicitamente la convenzione se riporti quel grafico.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n",
+  "spiegazione": "### Trasformata e forma sinc\nPer un impulso isolato lo spettro è continuo. La simmetria temporale del rettangolo centrato consente di accoppiare gli esponenziali ai due estremi: il risultato è reale e proporzionale a una sinc. La definizione adottata è sinc(u)=sin(u)/u, con sinc(0)=1 per continuità.\n\n### Ampiezza, fase e traslazione\nLa magnitudine non cambia se il rettangolo è traslato, ma la trasformata acquista il fattore e⁻ʲωt_c. La fase corretta si ricava come arg(X): per il rettangolo centrato è 0 o π a seconda del segno della sinc e non è definita agli zeri. Se l’impulso è definito sull’intervallo [0,τ], il fattore è e⁻ʲωτ/2.\n\n### Lettura del grafico\nL’altezza a zero è l’area Aτ; gli zeri sono a ω=±2πk/τ. I lobi si alternano di segno in X, ma la magnitudine resta non negativa. Nel materiale d’esercizio la “ampiezza spettrale” è normalizzata a |X|/π: segnala esplicitamente la convenzione se riporti quel grafico.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $X(\\omega)=A\\tau\\,\\operatorname{sinc}\\!\\left(\\frac{\\omega\\tau}{2}\\right)e^{-j\\omega t_c}$.",
   "analogia": {
     "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
     "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
@@ -25,35 +25,32 @@
       "A ω=π/τ, X=Aτ sinc(π/2)=Aτ·2/π≈0,00382. Per il rettangolo centrato la fase è 0 dove X>0 e π dove X<0; ai nodi non è definita."
     ],
     "soluzione": "La magnitudine è |X(ω)| e la fase è arg X(ω). L’appunto adotta, per ω≥0, una normalizzazione V(ω)=|X(ω)|/π: si mantiene questa definizione quando si chiede lo spettro di ampiezza, senza confonderla con la trasformata X.",
-    "perche_funziona": "Ogni formula discende dalla definizione del modello e da proprietà dichiarate; i valori numerici servono a controllare i fattori e non sostituiscono il ragionamento simbolico."
+    "perche_funziona": "L’integrale esatto sul supporto finito genera la sinc; il limite rimuove la forma 0/0 in zero e gli zeri si ricavano dal numeratore sinusoidale."
   },
   "completion_problem": {
-    "titolo": "Completa i passaggi essenziali",
-    "testo": "Nel problema: Per A=3 e τ=2 ms, considera un impulso centrato. Valuta X(0), il primo zero positivo e il valore di X alla pulsazione π/τ.",
+    "titolo": "Valuta X(0) e il primo zero per A=1, τ=4",
+    "testo": "Per un impulso centrato di ampiezza unitaria e durata 4 s, ricava il massimo spettrale e il primo zero positivo.",
     "passi_mancanti": [
-      "Scrivi la relazione di partenza e le ipotesi.",
-      "Esegui l’integrazione o la sostituzione che porta al risultato.",
-      "Indica il controllo finale su unità, zeri o limiti."
+      "Scrivi la trasformata con la sinc normalizzata sin(u)/u.",
+      "Applica il limite in ω=0.",
+      "Risolvi sin(ωτ/2)=0 per il primo zero non nullo."
     ],
-    "soluzione": "Usa i passaggi numerati dell’esempio come guida; la risposta completa è la formula conclusiva e il controllo di coerenza descritti sopra."
+    "soluzione": "X(ω)=4 sinc(2ω). In zero X(0)=4. Il primo zero positivo è dato da 2ω=π, quindi ω=π/2 rad/s."
   },
   "esercizio_autonomo": {
-    "titolo": "Prova da solo: E2",
-    "testo": "Risolvi una variante di area 1 — impulso rettangolare aperiodico cambiando un parametro, mantenendo esplicite le unità e disegnando la forma attesa.",
-    "suggerimento": "Prima scrivi la formula simbolica; solo dopo sostituisci i numeri. Controlla un caso limite.",
-    "soluzione_attesa": [
-      "Con A=1, τ=4, calcola X(0) e il primo zero.",
-      "Che termine di fase compare se il rettangolo inizia a t=0 invece di essere centrato?"
-    ]
+    "titolo": "Impulso centrato di ampiezza uno",
+    "testo": "Per A=1 e τ=4 s, determina X(0), il primo zero positivo e X(π/τ), mantenendo la convenzione sinc(u)=sin(u)/u.",
+    "suggerimento": "Controllo X(0) con l’area del rettangolo.",
+    "soluzione_attesa": "X(ω)=4 sinc(2ω). X(0)=4. Il primo zero è ω=π/2 rad/s. A ω=π/4 rad/s, X=4 sinc(π/2)=8/π≈2,546."
   },
   "errori_trappole": [
     {
-      "errore": "Sostituire i numeri prima di fissare notazione e unità.",
-      "perche_sbagliato": "Si perdono fattori e non è possibile controllare dimensionalmente la formula."
+      "errore": "Usare sin(u)/u senza il limite in u=0.",
+      "perche_sbagliato": "X(0) è l’area Aτ e si ottiene per continuità."
     },
     {
-      "errore": "Disegnare lo spettro senza indicare supporto e zeri.",
-      "perche_sbagliato": "La figura non distingue una curva continua da righe o da uno spettro nullo fuori banda."
+      "errore": "Assegnare fase agli zeri della sinc.",
+      "perche_sbagliato": "Quando X(ω)=0, arg X non è definita."
     }
   ],
   "richiamo_attivo": {

@@ -1,15 +1,16 @@
 [
   {
     "id": "es-spettri-impulsi-periodici",
-    "titolo": "Area 1 — successione periodica di rettangoli",
+    "titolo": "Successione periodica: coefficienti, armoniche e fase",
     "area": 1,
     "tipo": "tipo_esercizio",
     "gruppo": "A",
     "worker": "W6",
-    "sapere": "Area 1 — successione periodica di rettangoli. Si applicano formule e ipotesi esplicite, si controllano unità, casi limite e convenzioni prima di concludere.",
+    "sapere": "La successione di rettangoli centrati ha righe a nω₀, c₀=Aτ/T e cₙ=(Aτ/T)sinc(nπτ/T). Una traslazione del rettangolo moltiplica cₙ per e⁻ʲⁿω₀t_c; la fase generale è arg(cₙ).",
     "saper_fare": [
-      "Impostare e risolvere area 1 — successione periodica di rettangoli motivando i passaggi.",
-      "Verificare il risultato con unità, limiti e una rappresentazione qualitativa."
+      "Calcolare c₀ e le armoniche cₙ da un integrale su un periodo.",
+      "Disegnare righe in nω₀ e il loro inviluppo sinc campionato densamente.",
+      "Determinare la fase da arg(cₙ), escludendo le armoniche nulle."
     ],
     "prerequisiti": [
       {
@@ -31,21 +32,22 @@
     ],
     "risorse": [],
     "checklist_ripasso": [
-      "Dichiaro ipotesi e convenzione spettrale.",
-      "Controllo unità, casi limite e forma del grafico."
+      "Controllo che le righe siano distanziate di ω₀.",
+      "Dichiaro se il rettangolo è centrato o traslato e uso arg(cₙ)."
     ]
   },
   {
     "id": "es-spettri-impulso-rettangolare",
-    "titolo": "Area 1 — impulso rettangolare aperiodico",
+    "titolo": "Rettangolo isolato: sinc continua, zeri e fase",
     "area": 1,
     "tipo": "tipo_esercizio",
     "gruppo": "A",
     "worker": "W6",
-    "sapere": "Area 1 — impulso rettangolare aperiodico. Si applicano formule e ipotesi esplicite, si controllano unità, casi limite e convenzioni prima di concludere.",
+    "sapere": "L’impulso rettangolare isolato di ampiezza A e durata τ ha trasformata continua Aτ sinc(ωτ/2)e⁻ʲωt_c. Gli zeri sono ω=2πk/τ; la fase è arg X(ω), non è definita ai nodi.",
     "saper_fare": [
-      "Impostare e risolvere area 1 — impulso rettangolare aperiodico motivando i passaggi.",
-      "Verificare il risultato con unità, limiti e una rappresentazione qualitativa."
+      "Integrare il rettangolo centrato e ottenere X(ω).",
+      "Valutare il limite X(0)=Aτ e individuare gli zeri.",
+      "Disegnare modulo e fase, includendo la traslazione temporale."
     ],
     "prerequisiti": [
       {
@@ -67,21 +69,22 @@
     ],
     "risorse": [],
     "checklist_ripasso": [
-      "Dichiaro ipotesi e convenzione spettrale.",
-      "Controllo unità, casi limite e forma del grafico."
+      "Controllo X(0) con l’area del rettangolo.",
+      "Distinguo modulo |X| da trasformata con segno e fase."
     ]
   },
   {
     "id": "es-antitrasformata-rettangolare",
-    "titolo": "Area 1 — spettro rettangolare bilatero",
+    "titolo": "Spettro rettangolare: antitrasformata e sinc temporale",
     "area": 1,
     "tipo": "tipo_esercizio",
     "gruppo": "A",
     "worker": "W6",
-    "sapere": "Area 1 — spettro rettangolare bilatero. Si applicano formule e ipotesi esplicite, si controllano unità, casi limite e convenzioni prima di concludere.",
+    "sapere": "Uno spettro bilatero costante X₀ per |ω|≤ωₘ ha antitrasformata x(t)=X₀ sin(ωₘt)/(πt), con limite x(0)=X₀ωₘ/π e zeri a t=kπ/ωₘ.",
     "saper_fare": [
-      "Impostare e risolvere area 1 — spettro rettangolare bilatero motivando i passaggi.",
-      "Verificare il risultato con unità, limiti e una rappresentazione qualitativa."
+      "Eseguire l’antitrasformata con il fattore 1/(2π).",
+      "Valutare il limite al centro e localizzare i primi zeri.",
+      "Disegnare il lobo principale e i lobi laterali alternati."
     ],
     "prerequisiti": [
       {
@@ -103,8 +106,8 @@
     ],
     "risorse": [],
     "checklist_ripasso": [
-      "Dichiaro ipotesi e convenzione spettrale.",
-      "Controllo unità, casi limite e forma del grafico."
+      "Controllo il fattore 1/(2π) della trasformata inversa.",
+      "Verifico valore al centro e zeri prima di disegnare."
     ]
   }
 ]

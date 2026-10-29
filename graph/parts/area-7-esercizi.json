@@ -1,15 +1,16 @@
 [
   {
     "id": "es-teoria-traffico-extra",
-    "titolo": "Esercizi integrativi di teoria del traffico",
+    "titolo": "Traffico extra: Little, tempi di linea e stabilità delle code",
     "area": 7,
     "tipo": "tipo_esercizio",
     "gruppo": "C",
     "worker": "W6",
-    "sapere": "Esercizi integrativi di teoria del traffico. Si applicano formule e ipotesi esplicite, si controllano unità, casi limite e convenzioni prima di concludere.",
+    "sapere": "Gli esercizi integrativi collegano λ, permanenza media W e popolazione N tramite Little, separano trasmissione da propagazione e richiedono di verificare la stabilità prima di usare formule di coda.",
     "saper_fare": [
-      "Impostare e risolvere esercizi integrativi di teoria del traffico motivando i passaggi.",
-      "Verificare il risultato con unità, limiti e una rappresentazione qualitativa."
+      "Applicare N=λW con unità coerenti e regime stazionario.",
+      "Separare il tempo di trasmissione dal tempo di propagazione.",
+      "Verificare λ<μ prima di usare le formule M/M/1 e dichiarare i dati mancanti."
     ],
     "prerequisiti": [
       {
@@ -25,14 +26,14 @@
     },
     "fonti": [
       {
-        "chiave": "FILE1",
+        "chiave": "FILE3",
         "rif": "file3 pp. 44, 53-57"
       }
     ],
     "risorse": [],
     "checklist_ripasso": [
-      "Dichiaro ipotesi e convenzione spettrale.",
-      "Controllo unità, casi limite e forma del grafico."
+      "Verifico regime stazionario e unità di λ, W e N.",
+      "Controllo stabilità, servizio e capacità del buffer prima di applicare formule di coda."
     ]
   }
 ]

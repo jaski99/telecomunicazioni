@@ -1,6 +1,7 @@
 import json
 import re
 import unittest
+from collections import Counter
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -39,9 +40,13 @@ class QuizBankTests(unittest.TestCase):
             for option in q['opzioni']:
                 if option['id']!=q['corretta']:
                     self.assertGreaterEqual(len(option.get('perche_sbagliata','')),15)
-                    self.assertIn('tema',option['perche_sbagliata'].lower())
+                    rationale=option['perche_sbagliata'].lower()
+                    self.assertNotIn('distrattore sullo stesso tema',rationale)
+                    self.assertNotIn('è sufficiente considerare soltanto',rationale)
             positions.append(q['corretta'])
-        self.assertGreaterEqual(len(set(positions)),3)
+        counts=Counter(positions)
+        self.assertEqual(set(counts),{'a','b','c'})
+        self.assertLessEqual(max(counts.values())-min(counts.values()),2)
 
     def test_completion_shape_and_pm_fm_key(self):
         data=json.loads((ROOT/'graph/quiz.json').read_text(encoding='utf-8'))
@@ -52,16 +57,26 @@ class QuizBankTests(unittest.TestCase):
                 self.assertEqual(set(labels),set(q['soluzioni']))
                 self.assertGreaterEqual(len(labels),1)
                 self.assertTrue(all(values for values in q['soluzioni'].values()))
-        pm=data['elementi'][6]
+        pm=next(item for item in data['elementi'] if item['id']=='q-m07')
         self.assertEqual(pm['temi'],['M7'])
         self.assertIn('integratore',pm['spiegazione'].lower())
         self.assertIn('integratore',next(o['testo'].lower() for o in pm['opzioni'] if o['id']==pm['corretta']))
-        fm=data['elementi'][7]
+        fm=next(item for item in data['elementi'] if item['id']=='q-m08')
         self.assertEqual(fm['temi'],['M8'])
         self.assertIn('derivatore',fm['spiegazione'].lower())
         self.assertIn('derivatore',next(o['testo'].lower() for o in fm['opzioni'] if o['id']==fm['corretta']))
         ssb=next(q for q in data['elementi'] if q['temi']==['M1'])
         self.assertIn('NON TROVATO',ssb['spiegazione'])
+
+    def test_demo_answers_have_no_wrong_answer_rationale(self):
+        source=(ROOT/'web/modules/quiz/demo.html').read_text(encoding='utf-8')
+        for item_id in ('q-demo-campionamento','q-demo-pm-fm'):
+            line=next(line for line in source.splitlines() if item_id in line)
+            correct=re.search(r"corretta:'([a-z])'",line).group(1)
+            options=dict(re.findall(r"\{id:'([^']+)'([^{}]*)\}",line))
+            self.assertIn(correct,options)
+            self.assertNotIn('perche_sbagliata',options[correct])
+            self.assertTrue(all('perche_sbagliata' in value for key,value in options.items() if key!=correct))
 
     def test_text_safety_and_item_schema(self):
         schema=json.loads((ROOT/'schema/quiz.schema.json').read_text(encoding='utf-8'))

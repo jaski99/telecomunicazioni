@@ -7,7 +7,7 @@
     "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
     "esempio": "Con T=1 ms, classifica il caso Bω<π/T, Bω=π/T e Bω>π/T e spiega quando si può soddisfare la relazione."
   },
-  "spiegazione": "### Dalla sequenza ai campioni\nLa prescrizione sui campioni si scrive x[n]=x₀δ[n]. La trasformata della sequenza è costante perché resta un solo termine nella somma. Questa condizione è più forte del semplice campionamento senza aliasing: impone esattamente i valori assegnati a tutti gli indici.\n\n### Repliche dello spettro\nIl pettine di campionamento genera repliche distanziate di ωs=2π/T e con fattore 1/T. La trasformata della sequenza campionata è dunque una somma periodica di X. Uguagliare tale somma a x₀ conduce alla relazione finale.\n\n### I tre casi\nPer banda sotto π/T ci sono frequenze lasciate scoperte nella periodizzazione, quindi una funzione generica non può produrre una somma costante non nulla. Al limite, un rettangolo di altezza x₀T copre esattamente un periodo. Sopra il limite sono possibili forme sovrapposte complementari; occorre verificare la somma effettiva. Questa distinzione evita di trasformare una condizione necessaria e sufficiente in una scorciatoia basata soltanto sulla banda.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n",
+  "spiegazione": "### Dalla sequenza ai campioni\nLa prescrizione sui campioni si scrive x[n]=x₀δ[n]. La trasformata della sequenza è costante perché resta un solo termine nella somma. Questa condizione è più forte del semplice campionamento senza aliasing: impone esattamente i valori assegnati a tutti gli indici.\n\n### Repliche dello spettro\nIl pettine di campionamento genera repliche distanziate di ωs=2π/T e con fattore 1/T. La trasformata della sequenza campionata è dunque una somma periodica di X. Uguagliare tale somma a x₀ conduce alla relazione finale.\n\n### I tre casi\nPer banda sotto π/T ci sono frequenze lasciate scoperte nella periodizzazione, quindi una funzione generica non può produrre una somma costante non nulla. Al limite, un rettangolo di altezza x₀T copre esattamente un periodo. Sopra il limite sono possibili forme sovrapposte complementari; occorre verificare la somma effettiva. Questa distinzione evita di trasformare una condizione necessaria e sufficiente in una scorciatoia basata soltanto sulla banda.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $\\sum_{k=-\\infty}^{+\\infty}X\\!\\left(\\omega+k\\frac{2\\pi}{T}\\right)=x_0T$.",
   "analogia": {
     "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
     "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
@@ -25,35 +25,32 @@
       "Se Bω>π/T, la sovrapposizione può ancora soddisfare la somma se le repliche sono complementari; non basta il solo valore di banda per decidere: va verificata l’identità periodizzata."
     ],
     "soluzione": "La relazione è necessaria e sufficiente per la sequenza di campioni prescritta, sotto le ipotesi della trasformata e del campionamento ideali. I tre casi sono un’analisi della possibilità in funzione della banda, non una regola che garantisce ogni spettro.",
-    "perche_funziona": "Ogni formula discende dalla definizione del modello e da proprietà dichiarate; i valori numerici servono a controllare i fattori e non sostituiscono il ragionamento simbolico."
+    "perche_funziona": "La trasformata della sequenza campionata è x₀; uguagliandola alla somma periodica delle repliche si ottiene il criterio necessario e sufficiente, mentre il grafico mostra il caso limite."
   },
   "completion_problem": {
-    "titolo": "Completa i passaggi essenziali",
-    "testo": "Nel problema: Con T=1 ms, classifica il caso Bω<π/T, Bω=π/T e Bω>π/T e spiega quando si può soddisfare la relazione.",
+    "titolo": "Costruisci lo spettro rettangolare al limite",
+    "testo": "Con T=1 ms e x₀=2, scrivi un X(ω) rettangolare che realizza la somma costante al limite di Nyquist.",
     "passi_mancanti": [
-      "Scrivi la relazione di partenza e le ipotesi.",
-      "Esegui l’integrazione o la sostituzione che porta al risultato.",
-      "Indica il controllo finale su unità, zeri o limiti."
+      "Calcola π/T e il passo tra repliche.",
+      "Imponi altezza x₀T e supporto |ω|≤π/T.",
+      "Verifica che una sola replica copra ogni punto di un periodo spettrale."
     ],
-    "soluzione": "Usa i passaggi numerati dell’esempio come guida; la risposta completa è la formula conclusiva e il controllo di coerenza descritti sopra."
+    "soluzione": "π/T=1000π rad/s e il passo tra repliche è 2π/T=2000π rad/s. Scegli X(ω)=0,002 per |ω|≤1000π e zero altrove: gli intervalli delle repliche contigue coprono un periodo e la loro somma è x₀T=0,002, a parte la convenzione ai bordi."
   },
   "esercizio_autonomo": {
-    "titolo": "Prova da solo: E4",
-    "testo": "Risolvi una variante di area 3 — condizione in frequenza per campioni impulsivi cambiando un parametro, mantenendo esplicite le unità e disegnando la forma attesa.",
-    "suggerimento": "Prima scrivi la formula simbolica; solo dopo sostituisci i numeri. Controlla un caso limite.",
-    "soluzione_attesa": [
-      "Con T=2 ms, quanto vale π/T?",
-      "Perché Bω>π/T non implica automaticamente che la condizione fallisca?"
-    ]
+    "titolo": "Verifica il caso limite con T=2 ms",
+    "testo": "Ponendo T=2 ms e x₀=3, calcola π/T, ωs e l’altezza/supporto dello spettro rettangolare al limite.",
+    "suggerimento": "Controllo che l’altezza x₀T abbia unità di trasformata.",
+    "soluzione_attesa": "π/T=500π rad/s e ωs=2π/T=1000π rad/s. Lo spettro di limite è X(ω)=0,006 per |ω|≤500π rad/s, nullo fuori. Ogni frequenza appartiene alla copertura periodica e la somma vale x₀T=0,006, con i bordi interpretati coerentemente."
   },
   "errori_trappole": [
     {
-      "errore": "Sostituire i numeri prima di fissare notazione e unità.",
-      "perche_sbagliato": "Si perdono fattori e non è possibile controllare dimensionalmente la formula."
+      "errore": "Concludere dal solo overlap delle repliche.",
+      "perche_sbagliato": "La condizione riguarda la somma puntuale periodizzata."
     },
     {
-      "errore": "Disegnare lo spettro senza indicare supporto e zeri.",
-      "perche_sbagliato": "La figura non distingue una curva continua da righe o da uno spettro nullo fuori banda."
+      "errore": "Confondere π/T con 2π/T.",
+      "perche_sbagliato": "Il primo è la semi-banda limite; il secondo è la spaziatura delle repliche."
     }
   ],
   "richiamo_attivo": {

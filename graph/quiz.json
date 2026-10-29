@@ -10,8 +10,8 @@
       "temi": [
         "M1"
       ],
-      "domanda": "Nel foglio d’esame, a quale nozione è associata la sigla SSB-BC?",
-      "spiegazione": "La raccolta associa SSB-BC alla conversione di frequenza in salita. Questa associazione descrive il materiale d’esame raccolto; il significato terminologico e l’uso del docente sono NON TROVATO, quindi non la presentiamo come definizione universale.",
+      "domanda": "Come viene interpretata SSB-BC nella raccolta di prova?",
+      "spiegazione": "La raccolta associa SSB-BC alla conversione in salita; il suo significato terminologico generale resta NON TROVATO.",
       "opzioni": [
         {
           "id": "a",
@@ -19,13 +19,13 @@
         },
         {
           "id": "b",
-          "testo": "Modulazione d’angolo",
-          "perche_sbagliata": "Distrattore sullo stesso tema: la raccolta separa le modulazioni d’angolo dalla conversione di frequenza associata alla sigla."
+          "testo": "Modulazione d’angolo a portante costante",
+          "perche_sbagliata": "La conversione riportata riguarda la traslazione di frequenza, non una modulazione d’angolo."
         },
         {
           "id": "c",
-          "testo": "Modulazione a prodotto in generale",
-          "perche_sbagliata": "Distrattore sullo stesso tema: non coincide con la risposta associata alla sigla nel foglio esaminato."
+          "testo": "Modulazione a prodotto con doppia banda laterale",
+          "perche_sbagliata": "La sigla riportata non è associata alla generica DSB a prodotto."
         }
       ],
       "corretta": "a"
@@ -38,25 +38,25 @@
       "temi": [
         "M2"
       ],
-      "domanda": "Quale affermazione descrive correttamente massimo slotted ALOHA?",
-      "spiegazione": "Il massimo throughput slotted si ottiene a carico unitario ed è 1/e. La scelta va motivata con la definizione e le ipotesi del tema; 1/(2e) è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Qual è il massimo throughput normalizzato dello slotted ALOHA?",
+      "spiegazione": "Per S=Ge⁻ᴳ il massimo si ha a G=1 ed è 1/e; la finestra di uno slot distingue lo slotted dal puro ALOHA.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "1/(2e)",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (massimo slotted ALOHA): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "1/(2e), circa 0,184 trame riuscite per trama",
+          "perche_sbagliata": "Questo è il massimo del puro ALOHA, con finestra vulnerabile doppia."
         },
         {
           "id": "b",
-          "testo": "Il massimo throughput slotted si ottiene a carico unitario ed è 1/e."
+          "testo": "1/2, pari a 0,5 trame riuscite per trama",
+          "perche_sbagliata": "La curva slotted Ge⁻ᴳ ha massimo 1/e, non 1/2."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto massimo senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (massimo slotted ALOHA): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "1/e, circa 0,368 trame riuscite per trama"
         }
       ],
-      "corretta": "b"
+      "corretta": "c"
     },
     {
       "id": "q-m03",
@@ -66,25 +66,25 @@
       "temi": [
         "M3"
       ],
-      "domanda": "Quale affermazione descrive correttamente confronto slotted e puro ALOHA?",
-      "spiegazione": "A pari carico, il picco teorico slotted è doppio rispetto al puro ALOHA. La scelta va motivata con la definizione e le ipotesi del tema; metà del puro ALOHA è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Come si confrontano i picchi slotted e puro ALOHA?",
+      "spiegazione": "Il puro ALOHA ha massimo 1/(2e), mentre lo slotted ha massimo 1/e; il rapporto tra i picchi è due.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "metà del puro ALOHA",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (confronto slotted e puro ALOHA): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "I due picchi coincidono se il carico medio è identico",
+          "perche_sbagliata": "Le finestre vulnerabili diverse producono massimi distinti, 1/e contro 1/(2e)."
         },
         {
           "id": "b",
-          "testo": "È sufficiente considerare soltanto confronto senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (confronto slotted e puro ALOHA): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Il picco slotted è doppio del picco del puro ALOHA"
         },
         {
           "id": "c",
-          "testo": "A pari carico, il picco teorico slotted è doppio rispetto al puro ALOHA."
+          "testo": "Il picco slotted è metà di quello del puro ALOHA",
+          "perche_sbagliata": "Questa inversione ignora la sincronizzazione a slot, che dimezza la finestra vulnerabile."
         }
       ],
-      "corretta": "c"
+      "corretta": "b"
     },
     {
       "id": "q-m04",
@@ -94,22 +94,22 @@
       "temi": [
         "M4"
       ],
-      "domanda": "Quale affermazione descrive correttamente livello 4 OSI?",
-      "spiegazione": "Il livello 4 ISO/OSI svolge funzioni di trasporto end-to-end. La scelta va motivata con la definizione e le ipotesi del tema; livello di rete è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quale servizio identifica il quarto livello ISO/OSI?",
+      "spiegazione": "Nel modello a sette livelli il quarto è il trasporto; rete è il terzo e sessione il quinto.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "Il livello 4 ISO/OSI svolge funzioni di trasporto end-to-end."
+          "testo": "Trasporto end-to-end tra processi"
         },
         {
           "id": "b",
-          "testo": "livello di rete",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (livello 4 OSI): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Instradamento dei pacchetti tra reti",
+          "perche_sbagliata": "L’instradamento è associato al livello di rete, che precede il trasporto."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto livello senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (livello 4 OSI): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Gestione delle sessioni applicative",
+          "perche_sbagliata": "La sessione è il livello 5, non il quarto."
         }
       ],
       "corretta": "a"
@@ -122,25 +122,25 @@
       "temi": [
         "M5"
       ],
-      "domanda": "Quale affermazione descrive correttamente livello 5 OSI?",
-      "spiegazione": "Il livello 5 ISO/OSI è quello di sessione. La scelta va motivata con la definizione e le ipotesi del tema; livello di presentazione è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "A quale livello OSI corrisponde il quinto strato?",
+      "spiegazione": "La numerazione dal basso colloca la sessione al livello 5.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "livello di presentazione",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (livello 5 OSI): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Trasporto affidabile tra estremi",
+          "perche_sbagliata": "Il trasporto è il livello 4, immediatamente sotto la sessione."
         },
         {
           "id": "b",
-          "testo": "Il livello 5 ISO/OSI è quello di sessione."
+          "testo": "Presentazione dei dati applicativi",
+          "perche_sbagliata": "La presentazione è il livello 6, sopra la sessione."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto livello senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (livello 5 OSI): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Sessione e gestione del dialogo"
         }
       ],
-      "corretta": "b"
+      "corretta": "c"
     },
     {
       "id": "q-m06",
@@ -150,25 +150,25 @@
       "temi": [
         "M6"
       ],
-      "domanda": "Quale affermazione descrive correttamente informazione energetica del processo?",
-      "spiegazione": "La caratterizzazione energetica completa di un processo richiede informazioni statistiche del secondo ordine. La scelta va motivata con la definizione e le ipotesi del tema; la sola densità marginale è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quale statistica serve per descrivere completamente l’energia di un processo?",
+      "spiegazione": "La descrizione energetica richiede statistiche di secondo ordine, per esempio autocorrelazione o densità congiunta.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "la sola densità marginale",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (informazione energetica del processo): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "La sola densità marginale a un istante",
+          "perche_sbagliata": "La marginale non descrive la dipendenza temporale necessaria alle medie energetiche."
         },
         {
           "id": "b",
-          "testo": "È sufficiente considerare soltanto informazione senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (informazione energetica del processo): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "La densità congiunta del secondo ordine"
         },
         {
           "id": "c",
-          "testo": "La caratterizzazione energetica completa di un processo richiede informazioni statistiche del secondo ordine."
+          "testo": "La sola distribuzione di ordine uno, resa stazionaria",
+          "perche_sbagliata": "La stazionarietà non ricostruisce le correlazioni da una marginale."
         }
       ],
-      "corretta": "c"
+      "corretta": "b"
     },
     {
       "id": "q-m07",
@@ -178,22 +178,22 @@
       "temi": [
         "M7"
       ],
-      "domanda": "Quale affermazione descrive correttamente PM per ottenere FM?",
-      "spiegazione": "Per realizzare una modulazione FM con un modulatore PM si antepone un integratore al messaggio. La scelta va motivata con la definizione e le ipotesi del tema; derivazione prima del PM è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Che rete si antepone a un modulatore PM per realizzare FM?",
+      "spiegazione": "Per PM→FM si antepone un integratore al modulatore PM; la chiave è coerente con la relazione fase-frequenza.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "Anteporre un integratore al messaggio"
+          "testo": "Un integratore sul segnale modulante"
         },
         {
           "id": "b",
-          "testo": "derivazione prima del PM",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (PM per ottenere FM): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Un derivatore sul segnale modulante",
+          "perche_sbagliata": "La derivata fa dipendere la fase dal derivato del messaggio, non dalla sua integrale."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto pm senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (PM per ottenere FM): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Un integratore dopo l’uscita PM",
+          "perche_sbagliata": "La rete va prima del modulatore, dove modifica il messaggio d’ingresso."
         }
       ],
       "corretta": "a"
@@ -206,25 +206,25 @@
       "temi": [
         "M8"
       ],
-      "domanda": "Quale affermazione descrive correttamente FM per ottenere PM?",
-      "spiegazione": "Per realizzare una modulazione PM con un modulatore FM si antepone un derivatore al messaggio. La scelta va motivata con la definizione e le ipotesi del tema; integrazione prima dell’FM è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Come si ottiene PM usando un modulatore FM?",
+      "spiegazione": "Per FM→PM si antepone un derivatore al messaggio, coerentemente con la relazione tra fase e frequenza istantanea.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "integrazione prima dell’FM",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (FM per ottenere PM): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Anteponendo un integratore al messaggio",
+          "perche_sbagliata": "L’integratore prima di FM conduce alla conversione opposta, PM→FM."
         },
         {
           "id": "b",
-          "testo": "Anteporre un derivatore al messaggio"
+          "testo": "Ponendo un integratore dopo l’uscita FM",
+          "perche_sbagliata": "La trasformazione richiesta si applica al messaggio prima del modulatore."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto fm senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (FM per ottenere PM): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Anteponendo un derivatore al messaggio"
         }
       ],
-      "corretta": "b"
+      "corretta": "c"
     },
     {
       "id": "q-m09",
@@ -234,25 +234,25 @@
       "temi": [
         "M9"
       ],
-      "domanda": "Quale affermazione descrive correttamente integrabilità e potenza?",
-      "spiegazione": "Un segnale a potenza finita non è automaticamente integrabile assolutamente e trasformabile in senso ordinario. La scelta va motivata con la definizione e le ipotesi del tema; la potenza finita garantisce sempre la trasformata classica è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Che cosa si può concludere dalla sola potenza media finita di x(t)?",
+      "spiegazione": "La distinzione tra potenza finita e integrabilità va mantenuta: la sola prima ipotesi non assicura la trasformata classica ordinaria.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "la potenza finita garantisce sempre la trasformata classica",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (integrabilità e potenza): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Garantisce sempre che x(t) sia integrabile assolutamente",
+          "perche_sbagliata": "La potenza media finita non implica integrabilità assoluta sull’intera retta."
         },
         {
           "id": "b",
-          "testo": "È sufficiente considerare soltanto integrabilità senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (integrabilità e potenza): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Non garantisce da sola una trasformata ordinaria assolutamente convergente"
         },
         {
           "id": "c",
-          "testo": "Un segnale a potenza finita non è automaticamente integrabile assolutamente e trasformabile in senso ordinario."
+          "testo": "Implica che x(t) non ammetta alcuna trasformata generalizzata",
+          "perche_sbagliata": "Esistono trasformate in senso generalizzato anche per segnali di potenza."
         }
       ],
-      "corretta": "c"
+      "corretta": "b"
     },
     {
       "id": "q-m10",
@@ -262,22 +262,22 @@
       "temi": [
         "M10"
       ],
-      "domanda": "Quale affermazione descrive correttamente stazionarietà ed ergodicità?",
-      "spiegazione": "La stazionarietà, da sola, non garantisce l’ergodicità. La scelta va motivata con la definizione e le ipotesi del tema; è sempre equivalente all’ergodicità è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quale ruolo ha la stazionarietà rispetto all’ergodicità?",
+      "spiegazione": "La stazionarietà è una condizione necessaria nel quadro del quesito, non una garanzia sufficiente di ergodicità.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "La stazionarietà, da sola, non garantisce l’ergodicità."
+          "testo": "È necessaria nel contesto indicato, ma non sufficiente"
         },
         {
           "id": "b",
-          "testo": "è sempre equivalente all’ergodicità",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (stazionarietà ed ergodicità): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "È sufficiente per ogni processo stazionario",
+          "perche_sbagliata": "La stazionarietà non basta a garantire che medie temporali e statistiche coincidano."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto stazionarietà senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (stazionarietà ed ergodicità): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "È indipendente da qualunque ipotesi di ergodicità",
+          "perche_sbagliata": "Nel contesto del quesito è indicata come condizione necessaria."
         }
       ],
       "corretta": "a"
@@ -290,25 +290,25 @@
       "temi": [
         "M11"
       ],
-      "domanda": "Quale affermazione descrive correttamente simmetria spettrale in modulazione prodotto?",
-      "spiegazione": "Simmetria di ampiezza e antisimmetria di fase caratterizzano l’oscillazione modulata a prodotto nel contesto indicato. La scelta va motivata con la definizione e le ipotesi del tema; la modulazione di frequenza è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quale segnale passa-banda corrisponde alla simmetria di ampiezza e fase indicata?",
+      "spiegazione": "Nel contesto della raccolta, simmetria dell’ampiezza e antisimmetria della fase caratterizzano la modulazione a prodotto.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "la modulazione di frequenza",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (simmetria spettrale in modulazione prodotto): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Una modulazione d’angolo generica",
+          "perche_sbagliata": "La condizione citata è associata alla forma di modulazione a prodotto."
         },
         {
           "id": "b",
-          "testo": "Simmetria di ampiezza e antisimmetria di fase caratterizzano l’oscillazione modulata a prodotto nel contesto indicato."
+          "testo": "Una modulazione FM in ogni caso",
+          "perche_sbagliata": "La sola FM non garantisce la simmetria spettrale richiesta dal quesito."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto simmetria senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (simmetria spettrale in modulazione prodotto): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Un’oscillazione modulata a prodotto"
         }
       ],
-      "corretta": "b"
+      "corretta": "c"
     },
     {
       "id": "q-m12",
@@ -318,25 +318,25 @@
       "temi": [
         "M12"
       ],
-      "domanda": "Quale affermazione descrive correttamente interpretazione di Carson?",
-      "spiegazione": "Carson stima la banda significativa di un segnale modulato d’angolo. La scelta va motivata con la definizione e le ipotesi del tema; evitare aliasing è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Che banda stima la formula di Carson?",
+      "spiegazione": "Carson stima la banda significativa della modulazione d’angolo in base a deviazione massima e banda del messaggio.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "evitare aliasing",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (interpretazione di Carson): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "La banda minima per evitare aliasing",
+          "perche_sbagliata": "L’aliasing riguarda il campionamento e non la deviazione angolare."
         },
         {
           "id": "b",
-          "testo": "È sufficiente considerare soltanto interpretazione senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (interpretazione di Carson): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "La banda significativa di una modulazione d’angolo"
         },
         {
           "id": "c",
-          "testo": "Carson stima la banda significativa di un segnale modulato d’angolo."
+          "testo": "La banda di una modulazione AM ordinaria",
+          "perche_sbagliata": "Carson è applicata a FM/PM, non alla modulazione d’ampiezza ordinaria."
         }
       ],
-      "corretta": "c"
+      "corretta": "b"
     },
     {
       "id": "q-m13",
@@ -346,22 +346,22 @@
       "temi": [
         "M13"
       ],
-      "domanda": "Quale affermazione descrive correttamente banda di un segnale modulato d’angolo?",
-      "spiegazione": "La banda di Carson è centrata attorno alla portante, con estensione stimata secondo deviazione e banda del messaggio. La scelta va motivata con la definizione e le ipotesi del tema; banda di un filtro passa-basso è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Dove è collocata la banda di Carson nel segnale modulato?",
+      "spiegazione": "La descrizione del quesito colloca lo spettro attorno a ω₀; la formula esprime la larghezza, non il centro del passa-banda.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "La banda di Carson è centrata attorno alla portante, con estensione stimata secondo deviazione e banda del messaggio."
+          "testo": "Attorno alla portante ω₀ del segnale passa-banda"
         },
         {
           "id": "b",
-          "testo": "banda di un filtro passa-basso",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (banda di un segnale modulato d’angolo): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Attorno a zero, come per il passa-basso equivalente",
+          "perche_sbagliata": "La banda RF è centrata sulla portante; l’inviluppo equivalente è il passa-basso."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto banda senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (banda di un segnale modulato d’angolo): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Attorno alla frequenza di taglio di un filtro RC",
+          "perche_sbagliata": "La formula non specifica il taglio di un filtro."
         }
       ],
       "corretta": "a"
@@ -374,25 +374,25 @@
       "temi": [
         "M14"
       ],
-      "domanda": "Quale affermazione descrive correttamente espressione di Carson?",
-      "spiegazione": "Per Carson si usa Bω≈2(Δωmax+ωm). La scelta va motivata con la definizione e le ipotesi del tema; bω=Δωmax−ωm è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quale espressione riporta la formula di Carson in pulsazione?",
+      "spiegazione": "La stima è due volte la somma della deviazione massima e della massima pulsazione del messaggio.",
       "opzioni": [
         {
           "id": "a",
           "testo": "Bω=Δωmax−ωm",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (espressione di Carson): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "perche_sbagliata": "La somma dei contributi va raddoppiata per coprire entrambi i lati."
         },
         {
           "id": "b",
-          "testo": "Per Carson si usa Bω≈2(Δωmax+ωm)."
+          "testo": "Bω=2(ω₀+ωm)",
+          "perche_sbagliata": "La portante individua il centro; non è la deviazione massima nella stima della banda."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto espressione senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (espressione di Carson): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Bω=2(Δωmax+ωm)"
         }
       ],
-      "corretta": "b"
+      "corretta": "c"
     },
     {
       "id": "q-m15",
@@ -402,25 +402,25 @@
       "temi": [
         "M15"
       ],
-      "domanda": "Quale affermazione descrive correttamente rappresentazione dei periodici?",
-      "spiegazione": "Un segnale periodico si rappresenta tramite serie di Fourier, non tramite un singolo integrale di Fourier aperiodico. La scelta va motivata con la definizione e le ipotesi del tema; integrale di Fourier è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quale rappresentazione è inappropriata per un segnale periodico?",
+      "spiegazione": "I segnali periodici si rappresentano con serie di Fourier; l’integrale ordinario descrive invece segnali aperiodici secondo le ipotesi appropriate.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "integrale di Fourier",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (rappresentazione dei periodici): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Una serie esponenziale di Fourier",
+          "perche_sbagliata": "La serie è proprio la rappresentazione armonica di un segnale periodico."
         },
         {
           "id": "b",
-          "testo": "È sufficiente considerare soltanto rappresentazione senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (rappresentazione dei periodici): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Un singolo integrale di Fourier aperiodico"
         },
         {
           "id": "c",
-          "testo": "Un segnale periodico si rappresenta tramite serie di Fourier, non tramite un singolo integrale di Fourier aperiodico."
+          "testo": "Una serie trigonometrica di seni e coseni",
+          "perche_sbagliata": "Anche la forma trigonometrica è una serie di Fourier per segnali periodici."
         }
       ],
-      "corretta": "c"
+      "corretta": "b"
     },
     {
       "id": "q-m16",
@@ -430,22 +430,22 @@
       "temi": [
         "M16"
       ],
-      "domanda": "Quale affermazione descrive correttamente filtro ricorrente?",
-      "spiegazione": "Una funzione di trasferimento ricorrente generale può avere poli e zeri. La scelta va motivata con la definizione e le ipotesi del tema; solo zeri è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quali singolarità può avere una funzione di trasferimento ricorrente generale?",
+      "spiegazione": "Il modello ricorrente generale può avere poli e zeri; “solo poli” è una sottoclasse, non la regola generale.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "Una funzione di trasferimento ricorrente generale può avere poli e zeri."
+          "testo": "Poli e zeri, secondo la rete"
         },
         {
           "id": "b",
-          "testo": "solo zeri",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (filtro ricorrente): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Soltanto zeri, come un FIR trasversale",
+          "perche_sbagliata": "La ricorsione introduce poli e la forma generale può avere anche zeri."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto filtro senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (filtro ricorrente): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Soltanto poli, in ogni rete ricorrente",
+          "perche_sbagliata": "La restrizione ai soli poli vale per il ricorsivo puro."
         }
       ],
       "corretta": "a"
@@ -458,25 +458,25 @@
       "temi": [
         "M17"
       ],
-      "domanda": "Quale affermazione descrive correttamente filtro ricorsivo puro?",
-      "spiegazione": "Un filtro ricorsivo puro ha poli ma non zeri finiti aggiuntivi nel modello considerato. La scelta va motivata con la definizione e le ipotesi del tema; solo zeri è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Qual è la forma della funzione di trasferimento ricorrente pura?",
+      "spiegazione": "Il filtro ricorrente puro è la classe con soli poli nel modello considerato.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "solo zeri",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (filtro ricorsivo puro): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Presenta soltanto zeri nel numeratore",
+          "perche_sbagliata": "La ricorsione pura è descritta dai poli, non da soli zeri."
         },
         {
           "id": "b",
-          "testo": "Un filtro ricorsivo puro ha poli ma non zeri finiti aggiuntivi nel modello considerato."
+          "testo": "Presenta necessariamente poli e zeri finiti",
+          "perche_sbagliata": "La presenza di zeri aggiuntivi appartiene al caso ricorrente generale."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto filtro senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (filtro ricorsivo puro): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Presenta poli e non aggiunge zeri propri"
         }
       ],
-      "corretta": "b"
+      "corretta": "c"
     },
     {
       "id": "q-m18",
@@ -486,25 +486,25 @@
       "temi": [
         "M18"
       ],
-      "domanda": "Quale affermazione descrive correttamente filtro trasversale?",
-      "spiegazione": "Un filtro trasversale FIR presenta zeri e non poli propri della ricorsione. La scelta va motivata con la definizione e le ipotesi del tema; solo poli è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quale caratteristica si associa al filtro trasversale FIR?",
+      "spiegazione": "La funzione trasversale è un polinomio di ritardi e presenta zeri; nel modello ideale non introduce poli ricorsivi.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "solo poli",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (filtro trasversale): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Poli senza zeri nella risposta",
+          "perche_sbagliata": "La struttura finita trasversale produce zeri, non poli ricorsivi."
         },
         {
           "id": "b",
-          "testo": "È sufficiente considerare soltanto filtro senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (filtro trasversale): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Zeri senza poli propri della ricorsione"
         },
         {
           "id": "c",
-          "testo": "Un filtro trasversale FIR presenta zeri e non poli propri della ricorsione."
+          "testo": "Poli e zeri obbligatori in ogni caso",
+          "perche_sbagliata": "La risposta FIR non richiede poli propri di una ricorsione."
         }
       ],
-      "corretta": "c"
+      "corretta": "b"
     },
     {
       "id": "q-m19",
@@ -514,22 +514,22 @@
       "temi": [
         "M19"
       ],
-      "domanda": "Quale affermazione descrive correttamente rapporto propagazione-trasmissione?",
-      "spiegazione": "Un rapporto a=Tprop/Ttrasm elevato può rendere critiche le prestazioni di una rete. La scelta va motivata con la definizione e le ipotesi del tema; a prossimo a zero è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quando il rapporto a=Tprop/Ttrasm può diventare critico per la rete?",
+      "spiegazione": "Un rapporto grande significa che la propagazione pesa molto rispetto al tempo di trasmissione e può degradare le prestazioni.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "Un rapporto a=Tprop/Ttrasm elevato può rendere critiche le prestazioni di una rete."
+          "testo": "Quando supera circa 0,1"
         },
         {
           "id": "b",
-          "testo": "a prossimo a zero",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (rapporto propagazione-trasmissione): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Quando è inferiore a 0,01",
+          "perche_sbagliata": "Un rapporto piccolo indica propagazione trascurabile rispetto alla trasmissione."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto rapporto senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (rapporto propagazione-trasmissione): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Quando è compreso tra 0,01 e 0,1 soltanto",
+          "perche_sbagliata": "Il criterio della raccolta segnala la regione oltre 0,1."
         }
       ],
       "corretta": "a"
@@ -542,25 +542,25 @@
       "temi": [
         "M20"
       ],
-      "domanda": "Quale affermazione descrive correttamente conversione di frequenza?",
-      "spiegazione": "La conversione di frequenza ideale è associata alla modulazione SSB-SC. La scelta va motivata con la definizione e le ipotesi del tema; aM DSB con portante è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quale tipo di modulazione è usato per la conversione di frequenza ideale?",
+      "spiegazione": "La conversione di frequenza ideale è associata alla modulazione SSB-SC.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "AM DSB con portante",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (conversione di frequenza): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "DSB-SC, due bande laterali soppresse",
+          "perche_sbagliata": "La conversione ideale indicata usa una sola banda laterale."
         },
         {
           "id": "b",
-          "testo": "La conversione di frequenza ideale è associata alla modulazione SSB-SC."
+          "testo": "VSB, con una banda laterale vestigiale",
+          "perche_sbagliata": "VSB mantiene una porzione di banda laterale e non è l’equivalenza richiesta."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto conversione senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (conversione di frequenza): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "SSB-SC, banda laterale unica senza portante"
         }
       ],
-      "corretta": "b"
+      "corretta": "c"
     },
     {
       "id": "q-m21",
@@ -570,25 +570,25 @@
       "temi": [
         "M21"
       ],
-      "domanda": "Quale affermazione descrive correttamente demodulazione coerente?",
-      "spiegazione": "Il ricevitore coerente usa una replica di riferimento sincronizzata della portante. La scelta va motivata con la definizione e le ipotesi del tema; solo rivelazione d’inviluppo è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Di quale riferimento si avvale la demodulazione coerente?",
+      "spiegazione": "Il demodulatore coerente moltiplica rispetto a una replica di portante sincronizzata.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "solo rivelazione d’inviluppo",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (demodulazione coerente): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Di un rivelatore che ignora la portante",
+          "perche_sbagliata": "Senza riferimento coerente non si ricostruisce la fase di demodulazione."
         },
         {
           "id": "b",
-          "testo": "È sufficiente considerare soltanto demodulazione senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (demodulazione coerente): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Di una portante locale sincronizzata in fase"
         },
         {
           "id": "c",
-          "testo": "Il ricevitore coerente usa una replica di riferimento sincronizzata della portante."
+          "testo": "Di una portante a frequenza non correlata",
+          "perche_sbagliata": "Il riferimento deve essere coerente con la portante ricevuta."
         }
       ],
-      "corretta": "c"
+      "corretta": "b"
     },
     {
       "id": "q-m22",
@@ -598,22 +598,22 @@
       "temi": [
         "M22"
       ],
-      "domanda": "Quale affermazione descrive correttamente demodulazione non coerente?",
-      "spiegazione": "Un rivelatore non coerente può elaborare l’oscillazione senza una replica di portante di fase. La scelta va motivata con la definizione e le ipotesi del tema; richiede sempre riferimento di fase è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Su che cosa opera un demodulatore non coerente?",
+      "spiegazione": "La modalità non coerente estrae l’informazione dall’oscillazione modulata senza riferimento di fase della portante.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "Un rivelatore non coerente può elaborare l’oscillazione senza una replica di portante di fase."
+          "testo": "Sull’oscillazione modulata senza replica di fase portante"
         },
         {
           "id": "b",
-          "testo": "richiede sempre riferimento di fase",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (demodulazione non coerente): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Su un duplicato di portante sincronizzato in fase",
+          "perche_sbagliata": "Questo è il requisito caratteristico della demodulazione coerente."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto demodulazione senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (demodulazione non coerente): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Su un segnale baseband già estratto dal ricevitore",
+          "perche_sbagliata": "La risposta descrive uno stadio successivo, non il rivelatore non coerente."
         }
       ],
       "corretta": "a"
@@ -626,25 +626,25 @@
       "temi": [
         "M23"
       ],
-      "domanda": "Quale affermazione descrive correttamente bande laterali prodotto?",
-      "spiegazione": "La modulazione a prodotto genera bande laterali ai lati della portante. La scelta va motivata con la definizione e le ipotesi del tema; ai lati della massima frequenza del messaggio è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Dove si collocano le bande laterali della modulazione a prodotto?",
+      "spiegazione": "Moltiplicare il messaggio per una portante produce repliche spostate ai lati di ω₀.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "ai lati della massima frequenza del messaggio",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (bande laterali prodotto): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Ai lati del doppio della massima frequenza utile",
+          "perche_sbagliata": "La traslazione spettrale avviene attorno alla portante, non a 2fmax."
         },
         {
           "id": "b",
-          "testo": "La modulazione a prodotto genera bande laterali ai lati della portante."
+          "testo": "Ai due lati della frequenza zero soltanto",
+          "perche_sbagliata": "Il prodotto con la portante sposta lo spettro in banda passante."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto bande senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (bande laterali prodotto): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Ai due lati della frequenza portante"
         }
       ],
-      "corretta": "b"
+      "corretta": "c"
     },
     {
       "id": "q-m24",
@@ -654,25 +654,25 @@
       "temi": [
         "M24"
       ],
-      "domanda": "Quale affermazione descrive correttamente valore problematico di a?",
-      "spiegazione": "Quando a supera l’unità, i tempi di propagazione possono dominare la trasmissione. La scelta va motivata con la definizione e le ipotesi del tema; quando è esattamente zero è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quale valore del parametro a segnala una propagazione dominante?",
+      "spiegazione": "Se a=Tprop/Ttrasm è grande, la propagazione diventa rilevante rispetto al tempo necessario a trasmettere il pacchetto.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "quando è esattamente zero",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (valore problematico di a): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Un valore prossimo a zero",
+          "perche_sbagliata": "Un valore quasi nullo rende piccolo il ritardo rispetto alla trasmissione."
         },
         {
           "id": "b",
-          "testo": "È sufficiente considerare soltanto valore senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (valore problematico di a): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Un valore grande, oltre l’unità"
         },
         {
           "id": "c",
-          "testo": "Quando a supera l’unità, i tempi di propagazione possono dominare la trasmissione."
+          "testo": "Un valore fisso pari a 0,1 in ogni rete",
+          "perche_sbagliata": "La soglia descrive un rapporto variabile, non un valore universale fisso."
         }
       ],
-      "corretta": "c"
+      "corretta": "b"
     },
     {
       "id": "q-m25",
@@ -682,22 +682,22 @@
       "temi": [
         "M25"
       ],
-      "domanda": "Quale affermazione descrive correttamente banda di Nyquist per sequenza impulsiva?",
-      "spiegazione": "Per campioni nulli tranne quello all’origine, la banda minima bilatera è π/T nella convenzione indicata. La scelta va motivata con la definizione e le ipotesi del tema; la banda passante del trasversale è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Che cosa rappresenta la banda di Nyquist per x[n]=x₀δ[n]?",
+      "spiegazione": "Per la sequenza con un solo campione non nullo, la banda bilatera limite è |ω|≤π/T nella convenzione indicata.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "Per campioni nulli tranne quello all’origine, la banda minima bilatera è π/T nella convenzione indicata."
+          "testo": "La minima semi-banda che consente repliche a somma costante"
         },
         {
           "id": "b",
-          "testo": "la banda passante del trasversale",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (banda di Nyquist per sequenza impulsiva): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "La banda passante di un filtro trasversale",
+          "perche_sbagliata": "La definizione riguarda lo spettro per la sequenza di campioni, non la topologia del filtro."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto banda senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (banda di Nyquist per sequenza impulsiva): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "La banda minima antialiasing di qualunque segnale",
+          "perche_sbagliata": "Il problema è la ricostruzione della sequenza specifica, non un limite universale antialiasing."
         }
       ],
       "corretta": "a"
@@ -710,25 +710,25 @@
       "temi": [
         "M26"
       ],
-      "domanda": "Quale affermazione descrive correttamente criterio di Nyquist?",
-      "spiegazione": "Il criterio di Nyquist di trasmissione mira a eliminare l’interferenza intersimbolica agli istanti di decisione. La scelta va motivata con la definizione e le ipotesi del tema; massimizzare la potenza trasmessa è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "A quale obiettivo risponde il criterio di Nyquist per la trasmissione?",
+      "spiegazione": "La condizione di Nyquist sui campioni della risposta complessiva annulla i contributi degli altri simboli agli istanti decisionali.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "massimizzare la potenza trasmessa",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (criterio di Nyquist): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Impedire ogni aliasing prima della conversione A/D",
+          "perche_sbagliata": "Il criterio di Nyquist di trasmissione riguarda l’ISI, non il filtro anti-alias."
         },
         {
           "id": "b",
-          "testo": "Il criterio di Nyquist di trasmissione mira a eliminare l’interferenza intersimbolica agli istanti di decisione."
+          "testo": "Massimizzare la potenza media ricevuta",
+          "perche_sbagliata": "La potenza non è la condizione d’interferenza tra simboli."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto criterio senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (criterio di Nyquist): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Annullare l’interferenza intersimbolica agli istanti di decisione"
         }
       ],
-      "corretta": "b"
+      "corretta": "c"
     },
     {
       "id": "q-m27",
@@ -738,25 +738,25 @@
       "temi": [
         "M27"
       ],
-      "domanda": "Quale affermazione descrive correttamente altro nome di AM?",
-      "spiegazione": "AM a doppia banda laterale con portante è indicata come DSB. La scelta va motivata con la definizione e le ipotesi del tema; sSB-SC è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Come è chiamata l’AM convenzionale con due bande laterali?",
+      "spiegazione": "La modulazione AM convenzionale è anche indicata come DSB.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "SSB-SC",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (altro nome di AM): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "SSB-SC, singola banda senza portante",
+          "perche_sbagliata": "SSB-SC sopprime la portante e seleziona una banda, diversamente dall’AM convenzionale."
         },
         {
           "id": "b",
-          "testo": "È sufficiente considerare soltanto altro senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (altro nome di AM): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "DSB, doppia banda laterale"
         },
         {
           "id": "c",
-          "testo": "AM a doppia banda laterale con portante è indicata come DSB."
+          "testo": "VSB, banda laterale vestigiale",
+          "perche_sbagliata": "VSB trasmette una banda intera e una porzione dell’altra."
         }
       ],
-      "corretta": "c"
+      "corretta": "b"
     },
     {
       "id": "q-m28",
@@ -766,22 +766,22 @@
       "temi": [
         "M28"
       ],
-      "domanda": "Quale affermazione descrive correttamente codice sistematico?",
-      "spiegazione": "In un codice sistematico i bit informativi restano riconoscibili separatamente dai bit di ridondanza. La scelta va motivata con la definizione e le ipotesi del tema; i bit informativi sono sostituiti dai bit di controllo è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Che cosa distingue un codice sistematico?",
+      "spiegazione": "Il codice sistematico conserva i k bit informativi distinguendoli dai bit ridondanti.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "In un codice sistematico i bit informativi restano riconoscibili separatamente dai bit di ridondanza."
+          "testo": "I bit informativi sono mantenuti separati dai bit di ridondanza"
         },
         {
           "id": "b",
-          "testo": "i bit informativi sono sostituiti dai bit di controllo",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (codice sistematico): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "I bit di informazione sono sostituiti dai bit di controllo",
+          "perche_sbagliata": "In un sistematico i dati originali restano presenti nella parola codificata."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto codice senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (codice sistematico): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "La parola è definita soltanto da una matrice senza bit dati",
+          "perche_sbagliata": "Una rappresentazione matriciale non definisce da sola la sistematicità."
         }
       ],
       "corretta": "a"
@@ -794,25 +794,25 @@
       "temi": [
         "M29"
       ],
-      "domanda": "Quale affermazione descrive correttamente spettro energia e autocorrelazione?",
-      "spiegazione": "Per un segnale di energia, spettro e autocorrelazione formano una coppia di Fourier. La scelta va motivata con la definizione e le ipotesi del tema; convoluzione temporale è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quale trasformazione lega autocorrelazione e spettro di energia?",
+      "spiegazione": "La relazione di Wiener–Khinchin associa l’autocorrelazione allo spettro tramite Fourier.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "convoluzione temporale",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (spettro energia e autocorrelazione): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "La convoluzione di due segnali nel tempo",
+          "perche_sbagliata": "La relazione è una coppia di Fourier, non una convoluzione temporale."
         },
         {
           "id": "b",
-          "testo": "Per un segnale di energia, spettro e autocorrelazione formano una coppia di Fourier."
+          "testo": "La derivata della funzione di autocorrelazione",
+          "perche_sbagliata": "La derivazione non sostituisce la relazione spettrale di Fourier."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto spettro senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (spettro energia e autocorrelazione): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "La trasformata di Fourier, a fattori convenzionali vicino"
         }
       ],
-      "corretta": "b"
+      "corretta": "c"
     },
     {
       "id": "q-m30",
@@ -822,25 +822,25 @@
       "temi": [
         "M30"
       ],
-      "domanda": "Quale affermazione descrive correttamente ritardo TDMA e FDMA?",
-      "spiegazione": "Nel confronto idealizzato del materiale, l’attesa di accesso TDMA è inferiore a quella FDMA. La scelta va motivata con la definizione e le ipotesi del tema; maggiore è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Nel confronto idealizzato della raccolta, come varia il ritardo TDMA rispetto a FDMA?",
+      "spiegazione": "La risposta riprende il confronto riportato nella raccolta; senza modello di carico e definizione del ritardo non va generalizzata.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "maggiore",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (ritardo TDMA e FDMA): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "È maggiore perché ogni utente attende sempre un frame intero",
+          "perche_sbagliata": "Il modello usato nel quesito attribuisce a TDMA un ritardo inferiore."
         },
         {
           "id": "b",
-          "testo": "È sufficiente considerare soltanto ritardo senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (ritardo TDMA e FDMA): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "È minore nel modello di confronto riportato"
         },
         {
           "id": "c",
-          "testo": "Nel confronto idealizzato del materiale, l’attesa di accesso TDMA è inferiore a quella FDMA."
+          "testo": "È identico per qualunque carico e numero di utenti",
+          "perche_sbagliata": "L’uguaglianza non è universale; il confronto dipende dalle ipotesi."
         }
       ],
-      "corretta": "c"
+      "corretta": "b"
     },
     {
       "id": "q-m31",
@@ -850,22 +850,22 @@
       "temi": [
         "M31"
       ],
-      "domanda": "Quale affermazione descrive correttamente velocità FDMA e TDMA?",
-      "spiegazione": "A parità delle ipotesi del confronto, il tasso assegnato per utente è equivalente. La scelta va motivata con la definizione e le ipotesi del tema; sempre superiore è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Come confronta la raccolta la velocità FDMA rispetto a TDMA?",
+      "spiegazione": "L’equivalenza è riferita al confronto didattico riportato; l’efficienza reale dipende dalle allocazioni e dagli overhead.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "A parità delle ipotesi del confronto, il tasso assegnato per utente è equivalente."
+          "testo": "La considera equivalente nel confronto riportato"
         },
         {
           "id": "b",
-          "testo": "sempre superiore",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (velocità FDMA e TDMA): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "La considera sempre superiore per ogni allocazione",
+          "perche_sbagliata": "La raccolta indica equivalenza, non un vantaggio universale di FDMA."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto velocità senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (velocità FDMA e TDMA): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "La considera necessariamente inferiore in ogni condizione",
+          "perche_sbagliata": "La risposta del confronto è uguale, non minore."
         }
       ],
       "corretta": "a"
@@ -878,25 +878,25 @@
       "temi": [
         "M32"
       ],
-      "domanda": "Quale affermazione descrive correttamente conversione PM-FM?",
-      "spiegazione": "La catena PM diventa FM anteponendo un integratore al modulatore PM. La scelta va motivata con la definizione e le ipotesi del tema; aggiungendo un derivatore in uscita è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quale rete va prima del modulatore PM per ottenere FM?",
+      "spiegazione": "L’integratore anteposto rende la fase del PM proporzionale all’integrale del messaggio, cioè alla frequenza istantanea desiderata.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "aggiungendo un derivatore in uscita",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (conversione PM-FM): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Un derivatore applicato al messaggio prima del PM",
+          "perche_sbagliata": "La derivazione crea l’operazione opposta rispetto all’integrale richiesto."
         },
         {
           "id": "b",
-          "testo": "La catena PM diventa FM anteponendo un integratore al modulatore PM."
+          "testo": "Un integratore posto dopo il modulatore PM",
+          "perche_sbagliata": "Per la conversione si modifica l’ingresso del modulatore, non la portante d’uscita."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto conversione senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (conversione PM-FM): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Un integratore applicato al messaggio prima del PM"
         }
       ],
-      "corretta": "b"
+      "corretta": "c"
     },
     {
       "id": "q-m33",
@@ -906,25 +906,25 @@
       "temi": [
         "M33"
       ],
-      "domanda": "Quale affermazione descrive correttamente conversione FM-PM?",
-      "spiegazione": "La catena FM diventa PM anteponendo un derivatore al modulatore FM. La scelta va motivata con la definizione e le ipotesi del tema; aggiungendo un integratore in uscita è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Come si converte un modulatore FM in PM?",
+      "spiegazione": "Il derivatore anteposto compensa l’integrale che lega fase e frequenza, realizzando PM.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "aggiungendo un integratore in uscita",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (conversione FM-PM): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Anteponendo un integratore al messaggio modulante",
+          "perche_sbagliata": "L’integratore porta alla conversione PM→FM, non FM→PM."
         },
         {
           "id": "b",
-          "testo": "È sufficiente considerare soltanto conversione senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (conversione FM-PM): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Anteponendo un derivatore al messaggio modulante"
         },
         {
           "id": "c",
-          "testo": "La catena FM diventa PM anteponendo un derivatore al modulatore FM."
+          "testo": "Posponendo il derivatore alla portante modulata",
+          "perche_sbagliata": "La rete va applicata al messaggio prima del modulatore."
         }
       ],
-      "corretta": "c"
+      "corretta": "b"
     },
     {
       "id": "q-m34",
@@ -934,22 +934,22 @@
       "temi": [
         "M34"
       ],
-      "domanda": "Quale affermazione descrive correttamente passa-banda modulato?",
-      "spiegazione": "Una modulazione su portante colloca l’energia in una banda passante attorno alla portante. La scelta va motivata con la definizione e le ipotesi del tema; è sempre passa-basso è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Un’oscillazione modulata su portante è di quale tipo spettrale?",
+      "spiegazione": "La traslazione spettrale colloca l’oscillazione modulata attorno alla portante, quindi nel modello usuale è passa-banda.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "Una modulazione su portante colloca l’energia in una banda passante attorno alla portante."
+          "testo": "Passa-banda, concentrata attorno alla portante"
         },
         {
           "id": "b",
-          "testo": "è sempre passa-basso",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (passa-banda modulato): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Passa-basso, concentrata soltanto vicino a zero",
+          "perche_sbagliata": "La modulazione sposta lo spettro baseband attorno alla portante."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto passa-banda senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (passa-banda modulato): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Mai passa-banda, anche quando la portante è non nulla",
+          "perche_sbagliata": "Una portante non nulla genera componenti in banda passante."
         }
       ],
       "corretta": "a"
@@ -962,22 +962,22 @@
       "temi": [
         "I1"
       ],
-      "domanda": "Quale affermazione descrive correttamente componenti di una rete?",
-      "spiegazione": "Una rete di telecomunicazioni coinvolge utenti, fornitori del servizio e una modalità di accesso o pagamento. La scelta va motivata con la definizione e le ipotesi del tema; soltanto apparati di trasmissione è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quali soggetti e aspetti caratterizzano la rete descritta nella raccolta?",
+      "spiegazione": "La scheda menziona utenti, fornitori e pagamento del servizio; non è una definizione tecnica esaustiva di ogni rete.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "soltanto apparati di trasmissione",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (componenti di una rete): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Soltanto router e linee in fibra",
+          "perche_sbagliata": "La definizione citata include soggetti e servizio, non soltanto apparati."
         },
         {
           "id": "b",
-          "testo": "Una rete di telecomunicazioni coinvolge utenti, fornitori del servizio e una modalità di accesso o pagamento."
+          "testo": "Utenti, fornitori del servizio e modalità di pagamento"
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto componenti senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (componenti di una rete): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Solo il gestore e le tariffe, senza utenti",
+          "perche_sbagliata": "Gli utenti sono uno degli elementi caratterizzanti indicati."
         }
       ],
       "corretta": "b"
@@ -990,25 +990,25 @@
       "temi": [
         "I2"
       ],
-      "domanda": "Quale affermazione descrive correttamente definizione strutturale di rete?",
-      "spiegazione": "Una rete può essere descritta come nodi collegati da linee. La scelta va motivata con la definizione e le ipotesi del tema; un singolo collegamento privo di nodi è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Qual è la descrizione strutturale minima di una rete nel materiale?",
+      "spiegazione": "La definizione introduttiva del foglio descrive la rete con nodi e linee.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "un singolo collegamento privo di nodi",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (definizione strutturale di rete): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Un insieme di nodi collegati da linee"
         },
         {
           "id": "b",
-          "testo": "È sufficiente considerare soltanto definizione senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (definizione strutturale di rete): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Un unico protocollo senza apparati collegati",
+          "perche_sbagliata": "Un protocollo è un insieme di regole, non la rete stessa."
         },
         {
           "id": "c",
-          "testo": "Una rete può essere descritta come nodi collegati da linee."
+          "testo": "Un insieme di utenti senza collegamenti",
+          "perche_sbagliata": "La descrizione include sia nodi sia linee."
         }
       ],
-      "corretta": "c"
+      "corretta": "a"
     },
     {
       "id": "q-i03",
@@ -1018,25 +1018,25 @@
       "temi": [
         "I3"
       ],
-      "domanda": "Quale affermazione descrive correttamente protocollo di comunicazione?",
-      "spiegazione": "Un protocollo stabilisce regole per formattare, inviare e ricevere dati. La scelta va motivata con la definizione e le ipotesi del tema; una scelta del solo mezzo fisico è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Che cosa specifica un protocollo di comunicazione?",
+      "spiegazione": "Il protocollo coordina formato e scambio dei dati tra entità comunicanti.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "Un protocollo stabilisce regole per formattare, inviare e ricevere dati."
+          "testo": "Una tabella che assegna solo gli indirizzi IP",
+          "perche_sbagliata": "Gli indirizzi identificano destinazioni, ma non definiscono tutte le regole di scambio."
         },
         {
           "id": "b",
-          "testo": "una scelta del solo mezzo fisico",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (protocollo di comunicazione): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "La sola forma fisica del mezzo trasmissivo",
+          "perche_sbagliata": "Il protocollo comprende regole logiche di scambio oltre al mezzo."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto protocollo senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (protocollo di comunicazione): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Regole per formattare, inviare e ricevere dati"
         }
       ],
-      "corretta": "a"
+      "corretta": "c"
     },
     {
       "id": "q-i04",
@@ -1046,22 +1046,22 @@
       "temi": [
         "I4"
       ],
-      "domanda": "Quale affermazione descrive correttamente funzione degli indirizzi?",
-      "spiegazione": "Gli indirizzi consentono di identificare la destinazione di un messaggio. La scelta va motivata con la definizione e le ipotesi del tema; misurare il rumore del canale è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Perché serve uno schema di indirizzamento?",
+      "spiegazione": "Gli indirizzi consentono di distinguere la destinazione a cui inoltrare il messaggio.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "misurare il rumore del canale",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (funzione degli indirizzi): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Per misurare l’attenuazione lungo la linea",
+          "perche_sbagliata": "L’attenuazione è una proprietà del canale, non dell’indirizzo."
         },
         {
           "id": "b",
-          "testo": "Gli indirizzi consentono di identificare la destinazione di un messaggio."
+          "testo": "Per identificare il destinatario del messaggio"
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto funzione senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (funzione degli indirizzi): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Per scegliere la codifica di ridondanza",
+          "perche_sbagliata": "La ridondanza riguarda la protezione dei dati, non l’identità del destinatario."
         }
       ],
       "corretta": "b"
@@ -1074,25 +1074,25 @@
       "temi": [
         "I5"
       ],
-      "domanda": "Quale affermazione descrive correttamente scopo della standardizzazione?",
-      "spiegazione": "La standardizzazione favorisce interfacce compatibili tra produttori. La scelta va motivata con la definizione e le ipotesi del tema; impone che ogni produttore usi identica architettura interna è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quale vantaggio attribuisce la raccolta alla standardizzazione?",
+      "spiegazione": "La standardizzazione rende interoperabili le interfacce; la raccolta cita ITU come organismo, senza verificare qui altri dettagli storici.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "impone che ogni produttore usi identica architettura interna",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (scopo della standardizzazione): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Interfacce compatibili tra produttori, con implementazioni interne libere"
         },
         {
           "id": "b",
-          "testo": "È sufficiente considerare soltanto scopo senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (scopo della standardizzazione): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Macchine di produttori diversi con architettura interna identica",
+          "perche_sbagliata": "Lo standard riguarda l’interfaccia e non obbliga a rendere identici tutti i dettagli interni."
         },
         {
           "id": "c",
-          "testo": "La standardizzazione favorisce interfacce compatibili tra produttori."
+          "testo": "Eliminazione di ogni necessità di protocolli",
+          "perche_sbagliata": "Gli standard definiscono interfacce e regole, non eliminano i protocolli."
         }
       ],
-      "corretta": "c"
+      "corretta": "a"
     },
     {
       "id": "q-i06",
@@ -1102,25 +1102,25 @@
       "temi": [
         "I6"
       ],
-      "domanda": "Quale affermazione descrive correttamente attribuzione storica del telefono?",
-      "spiegazione": "Nel foglio di domande compare un riferimento a Meucci e al 1871; la ricostruzione storica completa resta NON TROVATO. La scelta va motivata con la definizione e le ipotesi del tema; il dato è presentato come standard di rete attuale è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Come va riportato il riferimento storico a Meucci nella scheda di domande?",
+      "spiegazione": "La raccolta menziona Meucci e il 1871; l’esattezza e il contesto storico indipendente restano NON TROVATO.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "Nel foglio di domande compare un riferimento a Meucci e al 1871; la ricostruzione storica completa resta NON TROVATO."
+          "testo": "Come fatto storico verificato qui e attribuito al docente",
+          "perche_sbagliata": "Il foglio è una raccolta studentesca e non costituisce verifica indipendente."
         },
         {
           "id": "b",
-          "testo": "il dato è presentato come standard di rete attuale",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (attribuzione storica del telefono): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Come data tecnica di uno strato ISO/OSI",
+          "perche_sbagliata": "Il riferimento riguarda la storia del telefono, non i livelli ISO/OSI."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto attribuzione senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (attribuzione storica del telefono): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Come attribuzione riportata, non verifica storica indipendente"
         }
       ],
-      "corretta": "a"
+      "corretta": "c"
     },
     {
       "id": "q-i07",
@@ -1130,22 +1130,22 @@
       "temi": [
         "I7"
       ],
-      "domanda": "Quale affermazione descrive correttamente obiettivi della telefonia?",
-      "spiegazione": "La scheda cita intelligibilità del messaggio e riconoscimento del parlante. La scelta va motivata con la definizione e le ipotesi del tema; solo la velocità di commutazione è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quali due aspetti della telefonia vocale cita il foglio?",
+      "spiegazione": "La raccolta evidenzia intelligibilità e riconoscimento del parlante come aspetti della comunicazione telefonica.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "solo la velocità di commutazione",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (obiettivi della telefonia): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Solo volume ricevuto e velocità del modem",
+          "perche_sbagliata": "Questi parametri non sono i due aspetti elencati nella scheda."
         },
         {
           "id": "b",
-          "testo": "La scheda cita intelligibilità del messaggio e riconoscimento del parlante."
+          "testo": "Comprensibilità del parlato e riconoscimento di chi parla"
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto obiettivi senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (obiettivi della telefonia): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Indirizzamento del pacchetto e controllo CRC",
+          "perche_sbagliata": "Sono funzioni di comunicazione dati, non i due obiettivi vocali citati."
         }
       ],
       "corretta": "b"
@@ -1158,25 +1158,25 @@
       "temi": [
         "I8"
       ],
-      "domanda": "Quale affermazione descrive correttamente prime radiocomunicazioni?",
-      "spiegazione": "La domanda attribuisce a Marconi un esperimento che mostra trasmissione radio non vincolata alla linea retta. La scelta va motivata con la definizione e le ipotesi del tema; una trasmissione che richiede sempre un cavo è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quale attribuzione sulle prime radiocomunicazioni fa la raccolta?",
+      "spiegazione": "La scheda attribuisce la nascita delle radiocomunicazioni a Marconi; l’attribuzione storica oltre il foglio è NON TROVATO.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "una trasmissione che richiede sempre un cavo",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (prime radiocomunicazioni): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "La collega a Marconi, ma non è una verifica storica indipendente"
         },
         {
           "id": "b",
-          "testo": "È sufficiente considerare soltanto prime senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (prime radiocomunicazioni): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "La attribuisce a un protocollo Ethernet contemporaneo",
+          "perche_sbagliata": "Il foglio la presenta come riferimento storico, non come protocollo di rete."
         },
         {
           "id": "c",
-          "testo": "La domanda attribuisce a Marconi un esperimento che mostra trasmissione radio non vincolata alla linea retta."
+          "testo": "La definisce come trasmissione possibile soltanto su cavo",
+          "perche_sbagliata": "La caratteristica indicata riguarda la propagazione radio, non un collegamento cablato."
         }
       ],
-      "corretta": "c"
+      "corretta": "a"
     },
     {
       "id": "q-i09",
@@ -1186,25 +1186,25 @@
       "temi": [
         "I9"
       ],
-      "domanda": "Quale affermazione descrive correttamente mezzi trasmissivi?",
-      "spiegazione": "Tra i mezzi elencati figurano rame, fibra ottica e collegamenti radio; tutti attenuano il segnale. La scelta va motivata con la definizione e le ipotesi del tema; la fibra è priva di attenuazione è un’alternativa plausibile ma errata nel contesto indicato.",
+      "domanda": "Quale sintesi sui mezzi trasmissivi coincide con la scheda?",
+      "spiegazione": "La risposta riassume i mezzi elencati senza aggiungere prestazioni o proprietà non verificate.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "Tra i mezzi elencati figurano rame, fibra ottica e collegamenti radio; tutti attenuano il segnale."
+          "testo": "La fibra non attenua e la radio non può essere broadcast",
+          "perche_sbagliata": "La raccolta afferma che qualunque mezzo attenua e descrive la radio come potenzialmente broadcast."
         },
         {
           "id": "b",
-          "testo": "la fibra è priva di attenuazione",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (mezzi trasmissivi): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Il rame consente una sola utenza e non supporta FDM",
+          "perche_sbagliata": "La scheda cita FDM come condivisione possibile del mezzo in rame/coassiale."
         },
         {
           "id": "c",
-          "testo": "È sufficiente considerare soltanto mezzi senza verificare le ipotesi.",
-          "perche_sbagliata": "È un distrattore sullo stesso tema (mezzi trasmissivi): non rispetta la relazione corretta o trascura una condizione esplicita."
+          "testo": "Rame, fibra e radio sono mezzi possibili e ciascuno attenua il segnale"
         }
       ],
-      "corretta": "a"
+      "corretta": "c"
     },
     {
       "id": "q-p01",
@@ -1215,7 +1215,7 @@
         "P1"
       ],
       "domanda": "Valuta l’affermazione sul tema banda minima per campioni.",
-      "spiegazione": "La somma delle repliche di X deve risultare costante per ottenere la sequenza con un solo campione non nullo. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
+      "spiegazione": "La somma delle repliche di X deve risultare costante per ottenere la sequenza con un solo campione non nullo. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
       "affermazione": "La somma delle repliche di X deve risultare costante per ottenere la sequenza con un solo campione non nullo.",
       "risposta_corretta": true
     },
@@ -1228,9 +1228,9 @@
         "P2"
       ],
       "domanda": "Valuta l’affermazione sul tema serie e integrale per segnali periodici.",
-      "spiegazione": "Per un segnale periodico si usa una serie di Fourier. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
-      "affermazione": "Per un segnale periodico si usa una serie di Fourier.",
-      "risposta_corretta": true
+      "spiegazione": "La periodicità conduce a una serie di Fourier; l’integrale è la rappresentazione per segnali aperiodici sotto le relative ipotesi.",
+      "affermazione": "Un segnale periodico si rappresenta con un integrale di Fourier aperiodico, non con una serie.",
+      "risposta_corretta": false
     },
     {
       "id": "q-p03",
@@ -1241,7 +1241,7 @@
         "P3"
       ],
       "domanda": "Valuta l’affermazione sul tema struttura di un FIR trasversale.",
-      "spiegazione": "Il modello trasversale ideale combina ritardi e coefficienti; la sua H è un polinomio in z⁻¹. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
+      "spiegazione": "Il modello trasversale ideale combina ritardi e coefficienti; la sua H è un polinomio in z⁻¹. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
       "affermazione": "Il modello trasversale ideale combina ritardi e coefficienti; la sua H è un polinomio in z⁻¹.",
       "risposta_corretta": true
     },
@@ -1254,9 +1254,9 @@
         "P4"
       ],
       "domanda": "Valuta l’affermazione sul tema poli e zeri di un ricorsivo generale.",
-      "spiegazione": "Un filtro ricorsivo generale può avere sia poli sia zeri. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
-      "affermazione": "Un filtro ricorsivo generale può avere sia poli sia zeri.",
-      "risposta_corretta": true
+      "spiegazione": "Una funzione ricorrente generale può avere sia poli sia zeri; solo la sottoclasse pura esclude zeri aggiuntivi.",
+      "affermazione": "Ogni filtro ricorrente generale ha soltanto poli e non può avere zeri.",
+      "risposta_corretta": false
     },
     {
       "id": "q-p05",
@@ -1267,7 +1267,7 @@
         "P5"
       ],
       "domanda": "Valuta l’affermazione sul tema solo poli in un ricorsivo puro.",
-      "spiegazione": "Un ricorsivo puro è modellato con poli senza zeri aggiuntivi. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
+      "spiegazione": "Un ricorsivo puro è modellato con poli senza zeri aggiuntivi. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
       "affermazione": "Un ricorsivo puro è modellato con poli senza zeri aggiuntivi.",
       "risposta_corretta": true
     },
@@ -1280,9 +1280,9 @@
         "P6"
       ],
       "domanda": "Valuta l’affermazione sul tema relazione di Wiener-Khinchin.",
-      "spiegazione": "L’autocorrelazione e lo spettro di energia sono legati dalla trasformata di Fourier. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
-      "affermazione": "L’autocorrelazione e lo spettro di energia sono legati dalla trasformata di Fourier.",
-      "risposta_corretta": true
+      "spiegazione": "La coppia è legata dalla trasformata di Fourier, non da una convoluzione temporale.",
+      "affermazione": "Autocorrelazione e spettro di energia sono collegati da convoluzione temporale.",
+      "risposta_corretta": false
     },
     {
       "id": "q-p07",
@@ -1293,7 +1293,7 @@
         "P7"
       ],
       "domanda": "Valuta l’affermazione sul tema DSB per AM.",
-      "spiegazione": "La modulazione AM convenzionale è detta DSB. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
+      "spiegazione": "La modulazione AM convenzionale è detta DSB. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
       "affermazione": "La modulazione AM convenzionale è detta DSB.",
       "risposta_corretta": true
     },
@@ -1306,9 +1306,9 @@
         "P8"
       ],
       "domanda": "Valuta l’affermazione sul tema Nyquist e ISI.",
-      "spiegazione": "Il criterio di Nyquist controlla la condizione di assenza di interferenza intersimbolica. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
-      "affermazione": "Il criterio di Nyquist controlla la condizione di assenza di interferenza intersimbolica.",
-      "risposta_corretta": true
+      "spiegazione": "Il criterio mira a eliminare l’interferenza intersimbolica agli istanti di decisione.",
+      "affermazione": "Il criterio di Nyquist per la trasmissione serve a massimizzare la potenza inviata.",
+      "risposta_corretta": false
     },
     {
       "id": "q-p09",
@@ -1319,7 +1319,7 @@
         "P9"
       ],
       "domanda": "Valuta l’affermazione sul tema portante e banda passante.",
-      "spiegazione": "Una modulazione su portante genera un segnale passa-banda. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
+      "spiegazione": "Una modulazione su portante genera un segnale passa-banda. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
       "affermazione": "Una modulazione su portante genera un segnale passa-banda.",
       "risposta_corretta": true
     },
@@ -1332,9 +1332,9 @@
         "P10"
       ],
       "domanda": "Valuta l’affermazione sul tema separazione dei bit sistematici.",
-      "spiegazione": "In un codice sistematico i bit dati sono conservati come sottoparte distinta della parola codificata. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
-      "affermazione": "In un codice sistematico i bit dati sono conservati come sottoparte distinta della parola codificata.",
-      "risposta_corretta": true
+      "spiegazione": "I dati restano riconoscibili e distinti dai bit di controllo nella parola sistematica.",
+      "affermazione": "In un codice sistematico i bit informativi vengono sostituiti dai bit di ridondanza.",
+      "risposta_corretta": false
     },
     {
       "id": "q-p11",
@@ -1345,7 +1345,7 @@
         "P11"
       ],
       "domanda": "Valuta l’affermazione sul tema parametro a elevato.",
-      "spiegazione": "Un parametro a grande segnala un tempo di propagazione rilevante rispetto al tempo di trasmissione. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
+      "spiegazione": "Un parametro a grande segnala un tempo di propagazione rilevante rispetto al tempo di trasmissione. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
       "affermazione": "Un parametro a grande segnala un tempo di propagazione rilevante rispetto al tempo di trasmissione.",
       "risposta_corretta": true
     },
@@ -1358,9 +1358,9 @@
         "P12"
       ],
       "domanda": "Valuta l’affermazione sul tema spettri di modulazione prodotto.",
-      "spiegazione": "Le bande laterali della modulazione a prodotto sono disposte intorno alla portante. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
-      "affermazione": "Le bande laterali della modulazione a prodotto sono disposte intorno alla portante.",
-      "risposta_corretta": true
+      "spiegazione": "Le traslazioni spettrali si collocano ai lati della portante, non attorno al suo doppio.",
+      "affermazione": "Nella modulazione a prodotto le bande laterali sono centrate sul doppio della portante.",
+      "risposta_corretta": false
     },
     {
       "id": "q-p13",
@@ -1371,7 +1371,7 @@
         "P13"
       ],
       "domanda": "Valuta l’affermazione sul tema potenza e trasformata ordinaria.",
-      "spiegazione": "Una funzione a potenza finita non è per ciò solo integrabile assolutamente. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
+      "spiegazione": "Una funzione a potenza finita non è per ciò solo integrabile assolutamente. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
       "affermazione": "Una funzione a potenza finita non è per ciò solo integrabile assolutamente.",
       "risposta_corretta": true
     },
@@ -1384,9 +1384,9 @@
         "P14"
       ],
       "domanda": "Valuta l’affermazione sul tema Carson e portante.",
-      "spiegazione": "La stima di Carson riguarda un segnale d’angolo attorno alla portante. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
-      "affermazione": "La stima di Carson riguarda un segnale d’angolo attorno alla portante.",
-      "risposta_corretta": true
+      "spiegazione": "Carson stima la banda significativa di una modulazione d’angolo.",
+      "affermazione": "La formula di Carson esprime la banda minima di campionamento anti-alias.",
+      "risposta_corretta": false
     },
     {
       "id": "q-p15",
@@ -1397,7 +1397,7 @@
         "P15"
       ],
       "domanda": "Valuta l’affermazione sul tema TDMA e attesa idealizzata.",
-      "spiegazione": "Nel semplice confronto didattico, il ritardo medio di accesso TDMA è minore. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
+      "spiegazione": "Nel semplice confronto didattico, il ritardo medio di accesso TDMA è minore. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
       "affermazione": "Nel semplice confronto didattico, il ritardo medio di accesso TDMA è minore.",
       "risposta_corretta": true
     },
@@ -1410,9 +1410,9 @@
         "P16"
       ],
       "domanda": "Valuta l’affermazione sul tema conversione PM in FM.",
-      "spiegazione": "L’integrazione del messaggio prima del PM realizza la relazione di fase richiesta per FM. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
-      "affermazione": "L’integrazione del messaggio prima del PM realizza la relazione di fase richiesta per FM.",
-      "risposta_corretta": true
+      "spiegazione": "Si antepone un integratore al PM per ottenere FM; la derivazione è associata alla conversione inversa.",
+      "affermazione": "Per ottenere FM da PM si antepone un derivatore al messaggio.",
+      "risposta_corretta": false
     },
     {
       "id": "q-p17",
@@ -1423,7 +1423,7 @@
         "P17"
       ],
       "domanda": "Valuta l’affermazione sul tema conversione FM in PM.",
-      "spiegazione": "La derivazione del messaggio prima dell’FM realizza la relazione di fase richiesta per PM. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
+      "spiegazione": "La derivazione del messaggio prima dell’FM realizza la relazione di fase richiesta per PM. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
       "affermazione": "La derivazione del messaggio prima dell’FM realizza la relazione di fase richiesta per PM.",
       "risposta_corretta": true
     },
@@ -1436,9 +1436,9 @@
         "P18"
       ],
       "domanda": "Valuta l’affermazione sul tema demodulazione coerente.",
-      "spiegazione": "Un demodulatore coerente richiede un riferimento di portante sincronizzato. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
-      "affermazione": "Un demodulatore coerente richiede un riferimento di portante sincronizzato.",
-      "risposta_corretta": true
+      "spiegazione": "La demodulazione coerente richiede una replica di portante sincronizzata.",
+      "affermazione": "Un demodulatore coerente può funzionare senza riferimento alla portante.",
+      "risposta_corretta": false
     },
     {
       "id": "q-p19",
@@ -1449,7 +1449,7 @@
         "P19"
       ],
       "domanda": "Valuta l’affermazione sul tema densità secondo ordine.",
-      "spiegazione": "La descrizione energetica di un processo richiede statistiche di secondo ordine. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
+      "spiegazione": "La descrizione energetica di un processo richiede statistiche di secondo ordine. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
       "affermazione": "La descrizione energetica di un processo richiede statistiche di secondo ordine.",
       "risposta_corretta": true
     },
@@ -1462,9 +1462,9 @@
         "P20"
       ],
       "domanda": "Valuta l’affermazione sul tema sideband conversion.",
-      "spiegazione": "SSB-SC è associata alla conversione di frequenza ideale. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
-      "affermazione": "SSB-SC è associata alla conversione di frequenza ideale.",
-      "risposta_corretta": true
+      "spiegazione": "La raccolta associa la conversione di frequenza alla modulazione SSB-SC.",
+      "affermazione": "La conversione di frequenza ideale è una modulazione DSB con portante trasmessa.",
+      "risposta_corretta": false
     },
     {
       "id": "q-p21",
@@ -1475,7 +1475,7 @@
         "P21"
       ],
       "domanda": "Valuta l’affermazione sul tema frequenza di simbolo.",
-      "spiegazione": "Gli zeri della sinc dipendono dal periodo del simbolo e dalla durata dell’impulso. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
+      "spiegazione": "Gli zeri della sinc dipendono dal periodo del simbolo e dalla durata dell’impulso. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
       "affermazione": "Gli zeri della sinc dipendono dal periodo del simbolo e dalla durata dell’impulso.",
       "risposta_corretta": true
     },
@@ -1488,9 +1488,9 @@
         "P22"
       ],
       "domanda": "Valuta l’affermazione sul tema correlazione AMI.",
-      "spiegazione": "I simboli AMI adiacenti hanno correlazione negativa quando entrambi corrispondono a uno. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
-      "affermazione": "I simboli AMI adiacenti hanno correlazione negativa quando entrambi corrispondono a uno.",
-      "risposta_corretta": true
+      "spiegazione": "Con due uno consecutivi AMI alterna il segno, quindi la correlazione a un simbolo è negativa.",
+      "affermazione": "Per impulsi AMI adiacenti il prodotto medio dei simboli è positivo.",
+      "risposta_corretta": false
     },
     {
       "id": "q-p23",
@@ -1501,7 +1501,7 @@
         "P23"
       ],
       "domanda": "Valuta l’affermazione sul tema livelli ISO/OSI.",
-      "spiegazione": "Il livello di trasporto è il quarto livello ISO/OSI. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
+      "spiegazione": "Il livello di trasporto è il quarto livello ISO/OSI. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
       "affermazione": "Il livello di trasporto è il quarto livello ISO/OSI.",
       "risposta_corretta": true
     },
@@ -1514,9 +1514,9 @@
         "P24"
       ],
       "domanda": "Valuta l’affermazione sul tema punto di taglio RC.",
-      "spiegazione": "Al taglio di un primo ordine il modulo vale 1/√2 del guadagno passante. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
-      "affermazione": "Al taglio di un primo ordine il modulo vale 1/√2 del guadagno passante.",
-      "risposta_corretta": true
+      "spiegazione": "Il modulo al taglio è 1/√2 del valore passante, cioè il punto a −3 dB.",
+      "affermazione": "Al taglio RC del primo ordine il modulo è 1/2 del guadagno passante.",
+      "risposta_corretta": false
     },
     {
       "id": "q-p25",
@@ -1527,7 +1527,7 @@
         "P25"
       ],
       "domanda": "Valuta l’affermazione sul tema derivatore ideale.",
-      "spiegazione": "Il modulo quadro della risposta di un derivatore è ω². La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
+      "spiegazione": "Il modulo quadro della risposta di un derivatore è ω². La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
       "affermazione": "Il modulo quadro della risposta di un derivatore è ω².",
       "risposta_corretta": true
     },
@@ -1540,9 +1540,9 @@
         "P26"
       ],
       "domanda": "Valuta l’affermazione sul tema densità gaussiana.",
-      "spiegazione": "Una variabile gaussiana a media zero è determinata dalla sua varianza. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
-      "affermazione": "Una variabile gaussiana a media zero è determinata dalla sua varianza.",
-      "risposta_corretta": true
+      "spiegazione": "Per una gaussiana a media zero la varianza determina la densità marginale.",
+      "affermazione": "Una variabile gaussiana a media zero non è determinata dalla varianza.",
+      "risposta_corretta": false
     },
     {
       "id": "q-p27",
@@ -1553,7 +1553,7 @@
         "P27"
       ],
       "domanda": "Valuta l’affermazione sul tema integrale della sinc inversa.",
-      "spiegazione": "Lo spettro rettangolare bilatero produce una sinc nel tempo. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
+      "spiegazione": "Lo spettro rettangolare bilatero produce una sinc nel tempo. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
       "affermazione": "Lo spettro rettangolare bilatero produce una sinc nel tempo.",
       "risposta_corretta": true
     },
@@ -1566,9 +1566,9 @@
         "P28"
       ],
       "domanda": "Valuta l’affermazione sul tema rete e indirizzamento.",
-      "spiegazione": "Un indirizzo serve a scegliere il destinatario del messaggio. La frase è formulata come controllo concettuale e va letta nel modello e nelle convenzioni dichiarate.",
-      "affermazione": "Un indirizzo serve a scegliere il destinatario del messaggio.",
-      "risposta_corretta": true
+      "spiegazione": "Lo schema di indirizzi identifica il destinatario; l’attenuazione è una proprietà del mezzo.",
+      "affermazione": "Un indirizzo di rete misura l’attenuazione del canale anziché indicare una destinazione.",
+      "risposta_corretta": false
     },
     {
       "id": "q-c-rc",
@@ -1684,25 +1684,25 @@
       "area": 7,
       "nodo_id": "es-teoria-traffico-extra",
       "temi": [],
-      "domanda": "In regime stazionario, quale relazione collega popolazione media, tasso d’arrivo e permanenza media?",
-      "spiegazione": "La legge di Little è N=λW, se le quantità medie si riferiscono allo stesso sistema e sono finite. È una relazione generale di regime, non una formula di servizio M/M/1.",
+      "domanda": "Quale legge collega N, λ e W in regime stazionario?",
+      "spiegazione": "Little moltiplica tasso d’arrivo e permanenza media; la stabilità e il confine del sistema devono essere coerenti.",
       "opzioni": [
         {
-          "id": "b",
-          "testo": "N=λ/W",
-          "perche_sbagliata": "Distrattore in tema: divide invece di moltiplicare e non produce il numero medio."
+          "id": "a",
+          "testo": "N=λ/W, dividendo impropriamente per W",
+          "perche_sbagliata": "Le unità non restituiscono un numero medio di utenti/pacchetti."
         },
         {
-          "id": "a",
-          "testo": "N=λW"
+          "id": "b",
+          "testo": "N=W/λ, scambiando tasso e permanenza media",
+          "perche_sbagliata": "Il rapporto tempo/tasso non è la legge di Little e ha unità errate."
         },
         {
           "id": "c",
-          "testo": "N=W/λ",
-          "perche_sbagliata": "Distrattore in tema: inverte le grandezze e non rispetta le unità."
+          "testo": "N=λW, con quantità medie riferite allo stesso sistema"
         }
       ],
-      "corretta": "a"
+      "corretta": "c"
     },
     {
       "id": "q-pcm-quantizzazione",
@@ -1710,23 +1710,22 @@
       "area": 4,
       "nodo_id": "conversione-ad-quantizzazione-pcm",
       "temi": [],
-      "domanda": "Quale operazione trasforma un campione analogico quantizzato in una parola binaria nel PCM?",
-      "spiegazione": "La codifica associa un indice di quantizzazione a una parola binaria; la conversione A/D procede con campionamento, quantizzazione e codifica.",
+      "domanda": "Dopo aver quantizzato un campione PCM, quale operazione produce la parola binaria?",
+      "spiegazione": "Nel PCM la codifica rappresenta in bit l’indice del livello; campionamento e quantizzazione sono passaggi precedenti.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "Codifica del livello quantizzato",
-          "perche_sbagliata": "Distrattore in tema: questa operazione viene dopo la quantizzazione."
+          "testo": "Codificare l’indice del livello quantizzato"
         },
         {
           "id": "b",
-          "testo": "Ricostruzione con filtro passa-basso",
-          "perche_sbagliata": "Distrattore in tema: la ricostruzione appartiene al convertitore D/A."
+          "testo": "Ricostruire il segnale con un filtro passa-basso",
+          "perche_sbagliata": "Il filtro di ricostruzione appartiene al convertitore digitale-analogico."
         },
         {
           "id": "c",
-          "testo": "Derivazione del segnale continuo",
-          "perche_sbagliata": "Distrattore in tema: la derivazione non assegna parole binarie ai livelli."
+          "testo": "Derivare il segnale analogico prima del campionamento",
+          "perche_sbagliata": "La derivazione non assegna un codice binario al livello quantizzato."
         }
       ],
       "corretta": "a"

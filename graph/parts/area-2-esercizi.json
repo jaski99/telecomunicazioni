@@ -1,15 +1,16 @@
 [
   {
     "id": "es-rete-rc",
-    "titolo": "Area 2 — RC con uscita sul condensatore",
+    "titolo": "Rete RC passa-basso: modulo, fase e pulsazione di taglio",
     "area": 2,
     "tipo": "tipo_esercizio",
     "gruppo": "A",
     "worker": "W6",
-    "sapere": "Area 2 — RC con uscita sul condensatore. Si applicano formule e ipotesi esplicite, si controllano unità, casi limite e convenzioni prima di concludere.",
+    "sapere": "Per RC serie con uscita sul condensatore, H(ω)=1/(1+jωRC), |H|=1/√(1+(ωRC)²), fase −atan(ωRC) e ωc=1/(RC).",
     "saper_fare": [
-      "Impostare e risolvere area 2 — rc con uscita sul condensatore motivando i passaggi.",
-      "Verificare il risultato con unità, limiti e una rappresentazione qualitativa."
+      "Impostare il partitore con ZC=1/(jωC) all’uscita sul condensatore.",
+      "Ricavare modulo, fase e pulsazione di taglio.",
+      "Disegnare i limiti a bassa/alta frequenza e il punto −3 dB."
     ],
     "prerequisiti": [
       {
@@ -31,21 +32,22 @@
     ],
     "risorse": [],
     "checklist_ripasso": [
-      "Dichiaro ipotesi e convenzione spettrale.",
-      "Controllo unità, casi limite e forma del grafico."
+      "Verifico che l’uscita sia sul condensatore.",
+      "Controllo |H(ωc)|=1/√2 e fase −π/4."
     ]
   },
   {
     "id": "es-rete-cr",
-    "titolo": "Area 2 — CR con uscita sul resistore",
+    "titolo": "Rete CR passa-alto: modulo, fase e pulsazione di taglio",
     "area": 2,
     "tipo": "tipo_esercizio",
     "gruppo": "A",
     "worker": "W6",
-    "sapere": "Area 2 — CR con uscita sul resistore. Si applicano formule e ipotesi esplicite, si controllano unità, casi limite e convenzioni prima di concludere.",
+    "sapere": "Per il circuito CR con uscita sul resistore, H(ω)=jωRC/(1+jωRC), |H|=ωRC/√(1+(ωRC)²), fase π/2−atan(ωRC) e ωc=1/(RC).",
     "saper_fare": [
-      "Impostare e risolvere area 2 — cr con uscita sul resistore motivando i passaggi.",
-      "Verificare il risultato con unità, limiti e una rappresentazione qualitativa."
+      "Applicare il partitore con uscita sul resistore.",
+      "Ricavare modulo, fase e pulsazione di taglio.",
+      "Disegnare la risposta crescente e i limiti di fase."
     ],
     "prerequisiti": [
       {
@@ -67,8 +69,8 @@
     ],
     "risorse": [],
     "checklist_ripasso": [
-      "Dichiaro ipotesi e convenzione spettrale.",
-      "Controllo unità, casi limite e forma del grafico."
+      "Controllo che l’uscita sia sul resistore.",
+      "Verifico il limite del modulo: zero in DC e uno ad alta frequenza."
     ]
   }
 ]

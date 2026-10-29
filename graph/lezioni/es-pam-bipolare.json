@@ -5,16 +5,16 @@
   "definizione_esame": {
     "definizione": "Area 3 — PAM bipolare a duty cycle unitario: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
     "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
-    "esempio": "Con T=1 ms, determina la forma dello spettro, il valore in ω=0 e i primi zeri positivi, seguendo la convenzione unilaterale A2."
+    "esempio": "Con T=1 ms, determina la forma dello spettro, il valore in ω=0 e i primi zeri positivi, seguendo la convenzione unilaterale decisa in NOTAZIONE.md §5.2."
   },
-  "spiegazione": "### Separare codice e impulso\nIl segnale PAM è la somma degli impulsi pesati dai simboli. La statistica del codice stabilisce i termini di correlazione; la forma dell’impulso stabilisce G(ω). La convenzione è sinc(u)=sin(u)/u. Per il codice bipolare equiprobabile la media è zero, quindi non compare una riga discreta associata alla media.\n\n### Calcolo dello spettro\nLa correlazione a ritardo zero vale uno e quella a ritardi non nulli è zero per simboli indipendenti a media nulla. Rimane la densità continua, con fattore 1/(πT) nella convenzione unilaterale A2. L’impulso rettangolare di ampiezza uno e durata T ha trasformata T sinc(ωT/2).\n\n### Forma e controlli\nIl modulo quadro genera una sinc quadrata. Il massimo è in zero e i nulli si trovano quando ωT/2 è un multiplo non nullo di π. La formula e il disegno sono unilaterali per la densità; se si mostra lo spettro bilatero, mantenere l’informazione sulla convenzione e sulla scala.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n",
+  "spiegazione": "### Separare codice e impulso\nIl segnale PAM è la somma degli impulsi pesati dai simboli. La statistica del codice stabilisce i termini di correlazione; la forma dell’impulso stabilisce G(ω). La convenzione è sinc(u)=sin(u)/u. Per il codice bipolare equiprobabile la media è zero, quindi non compare una riga discreta associata alla media.\n\n### Calcolo dello spettro\nLa correlazione a ritardo zero vale uno e quella a ritardi non nulli è zero per simboli indipendenti a media nulla. Rimane la densità continua, con fattore 1/(πT) nella convenzione unilaterale decisa in NOTAZIONE.md §5.2. L’impulso rettangolare di ampiezza uno e durata T ha trasformata T sinc(ωT/2).\n\n### Forma e controlli\nIl modulo quadro genera una sinc quadrata. Il massimo è in zero e i nulli si trovano quando ωT/2 è un multiplo non nullo di π. La formula e il disegno sono unilaterali per la densità; se si mostra lo spettro bilatero, mantenere l’informazione sulla convenzione e sulla scala.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Dichiara le ipotesi del modello; per le densità spettrali applica la convenzione unilaterale fissata in NOTAZIONE.md §5.2. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $G_s(\\omega)=\\frac{T}{\\pi}\\left[\\frac{\\sin(\\omega T/2)}{\\omega T/2}\\right]^2$.",
   "analogia": {
     "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
     "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
   },
   "worked_example": {
     "titolo": "Esempio guidato E8",
-    "problema": "Con T=1 ms, determina la forma dello spettro, il valore in ω=0 e i primi zeri positivi, seguendo la convenzione unilaterale A2.",
+    "problema": "Con T=1 ms, determina la forma dello spettro, il valore in ω=0 e i primi zeri positivi, seguendo la convenzione unilaterale decisa in NOTAZIONE.md §5.2.",
     "passi": [
       "Per codifica bipolare equiprobabile aₙ∈{−1,+1}, E[aₙ]=0, E[aₙ²]=1 e i campioni distinti sono indipendenti.",
       "La media nulla elimina le righe di spettro dovute alla componente periodica media.",
@@ -23,36 +23,33 @@
       "Sostituisci G: Gs(ω)=T/π sinc²(ωT/2).",
       "In zero, il valore è T/π; gli zeri positivi sono ω=2πk/T, k=1,2,…; col T assegnato il primo è 2000π rad/s."
     ],
-    "soluzione": "A2 resta marcato IPOTESI finché W3 non conferma la convenzione in NOTAZIONE.md. Il grafico è pari se rappresentato bilateralmente; la formula di densità qui riportata è unilaterale in ω≥0. Non trasferire il coefficiente alla versione bilaterale senza adeguare la normalizzazione.",
-    "perche_funziona": "Ogni formula discende dalla definizione del modello e da proprietà dichiarate; i valori numerici servono a controllare i fattori e non sostituiscono il ragionamento simbolico."
+    "soluzione": "La convenzione A2 è stata decisa da W3 in NOTAZIONE.md §5.2: densità unilaterale per ω≥0. Il grafico è pari se rappresentato bilateralmente; la formula di densità qui riportata è unilaterale in ω≥0. Non trasferire il coefficiente alla versione bilaterale senza adeguare la normalizzazione.",
+    "perche_funziona": "La media nulla elimina la componente a righe; l’indipendenza annulla le correlazioni non nulle e resta la densità continua proporzionale al modulo quadro della trasformata dell’impulso."
   },
   "completion_problem": {
-    "titolo": "Completa i passaggi essenziali",
-    "testo": "Nel problema: Con T=1 ms, determina la forma dello spettro, il valore in ω=0 e i primi zeri positivi, seguendo la convenzione unilaterale A2.",
+    "titolo": "Trova massimo e primi zeri per T=2 ms",
+    "testo": "Usa la formula unilaterale PAM per determinare G_s(0) e i primi due zeri positivi.",
     "passi_mancanti": [
-      "Scrivi la relazione di partenza e le ipotesi.",
-      "Esegui l’integrazione o la sostituzione che porta al risultato.",
-      "Indica il controllo finale su unità, zeri o limiti."
+      "Sostituisci ω=0 usando sinc(0)=1.",
+      "Risolvi ωT/2=kπ per i primi interi positivi.",
+      "Converti le pulsazioni trovate in Hz."
     ],
-    "soluzione": "Usa i passaggi numerati dell’esempio come guida; la risposta completa è la formula conclusiva e il controllo di coerenza descritti sopra."
+    "soluzione": "G_s(0)=T/π=0,002/π≈6,366·10⁻⁴. I primi zeri sono ω=2π/T=1000π rad/s e 2000π rad/s, equivalenti a f=500 Hz e 1000 Hz."
   },
   "esercizio_autonomo": {
-    "titolo": "Prova da solo: E8",
-    "testo": "Risolvi una variante di area 3 — pam bipolare a duty cycle unitario cambiando un parametro, mantenendo esplicite le unità e disegnando la forma attesa.",
-    "suggerimento": "Prima scrivi la formula simbolica; solo dopo sostituisci i numeri. Controlla un caso limite.",
-    "soluzione_attesa": [
-      "Per duty cycle 1/2 ma mantenendo simboli bipolari, quale fattore cambia in G(ω)?",
-      "Quali momenti del codice fanno sparire la componente a righe?"
-    ]
+    "titolo": "PAM bipolare con periodo T=2 ms",
+    "testo": "Calcola il valore della densità in zero e i primi due zeri positivi in Hz.",
+    "suggerimento": "Applico la densità unilaterale decisa in NOTAZIONE.md, senza fattore 1/(2πT).",
+    "soluzione_attesa": "G_s(0)=0,002/π≈6,366·10⁻⁴. I nulli si hanno a f=k/T: per k=1 e 2 sono 500 Hz e 1000 Hz. Non ci sono righe perché il valor medio dei simboli è zero."
   },
   "errori_trappole": [
     {
-      "errore": "Sostituire i numeri prima di fissare notazione e unità.",
-      "perche_sbagliato": "Si perdono fattori e non è possibile controllare dimensionalmente la formula."
+      "errore": "Aggiungere righe spettrali nonostante la media nulla.",
+      "perche_sbagliato": "Le righe da media scompaiono per E[aₙ]=0."
     },
     {
-      "errore": "Disegnare lo spettro senza indicare supporto e zeri.",
-      "perche_sbagliato": "La figura non distingue una curva continua da righe o da uno spettro nullo fuori banda."
+      "errore": "Usare i nulli della sinc non normalizzata.",
+      "perche_sbagliato": "Con sinc(u)=sin(u)/u i nulli positivi sono ω=2πk/T."
     }
   ],
   "richiamo_attivo": {

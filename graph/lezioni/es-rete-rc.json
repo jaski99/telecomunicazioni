@@ -7,7 +7,7 @@
     "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
     "esempio": "Per R=1 kΩ e C=1 μF, calcola H alla pulsazione di taglio e descrivi i limiti a bassa e alta frequenza."
   },
-  "spiegazione": "### Dal circuito a H(ω)\nIl condensatore e il resistore sono in serie e l’uscita è prelevata sul condensatore. Il partitore complesso dà H=ZC/(R+ZC). Sostituendo ZC=1/(jωC) si arriva alla forma canonica. Specificare il punto di uscita è essenziale: invertendolo cambia il comportamento passa-basso/passa-alto.\n\n### Modulo e fase\nIl modulo è l’inverso della radice di 1+(ωRC)². La fase è l’opposto dell’argomento del denominatore. La costante di tempo RC fissa il punto di taglio ωc=1/(RC), dove la potenza è dimezzata e il modulo vale 1/√2.\n\n### Schizzo qualitativo\nA frequenza zero il condensatore è aperto e la tensione d’uscita coincide con l’ingresso. A frequenza alta il condensatore offre bassa impedenza e l’uscita si riduce. Il grafico del modulo scende da uno a zero; la fase da zero a −π/2, passando per −π/4 in ωc. Questi limiti sono controlli rapidi dell’algebra.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n",
+  "spiegazione": "### Dal circuito a H(ω)\nIl condensatore e il resistore sono in serie e l’uscita è prelevata sul condensatore. Il partitore complesso dà H=ZC/(R+ZC). Sostituendo ZC=1/(jωC) si arriva alla forma canonica. Specificare il punto di uscita è essenziale: invertendolo cambia il comportamento passa-basso/passa-alto.\n\n### Modulo e fase\nIl modulo è l’inverso della radice di 1+(ωRC)². La fase è l’opposto dell’argomento del denominatore. La costante di tempo RC fissa il punto di taglio ωc=1/(RC), dove la potenza è dimezzata e il modulo vale 1/√2.\n\n### Schizzo qualitativo\nA frequenza zero il condensatore è aperto e la tensione d’uscita coincide con l’ingresso. A frequenza alta il condensatore offre bassa impedenza e l’uscita si riduce. Il grafico del modulo scende da uno a zero; la fase da zero a −π/2, passando per −π/4 in ωc. Questi limiti sono controlli rapidi dell’algebra.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $H(\\omega)=\\frac{1}{1+j\\omega RC},\\qquad \\omega_c=\\frac{1}{RC}$.",
   "analogia": {
     "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
     "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
@@ -24,35 +24,32 @@
       "Per ω→0, |H|→1 e la fase tende a 0; per ω→∞, il modulo tende a zero e la fase a −π/2."
     ],
     "soluzione": "La fase è riferita a frequenze positive. La rete passa-basso attenua le componenti rapide; non attribuire la fase positiva della configurazione CR a questa uscita.",
-    "perche_funziona": "Ogni formula discende dalla definizione del modello e da proprietà dichiarate; i valori numerici servono a controllare i fattori e non sostituiscono il ragionamento simbolico."
+    "perche_funziona": "Il partitore di impedenza individua prima la funzione complessa; separando modulo e argomento si ottengono le curve e il punto di taglio senza confondere RC con 1/RC."
   },
   "completion_problem": {
-    "titolo": "Completa i passaggi essenziali",
-    "testo": "Nel problema: Per R=1 kΩ e C=1 μF, calcola H alla pulsazione di taglio e descrivi i limiti a bassa e alta frequenza.",
+    "titolo": "Calcola il punto di taglio per R=1 kΩ e C=1 μF",
+    "testo": "Ricava H(ωc), il suo modulo e la fase per la rete RC dell’esempio.",
     "passi_mancanti": [
-      "Scrivi la relazione di partenza e le ipotesi.",
-      "Esegui l’integrazione o la sostituzione che porta al risultato.",
-      "Indica il controllo finale su unità, zeri o limiti."
+      "Usa ωc=1/(RC).",
+      "Sostituisci ωcRC=1 in H.",
+      "Valuta modulo e argomento."
     ],
-    "soluzione": "Usa i passaggi numerati dell’esempio come guida; la risposta completa è la formula conclusiva e il controllo di coerenza descritti sopra."
+    "soluzione": "RC=10⁻³ s, quindi ωc=1000 rad/s. H(ωc)=1/(1+j)=(1−j)/2; |H|=1/√2≈0,7071 e fase −π/4 rad."
   },
   "esercizio_autonomo": {
-    "titolo": "Prova da solo: E5",
-    "testo": "Risolvi una variante di area 2 — rc con uscita sul condensatore cambiando un parametro, mantenendo esplicite le unità e disegnando la forma attesa.",
-    "suggerimento": "Prima scrivi la formula simbolica; solo dopo sostituisci i numeri. Controlla un caso limite.",
-    "soluzione_attesa": [
-      "Per R=2 kΩ, C=0,5 μF, trova ωc.",
-      "Quale valore di modulo si ha in ωc?"
-    ]
+    "titolo": "Rete RC con R=2 kΩ e C=0,5 μF",
+    "testo": "Calcola ωc, H(ωc), modulo e fase; indica anche i limiti del modulo agli estremi di frequenza.",
+    "suggerimento": "Verifico che l’uscita sia sul condensatore.",
+    "soluzione_attesa": "RC=0,001 s e ωc=1000 rad/s. H(ωc)=1/(1+j)=(1−j)/2, |H|=1/√2≈0,7071 e fase −π/4. Il modulo tende a 1 per ω→0 e a 0 per ω→∞."
   },
   "errori_trappole": [
     {
-      "errore": "Sostituire i numeri prima di fissare notazione e unità.",
-      "perche_sbagliato": "Si perdono fattori e non è possibile controllare dimensionalmente la formula."
+      "errore": "Usare ZR al numeratore con uscita sul condensatore.",
+      "perche_sbagliato": "Il partitore deve avere ZC al numeratore."
     },
     {
-      "errore": "Disegnare lo spettro senza indicare supporto e zeri.",
-      "perche_sbagliato": "La figura non distingue una curva continua da righe o da uno spettro nullo fuori banda."
+      "errore": "Assegnare fase positiva al passa-basso.",
+      "perche_sbagliato": "L’argomento di 1+jωRC entra con segno negativo."
     }
   ],
   "richiamo_attivo": {

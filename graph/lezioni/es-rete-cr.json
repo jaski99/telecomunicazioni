@@ -7,7 +7,7 @@
     "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
     "esempio": "Con R=2 kΩ e C=0,25 μF calcola ωc, modulo e fase in ωc."
   },
-  "spiegazione": "### Riconosci l’uscita\nQui il condensatore è in serie all’ingresso e il resistore è collegato verso il riferimento; l’uscita è sul resistore. Il partitore complesso produce H=R/(R+ZC), quindi la presenza del fattore ω al numeratore anticipa il comportamento passa-alto.\n\n### Caratteristiche\nIl modulo cresce da zero a uno e raggiunge 1/√2 in ωc=1/(RC). L’argomento di jωRC è π/2, mentre quello del denominatore è arctan(ωRC); sottraendoli si ottiene la fase. A taglio la fase vale π/4.\n\n### Confronto e trappole\nLa rete RC con uscita sul condensatore ha H=1/(1+jωRC), modulo decrescente e fase negativa. La rete CR di questo esercizio ha il fattore jωRC, modulo crescente e fase che scende da π/2 a zero. Non scambiare né la formula del modulo né il segno della fase. Dimensioni: ωRC è adimensionale.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n",
+  "spiegazione": "### Riconosci l’uscita\nQui il condensatore è in serie all’ingresso e il resistore è collegato verso il riferimento; l’uscita è sul resistore. Il partitore complesso produce H=R/(R+ZC), quindi la presenza del fattore ω al numeratore anticipa il comportamento passa-alto.\n\n### Caratteristiche\nIl modulo cresce da zero a uno e raggiunge 1/√2 in ωc=1/(RC). L’argomento di jωRC è π/2, mentre quello del denominatore è arctan(ωRC); sottraendoli si ottiene la fase. A taglio la fase vale π/4.\n\n### Confronto e trappole\nLa rete RC con uscita sul condensatore ha H=1/(1+jωRC), modulo decrescente e fase negativa. La rete CR di questo esercizio ha il fattore jωRC, modulo crescente e fase che scende da π/2 a zero. Non scambiare né la formula del modulo né il segno della fase. Dimensioni: ωRC è adimensionale.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $H(\\omega)=\\frac{j\\omega RC}{1+j\\omega RC},\\qquad \\omega_c=\\frac{1}{RC}$.",
   "analogia": {
     "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
     "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
@@ -24,35 +24,32 @@
       "Per ω→0 il modulo tende a zero; per ω→∞ tende a uno e la fase tende a zero."
     ],
     "soluzione": "Usa fase non negativa per ω>0: l’argomento del numeratore jωRC è π/2. La rete differisce dalla RC per la posizione dei componenti e del prelievo d’uscita.",
-    "perche_funziona": "Ogni formula discende dalla definizione del modello e da proprietà dichiarate; i valori numerici servono a controllare i fattori e non sostituiscono il ragionamento simbolico."
+    "perche_funziona": "L’uscita sul resistore porta al numeratore jωRC; questo fattore distingue il passa-alto CR dalla rete RC con uscita sul condensatore."
   },
   "completion_problem": {
-    "titolo": "Completa i passaggi essenziali",
-    "testo": "Nel problema: Con R=2 kΩ e C=0,25 μF calcola ωc, modulo e fase in ωc.",
+    "titolo": "Valuta la rete CR al taglio per R=2 kΩ e C=0,25 μF",
+    "testo": "Determina ωc, modulo e fase della rete CR al punto di taglio.",
     "passi_mancanti": [
-      "Scrivi la relazione di partenza e le ipotesi.",
-      "Esegui l’integrazione o la sostituzione che porta al risultato.",
-      "Indica il controllo finale su unità, zeri o limiti."
+      "Calcola il prodotto RC e il suo inverso.",
+      "Inserisci ωcRC=1 nell’espressione di H.",
+      "Separa gli argomenti di numeratore e denominatore."
     ],
-    "soluzione": "Usa i passaggi numerati dell’esempio come guida; la risposta completa è la formula conclusiva e il controllo di coerenza descritti sopra."
+    "soluzione": "RC=0,0005 s e ωc=2000 rad/s. In ωc il modulo è 1/√2≈0,7071 e la fase è π/2−atan(1)=π/4 rad."
   },
   "esercizio_autonomo": {
-    "titolo": "Prova da solo: E6",
-    "testo": "Risolvi una variante di area 2 — cr con uscita sul resistore cambiando un parametro, mantenendo esplicite le unità e disegnando la forma attesa.",
-    "suggerimento": "Prima scrivi la formula simbolica; solo dopo sostituisci i numeri. Controlla un caso limite.",
-    "soluzione_attesa": [
-      "Con R=10 kΩ e C=0,1 μF calcola ωc e la fase a ωc.",
-      "Qual è il limite del modulo per ω→0?"
-    ]
+    "titolo": "CR con R=10 kΩ e C=0,1 μF",
+    "testo": "Trova ωc e le caratteristiche al taglio; poi calcola |H| e la fase quando ω=2ωc.",
+    "suggerimento": "Controllo che l’uscita sia sul resistore.",
+    "soluzione_attesa": "RC=0,001 s, perciò ωc=1000 rad/s. Al taglio |H|=1/√2 e fase π/4. Per ω=2ωc, |H|=2/√5≈0,8944 e fase π/2−atan(2)≈0,46365 rad."
   },
   "errori_trappole": [
     {
-      "errore": "Sostituire i numeri prima di fissare notazione e unità.",
-      "perche_sbagliato": "Si perdono fattori e non è possibile controllare dimensionalmente la formula."
+      "errore": "Usare la funzione RC con uscita sul condensatore.",
+      "perche_sbagliato": "Qui l’uscita è sul resistore e il numeratore contiene jωRC."
     },
     {
-      "errore": "Disegnare lo spettro senza indicare supporto e zeri.",
-      "perche_sbagliato": "La figura non distingue una curva continua da righe o da uno spettro nullo fuori banda."
+      "errore": "Dire che il modulo passa-alto vale uno in DC.",
+      "perche_sbagliato": "Il condensatore serie blocca la componente continua."
     }
   ],
   "richiamo_attivo": {
