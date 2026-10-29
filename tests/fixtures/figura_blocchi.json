@@ -1,0 +1,76 @@
+{
+  "id": "filtro-trasversale",
+  "tipo": "blocchi",
+  "titolo": "Filtro trasversale",
+  "descrizione": "Schema a blocchi di filtro trasversale con linea di ritardo T, moltiplicatori e sommatore, tre rami",
+  "blocchi": [
+    {
+      "id": "ingresso",
+      "etichetta": "x(t)",
+      "forma": "ingresso",
+      "colonna": 0,
+      "riga": 1
+    },
+    {
+      "id": "ritardo1",
+      "etichetta": "T",
+      "forma": "ritardo",
+      "colonna": 1,
+      "riga": 1
+    },
+    {
+      "id": "moltiplicatore0",
+      "etichetta": "h0",
+      "forma": "moltiplicatore",
+      "colonna": 2,
+      "riga": 0
+    },
+    {
+      "id": "moltiplicatore1",
+      "etichetta": "h1",
+      "forma": "moltiplicatore",
+      "colonna": 2,
+      "riga": 1
+    },
+    {
+      "id": "sommatore",
+      "etichetta": "+",
+      "forma": "sommatore",
+      "colonna": 3,
+      "riga": 1
+    },
+    {
+      "id": "uscita",
+      "etichetta": "y(t)",
+      "forma": "uscita",
+      "colonna": 4,
+      "riga": 1
+    }
+  ],
+  "collegamenti": [
+    {
+      "da": "ingresso",
+      "a": "ritardo1"
+    },
+    {
+      "da": "ingresso",
+      "a": "moltiplicatore0"
+    },
+    {
+      "da": "ritardo1",
+      "a": "moltiplicatore1"
+    },
+    {
+      "da": "moltiplicatore0",
+      "a": "sommatore"
+    },
+    {
+      "da": "moltiplicatore1",
+      "a": "sommatore"
+    },
+    {
+      "da": "sommatore",
+      "a": "uscita"
+    }
+  ]
+}

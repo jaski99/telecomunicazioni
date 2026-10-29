@@ -1,0 +1,40 @@
+{
+  "id": "spettro-rettangolo",
+  "tipo": "grafico",
+  "titolo": "Spettro rettangolo",
+  "descrizione": "Spettro di ampiezza di un impulso rettangolare con inviluppo sinc, asse ω in rad/s da -10 a 10 e ampiezza da 0 a 2",
+  "asse_x": {
+    "etichetta": "ω [rad/s]",
+    "min": -10,
+    "max": 10,
+    "tacche": [
+      {
+        "valore": 0,
+        "etichetta": "0"
+      }
+    ]
+  },
+  "asse_y": {
+    "etichetta": "|X(ω)|",
+    "min": 0,
+    "max": 2
+  },
+  "serie": [
+    {
+      "stile": "linea",
+      "punti": [
+        [-10, 0.2],
+        [0, 1],
+        [10, 0.2]
+      ],
+      "etichetta": "sinc"
+    }
+  ],
+  "annotazioni": [
+    {
+      "x": 0,
+      "y": 1,
+      "testo": "massimo"
+    }
+  ]
+}

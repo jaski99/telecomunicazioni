@@ -1,0 +1,97 @@
+{
+  "corso": "Fondamenti di Telecomunicazioni — UNIMORE, prof. Maurizio Casoni",
+  "anno": "2026/2027",
+  "versione": 1,
+  "aree": [
+    {
+      "id": 1,
+      "titolo": "Segnali deterministici e trasformata di Fourier"
+    },
+    {
+      "id": 2,
+      "titolo": "Sistemi lineari e filtri"
+    },
+    {
+      "id": 3,
+      "titolo": "Campionamento, Nyquist, PAM e processi aleatori"
+    },
+    {
+      "id": 4,
+      "titolo": "Conversione A/D-D/A e trasmissione numerica"
+    },
+    {
+      "id": 5,
+      "titolo": "Modulazioni e segnali passa-banda"
+    },
+    {
+      "id": 6,
+      "titolo": "Reti, protocolli e accesso multiplo"
+    },
+    {
+      "id": 7,
+      "titolo": "Teoria del traffico e code"
+    }
+  ],
+  "fonti": {
+    "LIBRO_CI": {
+      "descrizione": "L. Calandrino, G. Immovilli, Schemi delle lezioni di Comunicazioni Elettriche, Pitagora Editrice, Bologna",
+      "url": "https://web.ing.unimo.it/wiki/index.php/Libro_di_Testo",
+      "pubblico": true,
+      "nota": "Edizione adottata, indice e pagine: NON TROVATO"
+    },
+    "LUCIDI_CASONI": {
+      "descrizione": "Lucidi del docente (Accesso multiplo, Reti di telecomunicazioni, Comunicazioni elettriche)",
+      "url": "https://web.ing.unimo.it/wiki/index.php/Materiale_Didattico",
+      "pubblico": true,
+      "nota": "Materiale didattico elencato nella pagina del docente"
+    },
+    "PROGRAMMA": {
+      "descrizione": "Programma PDF del docente",
+      "url": "http://www.dii.unimore.it/~mcasoni/telecom/programma.pdf",
+      "pubblico": true,
+      "nota": "Anno non indicato nel documento"
+    },
+    "ESSE3_2016": {
+      "descrizione": "Syllabus ESSE3 2016/17",
+      "url": "https://www.esse3.unimore.it/ProgrammaCorso.do;jsessionid=19904A1050FF979F3BAB2EB3CC022A80.esse3-unimore-web-prod-esse3web381?CDS_ID=10296&AA_OFF_ID=2016&AD_ID=19829&AA_ORD_ID=2009&PDS_ID=9999&FAT_PART_COD=N0&DOM_PART_COD=N0",
+      "pubblico": true,
+      "nota": "Solo dato storico, non garantisce l'assetto attuale"
+    },
+    "FILE1": {
+      "descrizione": "Appunti di studente, 57 pp., con riferimenti p. x.y (non pubblicato)",
+      "url": null,
+      "pubblico": false,
+      "nota": "Materiale interno, non pubblico"
+    },
+    "FILE2": {
+      "descrizione": "Raccolta di domande d'esame di studenti, 12 pp. (non pubblicata)",
+      "url": null,
+      "pubblico": false,
+      "nota": "Fotocopia da dispositivo Samsung; punteggi solo T5 e T11 = 10 punti, altri NON TROVATO"
+    },
+    "FILE3": {
+      "descrizione": "Dimostrazioni svolte da studenti, note RC, 59 pp. (non pubblicato)",
+      "url": null,
+      "pubblico": false,
+      "nota": "Riscrittura di file1 con notazione diversa (m per pulsazione)"
+    },
+    "RICOSTRUZIONE": {
+      "descrizione": "Derivazione standard non tratta dal testo del prof.",
+      "url": null,
+      "pubblico": false,
+      "nota": "Ricostruzione verificata su fonti aperte, marcata come tale"
+    }
+  },
+  "avvertenze": {
+    "punteggi": "Solo T5 e T11 valgono 10 punti (file2); tutti gli altri punteggi: NON TROVATO",
+    "edizione_libro": "NON TROVATO",
+    "prove_archivio": "Archivi prove 2019-21 e 2017 su dii.unimore.it: HTTP 500 al 29/10/2026 — NON TROVATO",
+    "notazione": "Canonico: ω, T, ω_s = 2π/T (file1, vicina al testo); varianti file3: m, f0 segnalate in NOTAZIONE.md"
+  },
+  "esame": {
+    "struttura": "17 domande teoriche (T1–T17), 9 esercizi (E1–E9), 34 quiz (M1–M34), 9 intro reti (I1–I9) — da file2",
+    "durata": "NON TROVATO",
+    "soglie": "NON TROVATO",
+    "lode": "NON TROVATO"
+  }
+}

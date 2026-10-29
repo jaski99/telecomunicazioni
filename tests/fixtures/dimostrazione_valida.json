@@ -1,0 +1,245 @@
+{
+  "id": "dim-impulso-dirac-trasformata",
+  "titolo": "Funzione impulsiva e sua trasformata",
+  "domande_esame": ["T2"],
+  "enunciato": "La funzione impulsiva $\\delta(t)$ è definita da $\\int_{-\\infty}^{+\\infty} x(\\tau)\\delta(t-\\tau)d\\tau = x(t)$ per ogni $x$ di prova e la sua trasformata di Fourier vale $\\mathcal{F}\\{\\delta(t)\\}=1$.",
+  "ipotesi": [
+    "Segnale di prova $\\varphi(t)$ continuo in $0$",
+    "Definizione distribuzionale di $\\delta$ come limite di $D(t,\\Delta)$ ad area unitaria"
+  ],
+  "notazione": [
+    {
+      "simbolo": "\\delta(t)",
+      "significato": "impulso unitario di Dirac"
+    },
+    {
+      "simbolo": "X(\\omega)",
+      "significato": "trasformata di Fourier con $X(\\omega)=\\int x(t)e^{-j\\omega t}dt$"
+    }
+  ],
+  "varianti_notazione": [
+    {
+      "canonica": "\\omega",
+      "variante": "m",
+      "fonte": "file3 usa m per pulsazione"
+    }
+  ],
+  "idea": "L'impulso campiona la funzione di prova in zero, quindi l'integrale con $e^{-j\\omega t}$ vale $1$.",
+  "passi": [
+    {
+      "n": 1,
+      "testo": "Definisci l'impulso come distribuzione: agisce sulle funzioni di prova mediante $\\int \\delta(t)\\varphi(t)dt = \\varphi(0)$.",
+      "perche": "Definizione distribuzionale, non come funzione ordinaria con valore infinito in zero",
+      "formula": "\\int_{-\\infty}^{+\\infty} \\delta(t)\\varphi(t)dt = \\varphi(0)"
+    },
+    {
+      "n": 2,
+      "testo": "Applica la definizione alla trasformata: $\\mathcal{F}\\{\\delta\\}=\\int \\delta(t)e^{-j\\omega t}dt$.",
+      "perche": "Definizione di trasformata $X(\\omega)=\\int x(t)e^{-j\\omega t}dt$ con $x(t)=\\delta(t)$",
+      "formula": "\\mathcal{F}\\{\\delta(t)\\}=\\int_{-\\infty}^{+\\infty} \\delta(t)e^{-j\\omega t}dt"
+    },
+    {
+      "n": 3,
+      "testo": "Usa la proprietà di campionamento con $\\varphi(t)=e^{-j\\omega t}$ valutata in $t=0$.",
+      "perche": "Proprietà di selezione dell'impulso per funzioni continue in zero, passo 1",
+      "formula": "\\int \\delta(t)e^{-j\\omega t}dt = e^{-j\\omega 0}=1"
+    },
+    {
+      "n": 4,
+      "testo": "Estendi a $\\delta(t-t_0)$: la traslazione introduce fase lineare $e^{-j\\omega t_0}$.",
+      "perche": "Proprietà di traslazione temporale della trasformata, con cambio variabile $u=t-t_0$",
+      "formula": "\\mathcal{F}\\{\\delta(t-t_0)\\}=e^{-j\\omega t_0}",
+      "figura": "impulso-traslato"
+    }
+  ],
+  "formula_finale": "\\mathcal{F}\\{\\delta(t)\\}=1, \\quad \\mathcal{F}\\{\\delta(t-t_0)\\}=e^{-j\\omega t_0}",
+  "figure": [
+    {
+      "id": "impulso-traslato",
+      "tipo": "grafico",
+      "titolo": "Impulso traslato",
+      "descrizione": "Spettro di ampiezza costante pari a 1 e fase lineare -ω t0 in funzione di ω, con asse ω in rad/s",
+      "asse_x": {
+        "etichetta": "ω [rad/s]",
+        "min": -10,
+        "max": 10
+      },
+      "asse_y": {
+        "etichetta": "|X(ω)|",
+        "min": 0,
+        "max": 2
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [-10, 1],
+            [10, 1]
+          ],
+          "etichetta": "ampiezza costante"
+        }
+      ]
+    },
+    {
+      "id": "schema-impulso",
+      "tipo": "blocchi",
+      "titolo": "Sistema con impulso",
+      "descrizione": "Schema a blocchi con ingresso x(t), blocco impulso e uscita campionata, che mostra la proprietà di selezione",
+      "blocchi": [
+        {
+          "id": "ingresso",
+          "etichetta": "x(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 1
+        },
+        {
+          "id": "delta",
+          "etichetta": "δ(t)",
+          "forma": "moltiplicatore",
+          "colonna": 2,
+          "riga": 1
+        },
+        {
+          "id": "uscita",
+          "etichetta": "x(0)",
+          "forma": "uscita",
+          "colonna": 4,
+          "riga": 1
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "ingresso",
+          "a": "delta"
+        },
+        {
+          "da": "delta",
+          "a": "uscita"
+        }
+      ]
+    },
+    {
+      "id": "timeline-campionamento",
+      "tipo": "temporale",
+      "titolo": "Campionamento impulsivo",
+      "descrizione": "Diagramma temporale con due corsie: segnale continuo e treno di impulsi che campionano il segnale agli istanti nT",
+      "asse_t": {
+        "etichetta": "t [s]",
+        "min": 0,
+        "max": 10
+      },
+      "corsie": [
+        {
+          "id": "segnale",
+          "etichetta": "x(t)"
+        },
+        {
+          "id": "impulsi",
+          "etichetta": "δ(t-nT)"
+        }
+      ],
+      "intervalli": [
+        {
+          "corsia": "segnale",
+          "t0": 0,
+          "t1": 10,
+          "stile": "trasmissione",
+          "etichetta": "segnale"
+        },
+        {
+          "corsia": "impulsi",
+          "t0": 1,
+          "t1": 1.1,
+          "stile": "trasmissione",
+          "etichetta": "impulso"
+        },
+        {
+          "corsia": "impulsi",
+          "t0": 3,
+          "t1": 3.1,
+          "stile": "trasmissione"
+        }
+      ],
+      "frecce": [
+        {
+          "da": {
+            "corsia": "impulsi",
+            "t": 1.05
+          },
+          "a": {
+            "corsia": "segnale",
+            "t": 1.05
+          },
+          "etichetta": "campiona"
+        }
+      ],
+      "marcatori": [
+        {
+          "t": 0,
+          "etichetta": "0"
+        }
+      ]
+    }
+  ],
+  "a_voce": "Parto dalla definizione distribuzionale: l'impulso non è una funzione ordinaria ma un operatore che campiona la funzione di prova in zero. Questo è il punto chiave perché evita l'errore di pensarlo come infinito in zero. Poi applico la definizione di trasformata di Fourier con x(t) uguale a delta(t): l'integrale diventa l'integrale di delta per esponenziale. Ora uso la proprietà di selezione del passo uno con phi(t) uguale a esponenziale: l'integrale vale phi in zero, cioè uno. Per la traslata, basta cambiare variabile e ottengo la fase lineare. In sessanta secondi ho mostrato perché la trasformata è uno e perché una traslazione nel tempo diventa fase in frequenza, che è la base per campionamento e LTI.",
+  "errori_frequenti": [
+    {
+      "errore": "Dire che $\\delta(t)=\\infty$ per $t=0$ e $0$ altrove come definizione rigorosa",
+      "perche_sbagliato": "Confonde la distribuzione con una funzione ordinaria; l'infinito non è un valore reale e l'integrale va inteso in senso distribuzionale",
+      "correzione": "Definire $\\delta$ tramite la sua azione $\\int \\delta(t)\\varphi(t)dt=\\varphi(0)$"
+    },
+    {
+      "errore": "Dimenticare la fase $e^{-j\\omega t_0}$ per $\\delta(t-t_0)$",
+      "perche_sbagliato": "Si perde la traslazione temporale che in frequenza è rotazione di fase; errore frequente nello spettro PAM",
+      "correzione": "Applicare $\\mathcal{F}\\{\\delta(t-t_0)\\}=e^{-j\\omega t_0}$"
+    }
+  ],
+  "versione_compatta": [
+    "$\\int \\delta(t)\\varphi(t)dt=\\varphi(0)$",
+    "$\\mathcal{F}\\{\\delta\\}=\\int \\delta(t)e^{-j\\omega t}dt$",
+    "Proprietà selezione: $=e^{-j\\omega 0}=1$",
+    "Traslazione: $\\delta(t-t_0)\\to e^{-j\\omega t_0}$"
+  ],
+  "a_buchi": {
+    "testo": "La ___1___ di $\\delta$ è $\\int \\delta(t)\\varphi(t)dt=\\varphi(0)$. La trasformata è ___2___ che per selezione vale ___3___. Per $\\delta(t-t_0)$ si ottiene ___4___ perché la traslazione nel tempo diventa ___5___ in frequenza.",
+    "soluzioni": {
+      "1": ["definizione distribuzionale", "azione sulla funzione di prova"],
+      "2": ["\\int \\delta(t)e^{-j\\omega t}dt", "integrale di delta per esponenziale"],
+      "3": ["1", "uno"],
+      "4": ["e^{-j\\omega t_0}", "esponenziale con fase lineare"],
+      "5": ["fase lineare", "rotazione di fase"]
+    }
+  },
+  "richiamo_attivo": [
+    {
+      "domanda": "Perché $\\delta$ non è una funzione ordinaria?",
+      "risposta": "Perché richiederebbe valore infinito in zero con area uno; si definisce come distribuzione."
+    },
+    {
+      "domanda": "Quanto vale $\\mathcal{F}\\{\\delta(t)\\}$ e perché?",
+      "risposta": "1, per proprietà di selezione con $\\varphi(t)=e^{-j\\omega t}$ in zero."
+    },
+    {
+      "domanda": "Cosa succede con $\\delta(t-t_0)$?",
+      "risposta": "Compare $e^{-j\\omega t_0}$, fase lineare proporzionale al ritardo."
+    }
+  ],
+  "collegamenti": ["trasformata-fourier", "sistemi-lineari-funzione-trasferimento"],
+  "fonti": [
+    {
+      "chiave": "FILE1",
+      "rif": "p. 2.56 (rif. in file1 pp. 11-12)"
+    },
+    {
+      "chiave": "FILE3",
+      "rif": "file3 pp. 3-4"
+    }
+  ],
+  "verifica": {
+    "stato": "verificata_file1_file3",
+    "data": "2026-10-29",
+    "note": "Confrontata con file1 pp. 11-12 e file3 pp. 3-4; testo del prof. NON TROVATO",
+    "punti_aperti": []
+  }
+}
