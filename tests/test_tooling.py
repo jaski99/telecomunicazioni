@@ -72,11 +72,30 @@ def test_kg_build_e_check():
     assert "OK" in r.stdout or r.returncode == 0
 
 
-def test_kg_check_completo_fallisce_senza_tutti_nodi():
-    # senza tutti i nodi, check --completo deve fallire
-    r = subprocess.run([sys.executable, "scripts/kg.py", "check", "--completo"], cwd=ROOT, capture_output=True, text=True)
-    # deve fallire perché mancano nodi
-    assert r.returncode != 0
+def test_kg_check_completo_fallisce_senza_tutti_nodi(tmp_path):
+    # Preparare una copia isolata: il grafo di lavoro può ormai essere completo.
+    import shutil
+
+    for directory in ("scripts", "schema", "graph"):
+        shutil.copytree(ROOT / directory, tmp_path / directory)
+    (tmp_path / "docs").mkdir()
+    shutil.copy2(ROOT / "docs" / "CONTRACTS.md", tmp_path / "docs" / "CONTRACTS.md")
+
+    parts = tmp_path / "graph" / "parts" / "area-6.json"
+    nodes = json.loads(parts.read_text(encoding="utf-8"))
+    missing_id = "lan-ieee802-ethernet"
+    assert any(node["id"] == missing_id for node in nodes)
+    parts.write_text(json.dumps([node for node in nodes if node["id"] != missing_id],
+                                ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (tmp_path / "graph" / "lezioni" / f"{missing_id}.json").unlink()
+
+    build = subprocess.run([sys.executable, "scripts/kg.py", "build"], cwd=tmp_path,
+                           capture_output=True, text=True)
+    assert build.returncode == 0, build.stderr
+    check = subprocess.run([sys.executable, "scripts/kg.py", "check", "--completo"],
+                           cwd=tmp_path, capture_output=True, text=True)
+    assert check.returncode != 0
+    assert "mancano" in check.stderr and missing_id in check.stderr
 
 
 def test_gen_docs_build():
