@@ -1,0 +1,90 @@
+{
+  "id": "modulazione-prodotto-dsb-ssb",
+  "perche_ti_serve": "Gruppo A: T6 e quiz M1, M11, M20, M23, M27, M34. Punteggi: NON TROVATO.",
+  "scenario": "In un collegamento di telecomunicazioni un segnale di voce o un flusso di dati deve attraversare trasmettitore, canale e ricevitore: Traslare un messaggio in una banda adatta al canale.",
+  "definizione_esame": {
+    "definizione": "La modulazione a prodotto moltiplica il messaggio per una portante; nella DSB-SC produce due bande laterali e, nella SSB, se ne trasmette una sola.",
+    "scopo": "Traslare un messaggio in una banda adatta al canale.",
+    "esempio": "Un tono a 1 kHz modulato su una portante a 100 kHz produce righe a 99 e 101 kHz."
+  },
+  "spiegazione": "### Prodotto e traslazione\nPer un messaggio reale limitato a $|\\omega|\\le\\omega_m$, la modulazione DSB a portante soppressa è $s(t)=x(t)\\cos\\omega_0t$. Espandendo il coseno e usando la trasformata bilaterale si ricava $S(\\omega)=\\frac12[X(\\omega-\\omega_0)+X(\\omega+\\omega_0)]$. Le repliche sono centrate a $\\pm\\omega_0$; il fattore un mezzo è indispensabile con questa convenzione. Il termine portante non è aggiunto separatamente: un'eventuale componente continua del messaggio può comunque generare una riga alla portante.\n\n### Ampiezza e fase\nSe $\\omega_0>\\omega_m$, nella banda positiva le componenti a $\\omega_0+\\Omega$ e $\\omega_0-\\Omega$ derivano rispettivamente da $X(\\Omega)$ e $X(-\\Omega)$. Poiché il messaggio è reale, $X(-\\Omega)=X^*(\\Omega)$: la banda inferiore è ribaltata rispetto alla superiore e la fase cambia segno, dove il modulo è diverso da zero. La banda occupata positiva DSB è larga $2\\omega_m$ per un messaggio passa-basso con estensione massima $\\omega_m$. La larghezza si esprime in radianti al secondo se si usano pulsazioni.\n\n### Una sola banda laterale\nIn SSB si seleziona la banda superiore oppure inferiore; per lo stesso messaggio ideale la larghezza occupata diventa $\\omega_m$. Si riduce la banda rispetto alla DSB, ma il filtro o il metodo di generazione devono separare accuratamente la banda voluta. Un ricevitore coerente usa una portante locale sincronizzata; senza sincronismo la fase del messaggio ricostruito cambia. SSB e DSB sono diversi modi di impiegare le bande laterali, non sinonimi di modulazione numerica. T6 richiede il disegno delle ampiezze e delle fasi.",
+  "analogia": {
+    "testo": "Spostare il contenuto di una cartella a una posizione diversa su una scala.",
+    "limite": "La modulazione reale crea anche una replica a frequenza negativa e cambia la fase della banda inferiore."
+  },
+  "worked_example": {
+    "titolo": "Esempio svolto",
+    "problema": "Tono a 1 kHz modulato con portante a 100 kHz: individuare le componenti positive.",
+    "passi": [
+      "Applicare il prodotto di due coseni.",
+      "La somma delle frequenze è 101 kHz.",
+      "La differenza delle frequenze è 99 kHz; ciascun coseno ha metà ampiezza."
+    ],
+    "soluzione": "Due toni a 99 e 101 kHz con metà ampiezza del prodotto delle ampiezze.",
+    "perche_funziona": "L’identità prodotto-somma genera le due bande laterali."
+  },
+  "completion_problem": {
+    "titolo": "Completa il ragionamento",
+    "testo": "Per una DSB con messaggio fino a 3 kHz, completare la banda occupata positiva.",
+    "passi_mancanti": [
+      "Raddoppiare la massima frequenza del messaggio."
+    ],
+    "soluzione": "6 kHz."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Prova da solo",
+    "testo": "Una SSB usa un messaggio fino a 5 kHz: stimare la banda ideale.",
+    "suggerimento": "È trasmessa una sola banda laterale.",
+    "soluzione_attesa": "5 kHz."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Dire che DSB-SC contiene sempre una portante pura.",
+      "perche_sbagliato": "Non è aggiunta una portante separata; può apparire se il messaggio ha una componente continua."
+    },
+    {
+      "errore": "Copiare la fase della banda superiore su quella inferiore.",
+      "perche_sbagliato": "La simmetria coniugata cambia il segno della fase."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Quanto vale la banda DSB di un messaggio passa-basso fino a B?",
+        "risposta": "2B."
+      },
+      {
+        "domanda": "Quanto vale la banda SSB ideale?",
+        "risposta": "B."
+      },
+      {
+        "domanda": "Che cosa fa il prodotto con la portante?",
+        "risposta": "Trasla lo spettro verso le pulsazioni della portante."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega con parole tue: Traslare un messaggio in una banda adatta al canale."
+  },
+  "riepilogo": "Il prodotto crea due repliche bilaterali; la DSB usa due bande laterali e la SSB una, con fase inferiore coniugata.",
+  "flashcard": [
+    {
+      "fronte": "Quanto vale la banda DSB di un messaggio passa-basso fino a B?",
+      "retro": "2B."
+    },
+    {
+      "fronte": "Quanto vale la banda SSB ideale?",
+      "retro": "B."
+    },
+    {
+      "fronte": "Che cosa fa il prodotto con la portante?",
+      "retro": "Trasla lo spettro verso le pulsazioni della portante."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "Tono a 1 kHz modulato con portante a 100 kHz: individuare le componenti positive."
+    ],
+    "so_dire": [
+      "La modulazione a prodotto moltiplica il messaggio per una portante; nella DSB-SC produce due bande laterali e, nella SSB, se ne trasmette una sola."
+    ]
+  }
+}

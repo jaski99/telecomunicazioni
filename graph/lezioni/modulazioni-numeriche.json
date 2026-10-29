@@ -1,0 +1,90 @@
+{
+  "id": "modulazioni-numeriche",
+  "perche_ti_serve": "Gruppo B: approfondimento della trasmissione numerica e della rappresentazione I-Q della T10.",
+  "scenario": "In un collegamento di telecomunicazioni un segnale di voce o un flusso di dati deve attraversare trasmettitore, canale e ricevitore: Trasmettere dati su un canale passa-banda e recuperarli mediante decisioni sui simboli.",
+  "definizione_esame": {
+    "definizione": "Una modulazione numerica associa gruppi di bit a simboli e forme d’onda, distinguibili per ampiezza, fase o frequenza.",
+    "scopo": "Trasmettere dati su un canale passa-banda e recuperarli mediante decisioni sui simboli.",
+    "esempio": "Una costellazione QPSK usa quattro punti e può rappresentare due bit per simbolo."
+  },
+  "spiegazione": "### Bit, simboli e costellazioni\nUna sorgente produce bit, che un modulatore raggruppa in simboli. Con $M$ simboli equiprobabili e $M=2^k$, ogni simbolo rappresenta $k=\\log_2 M$ bit. La velocità simbolica è $R_s=R_b/k$ se non sono aggiunti bit di codifica o overhead. Questo non significa che tutte le modulazioni con lo stesso $R_s$ richiedano la stessa banda: contano forma d'impulso, filtro e canale. Nel piano I-Q un simbolo può essere rappresentato da un punto della costellazione, cioè da due coefficienti reali.\n\n### ASK, PSK e QAM\nNella ASK varia l'ampiezza di un insieme di segnali; nella PSK varia la fase; nella QAM si usano più combinazioni di componenti in fase e quadratura. La QPSK ideale usa quattro fasi distinte, e può essere rappresentata anche come quattro punti I-Q; la scelta della fase iniziale e la mappatura dei bit vanno dichiarate. Con $u=I+jQ$ il segnale passa-banda può essere scritto $s(t)=I\\cos\\omega_0t-Q\\sin\\omega_0t$ durante l'intervallo simbolico, nel modello a coefficienti costanti. L'inviluppo cambia invece quando vengono considerati forma d'impulso e transizioni.\n\n### Ricezione ed errori\nIl ricevitore stima le componenti ricevute e decide quale punto della costellazione è stato trasmesso. Rumore, interferenza, distorsione e errore di fase possono spostare o ruotare il punto, fino a oltrepassare un confine di decisione. Aumentare il numero di punti a parità di potenza può ridurre la separazione tra punti e rendere più difficile la decisione: il confronto preciso richiede modello di rumore, potenza e criteri espliciti. Una mappatura Gray assegna parole che differiscono per un solo bit a vicini scelti, riducendo gli errori di bit associati ad alcuni errori di simbolo, ma non cambia da sola il canale.",
+  "analogia": {
+    "testo": "Una mappa in cui ogni punto è un messaggio breve e il ricevitore sceglie il punto più vicino.",
+    "limite": "La distanza rilevante e la regola ottima dipendono dal modello di rumore e di canale."
+  },
+  "worked_example": {
+    "titolo": "Esempio svolto",
+    "problema": "Un flusso a 120 kbit/s usa QPSK senza overhead. Calcolare il numero di bit per simbolo e il symbol rate.",
+    "passi": [
+      "QPSK ha quattro simboli.",
+      "$k=\\log_2 4=2$ bit per simbolo.",
+      "$R_s=120000/2=60000$ simboli/s."
+    ],
+    "soluzione": "2 bit per simbolo e 60 ksimboli/s.",
+    "perche_funziona": "Ogni simbolo trasporta esattamente due bit nel modello senza overhead."
+  },
+  "completion_problem": {
+    "titolo": "Completa il ragionamento",
+    "testo": "Per 16 simboli equiprobabili, quanti bit per simbolo?",
+    "passi_mancanti": [
+      "Calcolare il logaritmo in base due."
+    ],
+    "soluzione": "4 bit."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Prova da solo",
+    "testo": "Per 8 simboli e 90 kbit/s senza overhead, trovare il symbol rate.",
+    "suggerimento": "Ogni simbolo rappresenta tre bit.",
+    "soluzione_attesa": "30 ksimboli/s."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Equiparare sempre symbol rate e bit rate.",
+      "perche_sbagliato": "Un simbolo può rappresentare più bit."
+    },
+    {
+      "errore": "Promettere meno errori solo aumentando M.",
+      "perche_sbagliato": "A potenza e rumore fissati la separazione dei punti può diminuire."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Quanti bit porta un simbolo in QPSK?",
+        "risposta": "Due nel modello a quattro simboli."
+      },
+      {
+        "domanda": "Che cosa rappresentano gli assi I e Q?",
+        "risposta": "Le componenti in fase e quadratura."
+      },
+      {
+        "domanda": "Che cosa può fare un errore di fase?",
+        "risposta": "Ruotare la costellazione ricevuta."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega con parole tue: Trasmettere dati su un canale passa-banda e recuperarli mediante decisioni sui simboli."
+  },
+  "riepilogo": "Le modulazioni numeriche mappano bit in simboli; rate simbolico, costellazione e condizioni di decisione sono distinti.",
+  "flashcard": [
+    {
+      "fronte": "Quanti bit porta un simbolo in QPSK?",
+      "retro": "Due nel modello a quattro simboli."
+    },
+    {
+      "fronte": "Che cosa rappresentano gli assi I e Q?",
+      "retro": "Le componenti in fase e quadratura."
+    },
+    {
+      "fronte": "Che cosa può fare un errore di fase?",
+      "retro": "Ruotare la costellazione ricevuta."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "Un flusso a 120 kbit/s usa QPSK senza overhead. Calcolare il numero di bit per simbolo e il symbol rate."
+    ],
+    "so_dire": [
+      "Una modulazione numerica associa gruppi di bit a simboli e forme d’onda, distinguibili per ampiezza, fase o frequenza."
+    ]
+  }
+}

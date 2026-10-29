@@ -9,8 +9,8 @@
 |---|---|---|---|---|
 
 | T1 | Teorema del campionamento nel tempo | NON TROVATO | `dim-teorema-campionamento` | dim-teorema-campionamento:verificata_file1_file3 |
-| T10 | Modulazione a prodotto, QAM ed errore di fase | NON TROVATO | `dim-modulazione-prodotto-qam-errore-fase` | — |
-| T11 | Quadripoli e passa-basso equivalente | 10 | `dim-quadripoli-passa-basso-equivalente` | — |
+| T10 | Modulazione a prodotto, QAM ed errore di fase | NON TROVATO | `dim-modulazione-prodotto-qam-errore-fase` | dim-modulazione-prodotto-qam-errore-fase:da_verificare |
+| T11 | Quadripoli e passa-basso equivalente | 10 | `dim-quadripoli-passa-basso-equivalente` | dim-quadripoli-passa-basso-equivalente:verificata_file1_file3 |
 | T12 | Efficienza sliding window senza errori | NON TROVATO | `dim-sliding-window-efficienza` | dim-sliding-window-efficienza:da_verificare |
 | T13 | Tempo residuo in un processo di Poisson | NON TROVATO | `dim-poisson-tempo-residuo` | dim-poisson-tempo-residuo:verificata_file1_file3 |
 | T14 | Equilibrio dei processi nascita-morte | NON TROVATO | `dim-nascita-morte-equilibrio` | dim-nascita-morte-equilibrio:verificata_file1_file3 |
@@ -21,10 +21,10 @@
 | T3 | Filtro trasversale e funzione di trasferimento | NON TROVATO | `dim-filtro-trasversale` | dim-filtro-trasversale:verificata_file1_file3 |
 | T4 | Risposta impulsiva e funzione di trasferimento | NON TROVATO | `dim-risposta-impulsiva-h` | dim-risposta-impulsiva-h:verificata_file1_file3 |
 | T5 | Segnali PAM e due spettri | 10 | `dim-pam-due-spettri` | dim-pam-due-spettri:verificata_file1_file3 |
-| T6 | Spettri della modulazione a prodotto | NON TROVATO | `dim-spettri-modulazione-prodotto` | — |
-| T7 | Conversione analogico-digitale in tre fasi | NON TROVATO | `dim-conversione-ad` | — |
-| T8 | Conversione digitale-analogica e ricostruzione | NON TROVATO | `dim-conversione-da` | — |
-| T9 | Conversione tra modulatori PM e FM | NON TROVATO | `dim-pm-fm-trasformazione` | — |
+| T6 | Spettri della modulazione a prodotto | NON TROVATO | `dim-spettri-modulazione-prodotto` | dim-spettri-modulazione-prodotto:da_verificare |
+| T7 | Conversione analogico-digitale in tre fasi | NON TROVATO | `dim-conversione-ad` | dim-conversione-ad:da_verificare |
+| T8 | Conversione digitale-analogica e ricostruzione | NON TROVATO | `dim-conversione-da` | dim-conversione-da:da_verificare |
+| T9 | Conversione tra modulatori PM e FM | NON TROVATO | `dim-pm-fm-trasformazione` | dim-pm-fm-trasformazione:ricostruzione_non_del_prof |
 
 ## Esercizi (E)
 
@@ -49,9 +49,9 @@
 | M1 | Concetto: equivalenza SSB-BC | NON TROVATO | `modulazione-prodotto-dsb-ssb` | — |
 | M10 | Concetto: stazionarietà ed ergodicità | NON TROVATO | `processi-aleatori-stazionarieta-ergodicita` | — |
 | M11 | Concetto: simmetria spettrale in modulazione prodotto | NON TROVATO | `modulazione-prodotto-dsb-ssb` | — |
-| M12 | Concetto: interpretazione di Carson | NON TROVATO | `dim-formula-carson` | — |
-| M13 | Concetto: banda di un segnale modulato d’angolo | NON TROVATO | `dim-formula-carson` | — |
-| M14 | Concetto: espressione di Carson | NON TROVATO | `dim-formula-carson` | — |
+| M12 | Concetto: interpretazione di Carson | NON TROVATO | `dim-formula-carson` | dim-formula-carson:ricostruzione_non_del_prof |
+| M13 | Concetto: banda di un segnale modulato d’angolo | NON TROVATO | `dim-formula-carson` | dim-formula-carson:ricostruzione_non_del_prof |
+| M14 | Concetto: espressione di Carson | NON TROVATO | `dim-formula-carson` | dim-formula-carson:ricostruzione_non_del_prof |
 | M15 | Concetto: rappresentazione dei periodici | NON TROVATO | `serie-fourier` | — |
 | M16 | Concetto: filtro ricorrente | NON TROVATO | `filtri-ricorrenti-trasversali` | — |
 | M17 | Concetto: filtro ricorsivo puro | NON TROVATO | `filtri-ricorrenti-trasversali` | — |
