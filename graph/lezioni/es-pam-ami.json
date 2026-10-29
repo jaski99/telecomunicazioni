@@ -94,7 +94,7 @@
       "id": "pam-ami-spettro",
       "tipo": "grafico",
       "titolo": "Densità spettrale PAM AMI",
-      "descrizione": "Prodotto della sinc quadrata dell’impulso e del fattore $\\sin^{2}$ AMI, nullo in ogni $\\frac{k}{T}$.",
+      "descrizione": "Prodotto della sinc quadrata dell’impulso e del fattore sin² AMI, nullo in ogni k/T.",
       "asse_x": {
         "etichetta": "fT",
         "min": 0,

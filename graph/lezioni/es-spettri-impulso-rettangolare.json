@@ -10,7 +10,7 @@
   "spiegazione": "### Trasformata e forma sinc\nPer un impulso isolato lo spettro è continuo. La simmetria temporale del rettangolo centrato consente di accoppiare gli esponenziali ai due estremi: il risultato è reale e proporzionale a una sinc. La definizione adottata è sinc(u)=sin(u)/u, con sinc(0)=1 per continuità.\n\n### Ampiezza, fase e traslazione\nLa magnitudine non cambia se il rettangolo è traslato, ma la trasformata acquista il fattore $e^{-j\\omega t_{c}}$. La fase corretta si ricava come arg(X): per il rettangolo centrato è 0 o $\\pi$ a seconda del segno della sinc e non è definita agli zeri. Se l’impulso è definito sull’intervallo $[0,\\tau]$, il fattore è $e^{-\\frac{j\\omega \\tau}{2}}$.\n\n### Lettura del grafico\nL’altezza a zero è l’area $A\\tau$; gli zeri sono a $\\omega=\\frac{\\pm2\\pi k}{\\tau}$. I lobi si alternano di segno in X, ma la magnitudine resta non negativa. Nel materiale d’esercizio la “ampiezza spettrale” è normalizzata a $\\frac{|X|}{\\pi}$: segnala esplicitamente la convenzione se riporti quel grafico.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $X(\\omega)=A\\tau\\,\\operatorname{sinc}\\!\\left(\\frac{\\omega\\tau}{2}\\right)e^{-j\\omega t_c}$.",
   "analogia": {
     "testo": "Un impulso breve lascia una traccia spettrale larga, come un colpo secco che eccita molte frequenze; la durata determina la distanza tra gli zeri della sinc.",
-    "limite": "L’immagine del colpo non determina la fase: la traslazione $t_{c}$ introduce $e^(-j\\omega t_{c})$, e la normalizzazione $V=\\frac{|X|}{\\pi}$ non coincide con X."
+    "limite": "L’immagine del colpo non determina la fase: la traslazione $t_{c}$ introduce $e^{-j\\omega t_{c}}$, e la normalizzazione $V=\\frac{|X|}{\\pi}$ non coincide con X."
   },
   "worked_example": {
     "titolo": "Esempio guidato E2",
@@ -20,9 +20,9 @@
       "Inserisci la definizione di Fourier: $X(\\omega)=A\\int_{-\\frac{\\tau}{2}}^{\\frac{\\tau}{2}} e^{-j\\omega t}\\,dt$.",
       "Integra: $X(\\omega)=A[\\frac{e^{-j\\omega t}}{-j\\omega}]$ agli estremi.",
       "Raccogli i termini coniugati: $X(\\omega)=\\frac{A\\cdot 2\\sin(\\frac{\\omega\\tau}{2})}{\\omega}=A\\tau \\operatorname{sinc}(\\frac{\\omega\\tau}{2})$.",
-      "Al limite $\\omega\\to 0$, sinc(0)=1, perciò $X(0)=A\\tau=0,006$.",
-      "Gli zeri positivi soddisfano $\\frac{\\omega\\tau}{2}=k\\pi$, dunque il primo è $\\omega=\\frac{2\\pi}{\\tau}\\approx 3141,59$ rad/s.",
-      "A $\\omega=\\frac{\\pi}{\\tau}$, $X=A\\tau \\operatorname{sinc}(\\frac{\\pi}{2})=\\frac{A\\tau\\cdot 2}{\\pi}\\approx 0,00382$. Per il rettangolo centrato la fase è 0 dove X>0 e $\\pi$ dove X<0; ai nodi non è definita."
+      "Al limite $\\omega\\to 0$, sinc(0)=1, perciò $X(0)=A\\tau=0{,}006$.",
+      "Gli zeri positivi soddisfano $\\frac{\\omega\\tau}{2}=k\\pi$, dunque il primo è $\\omega=\\frac{2\\pi}{\\tau}\\approx 3141{,}59$ rad/s.",
+      "A $\\omega=\\frac{\\pi}{\\tau}$, $X=A\\tau \\operatorname{sinc}(\\frac{\\pi}{2})=\\frac{A\\tau\\cdot 2}{\\pi}\\approx 0{,}00382$. Per il rettangolo centrato la fase è 0 dove X>0 e $\\pi$ dove X<0; ai nodi non è definita."
     ],
     "soluzione": "La magnitudine è $|X(\\omega)|$ e la fase è $\\operatorname{arg} X(\\omega)$. L’appunto adotta, per $\\omega\\ge 0$, una normalizzazione $V(\\omega)=\\frac{|X(\\omega)|}{\\pi}$: si mantiene questa definizione quando si chiede lo spettro di ampiezza, senza confonderla con la trasformata X.",
     "perche_funziona": "L’integrale esatto sul supporto finito genera la sinc; il limite rimuove la forma $\\frac{0}{0}$ in zero e gli zeri si ricavano dal numeratore sinusoidale."
@@ -41,7 +41,7 @@
     "titolo": "Impulso centrato di ampiezza uno",
     "testo": "Per A=1 e $\\tau=4$ s, determina X(0), il primo zero positivo e $X(\\frac{\\pi}{\\tau})$, mantenendo la convenzione sinc(u)=sin(u)/u.",
     "suggerimento": "Controllo X(0) con l’area del rettangolo.",
-    "soluzione_attesa": "$X(\\omega)=4 \\operatorname{sinc}(2\\omega)$. X(0)=4. Il primo zero è $\\omega=\\frac{\\pi}{2}$ rad/s. A $\\omega=\\frac{\\pi}{4}$ rad/s, $X=4 \\operatorname{sinc}(\\frac{\\pi}{2})=\\frac{8}{\\pi}\\approx 2,546$."
+    "soluzione_attesa": "$X(\\omega)=4 \\operatorname{sinc}(2\\omega)$. X(0)=4. Il primo zero è $\\omega=\\frac{\\pi}{2}$ rad/s. A $\\omega=\\frac{\\pi}{4}$ rad/s, $X=4 \\operatorname{sinc}(\\frac{\\pi}{2})=\\frac{8}{\\pi}\\approx 2{,}546$."
   },
   "errori_trappole": [
     {
@@ -57,7 +57,7 @@
     "domande": [
       {
         "domanda": "Per A=3 e $\\tau=2$ ms, che valore assume X(0) e qual è la sua unità?",
-        "risposta": "$X(0)=A\\tau=0,006$: è l’area dell’impulso rettangolare, con unità di ampiezza per secondo."
+        "risposta": "$X(0)=A\\tau=0{,}006$: è l’area dell’impulso rettangolare, con unità di ampiezza per secondo."
       },
       {
         "domanda": "Qual è il passaggio chiave?",
@@ -65,7 +65,7 @@
       },
       {
         "domanda": "Dove cade il primo zero positivo e quanto vale X alla pulsazione $\\frac{\\pi}{\\tau}$?",
-        "risposta": "Il primo zero è $\\frac{2\\pi}{\\tau}\\approx 3141,59$ rad/s; a $\\frac{\\pi}{\\tau}$, $X=\\frac{0,006\\cdot 2}{\\pi}\\approx 0,00382$."
+        "risposta": "Il primo zero è $\\frac{2\\pi}{\\tau}\\approx 3141{,}59$ rad/s; a $\\frac{\\pi}{\\tau}$, $X=\\frac{0{,}006\\cdot 2}{\\pi}\\approx 0{,}00382$."
       }
     ],
     "spiega_con_parole_tue": "Collega l’area $A\\tau$ al valore X(0), poi illustra come la durata $\\tau$ controlli zeri e larghezza del lobo sinc."
@@ -78,7 +78,7 @@
     },
     {
       "fronte": "Che cosa fissano area e durata del rettangolo?",
-      "retro": "Per A=3, $\\tau=2$ ms: X(0)=0,006; il primo zero è circa 3141,59 rad/s e $X(\\frac{\\pi}{\\tau})\\approx 0,00382$."
+      "retro": "Per A=3, $\\tau=2$ ms: X(0)=0,006; il primo zero è circa 3141,59 rad/s e $X(\\frac{\\pi}{\\tau})\\approx 0{,}00382$."
     }
   ],
   "checklist": {
@@ -95,7 +95,7 @@
       "id": "spettro-rettangolo",
       "tipo": "grafico",
       "titolo": "Modulo sinc di un impulso rettangolare",
-      "descrizione": "Spettro continuo, massimo in zero e zeri a multipli di $\\frac{2\\pi}{\\tau}$.",
+      "descrizione": "Spettro continuo, massimo in zero e zeri a multipli di 2π/τ.",
       "asse_x": {
         "etichetta": "ωτ/2",
         "min": -12,
@@ -1084,7 +1084,7 @@
       "id": "fase-rettangolo",
       "tipo": "grafico",
       "titolo": "Fase dello spettro rettangolare",
-      "descrizione": "Per il rettangolo centrato la fase è zero dove la sinc è positiva e $\\pi$ dove è negativa; ai suoi zeri non è definita.",
+      "descrizione": "Per il rettangolo centrato la fase è zero dove la sinc è positiva e π dove è negativa; ai suoi zeri non è definita.",
       "asse_x": {
         "etichetta": "ωτ/(2π)",
         "min": 0,

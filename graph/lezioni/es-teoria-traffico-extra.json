@@ -39,7 +39,7 @@
     "titolo": "Sportello con nove utenti medi",
     "testo": "Per permanenza media 15 minuti e popolazione media desiderata pari a 9 utenti, trova il tasso d’ingresso.",
     "suggerimento": "Controllo che arrivi, permanenza e popolazione descrivano lo stesso sistema.",
-    "soluzione_attesa": "$\\lambda=\\frac{N}{W}=\\frac{9}{15}=0,6$ utenti/minuto=0,01 utenti/s. La relazione presuppone regime stazionario e lo stesso confine del sistema per N, $\\lambda$ e W."
+    "soluzione_attesa": "$\\lambda=\\frac{N}{W}=\\frac{9}{15}=0{,}6$ utenti/minuto=0,01 utenti/s. La relazione presuppone regime stazionario e lo stesso confine del sistema per N, $\\lambda$ e W."
   },
   "errori_trappole": [
     {

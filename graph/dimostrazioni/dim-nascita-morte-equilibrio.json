@@ -73,7 +73,7 @@
       "id": "catena-nascita-morte",
       "tipo": "blocchi",
       "titolo": "Stati e transizioni nascita–morte",
-      "descrizione": "Gli stati 0, 1, 2 e 3 sono collegati da percorsi distinti: i rami superiori sono nascite $\\lambda_{0}$, $\\lambda_{1}$, $\\lambda_{2}$; quelli inferiori morti $\\mu_{1}$, $\\mu_{2}$, $\\mu_{3}$. La catena può proseguire.",
+      "descrizione": "Gli stati 0, 1, 2 e 3 sono collegati da percorsi distinti: i rami superiori sono nascite λ₀, λ₁, λ₂; quelli inferiori morti μ₁, μ₂, μ₃. La catena può proseguire.",
       "blocchi": [
         {
           "id": "stato-0",

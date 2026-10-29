@@ -4,8 +4,8 @@
   "scenario": "La rete con condensatore in serie e uscita sul resistore è un passa-alto del primo ordine. A bassa frequenza blocca, mentre ad alta frequenza trasferisce quasi tutta la tensione. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
   "definizione_esame": {
     "definizione": "Area 2 — CR con uscita sul resistore: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-    "scopo": "Per $R=2 \\mathrm{k}\\Omega$ e $C=0,25 \\mu\\mathrm{F}$, ricavare $H(\\omega)$, determinare il taglio a 2000 rad/s e verificare modulo e fase a tale pulsazione.",
-    "esempio": "Con $R=2 \\mathrm{k}\\Omega$ e $C=0,25 \\mu\\mathrm{F}$ calcola $\\omega_{c}$, modulo e fase in $\\omega_{c}$."
+    "scopo": "Per $R=2 \\mathrm{k}\\Omega$ e $C=0{,}25 \\mu\\mathrm{F}$, ricavare $H(\\omega)$, determinare il taglio a 2000 rad/s e verificare modulo e fase a tale pulsazione.",
+    "esempio": "Con $R=2 \\mathrm{k}\\Omega$ e $C=0{,}25 \\mu\\mathrm{F}$ calcola $\\omega_{c}$, modulo e fase in $\\omega_{c}$."
   },
   "spiegazione": "### Riconosci l’uscita\nQui il condensatore è in serie all’ingresso e il resistore è collegato verso il riferimento; l’uscita è sul resistore. Il partitore complesso produce $H=\\frac{R}{R+ZC}$, quindi la presenza del fattore $\\omega$ al numeratore anticipa il comportamento passa-alto.\n\n### Caratteristiche\nIl modulo cresce da zero a uno e raggiunge $\\frac{1}{\\sqrt{2}}$ in $\\omega_{c}=\\frac{1}{RC}$. L’argomento di $j\\omega RC$ è $\\frac{\\pi}{2}$, mentre quello del denominatore è $\\arctan(\\omega RC)$; sottraendoli si ottiene la fase. A taglio la fase vale $\\frac{\\pi}{4}$.\n\n### Confronto e trappole\nLa rete RC con uscita sul condensatore ha $H=\\frac{1}{1+j\\omega RC}$, modulo decrescente e fase negativa. La rete CR di questo esercizio ha il fattore $j\\omega RC$, modulo crescente e fase che scende da $\\frac{\\pi}{2}$ a zero. Non scambiare né la formula del modulo né il segno della fase. Dimensioni: $\\omega RC$ è adimensionale.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $H(\\omega)=\\frac{j\\omega RC}{1+j\\omega RC},\\qquad \\omega_c=\\frac{1}{RC}$.",
   "analogia": {
@@ -14,7 +14,7 @@
   },
   "worked_example": {
     "titolo": "Esempio guidato E6",
-    "problema": "Con $R=2 \\mathrm{k}\\Omega$ e $C=0,25 \\mu\\mathrm{F}$ calcola $\\omega_{c}$, modulo e fase in $\\omega_{c}$.",
+    "problema": "Con $R=2 \\mathrm{k}\\Omega$ e $C=0{,}25 \\mu\\mathrm{F}$ calcola $\\omega_{c}$, modulo e fase in $\\omega_{c}$.",
     "passi": [
       "Le impedenze sono $ZC=\\frac{1}{j\\omega C}$ e ZR=R; l’uscita è sul resistore.",
       "Applica il partitore: $H=\\frac{R}{R+\\frac{1}{j\\omega C}}$.",
@@ -27,20 +27,20 @@
     "perche_funziona": "L’uscita sul resistore porta al numeratore $j\\omega RC$; questo fattore distingue il passa-alto CR dalla rete RC con uscita sul condensatore."
   },
   "completion_problem": {
-    "titolo": "Valuta la rete CR al taglio per $R=2 \\mathrm{k}\\Omega$ e $C=0,25 \\mu\\mathrm{F}$",
+    "titolo": "Valuta la rete CR al taglio per $R=2 \\mathrm{k}\\Omega$ e $C=0{,}25 \\mu\\mathrm{F}$",
     "testo": "Determina $\\omega_{c}$, modulo e fase della rete CR al punto di taglio.",
     "passi_mancanti": [
       "Calcola il prodotto RC e il suo inverso.",
       "Inserisci $\\omega_{c}RC=1$ nell’espressione di H.",
       "Separa gli argomenti di numeratore e denominatore."
     ],
-    "soluzione": "RC=0,0005 s e $\\omega_{c}=2000$ rad/s. In $\\omega_{c}$ il modulo è $\\frac{1}{\\sqrt{2}}\\approx 0,7071$ e la fase è $\\frac{\\pi}{2}-\\arctan(1)=\\frac{\\pi}{4}$ rad."
+    "soluzione": "RC=0,0005 s e $\\omega_{c}=2000$ rad/s. In $\\omega_{c}$ il modulo è $\\frac{1}{\\sqrt{2}}\\approx 0{,}7071$ e la fase è $\\frac{\\pi}{2}-\\arctan(1)=\\frac{\\pi}{4}$ rad."
   },
   "esercizio_autonomo": {
-    "titolo": "CR con $R=10 \\mathrm{k}\\Omega$ e $C=0,1 \\mu\\mathrm{F}$",
+    "titolo": "CR con $R=10 \\mathrm{k}\\Omega$ e $C=0{,}1 \\mu\\mathrm{F}$",
     "testo": "Trova $\\omega_{c}$ e le caratteristiche al taglio; poi calcola |H| e la fase quando $\\omega=2\\omega_{c}$.",
     "suggerimento": "Controllo che l’uscita sia sul resistore.",
-    "soluzione_attesa": "RC=0,001 s, perciò $\\omega_{c}=1000$ rad/s. Al taglio $|H|=\\frac{1}{\\sqrt{2}}$ e fase $\\frac{\\pi}{4}$. Per $\\omega=2\\omega_{c}$, $|H|=\\frac{2}{\\sqrt{5}}\\approx 0,8944$ e fase $\\frac{\\pi}{2}-\\arctan(2)\\approx 0,46365$ rad."
+    "soluzione_attesa": "RC=0,001 s, perciò $\\omega_{c}=1000$ rad/s. Al taglio $|H|=\\frac{1}{\\sqrt{2}}$ e fase $\\frac{\\pi}{4}$. Per $\\omega=2\\omega_{c}$, $|H|=\\frac{2}{\\sqrt{5}}\\approx 0{,}8944$ e fase $\\frac{\\pi}{2}-\\arctan(2)\\approx 0{,}46365$ rad."
   },
   "errori_trappole": [
     {
@@ -83,7 +83,7 @@
   "checklist": {
     "so_fare": [
       "Applico il partitore con uscita R e ricavo $H=\\frac{j\\omega RC}{1+j\\omega RC}$.",
-      "Uso $R=2 \\mathrm{k}\\Omega$ e $C=0,25 \\mu\\mathrm{F}$ per calcolare $\\omega_{c}$ e verifico i due limiti del modulo."
+      "Uso $R=2 \\mathrm{k}\\Omega$ e $C=0{,}25 \\mu\\mathrm{F}$ per calcolare $\\omega_{c}$ e verifico i due limiti del modulo."
     ],
     "so_dire": [
       "Descrivo la rete CR come passa-alto e distinguo la sua fase da quella della configurazione RC."
@@ -94,7 +94,7 @@
       "id": "cr-modulo",
       "tipo": "grafico",
       "titolo": "Modulo del passa-alto CR",
-      "descrizione": "Il modulo cresce da zero a uno e vale $\\frac{1}{\\sqrt{2}}$ per $\\omega RC=1$.",
+      "descrizione": "Il modulo cresce da zero a uno e vale 1/√2 per ωRC=1.",
       "asse_x": {
         "etichetta": "ωRC",
         "min": 0,
@@ -529,7 +529,7 @@
       "id": "cr-fase",
       "tipo": "grafico",
       "titolo": "Fase del passa-alto CR",
-      "descrizione": "La fase parte da $\\frac{\\pi}{2}$, passa per $\\frac{\\pi}{4}$ al taglio e tende a zero.",
+      "descrizione": "La fase parte da π/2, passa per π/4 al taglio e tende a zero.",
       "asse_x": {
         "etichetta": "ωRC",
         "min": 0,

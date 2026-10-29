@@ -34,7 +34,7 @@
   ],
   "varianti_notazione": [
     {
-      "canonica": "\\omega",
+      "canonica": "$\\omega$",
       "variante": "m",
       "fonte": "file3, notazione tipografica"
     }
@@ -160,7 +160,7 @@
       "id": "traslazione-spettrale",
       "tipo": "grafico",
       "titolo": "Traslazione della banda positiva",
-      "descrizione": "Esempio schematico di una banda positiva centrata su $\\omega_{0}$ e della stessa banda traslata attorno a zero per rappresentare l’equivalente passa-basso.",
+      "descrizione": "Esempio schematico di una banda positiva centrata su ω₀ e della stessa banda traslata attorno a zero per rappresentare l’equivalente passa-basso.",
       "asse_x": {
         "etichetta": "Pulsazione ω (unità arbitrarie)",
         "min": -3,

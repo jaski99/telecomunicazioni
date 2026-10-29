@@ -35,13 +35,13 @@
       "Imponi altezza $x_{0}T$ e supporto $|\\omega|\\le \\frac{\\pi}{T}$.",
       "Verifica che una sola replica copra ogni punto di un periodo spettrale."
     ],
-    "soluzione": "$\\frac{\\pi}{T}=1000\\pi$ rad/s e il passo tra repliche è $\\frac{2\\pi}{T}=2000\\pi$ rad/s. Scegli $X(\\omega)=0,002$ per $|\\omega|\\le 1000\\pi$ e zero altrove: gli intervalli delle repliche contigue coprono un periodo e la loro somma è $x_{0}T=0,002$, a parte la convenzione ai bordi."
+    "soluzione": "$\\frac{\\pi}{T}=1000\\pi$ rad/s e il passo tra repliche è $\\frac{2\\pi}{T}=2000\\pi$ rad/s. Scegli $X(\\omega)=0{,}002$ per $|\\omega|\\le 1000\\pi$ e zero altrove: gli intervalli delle repliche contigue coprono un periodo e la loro somma è $x_{0}T=0{,}002$, a parte la convenzione ai bordi."
   },
   "esercizio_autonomo": {
     "titolo": "Verifica il caso limite con T=2 ms",
     "testo": "Ponendo T=2 ms e $x_{0}=3$, calcola $\\frac{\\pi}{T}$, $\\omega_{s}$ e l’altezza/supporto dello spettro rettangolare al limite.",
     "suggerimento": "Controllo che l’altezza $x_{0}T$ abbia unità di trasformata.",
-    "soluzione_attesa": "$\\frac{\\pi}{T}=500\\pi$ rad/s e $\\omega_{s}=\\frac{2\\pi}{T}=1000\\pi$ rad/s. Lo spettro di limite è $X(\\omega)=0,006$ per $|\\omega|\\le 500\\pi$ rad/s, nullo fuori. Ogni frequenza appartiene alla copertura periodica e la somma vale $x_{0}T=0,006$, con i bordi interpretati coerentemente."
+    "soluzione_attesa": "$\\frac{\\pi}{T}=500\\pi$ rad/s e $\\omega_{s}=\\frac{2\\pi}{T}=1000\\pi$ rad/s. Lo spettro di limite è $X(\\omega)=0{,}006$ per $|\\omega|\\le 500\\pi$ rad/s, nullo fuori. Ogni frequenza appartiene alla copertura periodica e la somma vale $x_{0}T=0{,}006$, con i bordi interpretati coerentemente."
   },
   "errori_trappole": [
     {
@@ -95,7 +95,7 @@
       "id": "nyquist-repliche",
       "tipo": "grafico",
       "titolo": "Repliche spettrali al limite di Nyquist",
-      "descrizione": "Un rettangolo di ampiezza $x_{0}T$ e larghezza $\\frac{2\\pi}{T}$ replica senza lacune; la somma periodica resta costante nel modello ideale.",
+      "descrizione": "Un rettangolo di ampiezza x₀T e larghezza 2π/T replica senza lacune; la somma periodica resta costante nel modello ideale.",
       "asse_x": {
         "etichetta": "ωT/π",
         "min": -3,

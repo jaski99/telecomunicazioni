@@ -35,7 +35,7 @@
   ],
   "varianti_notazione": [
     {
-      "canonica": "\\omega_s=2\\pi/T",
+      "canonica": "$\\omega_s=2\\pi/T$",
       "variante": "$f_{0}=\\frac{1}{T}$",
       "fonte": "file3 pp. 7-11"
     }

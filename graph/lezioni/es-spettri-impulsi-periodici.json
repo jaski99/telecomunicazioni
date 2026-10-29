@@ -20,8 +20,8 @@
       "Integra il rettangolo in un periodo: $c_{n}=(\\frac{1}{T})\\int_{-\\frac{\\tau}{2}}^{\\frac{\\tau}{2}} A e^{-j n\\omega_{0} t}\\,dt$.",
       "Per n=0, l’integrale vale $A\\tau$, dunque $c_{0}=\\frac{A\\tau}{T}=\\frac{2}{3}$.",
       "Per $n\\ne 0$, integra l’esponenziale simmetrico: $c_{n}=(\\frac{A\\tau}{T})\\operatorname{sinc}(\\frac{n\\omega_{0}\\tau}{2})=(\\frac{2}{3})\\operatorname{sinc}(\\frac{n\\pi}{3})$.",
-      "Per n=1: $c_{1}=(\\frac{2}{3})(\\frac{\\sin(\\frac{\\pi}{3})}{\\frac{\\pi}{3}})=\\frac{\\sqrt{3}}{\\pi}\\approx 0,551$; la fase è 0.",
-      "Per n=2: $c_{2}=(\\frac{2}{3})(\\frac{\\sin(\\frac{2\\pi}{3})}{\\frac{2\\pi}{3}})=\\frac{\\sqrt{3}}{2\\pi}\\approx 0,276$; fase 0.",
+      "Per n=1: $c_{1}=(\\frac{2}{3})(\\frac{\\sin(\\frac{\\pi}{3})}{\\frac{\\pi}{3}})=\\frac{\\sqrt{3}}{\\pi}\\approx 0{,}551$; la fase è 0.",
+      "Per n=2: $c_{2}=(\\frac{2}{3})(\\frac{\\sin(\\frac{2\\pi}{3})}{\\frac{2\\pi}{3}})=\\frac{\\sqrt{3}}{2\\pi}\\approx 0{,}276$; fase 0.",
       "Per n=3, il seno si annulla: $c_{3}=0$, quindi la fase non è definita su quella riga. Per un impulso traslato di $t_{c}$ moltiplica per $e^{-j n\\omega_{0} t_{c}}$ e usa sempre $\\phi_{n}=\\operatorname{arg}(c_{n})$."
     ],
     "soluzione": "Per il rettangolo centrato i coefficienti sono reali e la fase può essere 0 o $\\pi$ secondo il segno; per impulsi traslati la fase comprende il termine lineare in n. La frase “fase $0/\\pi$” non vale in generale senza dichiarare la centratura. A2 sulle densità unilaterali/bilaterali non riguarda questa serie a righe.",
@@ -35,13 +35,13 @@
       "Valuta $\\operatorname{sinc}(\\frac{\\pi}{4})$ e $\\operatorname{sinc}(\\frac{\\pi}{2})$.",
       "Dichiara la fase perché i coefficienti sono reali positivi."
     ],
-    "soluzione": "$c_{0}=\\frac{\\tau}{T}=\\frac{1}{4}$. $c_{1}=(\\frac{1}{4})\\operatorname{sinc}(\\frac{\\pi}{4})=\\frac{\\sqrt{2}}{2\\pi}\\approx 0,2251$; $c_{2}=(\\frac{1}{4})\\operatorname{sinc}(\\frac{\\pi}{2})=\\frac{1}{2\\pi}\\approx 0,1592$. Entrambi sono positivi e quindi $\\phi_{1}=\\phi_{2}=0$."
+    "soluzione": "$c_{0}=\\frac{\\tau}{T}=\\frac{1}{4}$. $c_{1}=(\\frac{1}{4})\\operatorname{sinc}(\\frac{\\pi}{4})=\\frac{\\sqrt{2}}{2\\pi}\\approx 0{,}2251$; $c_{2}=(\\frac{1}{4})\\operatorname{sinc}(\\frac{\\pi}{2})=\\frac{1}{2\\pi}\\approx 0{,}1592$. Entrambi sono positivi e quindi $\\phi_{1}=\\phi_{2}=0$."
   },
   "esercizio_autonomo": {
     "titolo": "Verifica una successione con $\\tau=\\frac{T}{4}$",
     "testo": "Per A=1, $\\tau=\\frac{T}{4}$ e impulsi centrati, calcola $c_{0},c_{1},c_{2}$, le fasi e il primo indice positivo con coefficiente nullo.",
     "suggerimento": "Controllo che le righe siano distanziate di $\\omega_{0}$.",
-    "soluzione_attesa": "$c_{0}=\\frac{1}{4}$. $c_{1}=\\frac{\\sqrt{2}}{2\\pi}\\approx 0,2251$ e $c_{2}=\\frac{1}{2\\pi}\\approx 0,1592$, entrambi con fase 0. Per n=4, $\\operatorname{sinc}(\\frac{n\\pi}{4})=\\operatorname{sinc}(\\pi)=0$: la quarta armonica è nulla e la fase non è definita."
+    "soluzione_attesa": "$c_{0}=\\frac{1}{4}$. $c_{1}=\\frac{\\sqrt{2}}{2\\pi}\\approx 0{,}2251$ e $c_{2}=\\frac{1}{2\\pi}\\approx 0{,}1592$, entrambi con fase 0. Per n=4, $\\operatorname{sinc}(\\frac{n\\pi}{4})=\\operatorname{sinc}(\\pi)=0$: la quarta armonica è nulla e la fase non è definita."
   },
   "errori_trappole": [
     {
@@ -57,7 +57,7 @@
     "domande": [
       {
         "domanda": "Con A=2 e $\\frac{\\tau}{T}=\\frac{1}{3}$, quali sono $c_{0}$ e i moduli delle prime due armoniche?",
-        "risposta": "$c_{0}=\\frac{2}{3}$, $|c_{1}|=\\frac{\\sqrt{3}}{\\pi}\\approx 0,551$ e $|c_{2}|=\\frac{\\sqrt{3}}{2\\pi}\\approx 0,276$; entrambe le fasi sono zero."
+        "risposta": "$c_{0}=\\frac{2}{3}$, $|c_{1}|=\\frac{\\sqrt{3}}{\\pi}\\approx 0{,}551$ e $|c_{2}|=\\frac{\\sqrt{3}}{2\\pi}\\approx 0{,}276$; entrambe le fasi sono zero."
       },
       {
         "domanda": "Qual è il passaggio chiave?",
@@ -78,7 +78,7 @@
     },
     {
       "fronte": "Quali coefficienti si ottengono per A=2 e $\\tau=\\frac{T}{3}$?",
-      "retro": "$c_{0}=\\frac{2}{3}$, $c_{1}=\\frac{\\sqrt{3}}{\\pi}\\approx 0,551$ e $c_{2}=\\frac{\\sqrt{3}}{2\\pi}\\approx 0,276$; la riga n=3 è nulla e non ha fase."
+      "retro": "$c_{0}=\\frac{2}{3}$, $c_{1}=\\frac{\\sqrt{3}}{\\pi}\\approx 0{,}551$ e $c_{2}=\\frac{\\sqrt{3}}{2\\pi}\\approx 0{,}276$; la riga n=3 è nulla e non ha fase."
     }
   ],
   "checklist": {
@@ -95,7 +95,7 @@
       "id": "spettro-a-righe",
       "tipo": "grafico",
       "titolo": "Righe armoniche con inviluppo sinc",
-      "descrizione": "Righe a multipli della pulsazione fondamentale; $\\frac{|c_{n}|}{c_{0}}=|\\operatorname{sinc}(\\frac{n\\pi}{3})|$ e inviluppo sinc campionato fitto. La fase è $\\operatorname{arg}(c_{n})$.",
+      "descrizione": "Righe a multipli della pulsazione fondamentale; |cₙ|/c₀=|sinc(nπ/3)| e inviluppo sinc campionato fitto. La fase è arg(cₙ).",
       "asse_x": {
         "etichetta": "ω/ω₀",
         "min": -5,
@@ -1780,7 +1780,7 @@
       "id": "fase-serie-impulsi",
       "tipo": "grafico",
       "titolo": "Fase delle righe della serie",
-      "descrizione": "Per impulsi centrati i coefficienti reali hanno fase zero se positivi e $\\pi$ se negativi; le righe nulle non hanno fase definita.",
+      "descrizione": "Per impulsi centrati i coefficienti reali hanno fase zero se positivi e π se negativi; le righe nulle non hanno fase definita.",
       "asse_x": {
         "etichetta": "n=ω/ω₀",
         "min": -5,

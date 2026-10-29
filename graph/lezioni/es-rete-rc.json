@@ -20,7 +20,7 @@
       "Poiché l’uscita è ai capi del condensatore, applica il partitore: $H=\\frac{ZC}{R+ZC}$.",
       "Dividi numeratore e denominatore per ZC: $H=\\frac{1}{1+j\\omega RC}$.",
       "La pulsazione di taglio è $\\omega_{c}=\\frac{1}{RC}=1000$ rad/s.",
-      "A $\\omega=\\omega_{c}$, il modulo è $\\frac{1}{\\sqrt{2}}\\approx 0,707$ e la fase è $-\\frac{\\pi}{4}$.",
+      "A $\\omega=\\omega_{c}$, il modulo è $\\frac{1}{\\sqrt{2}}\\approx 0{,}707$ e la fase è $-\\frac{\\pi}{4}$.",
       "Per $\\omega\\to 0$, $|H|\\to 1$ e la fase tende a 0; per $\\omega\\to \\infty$, il modulo tende a zero e la fase a $-\\frac{\\pi}{2}$."
     ],
     "soluzione": "La fase è riferita a frequenze positive. La rete passa-basso attenua le componenti rapide; non attribuire la fase positiva della configurazione CR a questa uscita.",
@@ -34,13 +34,13 @@
       "Sostituisci $\\omega_{c}RC=1$ in H.",
       "Valuta modulo e argomento."
     ],
-    "soluzione": "$RC=10^{-3}$ s, quindi $\\omega_{c}=1000$ rad/s. $H(\\omega_{c})=\\frac{1}{1+j}=\\frac{1-j}{2}$; $|H|=\\frac{1}{\\sqrt{2}}\\approx 0,7071$ e fase $-\\frac{\\pi}{4}$ rad."
+    "soluzione": "$RC=10^{-3}$ s, quindi $\\omega_{c}=1000$ rad/s. $H(\\omega_{c})=\\frac{1}{1+j}=\\frac{1-j}{2}$; $|H|=\\frac{1}{\\sqrt{2}}\\approx 0{,}7071$ e fase $-\\frac{\\pi}{4}$ rad."
   },
   "esercizio_autonomo": {
-    "titolo": "Rete RC con $R=2 \\mathrm{k}\\Omega$ e $C=0,5 \\mu\\mathrm{F}$",
+    "titolo": "Rete RC con $R=2 \\mathrm{k}\\Omega$ e $C=0{,}5 \\mu\\mathrm{F}$",
     "testo": "Calcola $\\omega_{c}$, $H(\\omega_{c})$, modulo e fase; indica anche i limiti del modulo agli estremi di frequenza.",
     "suggerimento": "Verifico che l’uscita sia sul condensatore.",
-    "soluzione_attesa": "RC=0,001 s e $\\omega_{c}=1000$ rad/s. $H(\\omega_{c})=\\frac{1}{1+j}=\\frac{1-j}{2}$, $|H|=\\frac{1}{\\sqrt{2}}\\approx 0,7071$ e fase $-\\frac{\\pi}{4}$. Il modulo tende a 1 per $\\omega\\to 0$ e a 0 per $\\omega\\to \\infty$."
+    "soluzione_attesa": "RC=0,001 s e $\\omega_{c}=1000$ rad/s. $H(\\omega_{c})=\\frac{1}{1+j}=\\frac{1-j}{2}$, $|H|=\\frac{1}{\\sqrt{2}}\\approx 0{,}7071$ e fase $-\\frac{\\pi}{4}$. Il modulo tende a 1 per $\\omega\\to 0$ e a 0 per $\\omega\\to \\infty$."
   },
   "errori_trappole": [
     {
@@ -56,7 +56,7 @@
     "domande": [
       {
         "domanda": "A $\\omega_{c}=1000$ rad/s, quali modulo e fase ha la rete RC con uscita sul condensatore?",
-        "risposta": "$H(\\omega_{c})=\\frac{1-j}{2}$: il modulo è $\\frac{1}{\\sqrt{2}}\\approx 0,707$ e la fase $-\\frac{\\pi}{4}$."
+        "risposta": "$H(\\omega_{c})=\\frac{1-j}{2}$: il modulo è $\\frac{1}{\\sqrt{2}}\\approx 0{,}707$ e la fase $-\\frac{\\pi}{4}$."
       },
       {
         "domanda": "Qual è il passaggio chiave?",
@@ -94,7 +94,7 @@
       "id": "rc-modulo",
       "tipo": "grafico",
       "titolo": "Modulo del passa-basso RC",
-      "descrizione": "Il modulo scende da uno a zero e vale $\\frac{1}{\\sqrt{2}}$ per $\\omega RC=1$.",
+      "descrizione": "Il modulo scende da uno a zero e vale 1/√2 per ωRC=1.",
       "asse_x": {
         "etichetta": "ωRC",
         "min": 0,
@@ -529,7 +529,7 @@
       "id": "rc-fase",
       "tipo": "grafico",
       "titolo": "Fase del passa-basso RC",
-      "descrizione": "La fase è negativa, passa da zero a $-\\frac{\\pi}{2}$ e vale $-\\frac{\\pi}{4}$ al taglio.",
+      "descrizione": "La fase è negativa, passa da zero a −π/2 e vale −π/4 al taglio.",
       "asse_x": {
         "etichetta": "ωRC",
         "min": 0,

@@ -94,7 +94,7 @@
       "id": "derivatore-uscita",
       "tipo": "grafico",
       "titolo": "Spettro di potenza dopo derivazione",
-      "descrizione": "La densità unilaterale cresce come $\\omega^{2}$ fino a $\\omega_{m}$ e poi è nulla.",
+      "descrizione": "La densità unilaterale cresce come ω² fino a ωm e poi è nulla.",
       "asse_x": {
         "etichetta": "ω/ωₘ",
         "min": 0,

@@ -19,7 +19,7 @@
       "Scrivi l’antitrasformata: $x(t)=\\frac{1}{2\\pi}\\int_{-\\omega_{m}}^{\\omega_{m}} X_{0}e^{j\\omega t}\\,d\\omega$.",
       "Usa la simmetria: l’integrale diventa $\\frac{X_{0}}{\\pi} \\int_{0}^{\\omega_{m}} \\cos(\\omega t)d\\omega$.",
       "Integra rispetto a $\\omega$: $x(t)=\\frac{X_{0} \\sin(\\omega_{m} t)}{\\pi t}$, per t diverso da zero.",
-      "Valuta il limite $t\\to 0$ con $\\frac{\\sin u}{u}\\to 1$: $x(0)=\\frac{X_{0}\\omega_{m}}{\\pi}=\\frac{8}{\\pi}\\approx 2,546$.",
+      "Valuta il limite $t\\to 0$ con $\\frac{\\sin u}{u}\\to 1$: $x(0)=\\frac{X_{0}\\omega_{m}}{\\pi}=\\frac{8}{\\pi}\\approx 2{,}546$.",
       "Gli zeri non nulli soddisfano $\\omega_{m} t=k\\pi$, quindi $t=\\frac{k\\pi}{\\omega_{m}}$; i primi sono $\\frac{\\pm\\pi}{4}$ s.",
       "Il massimo è al centro; lobi laterali alternano segno e decadono come $\\frac{1}{|t|}$."
     ],
@@ -34,7 +34,7 @@
       "Integra il coseno tra zero e $\\omega_{m}$.",
       "Calcola il limite sin(u)/u e il primo zero."
     ],
-    "soluzione": "$x(t)=\\frac{2 \\sin(3t)}{\\pi t}$. Il limite in zero è $x(0)=\\frac{6}{\\pi}\\approx 1,9099$. Il primo zero positivo è $t=\\frac{\\pi}{3}$ s."
+    "soluzione": "$x(t)=\\frac{2 \\sin(3t)}{\\pi t}$. Il limite in zero è $x(0)=\\frac{6}{\\pi}\\approx 1{,}9099$. Il primo zero positivo è $t=\\frac{\\pi}{3}$ s."
   },
   "esercizio_autonomo": {
     "titolo": "Spettro di altezza $\\pi$ e semi-banda 2",
@@ -56,7 +56,7 @@
     "domande": [
       {
         "domanda": "Con $X_{0}=2$ e $\\omega_{m}=4$ rad/s, qual è il limite di x(t) in t=0?",
-        "risposta": "Il limite è $\\frac{X_{0}\\omega_{m}}{\\pi}=\\frac{8}{\\pi}\\approx 2,546$; si ottiene usando $\\frac{\\sin(\\omega_{m} t)}{t}\\to \\omega_{m}$."
+        "risposta": "Il limite è $\\frac{X_{0}\\omega_{m}}{\\pi}=\\frac{8}{\\pi}\\approx 2{,}546$; si ottiene usando $\\frac{\\sin(\\omega_{m} t)}{t}\\to \\omega_{m}$."
       },
       {
         "domanda": "Qual è il passaggio chiave?",
@@ -77,7 +77,7 @@
     },
     {
       "fronte": "Come si verificano centro e primi zeri di x(t)?",
-      "retro": "Con $X_{0}=2$ e $\\omega_{m}=4$, $x(0)=\\frac{8}{\\pi}\\approx 2,546$; gli zeri più vicini all’origine sono $t=\\frac{\\pm\\pi}{4}$ s."
+      "retro": "Con $X_{0}=2$ e $\\omega_{m}=4$, $x(0)=\\frac{8}{\\pi}\\approx 2{,}546$; gli zeri più vicini all’origine sono $t=\\frac{\\pm\\pi}{4}$ s."
     }
   ],
   "checklist": {
@@ -94,7 +94,7 @@
       "id": "spettro-rettangolare",
       "tipo": "grafico",
       "titolo": "Spettro rettangolare bilatero",
-      "descrizione": "Banda piatta da $-\\omega_{m}$ a $+\\omega_{m}$ con supporto simmetrico.",
+      "descrizione": "Banda piatta da −ωm a +ωm con supporto simmetrico.",
       "asse_x": {
         "etichetta": "ω/ωₘ",
         "min": -2,

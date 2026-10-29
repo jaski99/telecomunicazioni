@@ -307,7 +307,7 @@
     {
       "id": "ampiezza-h-trasversale-esempio",
       "tipo": "grafico",
-      "titolo": "Esempio: ampiezza di $H(\\omega)$ per due soli pesi",
+      "titolo": "Esempio: ampiezza di H(ω) per due soli pesi",
       "descrizione": "Modulo della funzione di trasferimento di un filtro trasversale con due soli pesi, uno e zero virgola cinque, e ritardo elementare di un secondo: la curva è periodica in pulsazione con periodo due pi greco diviso T, vale uno virgola cinque in continua e zero virgola cinque a metà periodo.",
       "asse_x": {
         "etichetta": "ω (rad/s), T = 1 s",
