@@ -4,13 +4,13 @@
   "scenario": "Una banda rettangolare simmetrica in pulsazione corrisponde a una sinc nel tempo. L’antitrasformata conserva il fattore 1/(2π); è utile valutare separatamente il limite in t=0. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
   "definizione_esame": {
     "definizione": "Area 1 — spettro rettangolare bilatero: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-    "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+    "scopo": "Invertire lo spettro bilatero X₀=2 entro |ω|≤4 rad/s, trovare x(0)=8/π e individuare i primi zeri temporali ±π/4 s.",
     "esempio": "Per X₀=2 e ωm=4 rad/s, ricava x(t), il valore in zero e i primi zeri."
   },
   "spiegazione": "### Dalla banda alla sinc\nLa trasformata assegnata è reale, pari e costante nella banda. In questa lezione sinc(u)=sin(u)/u, con valore uno in zero per continuità. Inserendo la banda finita nell’antitrasformata, la parte dispari dell’esponenziale si cancella e resta un integrale coseno. Il risultato è una sinc: la banda più larga produce una risposta temporale più stretta.\n\n### Valore al centro e zeri\nLa formula sin(ωm t)/t ha una forma apparentemente singolare in zero; il limite è finito e vale X₀ωm/π. Gli zeri si ripetono a multipli di π/ωm, non di 2π/ωm. La banda unilaterale di taglio è ωm, mentre la larghezza bilatera è 2ωm.\n\n### Verifiche dimensionali e grafiche\nX₀ ha unità di trasformata, per cui il fattore ωm restituisce unità di ampiezza nel tempo. Il grafico ha un lobo principale tra i primi zeri e lobi laterali alternati. Per ogni esercizio controlla il limite in zero e segna gli zeri prima di disegnare.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $x(t)=\\frac{X_0\\sin(\\omega_m t)}{\\pi t},\\qquad x(0)=\\frac{X_0\\omega_m}{\\pi}$.",
   "analogia": {
-    "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
-    "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+    "testo": "Una banda rettangolare è come una finestra che lascia passare frequenze fino a ωm: la sua antitrasformata è una sinc temporale con lobi via via più piccoli.",
+    "limite": "La sinc non implica un segnale causale né una banda monolatera: qui X(ω)=X₀ su |ω|≤ωm e il fattore 1/(2π) è bilatero."
   },
   "worked_example": {
     "titolo": "Esempio guidato E3",
@@ -19,7 +19,7 @@
       "Scrivi l’antitrasformata: x(t)=1/(2π)∫₋ωm^ωm X₀eʲωᵗdω.",
       "Usa la simmetria: l’integrale diventa X₀/π ∫₀^ωm cos(ωt)dω.",
       "Integra rispetto a ω: x(t)=X₀ sin(ωm t)/(πt), per t diverso da zero.",
-      "Valuta il limite t→0 con sin u/u→1: x(0)=X₀ωm/π=8/π.",
+      "Valuta il limite t→0 con sin u/u→1: x(0)=X₀ωm/π=8/π≈2,546.",
       "Gli zeri non nulli soddisfano ωm t=kπ, quindi t=kπ/ωm; i primi sono ±π/4 s.",
       "Il massimo è al centro; lobi laterali alternano segno e decadono come 1/|t|."
     ],
@@ -55,19 +55,19 @@
   "richiamo_attivo": {
     "domande": [
       {
-        "domanda": "Quali ipotesi rendono valido il modello?",
-        "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+        "domanda": "Con X₀=2 e ωm=4 rad/s, qual è il limite di x(t) in t=0?",
+        "risposta": "Il limite è X₀ωm/π=8/π≈2,546; si ottiene usando sin(ωm t)/t→ωm."
       },
       {
         "domanda": "Qual è il passaggio chiave?",
         "risposta": "Usa la simmetria: l’integrale diventa X₀/π ∫₀^ωm cos(ωt)dω."
       },
       {
-        "domanda": "Quale controllo indipendente applichi?",
-        "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+        "domanda": "Quali sono i primi zeri non nulli della sinc temporale per ωm=4?",
+        "risposta": "Da ωm t=kπ segue t=±π/4 s per k=±1; i successivi sono multipli interi di π/4."
       }
     ],
-    "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+    "spiega_con_parole_tue": "Ricostruisci il passaggio dall’integrale bilatero alla sinc e giustifica il limite finito in t=0."
   },
   "riepilogo": "Antitrasformata su [−ωm,ωm] → usa simmetria → integra cos(ωt) → sinc temporale → limite in zero e zeri.",
   "flashcard": [
@@ -76,17 +76,17 @@
       "retro": "La relazione di riferimento è $x(t)=\\frac{X_0\\sin(\\omega_m t)}{\\pi t}=\\frac{X_0\\omega_m}{\\pi}\\,\\mathrm{sinc}(\\omega_m t)$. Dichiara sempre le ipotesi e le unità."
     },
     {
-      "fronte": "Qual è il controllo più utile?",
-      "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+      "fronte": "Come si verificano centro e primi zeri di x(t)?",
+      "retro": "Con X₀=2 e ωm=4, x(0)=8/π≈2,546; gli zeri più vicini all’origine sono t=±π/4 s."
     }
   ],
   "checklist": {
     "so_fare": [
-      "Imposto il problema e ricavo la formula senza saltare passaggi.",
-      "Controllo i casi limite e interpreto i grafici."
+      "Applico l’antitrasformata bilatera e uso la simmetria per ridurre l’integrale a un coseno.",
+      "Valuto x(0) con il limite e localizzo gli zeri da sin(ωm t)=0, escludendo t=0."
     ],
     "so_dire": [
-      "Spiego le ipotesi e la convenzione adottata."
+      "Distinguo la semibanda ωm dalla larghezza totale 2ωm e dichiaro la convenzione bilatera."
     ]
   },
   "figure": [

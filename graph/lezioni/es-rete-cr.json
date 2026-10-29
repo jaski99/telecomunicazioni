@@ -4,13 +4,13 @@
   "scenario": "La rete con condensatore in serie e uscita sul resistore è un passa-alto del primo ordine. A bassa frequenza blocca, mentre ad alta frequenza trasferisce quasi tutta la tensione. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
   "definizione_esame": {
     "definizione": "Area 2 — CR con uscita sul resistore: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-    "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+    "scopo": "Per R=2 kΩ e C=0,25 μF, ricavare H(ω), determinare il taglio a 2000 rad/s e verificare modulo e fase a tale pulsazione.",
     "esempio": "Con R=2 kΩ e C=0,25 μF calcola ωc, modulo e fase in ωc."
   },
   "spiegazione": "### Riconosci l’uscita\nQui il condensatore è in serie all’ingresso e il resistore è collegato verso il riferimento; l’uscita è sul resistore. Il partitore complesso produce H=R/(R+ZC), quindi la presenza del fattore ω al numeratore anticipa il comportamento passa-alto.\n\n### Caratteristiche\nIl modulo cresce da zero a uno e raggiunge 1/√2 in ωc=1/(RC). L’argomento di jωRC è π/2, mentre quello del denominatore è arctan(ωRC); sottraendoli si ottiene la fase. A taglio la fase vale π/4.\n\n### Confronto e trappole\nLa rete RC con uscita sul condensatore ha H=1/(1+jωRC), modulo decrescente e fase negativa. La rete CR di questo esercizio ha il fattore jωRC, modulo crescente e fase che scende da π/2 a zero. Non scambiare né la formula del modulo né il segno della fase. Dimensioni: ωRC è adimensionale.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $H(\\omega)=\\frac{j\\omega RC}{1+j\\omega RC},\\qquad \\omega_c=\\frac{1}{RC}$.",
   "analogia": {
-    "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
-    "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+    "testo": "Il condensatore porta poco segnale a frequenza bassa, poi lascia crescere la tensione sul resistore: la rete CR mette in evidenza le variazioni rapide.",
+    "limite": "Il paragone non sostituisce il partitore: scambiando il punto d’uscita da C a R si passa da passa-basso a passa-alto."
   },
   "worked_example": {
     "titolo": "Esempio guidato E6",
@@ -55,19 +55,19 @@
   "richiamo_attivo": {
     "domande": [
       {
-        "domanda": "Quali ipotesi rendono valido il modello?",
-        "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+        "domanda": "Per la rete CR con uscita sul resistore, qual è H alla pulsazione di taglio?",
+        "risposta": "A ωc=2000 rad/s, H=(1+j)/2: |H|=1/√2 e la fase è +π/4."
       },
       {
         "domanda": "Qual è il passaggio chiave?",
         "risposta": "Applica il partitore: H=R/(R+1/(jωC))."
       },
       {
-        "domanda": "Quale controllo indipendente applichi?",
-        "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+        "domanda": "Quali sono i limiti del modulo CR alle basse e alle alte frequenze?",
+        "risposta": "Il modulo tende a zero quando ω→0 e a uno quando ω→∞; la rete lascia passare le componenti rapide."
       }
     ],
-    "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+    "spiega_con_parole_tue": "Confronta il ruolo del condensatore nel partitore RC e CR e spiega perché la fase del CR è positiva al taglio."
   },
   "riepilogo": "Uscita sul resistore → partitore R/(R+ZC) → passa-alto jωRC/(1+jωRC) → controllo di taglio e limiti.",
   "flashcard": [
@@ -76,17 +76,17 @@
       "retro": "La relazione di riferimento è $H(\\omega)=\\frac{j\\omega RC}{1+j\\omega RC},\\quad |H|=\\frac{\\omega RC}{\\sqrt{1+(\\omega RC)^2}},\\quad \\arg H=\\frac{\\pi}{2}-\\arctan(\\omega RC)$. Dichiara sempre le ipotesi e le unità."
     },
     {
-      "fronte": "Qual è il controllo più utile?",
-      "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+      "fronte": "Quale forma assume la risposta CR al taglio?",
+      "retro": "Con RC=0,0005 s, ωc=2000 rad/s; H(ωc)=(1+j)/2, con modulo 1/√2 e fase +π/4."
     }
   ],
   "checklist": {
     "so_fare": [
-      "Imposto il problema e ricavo la formula senza saltare passaggi.",
-      "Controllo i casi limite e interpreto i grafici."
+      "Applico il partitore con uscita R e ricavo H=jωRC/(1+jωRC).",
+      "Uso R=2 kΩ e C=0,25 μF per calcolare ωc e verifico i due limiti del modulo."
     ],
     "so_dire": [
-      "Spiego le ipotesi e la convenzione adottata."
+      "Descrivo la rete CR come passa-alto e distinguo la sua fase da quella della configurazione RC."
     ]
   },
   "figure": [

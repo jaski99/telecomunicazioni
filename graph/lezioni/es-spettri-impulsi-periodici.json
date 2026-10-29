@@ -4,13 +4,13 @@
   "scenario": "Una trama periodica di impulsi rettangolari rappresenta un segnale deterministico a potenza. I coefficienti della serie complessa descrivono righe alle armoniche, non una curva continua. La durata governa l’inviluppo sinc, il periodo la distanza tra le righe. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
   "definizione_esame": {
     "definizione": "Area 1 — successione periodica di rettangoli: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-    "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+    "scopo": "Calcolare c₀, c₁ e c₂ per A=2 e τ=T/3, poi indicare la fase delle righe e riconoscere il nullo alla terza armonica.",
     "esempio": "Considera A=2, durata τ=T/3 e impulsi centrati in t=0 in ogni periodo. Calcola la componente continua e le prime armoniche, quindi indica le fasi."
   },
   "spiegazione": "### Dalla forma d’onda alle righe spettrali\nScegli un periodo e integra soltanto dove il segnale è diverso da zero. La periodicità impone che lo spettro sia discreto: ogni indice intero n individua una riga a nω₀. Qui sinc(u)=sin(u)/u. Per il rettangolo centrato la simmetria annulla la parte immaginaria dei coefficienti.\n\n### Fase: il controllo che evita la scorciatoia sbagliata\nPer il rettangolo centrato, cₙ è reale: un coefficiente positivo ha fase 0, uno negativo fase π, e uno nullo non ha fase definita. Se il rettangolo è centrato in t_c, compare e⁻ʲⁿω₀t_c e la regola robusta è φₙ=arg(cₙ), non la sola classificazione 0/π.\n\n### Ampiezza e zeri\nLa componente continua è Aτ/T. La sinc determina l’inviluppo e gli zeri quando nτ/T è intero non nullo. Distingui i coefficienti complessi cₙ dagli ampiezza-fase della serie trigonometrica: per n>0, l’ampiezza reale è 2|cₙ|. Il disegno è a righe, distanziate ω₀, con inviluppo sinc.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $c_n=\\frac{A\\tau}{T}\\,\\operatorname{sinc}\\!\\left(\\frac{n\\pi\\tau}{T}\\right)e^{-jn\\omega_0t_c}$.",
   "analogia": {
-    "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
-    "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+    "testo": "Una ruota con tacche ripetute produce colpi regolari: il passo fissa le armoniche, mentre la larghezza di ogni impulso ne modella l’inviluppo sinc.",
+    "limite": "La simmetria del rettangolo centrato rende reali i coefficienti, ma un ritardo aggiunge una fase lineare che il disegno delle sole ampiezze non mostra."
   },
   "worked_example": {
     "titolo": "Esempio guidato E1",
@@ -56,19 +56,19 @@
   "richiamo_attivo": {
     "domande": [
       {
-        "domanda": "Quali ipotesi rendono valido il modello?",
-        "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+        "domanda": "Con A=2 e τ/T=1/3, quali sono c₀ e i moduli delle prime due armoniche?",
+        "risposta": "c₀=2/3, |c₁|=√3/π≈0,551 e |c₂|=√3/(2π)≈0,276; entrambe le fasi sono zero."
       },
       {
         "domanda": "Qual è il passaggio chiave?",
         "risposta": "Integra il rettangolo in un periodo: cₙ=(1/T)∫₋τ/2^τ/2 A e⁻ʲⁿω₀ᵗdt."
       },
       {
-        "domanda": "Quale controllo indipendente applichi?",
-        "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+        "domanda": "Perché la terza armonica non ha fase definita nel caso τ=T/3?",
+        "risposta": "Il coefficiente c₃ è zero perché sinc(π)=0; arg(0) non è definita, quindi non si assegna una fase alla riga nulla."
       }
     ],
-    "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+    "spiega_con_parole_tue": "Spiega perché τ/T=1/3 annulla c₃ e come lo spostamento temporale cambierebbe la fase senza alterare i moduli."
   },
   "riepilogo": "Impulsi periodici → serie di Fourier complessa → integrate sul solo rettangolo → sinc alle armoniche → fase arg(cₙ), inclusa la traslazione.",
   "flashcard": [
@@ -77,17 +77,17 @@
       "retro": "La relazione di riferimento è $c_n=\\frac{A\\tau}{T}\\,\\mathrm{sinc}\\!\\left(\\frac{n\\pi\\tau}{T}\\right)e^{-jn\\omega_0t_c},\\quad \\omega_0=\\frac{2\\pi}{T}$. Dichiara sempre le ipotesi e le unità."
     },
     {
-      "fronte": "Qual è il controllo più utile?",
-      "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+      "fronte": "Quali coefficienti si ottengono per A=2 e τ=T/3?",
+      "retro": "c₀=2/3, c₁=√3/π≈0,551 e c₂=√3/(2π)≈0,276; la riga n=3 è nulla e non ha fase."
     }
   ],
   "checklist": {
     "so_fare": [
-      "Imposto il problema e ricavo la formula senza saltare passaggi.",
-      "Controllo i casi limite e interpreto i grafici."
+      "Integro il rettangolo centrato su un periodo e sostituisco A=2 e τ/T=1/3 nella sinc dei coefficienti.",
+      "Confronto c₁ e c₂ con 0,551 e 0,276, poi controllo il nullo esatto a n=±3."
     ],
     "so_dire": [
-      "Spiego le ipotesi e la convenzione adottata."
+      "Spiego perché la centratura dà fase zero per c₁ e c₂, mentre c₃=0 non possiede fase."
     ]
   },
   "figure": [
@@ -120,7 +120,7 @@
             ],
             [
               -3,
-              3.8981718325193755e-17
+              0
             ],
             [
               -2,
@@ -144,7 +144,7 @@
             ],
             [
               3,
-              3.8981718325193755e-17
+              0
             ],
             [
               4,
@@ -482,7 +482,7 @@
             ],
             [
               -3.0,
-              3.8981718325193755e-17
+              0
             ],
             [
               -2.975,
@@ -1442,7 +1442,7 @@
             ],
             [
               3.0,
-              3.8981718325193755e-17
+              0
             ],
             [
               3.025,

@@ -1329,13 +1329,13 @@
         "scenario": "Una banda rettangolare simmetrica in pulsazione corrisponde a una sinc nel tempo. L’antitrasformata conserva il fattore 1/(2π); è utile valutare separatamente il limite in t=0. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
         "definizione_esame": {
           "definizione": "Area 1 — spettro rettangolare bilatero: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-          "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+          "scopo": "Invertire lo spettro bilatero X₀=2 entro |ω|≤4 rad/s, trovare x(0)=8/π e individuare i primi zeri temporali ±π/4 s.",
           "esempio": "Per X₀=2 e ωm=4 rad/s, ricava x(t), il valore in zero e i primi zeri."
         },
         "spiegazione": "### Dalla banda alla sinc\nLa trasformata assegnata è reale, pari e costante nella banda. In questa lezione sinc(u)=sin(u)/u, con valore uno in zero per continuità. Inserendo la banda finita nell’antitrasformata, la parte dispari dell’esponenziale si cancella e resta un integrale coseno. Il risultato è una sinc: la banda più larga produce una risposta temporale più stretta.\n\n### Valore al centro e zeri\nLa formula sin(ωm t)/t ha una forma apparentemente singolare in zero; il limite è finito e vale X₀ωm/π. Gli zeri si ripetono a multipli di π/ωm, non di 2π/ωm. La banda unilaterale di taglio è ωm, mentre la larghezza bilatera è 2ωm.\n\n### Verifiche dimensionali e grafiche\nX₀ ha unità di trasformata, per cui il fattore ωm restituisce unità di ampiezza nel tempo. Il grafico ha un lobo principale tra i primi zeri e lobi laterali alternati. Per ogni esercizio controlla il limite in zero e segna gli zeri prima di disegnare.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $x(t)=\\frac{X_0\\sin(\\omega_m t)}{\\pi t},\\qquad x(0)=\\frac{X_0\\omega_m}{\\pi}$.",
         "analogia": {
-          "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
-          "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+          "testo": "Una banda rettangolare è come una finestra che lascia passare frequenze fino a ωm: la sua antitrasformata è una sinc temporale con lobi via via più piccoli.",
+          "limite": "La sinc non implica un segnale causale né una banda monolatera: qui X(ω)=X₀ su |ω|≤ωm e il fattore 1/(2π) è bilatero."
         },
         "worked_example": {
           "titolo": "Esempio guidato E3",
@@ -1344,7 +1344,7 @@
             "Scrivi l’antitrasformata: x(t)=1/(2π)∫₋ωm^ωm X₀eʲωᵗdω.",
             "Usa la simmetria: l’integrale diventa X₀/π ∫₀^ωm cos(ωt)dω.",
             "Integra rispetto a ω: x(t)=X₀ sin(ωm t)/(πt), per t diverso da zero.",
-            "Valuta il limite t→0 con sin u/u→1: x(0)=X₀ωm/π=8/π.",
+            "Valuta il limite t→0 con sin u/u→1: x(0)=X₀ωm/π=8/π≈2,546.",
             "Gli zeri non nulli soddisfano ωm t=kπ, quindi t=kπ/ωm; i primi sono ±π/4 s.",
             "Il massimo è al centro; lobi laterali alternano segno e decadono come 1/|t|."
           ],
@@ -1380,19 +1380,19 @@
         "richiamo_attivo": {
           "domande": [
             {
-              "domanda": "Quali ipotesi rendono valido il modello?",
-              "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+              "domanda": "Con X₀=2 e ωm=4 rad/s, qual è il limite di x(t) in t=0?",
+              "risposta": "Il limite è X₀ωm/π=8/π≈2,546; si ottiene usando sin(ωm t)/t→ωm."
             },
             {
               "domanda": "Qual è il passaggio chiave?",
               "risposta": "Usa la simmetria: l’integrale diventa X₀/π ∫₀^ωm cos(ωt)dω."
             },
             {
-              "domanda": "Quale controllo indipendente applichi?",
-              "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+              "domanda": "Quali sono i primi zeri non nulli della sinc temporale per ωm=4?",
+              "risposta": "Da ωm t=kπ segue t=±π/4 s per k=±1; i successivi sono multipli interi di π/4."
             }
           ],
-          "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+          "spiega_con_parole_tue": "Ricostruisci il passaggio dall’integrale bilatero alla sinc e giustifica il limite finito in t=0."
         },
         "riepilogo": "Antitrasformata su [−ωm,ωm] → usa simmetria → integra cos(ωt) → sinc temporale → limite in zero e zeri.",
         "flashcard": [
@@ -1401,17 +1401,17 @@
             "retro": "La relazione di riferimento è $x(t)=\\frac{X_0\\sin(\\omega_m t)}{\\pi t}=\\frac{X_0\\omega_m}{\\pi}\\,\\mathrm{sinc}(\\omega_m t)$. Dichiara sempre le ipotesi e le unità."
           },
           {
-            "fronte": "Qual è il controllo più utile?",
-            "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+            "fronte": "Come si verificano centro e primi zeri di x(t)?",
+            "retro": "Con X₀=2 e ωm=4, x(0)=8/π≈2,546; gli zeri più vicini all’origine sono t=±π/4 s."
           }
         ],
         "checklist": {
           "so_fare": [
-            "Imposto il problema e ricavo la formula senza saltare passaggi.",
-            "Controllo i casi limite e interpreto i grafici."
+            "Applico l’antitrasformata bilatera e uso la simmetria per ridurre l’integrale a un coseno.",
+            "Valuto x(0) con il limite e localizzo gli zeri da sin(ωm t)=0, escludendo t=0."
           ],
           "so_dire": [
-            "Spiego le ipotesi e la convenzione adottata."
+            "Distinguo la semibanda ωm dalla larghezza totale 2ωm e dichiaro la convenzione bilatera."
           ]
         },
         "figure": [
@@ -1512,13 +1512,13 @@
         "scenario": "Una trama periodica di impulsi rettangolari rappresenta un segnale deterministico a potenza. I coefficienti della serie complessa descrivono righe alle armoniche, non una curva continua. La durata governa l’inviluppo sinc, il periodo la distanza tra le righe. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
         "definizione_esame": {
           "definizione": "Area 1 — successione periodica di rettangoli: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-          "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+          "scopo": "Calcolare c₀, c₁ e c₂ per A=2 e τ=T/3, poi indicare la fase delle righe e riconoscere il nullo alla terza armonica.",
           "esempio": "Considera A=2, durata τ=T/3 e impulsi centrati in t=0 in ogni periodo. Calcola la componente continua e le prime armoniche, quindi indica le fasi."
         },
         "spiegazione": "### Dalla forma d’onda alle righe spettrali\nScegli un periodo e integra soltanto dove il segnale è diverso da zero. La periodicità impone che lo spettro sia discreto: ogni indice intero n individua una riga a nω₀. Qui sinc(u)=sin(u)/u. Per il rettangolo centrato la simmetria annulla la parte immaginaria dei coefficienti.\n\n### Fase: il controllo che evita la scorciatoia sbagliata\nPer il rettangolo centrato, cₙ è reale: un coefficiente positivo ha fase 0, uno negativo fase π, e uno nullo non ha fase definita. Se il rettangolo è centrato in t_c, compare e⁻ʲⁿω₀t_c e la regola robusta è φₙ=arg(cₙ), non la sola classificazione 0/π.\n\n### Ampiezza e zeri\nLa componente continua è Aτ/T. La sinc determina l’inviluppo e gli zeri quando nτ/T è intero non nullo. Distingui i coefficienti complessi cₙ dagli ampiezza-fase della serie trigonometrica: per n>0, l’ampiezza reale è 2|cₙ|. Il disegno è a righe, distanziate ω₀, con inviluppo sinc.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $c_n=\\frac{A\\tau}{T}\\,\\operatorname{sinc}\\!\\left(\\frac{n\\pi\\tau}{T}\\right)e^{-jn\\omega_0t_c}$.",
         "analogia": {
-          "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
-          "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+          "testo": "Una ruota con tacche ripetute produce colpi regolari: il passo fissa le armoniche, mentre la larghezza di ogni impulso ne modella l’inviluppo sinc.",
+          "limite": "La simmetria del rettangolo centrato rende reali i coefficienti, ma un ritardo aggiunge una fase lineare che il disegno delle sole ampiezze non mostra."
         },
         "worked_example": {
           "titolo": "Esempio guidato E1",
@@ -1564,19 +1564,19 @@
         "richiamo_attivo": {
           "domande": [
             {
-              "domanda": "Quali ipotesi rendono valido il modello?",
-              "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+              "domanda": "Con A=2 e τ/T=1/3, quali sono c₀ e i moduli delle prime due armoniche?",
+              "risposta": "c₀=2/3, |c₁|=√3/π≈0,551 e |c₂|=√3/(2π)≈0,276; entrambe le fasi sono zero."
             },
             {
               "domanda": "Qual è il passaggio chiave?",
               "risposta": "Integra il rettangolo in un periodo: cₙ=(1/T)∫₋τ/2^τ/2 A e⁻ʲⁿω₀ᵗdt."
             },
             {
-              "domanda": "Quale controllo indipendente applichi?",
-              "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+              "domanda": "Perché la terza armonica non ha fase definita nel caso τ=T/3?",
+              "risposta": "Il coefficiente c₃ è zero perché sinc(π)=0; arg(0) non è definita, quindi non si assegna una fase alla riga nulla."
             }
           ],
-          "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+          "spiega_con_parole_tue": "Spiega perché τ/T=1/3 annulla c₃ e come lo spostamento temporale cambierebbe la fase senza alterare i moduli."
         },
         "riepilogo": "Impulsi periodici → serie di Fourier complessa → integrate sul solo rettangolo → sinc alle armoniche → fase arg(cₙ), inclusa la traslazione.",
         "flashcard": [
@@ -1585,17 +1585,17 @@
             "retro": "La relazione di riferimento è $c_n=\\frac{A\\tau}{T}\\,\\mathrm{sinc}\\!\\left(\\frac{n\\pi\\tau}{T}\\right)e^{-jn\\omega_0t_c},\\quad \\omega_0=\\frac{2\\pi}{T}$. Dichiara sempre le ipotesi e le unità."
           },
           {
-            "fronte": "Qual è il controllo più utile?",
-            "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+            "fronte": "Quali coefficienti si ottengono per A=2 e τ=T/3?",
+            "retro": "c₀=2/3, c₁=√3/π≈0,551 e c₂=√3/(2π)≈0,276; la riga n=3 è nulla e non ha fase."
           }
         ],
         "checklist": {
           "so_fare": [
-            "Imposto il problema e ricavo la formula senza saltare passaggi.",
-            "Controllo i casi limite e interpreto i grafici."
+            "Integro il rettangolo centrato su un periodo e sostituisco A=2 e τ/T=1/3 nella sinc dei coefficienti.",
+            "Confronto c₁ e c₂ con 0,551 e 0,276, poi controllo il nullo esatto a n=±3."
           ],
           "so_dire": [
-            "Spiego le ipotesi e la convenzione adottata."
+            "Spiego perché la centratura dà fase zero per c₁ e c₂, mentre c₃=0 non possiede fase."
           ]
         },
         "figure": [
@@ -1628,7 +1628,7 @@
                   ],
                   [
                     -3,
-                    3.8981718325193755e-17
+                    0
                   ],
                   [
                     -2,
@@ -1652,7 +1652,7 @@
                   ],
                   [
                     3,
-                    3.8981718325193755e-17
+                    0
                   ],
                   [
                     4,
@@ -1990,7 +1990,7 @@
                   ],
                   [
                     -3.0,
-                    3.8981718325193755e-17
+                    0
                   ],
                   [
                     -2.975,
@@ -2950,7 +2950,7 @@
                   ],
                   [
                     3.0,
-                    3.8981718325193755e-17
+                    0
                   ],
                   [
                     3.025,
@@ -3392,13 +3392,13 @@
         "scenario": "Un singolo rettangolo ha spettro continuo. La trasformata è l’integrale del segnale per l’esponenziale complesso; la centratura rende lo spettro reale, mentre una traslazione aggiunge fase lineare. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
         "definizione_esame": {
           "definizione": "Area 1 — impulso rettangolare aperiodico: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-          "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+          "scopo": "Ricavare X(ω) per A=3 e τ=2 ms, valutare X(0), il primo nullo e X(π/τ), distinguendo trasformata e magnitudine normalizzata.",
           "esempio": "Per A=3 e τ=2 ms, considera un impulso centrato. Valuta X(0), il primo zero positivo e il valore di X alla pulsazione π/τ."
         },
         "spiegazione": "### Trasformata e forma sinc\nPer un impulso isolato lo spettro è continuo. La simmetria temporale del rettangolo centrato consente di accoppiare gli esponenziali ai due estremi: il risultato è reale e proporzionale a una sinc. La definizione adottata è sinc(u)=sin(u)/u, con sinc(0)=1 per continuità.\n\n### Ampiezza, fase e traslazione\nLa magnitudine non cambia se il rettangolo è traslato, ma la trasformata acquista il fattore e⁻ʲωt_c. La fase corretta si ricava come arg(X): per il rettangolo centrato è 0 o π a seconda del segno della sinc e non è definita agli zeri. Se l’impulso è definito sull’intervallo [0,τ], il fattore è e⁻ʲωτ/2.\n\n### Lettura del grafico\nL’altezza a zero è l’area Aτ; gli zeri sono a ω=±2πk/τ. I lobi si alternano di segno in X, ma la magnitudine resta non negativa. Nel materiale d’esercizio la “ampiezza spettrale” è normalizzata a |X|/π: segnala esplicitamente la convenzione se riporti quel grafico.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $X(\\omega)=A\\tau\\,\\operatorname{sinc}\\!\\left(\\frac{\\omega\\tau}{2}\\right)e^{-j\\omega t_c}$.",
         "analogia": {
-          "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
-          "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+          "testo": "Un impulso breve lascia una traccia spettrale larga, come un colpo secco che eccita molte frequenze; la durata determina la distanza tra gli zeri della sinc.",
+          "limite": "L’immagine del colpo non determina la fase: la traslazione t_c introduce e^(−jωt_c), e la normalizzazione V=|X|/π non coincide con X."
         },
         "worked_example": {
           "titolo": "Esempio guidato E2",
@@ -3444,19 +3444,19 @@
         "richiamo_attivo": {
           "domande": [
             {
-              "domanda": "Quali ipotesi rendono valido il modello?",
-              "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+              "domanda": "Per A=3 e τ=2 ms, che valore assume X(0) e qual è la sua unità?",
+              "risposta": "X(0)=Aτ=0,006: è l’area dell’impulso rettangolare, con unità di ampiezza per secondo."
             },
             {
               "domanda": "Qual è il passaggio chiave?",
               "risposta": "Inserisci la definizione di Fourier: X(ω)=A∫₋τ/2^τ/2 e⁻ʲωᵗdt."
             },
             {
-              "domanda": "Quale controllo indipendente applichi?",
-              "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+              "domanda": "Dove cade il primo zero positivo e quanto vale X alla pulsazione π/τ?",
+              "risposta": "Il primo zero è 2π/τ≈3141,59 rad/s; a π/τ, X=0,006·2/π≈0,00382."
             }
           ],
-          "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+          "spiega_con_parole_tue": "Collega l’area Aτ al valore X(0), poi illustra come la durata τ controlli zeri e larghezza del lobo sinc."
         },
         "riepilogo": "Integra il rettangolo → esprimi X come Aτ sinc(ωτ/2) → controlla il limite in zero → individua zeri e fase tramite arg(X).",
         "flashcard": [
@@ -3465,17 +3465,17 @@
             "retro": "La relazione di riferimento è $X(\\omega)=A\\tau\\,\\mathrm{sinc}\\!\\left(\\frac{\\omega\\tau}{2}\\right)e^{-j\\omega t_c}$. Dichiara sempre le ipotesi e le unità."
           },
           {
-            "fronte": "Qual è il controllo più utile?",
-            "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+            "fronte": "Che cosa fissano area e durata del rettangolo?",
+            "retro": "Per A=3, τ=2 ms: X(0)=0,006; il primo zero è circa 3141,59 rad/s e X(π/τ)≈0,00382."
           }
         ],
         "checklist": {
           "so_fare": [
-            "Imposto il problema e ricavo la formula senza saltare passaggi.",
-            "Controllo i casi limite e interpreto i grafici."
+            "Integro da −τ/2 a τ/2 e ottengo X(ω)=Aτ sinc(ωτ/2), includendo il limite in zero.",
+            "Calcolo il primo nullo 2π/τ e il valore alla pulsazione π/τ senza confondere X con |X|/π."
           ],
           "so_dire": [
-            "Spiego le ipotesi e la convenzione adottata."
+            "Descrivo il fattore di fase da traslazione e segnalo che la fase non è definita nei punti in cui X si annulla."
           ]
         },
         "figure": [
@@ -7762,13 +7762,13 @@
         "scenario": "La rete con condensatore in serie e uscita sul resistore è un passa-alto del primo ordine. A bassa frequenza blocca, mentre ad alta frequenza trasferisce quasi tutta la tensione. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
         "definizione_esame": {
           "definizione": "Area 2 — CR con uscita sul resistore: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-          "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+          "scopo": "Per R=2 kΩ e C=0,25 μF, ricavare H(ω), determinare il taglio a 2000 rad/s e verificare modulo e fase a tale pulsazione.",
           "esempio": "Con R=2 kΩ e C=0,25 μF calcola ωc, modulo e fase in ωc."
         },
         "spiegazione": "### Riconosci l’uscita\nQui il condensatore è in serie all’ingresso e il resistore è collegato verso il riferimento; l’uscita è sul resistore. Il partitore complesso produce H=R/(R+ZC), quindi la presenza del fattore ω al numeratore anticipa il comportamento passa-alto.\n\n### Caratteristiche\nIl modulo cresce da zero a uno e raggiunge 1/√2 in ωc=1/(RC). L’argomento di jωRC è π/2, mentre quello del denominatore è arctan(ωRC); sottraendoli si ottiene la fase. A taglio la fase vale π/4.\n\n### Confronto e trappole\nLa rete RC con uscita sul condensatore ha H=1/(1+jωRC), modulo decrescente e fase negativa. La rete CR di questo esercizio ha il fattore jωRC, modulo crescente e fase che scende da π/2 a zero. Non scambiare né la formula del modulo né il segno della fase. Dimensioni: ωRC è adimensionale.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $H(\\omega)=\\frac{j\\omega RC}{1+j\\omega RC},\\qquad \\omega_c=\\frac{1}{RC}$.",
         "analogia": {
-          "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
-          "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+          "testo": "Il condensatore porta poco segnale a frequenza bassa, poi lascia crescere la tensione sul resistore: la rete CR mette in evidenza le variazioni rapide.",
+          "limite": "Il paragone non sostituisce il partitore: scambiando il punto d’uscita da C a R si passa da passa-basso a passa-alto."
         },
         "worked_example": {
           "titolo": "Esempio guidato E6",
@@ -7813,19 +7813,19 @@
         "richiamo_attivo": {
           "domande": [
             {
-              "domanda": "Quali ipotesi rendono valido il modello?",
-              "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+              "domanda": "Per la rete CR con uscita sul resistore, qual è H alla pulsazione di taglio?",
+              "risposta": "A ωc=2000 rad/s, H=(1+j)/2: |H|=1/√2 e la fase è +π/4."
             },
             {
               "domanda": "Qual è il passaggio chiave?",
               "risposta": "Applica il partitore: H=R/(R+1/(jωC))."
             },
             {
-              "domanda": "Quale controllo indipendente applichi?",
-              "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+              "domanda": "Quali sono i limiti del modulo CR alle basse e alle alte frequenze?",
+              "risposta": "Il modulo tende a zero quando ω→0 e a uno quando ω→∞; la rete lascia passare le componenti rapide."
             }
           ],
-          "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+          "spiega_con_parole_tue": "Confronta il ruolo del condensatore nel partitore RC e CR e spiega perché la fase del CR è positiva al taglio."
         },
         "riepilogo": "Uscita sul resistore → partitore R/(R+ZC) → passa-alto jωRC/(1+jωRC) → controllo di taglio e limiti.",
         "flashcard": [
@@ -7834,17 +7834,17 @@
             "retro": "La relazione di riferimento è $H(\\omega)=\\frac{j\\omega RC}{1+j\\omega RC},\\quad |H|=\\frac{\\omega RC}{\\sqrt{1+(\\omega RC)^2}},\\quad \\arg H=\\frac{\\pi}{2}-\\arctan(\\omega RC)$. Dichiara sempre le ipotesi e le unità."
           },
           {
-            "fronte": "Qual è il controllo più utile?",
-            "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+            "fronte": "Quale forma assume la risposta CR al taglio?",
+            "retro": "Con RC=0,0005 s, ωc=2000 rad/s; H(ωc)=(1+j)/2, con modulo 1/√2 e fase +π/4."
           }
         ],
         "checklist": {
           "so_fare": [
-            "Imposto il problema e ricavo la formula senza saltare passaggi.",
-            "Controllo i casi limite e interpreto i grafici."
+            "Applico il partitore con uscita R e ricavo H=jωRC/(1+jωRC).",
+            "Uso R=2 kΩ e C=0,25 μF per calcolare ωc e verifico i due limiti del modulo."
           ],
           "so_dire": [
-            "Spiego le ipotesi e la convenzione adottata."
+            "Descrivo la rete CR come passa-alto e distinguo la sua fase da quella della configurazione RC."
           ]
         },
         "figure": [
@@ -8766,13 +8766,13 @@
         "scenario": "La rete serie RC con uscita sul condensatore è un passa-basso del primo ordine. Il partitore di impedenza fornisce H; modulo e fase descrivono attenuazione e ritardo di fase in funzione della pulsazione. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
         "definizione_esame": {
           "definizione": "Area 2 — RC con uscita sul condensatore: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-          "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+          "scopo": "Per R=1 kΩ e C=1 μF, ricavare H(ω), valutare il punto di taglio a 1000 rad/s e descrivere i limiti del modulo e della fase.",
           "esempio": "Per R=1 kΩ e C=1 μF, calcola H alla pulsazione di taglio e descrivi i limiti a bassa e alta frequenza."
         },
         "spiegazione": "### Dal circuito a H(ω)\nIl condensatore e il resistore sono in serie e l’uscita è prelevata sul condensatore. Il partitore complesso dà H=ZC/(R+ZC). Sostituendo ZC=1/(jωC) si arriva alla forma canonica. Specificare il punto di uscita è essenziale: invertendolo cambia il comportamento passa-basso/passa-alto.\n\n### Modulo e fase\nIl modulo è l’inverso della radice di 1+(ωRC)². La fase è l’opposto dell’argomento del denominatore. La costante di tempo RC fissa il punto di taglio ωc=1/(RC), dove la potenza è dimezzata e il modulo vale 1/√2.\n\n### Schizzo qualitativo\nA frequenza zero il condensatore è aperto e la tensione d’uscita coincide con l’ingresso. A frequenza alta il condensatore offre bassa impedenza e l’uscita si riduce. Il grafico del modulo scende da uno a zero; la fase da zero a −π/2, passando per −π/4 in ωc. Questi limiti sono controlli rapidi dell’algebra.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $H(\\omega)=\\frac{1}{1+j\\omega RC},\\qquad \\omega_c=\\frac{1}{RC}$.",
         "analogia": {
-          "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
-          "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+          "testo": "Il condensatore si comporta come un serbatoio che segue variazioni lente ma attenua quelle rapide; per questo il prelievo ai suoi capi è passa-basso.",
+          "limite": "Il serbatoio è solo un’immagine: il risultato dipende dall’uscita sul condensatore, da componenti ideali e dall’assenza di carico aggiuntivo."
         },
         "worked_example": {
           "titolo": "Esempio guidato E5",
@@ -8817,19 +8817,19 @@
         "richiamo_attivo": {
           "domande": [
             {
-              "domanda": "Quali ipotesi rendono valido il modello?",
-              "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+              "domanda": "A ωc=1000 rad/s, quali modulo e fase ha la rete RC con uscita sul condensatore?",
+              "risposta": "H(ωc)=(1−j)/2: il modulo è 1/√2≈0,707 e la fase −π/4."
             },
             {
               "domanda": "Qual è il passaggio chiave?",
               "risposta": "Poiché l’uscita è ai capi del condensatore, applica il partitore: H=ZC/(R+ZC)."
             },
             {
-              "domanda": "Quale controllo indipendente applichi?",
-              "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+              "domanda": "Che cosa accade al modulo RC quando ω tende a zero e quando cresce senza limite?",
+              "risposta": "Il modulo tende a 1 per ω→0 e a 0 per ω→∞; la fase passa da 0 a −π/2."
             }
           ],
-          "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+          "spiega_con_parole_tue": "Motiva il segno negativo della fase della rete RC e collega il polo reale al comportamento passa-basso."
         },
         "riepilogo": "Identifica uscita sul C → usa ZC nel partitore → ottieni 1/(1+jωRC) → trova taglio e limiti.",
         "flashcard": [
@@ -8838,17 +8838,17 @@
             "retro": "La relazione di riferimento è $H(\\omega)=\\frac{1}{1+j\\omega RC},\\quad |H|=\\frac{1}{\\sqrt{1+(\\omega RC)^2}},\\quad \\arg H=-\\arctan(\\omega RC)$. Dichiara sempre le ipotesi e le unità."
           },
           {
-            "fronte": "Qual è il controllo più utile?",
-            "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+            "fronte": "Come riconosci il taglio della rete passa-basso?",
+            "retro": "Con RC=0,001 s, ωc=1/(RC)=1000 rad/s; al taglio |H|=1/√2 e arg H=−π/4."
           }
         ],
         "checklist": {
           "so_fare": [
-            "Imposto il problema e ricavo la formula senza saltare passaggi.",
-            "Controllo i casi limite e interpreto i grafici."
+            "Costruisco il partitore con uscita ZC e riduco H a 1/(1+jωRC).",
+            "Calcolo ωc da RC e confronto il limite in continua con il limite alle alte frequenze."
           ],
           "so_dire": [
-            "Spiego le ipotesi e la convenzione adottata."
+            "Spiego perché l’uscita sul condensatore attenua le componenti rapide e la fase è negativa."
           ]
         },
         "figure": [
@@ -13735,13 +13735,13 @@
         "scenario": "La sequenza campionata è x[n]=x₀δ[n]. La sua trasformata discreta è costante; la trasformata della sequenza campionata è invece la somma periodica di repliche dello spettro continuo. L’uguaglianza tra le due dà il criterio richiesto. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
         "definizione_esame": {
           "definizione": "Area 3 — condizione in frequenza per campioni impulsivi: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-          "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+          "scopo": "Per T=1 ms, formulare la somma delle repliche e confrontare i casi Bω minore, uguale e maggiore di π/T senza dedurre la risposta dal solo overlap.",
           "esempio": "Con T=1 ms, classifica il caso Bω<π/T, Bω=π/T e Bω>π/T e spiega quando si può soddisfare la relazione."
         },
         "spiegazione": "### Dalla sequenza ai campioni\nLa prescrizione sui campioni si scrive x[n]=x₀δ[n]. La trasformata della sequenza è costante perché resta un solo termine nella somma. Questa condizione è più forte del semplice campionamento senza aliasing: impone esattamente i valori assegnati a tutti gli indici.\n\n### Repliche dello spettro\nIl pettine di campionamento genera repliche distanziate di ωs=2π/T e con fattore 1/T. La trasformata della sequenza campionata è dunque una somma periodica di X. Uguagliare tale somma a x₀ conduce alla relazione finale.\n\n### I tre casi\nPer banda sotto π/T ci sono frequenze lasciate scoperte nella periodizzazione, quindi una funzione generica non può produrre una somma costante non nulla. Al limite, un rettangolo di altezza x₀T copre esattamente un periodo. Sopra il limite sono possibili forme sovrapposte complementari; occorre verificare la somma effettiva. Questa distinzione evita di trasformare una condizione necessaria e sufficiente in una scorciatoia basata soltanto sulla banda.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $\\sum_{k=-\\infty}^{+\\infty}X\\!\\left(\\omega+k\\frac{2\\pi}{T}\\right)=x_0T$.",
         "analogia": {
-          "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
-          "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+          "testo": "Il campionamento crea copie traslate dello spettro, come trasparenze sovrapposte: la loro somma deve avere altezza costante per ottenere i campioni prescritti.",
+          "limite": "Le copie sovrapposte non garantiscono da sole la condizione: occorre verificare l’identità periodizzata e assumere campionamento ideale."
         },
         "worked_example": {
           "titolo": "Esempio guidato E4",
@@ -13787,19 +13787,19 @@
         "richiamo_attivo": {
           "domande": [
             {
-              "domanda": "Quali ipotesi rendono valido il modello?",
-              "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+              "domanda": "Quale somma delle repliche deve valere per ottenere x[n]=x₀δ[n]?",
+              "risposta": "La somma ΣₖX(ω+2πk/T) deve essere costante e pari a x₀T; per T=1 ms, la spaziatura è 2000π rad/s."
             },
             {
               "domanda": "Qual è il passaggio chiave?",
               "risposta": "La serie temporale trasformata è Xs(ω)=Σn x[n]e⁻ʲⁿωT=x₀."
             },
             {
-              "domanda": "Quale controllo indipendente applichi?",
-              "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+              "domanda": "Con T=1 ms, quale pulsazione delimita il caso Bω=π/T?",
+              "risposta": "Il confine è π/T=1000π rad/s; la frequenza di campionamento angolare è invece 2π/T=2000π rad/s."
             }
           ],
-          "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+          "spiega_con_parole_tue": "Spiega perché una banda sopra π/T può ancora soddisfare la condizione soltanto se le repliche si sommano nel modo richiesto."
         },
         "riepilogo": "Sequenza campionata x[n] → trasformata costante x₀ → repliche spaziate 2π/T → somma x₀T → confronto nei tre regimi di banda.",
         "flashcard": [
@@ -13808,17 +13808,17 @@
             "retro": "La relazione di riferimento è $\\sum_{k=-\\infty}^{+\\infty}X\\!\\left(\\omega+k\\frac{2\\pi}{T}\\right)=x_0T$. Dichiara sempre le ipotesi e le unità."
           },
           {
-            "fronte": "Qual è il controllo più utile?",
-            "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+            "fronte": "Qual è il valore costante della periodizzazione?",
+            "retro": "La relazione è ΣₖX(ω+2πk/T)=x₀T; per T=1 ms, π/T=1000π rad/s e 2π/T=2000π rad/s."
           }
         ],
         "checklist": {
           "so_fare": [
-            "Imposto il problema e ricavo la formula senza saltare passaggi.",
-            "Controllo i casi limite e interpreto i grafici."
+            "Scrivo la trasformata della sequenza campionata e ricavo il fattore 1/T nella somma periodica.",
+            "Confronto Bω con 1000π rad/s e controllo la somma delle repliche, non il solo grado di sovrapposizione."
           ],
           "so_dire": [
-            "Spiego le ipotesi e la convenzione adottata."
+            "Enuncio quando un rettangolo limite realizza la somma costante e perché sopra banda serve una verifica puntuale."
           ]
         },
         "figure": [
@@ -13957,13 +13957,13 @@
         "scenario": "Un derivatore ideale ha H(jω)=jω, quindi moltiplica lo spettro di potenza per |H|²=ω². Un filtro lineare applicato a un processo gaussiano produce ancora un processo gaussiano; media zero e varianza si ottengono integrando la densità secondo la convenzione unilaterale indicata negli appunti. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
         "definizione_esame": {
           "definizione": "Area 3 — derivatore e processo gaussiano: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-          "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+          "scopo": "Per G₀=2 e ωm=3 rad/s, ottenere Gᵧ(ω)=ω²G₀, integrare la densità unilaterale e scrivere la gaussiana con varianza 18.",
           "esempio": "Assumendo la convenzione unilaterale decisa in NOTAZIONE.md §5.2, con G₀=2 e ωm=3 rad/s calcola la varianza e scrivi la densità di y(t)."
         },
         "spiegazione": "### Spettro all’uscita\nIl derivatore moltiplica ciascuna componente sinusoidale per jω. Per gli spettri di potenza conta il modulo quadro: |jω|²=ω². Pertanto l’uscita non ha spettro piatto: cresce quadraticamente fino al limite ωm e si annulla fuori banda.\n\n### Potenza e densità\nCon la convenzione unilaterale decisa in NOTAZIONE.md §5.2, la potenza è l’integrale da zero a ωm. L’integrale di G₀ω² produce G₀ωm³/3, che coincide con la varianza dato il valor medio nullo. Poiché l’uscita è gaussiana, la densità del primo ordine è determinata da media e varianza.\n\n### Precisazione della convenzione\nIl fattore numerico dipende dalla definizione bilaterale o unilaterale dello spettro. La convenzione è quella unilaterale decisa da W3 in NOTAZIONE.md §5.2. La lettura dell’immagine di file1 p. 23 conferma inoltre il fattore ω² all’uscita del derivatore.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Dichiara le ipotesi del modello; per le densità spettrali applica la convenzione unilaterale fissata in NOTAZIONE.md §5.2. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $G_y(\\omega)=\\omega^2G_0,\\qquad \\sigma_y^2=\\int_0^{\\omega_m}\\omega^2G_0\\,d\\omega=\\frac{G_0\\omega_m^3}{3}$.",
         "analogia": {
-          "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
-          "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+          "testo": "Il derivatore pesa di più le variazioni veloci: nello spettro ogni frequenza viene amplificata in potenza secondo il quadrato di ω.",
+          "limite": "Un derivatore ideale amplifica senza limite le alte frequenze; il modello richiede banda limitata e la densità unilaterale scelta in NOTAZIONE.md."
         },
         "worked_example": {
           "titolo": "Esempio guidato E7",
@@ -14008,19 +14008,19 @@
         "richiamo_attivo": {
           "domande": [
             {
-              "domanda": "Quali ipotesi rendono valido il modello?",
-              "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+              "domanda": "Con G₀=2 e ωm=3 rad/s, qual è la varianza dopo il derivatore?",
+              "risposta": "σ²=G₀ωm³/3=2·27/3=18; l’uscita ha media zero e resta gaussiana."
             },
             {
               "domanda": "Qual è il passaggio chiave?",
               "risposta": "Per il filtraggio di processi, Gᵧ(ω)=|H(jω)|²Gₓ(ω)=ω²G₀ entro la banda e zero oltre."
             },
             {
-              "domanda": "Quale controllo indipendente applichi?",
-              "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+              "domanda": "Quale fattore moltiplica lo spettro d’ingresso attraverso H(jω)=jω?",
+              "risposta": "Il modulo quadro è |jω|²=ω²: quindi Gᵧ(ω)=ω²G₀ entro la banda e zero fuori."
             }
           ],
-          "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+          "spiega_con_parole_tue": "Spiega perché la derivazione moltiplica la densità per ω² e come l’integrazione dà la varianza dell’uscita."
         },
         "riepilogo": "H=jω → Gᵧ=ω²G₀ → integra la densità (convenzione dichiarata) → ottieni la varianza → scrivi la gaussiana a media zero.",
         "flashcard": [
@@ -14029,17 +14029,17 @@
             "retro": "La relazione di riferimento è $G_y(\\omega)=\\omega^2G_0\\ (0\\leq\\omega\\leq\\omega_m),\\qquad \\sigma_y^2=\\frac{G_0\\omega_m^3}{3}$. Dichiara sempre le ipotesi e le unità."
           },
           {
-            "fronte": "Qual è il controllo più utile?",
-            "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+            "fronte": "Come si calcola la varianza del processo derivato?",
+            "retro": "Per G₀=2 e ωm=3, σ²=∫₀³2ω²dω=18; la densità è pᵧ(y)=exp(−y²/36)/√(36π)."
           }
         ],
         "checklist": {
           "so_fare": [
-            "Imposto il problema e ricavo la formula senza saltare passaggi.",
-            "Controllo i casi limite e interpreto i grafici."
+            "Moltiplico G₀ per |H(jω)|²=ω² e pongo lo spettro nullo oltre ωm=3 rad/s.",
+            "Integro da zero a ωm con la convenzione unilaterale e verifico σ²=18."
           ],
           "so_dire": [
-            "Spiego le ipotesi e la convenzione adottata."
+            "Giustifico la varianza G₀ωm³/3 e ricordo che il derivatore ideale amplifica le alte frequenze."
           ]
         },
         "figure": [
@@ -14232,13 +14232,13 @@
         "scenario": "Nel codice AMI gli uno alternano il segno e gli zeri producono ampiezza zero. Con bit equiprobabili i momenti a ritardo zero e uno sono rispettivamente 1/2 e −1/4; oltre un simbolo la correlazione è nulla nel modello usato. Il fattore di correlazione crea nulli aggiuntivi. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
         "definizione_esame": {
           "definizione": "Area 3 — PAM AMI con duty cycle 0,5: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-          "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+          "scopo": "Per AMI con duty cycle 0,5 e T=2 ms, trovare i nulli fino a 4π/T e distinguere quelli del fattore di codice da quelli della sinc.",
           "esempio": "Con T=2 ms usa la formula unilaterale decisa in NOTAZIONE.md §5.2 per trovare gli zeri positivi fino a 4π/T e spiega quali fattori li generano."
         },
         "spiegazione": "### Due contributi distinti\nLo spettro dipende sia dalla correlazione del codice sia dalla forma dell’impulso. Qui sinc(u)=sin(u)/u. Per AMI con bit equiprobabili la correlazione tra simboli adiacenti è negativa: questo porta al fattore 1/2−1/2 cos(ωT). Con la formula di bisezione diventa sin²(ωT/2).\n\n### Duty cycle e forma d’impulso\nL’impulso ha ampiezza unitaria e durata T/2, perciò la trasformata è (T/2)sinc(ωT/4). Il suo modulo quadro è T²/4 per la sinc quadrata. Combinando con il fattore 1/(πT) e i momenti del codice si ottiene la formula complessiva.\n\n### Tutti i nulli, non solo i primi\nIl fattore sin² annulla a ω=2πk/T per ogni intero k, incluso k=0. La sinc² annulla a ω=4πq/T, che coincide con una parte dei nulli già presenti. In frequenza ordinaria la griglia completa del fattore AMI è f=k/T. È errato limitarsi a elencare zero e ±2/T: il controllo va fatto simbolicamente su entrambi i fattori.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Dichiara le ipotesi del modello; per le densità spettrali applica la convenzione unilaterale fissata in NOTAZIONE.md §5.2. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $G_s(\\omega)=\\frac{T}{4\\pi}\\left[\\frac{\\sin(\\omega T/4)}{\\omega T/4}\\right]^2\\sin^2\\!\\left(\\frac{\\omega T}{2}\\right)$.",
         "analogia": {
-          "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
-          "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+          "testo": "Nell’AMI i simboli non nulli alternano segno: questa memoria a un passo introduce zeri spettrali oltre a quelli dovuti alla forma dell’impulso.",
+          "limite": "L’alternanza descrive la correlazione del codice, non basta da sola per fissare lo spettro: va moltiplicata per la sinc del rettangolo di durata T/2."
         },
         "worked_example": {
           "titolo": "Esempio guidato E9",
@@ -14283,19 +14283,19 @@
         "richiamo_attivo": {
           "domande": [
             {
-              "domanda": "Quali ipotesi rendono valido il modello?",
-              "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+              "domanda": "Con T=2 ms, quali nulli AMI cadono tra zero e 4π/T?",
+              "risposta": "ω=2π/T e 4π/T, corrispondenti a f=500 Hz e 1000 Hz; il secondo è anche uno zero della sinc dell’impulso."
             },
             {
               "domanda": "Qual è il passaggio chiave?",
               "risposta": "Con duty cycle 1/2 l’impulso rettangolare dura T/2 e ha trasformata G(ω)=(T/2)sinc(ωT/4)."
             },
             {
-              "domanda": "Quale controllo indipendente applichi?",
-              "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+              "domanda": "Quale fattore produce la griglia completa di zeri del codice AMI?",
+              "risposta": "sin²(ωT/2) si annulla per ω=2πk/T, ossia f=k/T; la sinc² aggiunge gli zeri pari già inclusi in tale griglia."
             }
           ],
-          "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+          "spiega_con_parole_tue": "Spiega perché l’alternanza AMI annulla lo spettro a ogni multiplo di 1/T e perché la sinc aggiunge solo una parte di quei nulli."
         },
         "riepilogo": "Momenti AMI → fattore 1/2−1/2 cos(ωT) → sin²(ωT/2) → moltiplica la sinc² dell’impulso T/2 → elenca tutti i nulli.",
         "flashcard": [
@@ -14304,17 +14304,17 @@
             "retro": "La relazione di riferimento è $G_s(\\omega)=\\frac{T}{4\\pi}\\left[\\frac{\\sin(\\omega T/4)}{\\omega T/4}\\right]^2\\sin^2\\!\\left(\\frac{\\omega T}{2}\\right)$. Dichiara sempre le ipotesi e le unità."
           },
           {
-            "fronte": "Qual è il controllo più utile?",
-            "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+            "fronte": "Quali nulli AMI restano entro 4π/T?",
+            "retro": "Con T=2 ms si hanno 500 Hz e 1000 Hz; solo il nullo a 1000 Hz coincide anche con la sinc dell’impulso T/2."
           }
         ],
         "checklist": {
           "so_fare": [
-            "Imposto il problema e ricavo la formula senza saltare passaggi.",
-            "Controllo i casi limite e interpreto i grafici."
+            "Semplifico la correlazione AMI in sin²(ωT/2) e moltiplico per la sinc² dell’impulso T/2.",
+            "Converto il limite angolare 4π/T in f=2/T=1000 Hz e includo solo i nulli entro tale soglia."
           ],
           "so_dire": [
-            "Spiego le ipotesi e la convenzione adottata."
+            "Distinguo la griglia f=k/T dovuta al codice dagli zeri ulteriori della sinc dell’impulso."
           ]
         },
         "figure": [
@@ -15995,13 +15995,13 @@
         "scenario": "Per simboli bipolari indipendenti ed equiprobabili, i valori hanno media zero e varianza unitaria. La componente a righe dovuta alla media scompare; resta la parte continua, pari al prodotto della densità dei simboli per |G(ω)|². Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
         "definizione_esame": {
           "definizione": "Area 3 — PAM bipolare a duty cycle unitario: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-          "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+          "scopo": "Per il codice bipolare e T=1 ms, motivare l’assenza di righe, valutare Gs(0)=0,001/π e localizzare i primi zeri positivi.",
           "esempio": "Con T=1 ms, determina la forma dello spettro, il valore in ω=0 e i primi zeri positivi, seguendo la convenzione unilaterale decisa in NOTAZIONE.md §5.2."
         },
         "spiegazione": "### Separare codice e impulso\nIl segnale PAM è la somma degli impulsi pesati dai simboli. La statistica del codice stabilisce i termini di correlazione; la forma dell’impulso stabilisce G(ω). La convenzione è sinc(u)=sin(u)/u. Per il codice bipolare equiprobabile la media è zero, quindi non compare una riga discreta associata alla media.\n\n### Calcolo dello spettro\nLa correlazione a ritardo zero vale uno e quella a ritardi non nulli è zero per simboli indipendenti a media nulla. Rimane la densità continua, con fattore 1/(πT) nella convenzione unilaterale decisa in NOTAZIONE.md §5.2. L’impulso rettangolare di ampiezza uno e durata T ha trasformata T sinc(ωT/2).\n\n### Forma e controlli\nIl modulo quadro genera una sinc quadrata. Il massimo è in zero e i nulli si trovano quando ωT/2 è un multiplo non nullo di π. La formula e il disegno sono unilaterali per la densità; se si mostra lo spettro bilatero, mantenere l’informazione sulla convenzione e sulla scala.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Dichiara le ipotesi del modello; per le densità spettrali applica la convenzione unilaterale fissata in NOTAZIONE.md §5.2. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $G_s(\\omega)=\\frac{T}{\\pi}\\left[\\frac{\\sin(\\omega T/2)}{\\omega T/2}\\right]^2$.",
         "analogia": {
-          "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
-          "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+          "testo": "I simboli +1 e −1 bilanciano le aree positive e negative nel lungo periodo; resta una densità continua senza riga dovuta alla media.",
+          "limite": "Il bilanciamento medio non rende piatto lo spettro: la forma rettangolare degli impulsi produce una sinc quadrata con zeri regolari."
         },
         "worked_example": {
           "titolo": "Esempio guidato E8",
@@ -16046,19 +16046,19 @@
         "richiamo_attivo": {
           "domande": [
             {
-              "domanda": "Quali ipotesi rendono valido il modello?",
-              "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+              "domanda": "Con T=1 ms e impulsi bipolari unitari, quanto vale Gs(0) nella convenzione unilaterale?",
+              "risposta": "Gs(0)=T/π=0,001/π≈3,183·10⁻⁴; la media nulla elimina la riga discreta."
             },
             {
               "domanda": "Qual è il passaggio chiave?",
               "risposta": "La media nulla elimina le righe di spettro dovute alla componente periodica media."
             },
             {
-              "domanda": "Quale controllo indipendente applichi?",
-              "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+              "domanda": "Dove si trova il primo zero positivo della sinc quadrata quando T=1 ms?",
+              "risposta": "ω=2π/T=2000π rad/s, equivalente a f=1/T=1000 Hz; i successivi sono multipli interi."
             }
           ],
-          "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+          "spiega_con_parole_tue": "Collega la media nulla del codice alla scomparsa delle righe e la durata T alla posizione dei nulli della sinc."
         },
         "riepilogo": "Codice bipolare → media zero, varianza uno → nessuna riga → densità proporzionale a |G|² → sinc² con nulli a 2πk/T.",
         "flashcard": [
@@ -16067,17 +16067,17 @@
             "retro": "La relazione di riferimento è $G_s(\\omega)=\\frac{T}{\\pi}\\left[\\frac{\\sin(\\omega T/2)}{\\omega T/2}\\right]^2$. Dichiara sempre le ipotesi e le unità."
           },
           {
-            "fronte": "Qual è il controllo più utile?",
-            "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+            "fronte": "Perché il codice bipolare non ha righe spettrali?",
+            "retro": "Per T=1 ms, Gs(0)=0,001/π≈3,183·10⁻⁴; i primi zeri sono a 2000π e 4000π rad/s."
           }
         ],
         "checklist": {
           "so_fare": [
-            "Imposto il problema e ricavo la formula senza saltare passaggi.",
-            "Controllo i casi limite e interpreto i grafici."
+            "Calcolo i momenti del codice ±1 e verifico che la media sia zero prima di formare Gs.",
+            "Sostituisco T=1 ms nella sinc quadrata e converto ω=2π/T in frequenza 1000 Hz."
           ],
           "so_dire": [
-            "Spiego le ipotesi e la convenzione adottata."
+            "Distinguo la densità continua dalla riga della media e dichiaro la normalizzazione unilaterale A2."
           ]
         },
         "figure": [

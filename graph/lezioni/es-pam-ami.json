@@ -4,13 +4,13 @@
   "scenario": "Nel codice AMI gli uno alternano il segno e gli zeri producono ampiezza zero. Con bit equiprobabili i momenti a ritardo zero e uno sono rispettivamente 1/2 e −1/4; oltre un simbolo la correlazione è nulla nel modello usato. Il fattore di correlazione crea nulli aggiuntivi. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
   "definizione_esame": {
     "definizione": "Area 3 — PAM AMI con duty cycle 0,5: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-    "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+    "scopo": "Per AMI con duty cycle 0,5 e T=2 ms, trovare i nulli fino a 4π/T e distinguere quelli del fattore di codice da quelli della sinc.",
     "esempio": "Con T=2 ms usa la formula unilaterale decisa in NOTAZIONE.md §5.2 per trovare gli zeri positivi fino a 4π/T e spiega quali fattori li generano."
   },
   "spiegazione": "### Due contributi distinti\nLo spettro dipende sia dalla correlazione del codice sia dalla forma dell’impulso. Qui sinc(u)=sin(u)/u. Per AMI con bit equiprobabili la correlazione tra simboli adiacenti è negativa: questo porta al fattore 1/2−1/2 cos(ωT). Con la formula di bisezione diventa sin²(ωT/2).\n\n### Duty cycle e forma d’impulso\nL’impulso ha ampiezza unitaria e durata T/2, perciò la trasformata è (T/2)sinc(ωT/4). Il suo modulo quadro è T²/4 per la sinc quadrata. Combinando con il fattore 1/(πT) e i momenti del codice si ottiene la formula complessiva.\n\n### Tutti i nulli, non solo i primi\nIl fattore sin² annulla a ω=2πk/T per ogni intero k, incluso k=0. La sinc² annulla a ω=4πq/T, che coincide con una parte dei nulli già presenti. In frequenza ordinaria la griglia completa del fattore AMI è f=k/T. È errato limitarsi a elencare zero e ±2/T: il controllo va fatto simbolicamente su entrambi i fattori.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Dichiara le ipotesi del modello; per le densità spettrali applica la convenzione unilaterale fissata in NOTAZIONE.md §5.2. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $G_s(\\omega)=\\frac{T}{4\\pi}\\left[\\frac{\\sin(\\omega T/4)}{\\omega T/4}\\right]^2\\sin^2\\!\\left(\\frac{\\omega T}{2}\\right)$.",
   "analogia": {
-    "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
-    "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+    "testo": "Nell’AMI i simboli non nulli alternano segno: questa memoria a un passo introduce zeri spettrali oltre a quelli dovuti alla forma dell’impulso.",
+    "limite": "L’alternanza descrive la correlazione del codice, non basta da sola per fissare lo spettro: va moltiplicata per la sinc del rettangolo di durata T/2."
   },
   "worked_example": {
     "titolo": "Esempio guidato E9",
@@ -55,19 +55,19 @@
   "richiamo_attivo": {
     "domande": [
       {
-        "domanda": "Quali ipotesi rendono valido il modello?",
-        "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+        "domanda": "Con T=2 ms, quali nulli AMI cadono tra zero e 4π/T?",
+        "risposta": "ω=2π/T e 4π/T, corrispondenti a f=500 Hz e 1000 Hz; il secondo è anche uno zero della sinc dell’impulso."
       },
       {
         "domanda": "Qual è il passaggio chiave?",
         "risposta": "Con duty cycle 1/2 l’impulso rettangolare dura T/2 e ha trasformata G(ω)=(T/2)sinc(ωT/4)."
       },
       {
-        "domanda": "Quale controllo indipendente applichi?",
-        "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+        "domanda": "Quale fattore produce la griglia completa di zeri del codice AMI?",
+        "risposta": "sin²(ωT/2) si annulla per ω=2πk/T, ossia f=k/T; la sinc² aggiunge gli zeri pari già inclusi in tale griglia."
       }
     ],
-    "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+    "spiega_con_parole_tue": "Spiega perché l’alternanza AMI annulla lo spettro a ogni multiplo di 1/T e perché la sinc aggiunge solo una parte di quei nulli."
   },
   "riepilogo": "Momenti AMI → fattore 1/2−1/2 cos(ωT) → sin²(ωT/2) → moltiplica la sinc² dell’impulso T/2 → elenca tutti i nulli.",
   "flashcard": [
@@ -76,17 +76,17 @@
       "retro": "La relazione di riferimento è $G_s(\\omega)=\\frac{T}{4\\pi}\\left[\\frac{\\sin(\\omega T/4)}{\\omega T/4}\\right]^2\\sin^2\\!\\left(\\frac{\\omega T}{2}\\right)$. Dichiara sempre le ipotesi e le unità."
     },
     {
-      "fronte": "Qual è il controllo più utile?",
-      "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+      "fronte": "Quali nulli AMI restano entro 4π/T?",
+      "retro": "Con T=2 ms si hanno 500 Hz e 1000 Hz; solo il nullo a 1000 Hz coincide anche con la sinc dell’impulso T/2."
     }
   ],
   "checklist": {
     "so_fare": [
-      "Imposto il problema e ricavo la formula senza saltare passaggi.",
-      "Controllo i casi limite e interpreto i grafici."
+      "Semplifico la correlazione AMI in sin²(ωT/2) e moltiplico per la sinc² dell’impulso T/2.",
+      "Converto il limite angolare 4π/T in f=2/T=1000 Hz e includo solo i nulli entro tale soglia."
     ],
     "so_dire": [
-      "Spiego le ipotesi e la convenzione adottata."
+      "Distinguo la griglia f=k/T dovuta al codice dagli zeri ulteriori della sinc dell’impulso."
     ]
   },
   "figure": [

@@ -4,13 +4,13 @@
   "scenario": "Un derivatore ideale ha H(jω)=jω, quindi moltiplica lo spettro di potenza per |H|²=ω². Un filtro lineare applicato a un processo gaussiano produce ancora un processo gaussiano; media zero e varianza si ottengono integrando la densità secondo la convenzione unilaterale indicata negli appunti. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
   "definizione_esame": {
     "definizione": "Area 3 — derivatore e processo gaussiano: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-    "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+    "scopo": "Per G₀=2 e ωm=3 rad/s, ottenere Gᵧ(ω)=ω²G₀, integrare la densità unilaterale e scrivere la gaussiana con varianza 18.",
     "esempio": "Assumendo la convenzione unilaterale decisa in NOTAZIONE.md §5.2, con G₀=2 e ωm=3 rad/s calcola la varianza e scrivi la densità di y(t)."
   },
   "spiegazione": "### Spettro all’uscita\nIl derivatore moltiplica ciascuna componente sinusoidale per jω. Per gli spettri di potenza conta il modulo quadro: |jω|²=ω². Pertanto l’uscita non ha spettro piatto: cresce quadraticamente fino al limite ωm e si annulla fuori banda.\n\n### Potenza e densità\nCon la convenzione unilaterale decisa in NOTAZIONE.md §5.2, la potenza è l’integrale da zero a ωm. L’integrale di G₀ω² produce G₀ωm³/3, che coincide con la varianza dato il valor medio nullo. Poiché l’uscita è gaussiana, la densità del primo ordine è determinata da media e varianza.\n\n### Precisazione della convenzione\nIl fattore numerico dipende dalla definizione bilaterale o unilaterale dello spettro. La convenzione è quella unilaterale decisa da W3 in NOTAZIONE.md §5.2. La lettura dell’immagine di file1 p. 23 conferma inoltre il fattore ω² all’uscita del derivatore.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Dichiara le ipotesi del modello; per le densità spettrali applica la convenzione unilaterale fissata in NOTAZIONE.md §5.2. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $G_y(\\omega)=\\omega^2G_0,\\qquad \\sigma_y^2=\\int_0^{\\omega_m}\\omega^2G_0\\,d\\omega=\\frac{G_0\\omega_m^3}{3}$.",
   "analogia": {
-    "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
-    "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+    "testo": "Il derivatore pesa di più le variazioni veloci: nello spettro ogni frequenza viene amplificata in potenza secondo il quadrato di ω.",
+    "limite": "Un derivatore ideale amplifica senza limite le alte frequenze; il modello richiede banda limitata e la densità unilaterale scelta in NOTAZIONE.md."
   },
   "worked_example": {
     "titolo": "Esempio guidato E7",
@@ -55,19 +55,19 @@
   "richiamo_attivo": {
     "domande": [
       {
-        "domanda": "Quali ipotesi rendono valido il modello?",
-        "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+        "domanda": "Con G₀=2 e ωm=3 rad/s, qual è la varianza dopo il derivatore?",
+        "risposta": "σ²=G₀ωm³/3=2·27/3=18; l’uscita ha media zero e resta gaussiana."
       },
       {
         "domanda": "Qual è il passaggio chiave?",
         "risposta": "Per il filtraggio di processi, Gᵧ(ω)=|H(jω)|²Gₓ(ω)=ω²G₀ entro la banda e zero oltre."
       },
       {
-        "domanda": "Quale controllo indipendente applichi?",
-        "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+        "domanda": "Quale fattore moltiplica lo spettro d’ingresso attraverso H(jω)=jω?",
+        "risposta": "Il modulo quadro è |jω|²=ω²: quindi Gᵧ(ω)=ω²G₀ entro la banda e zero fuori."
       }
     ],
-    "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+    "spiega_con_parole_tue": "Spiega perché la derivazione moltiplica la densità per ω² e come l’integrazione dà la varianza dell’uscita."
   },
   "riepilogo": "H=jω → Gᵧ=ω²G₀ → integra la densità (convenzione dichiarata) → ottieni la varianza → scrivi la gaussiana a media zero.",
   "flashcard": [
@@ -76,17 +76,17 @@
       "retro": "La relazione di riferimento è $G_y(\\omega)=\\omega^2G_0\\ (0\\leq\\omega\\leq\\omega_m),\\qquad \\sigma_y^2=\\frac{G_0\\omega_m^3}{3}$. Dichiara sempre le ipotesi e le unità."
     },
     {
-      "fronte": "Qual è il controllo più utile?",
-      "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+      "fronte": "Come si calcola la varianza del processo derivato?",
+      "retro": "Per G₀=2 e ωm=3, σ²=∫₀³2ω²dω=18; la densità è pᵧ(y)=exp(−y²/36)/√(36π)."
     }
   ],
   "checklist": {
     "so_fare": [
-      "Imposto il problema e ricavo la formula senza saltare passaggi.",
-      "Controllo i casi limite e interpreto i grafici."
+      "Moltiplico G₀ per |H(jω)|²=ω² e pongo lo spettro nullo oltre ωm=3 rad/s.",
+      "Integro da zero a ωm con la convenzione unilaterale e verifico σ²=18."
     ],
     "so_dire": [
-      "Spiego le ipotesi e la convenzione adottata."
+      "Giustifico la varianza G₀ωm³/3 e ricordo che il derivatore ideale amplifica le alte frequenze."
     ]
   },
   "figure": [

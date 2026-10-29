@@ -4,13 +4,13 @@
   "scenario": "Un singolo rettangolo ha spettro continuo. La trasformata è l’integrale del segnale per l’esponenziale complesso; la centratura rende lo spettro reale, mentre una traslazione aggiunge fase lineare. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
   "definizione_esame": {
     "definizione": "Area 1 — impulso rettangolare aperiodico: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-    "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+    "scopo": "Ricavare X(ω) per A=3 e τ=2 ms, valutare X(0), il primo nullo e X(π/τ), distinguendo trasformata e magnitudine normalizzata.",
     "esempio": "Per A=3 e τ=2 ms, considera un impulso centrato. Valuta X(0), il primo zero positivo e il valore di X alla pulsazione π/τ."
   },
   "spiegazione": "### Trasformata e forma sinc\nPer un impulso isolato lo spettro è continuo. La simmetria temporale del rettangolo centrato consente di accoppiare gli esponenziali ai due estremi: il risultato è reale e proporzionale a una sinc. La definizione adottata è sinc(u)=sin(u)/u, con sinc(0)=1 per continuità.\n\n### Ampiezza, fase e traslazione\nLa magnitudine non cambia se il rettangolo è traslato, ma la trasformata acquista il fattore e⁻ʲωt_c. La fase corretta si ricava come arg(X): per il rettangolo centrato è 0 o π a seconda del segno della sinc e non è definita agli zeri. Se l’impulso è definito sull’intervallo [0,τ], il fattore è e⁻ʲωτ/2.\n\n### Lettura del grafico\nL’altezza a zero è l’area Aτ; gli zeri sono a ω=±2πk/τ. I lobi si alternano di segno in X, ma la magnitudine resta non negativa. Nel materiale d’esercizio la “ampiezza spettrale” è normalizzata a |X|/π: segnala esplicitamente la convenzione se riporti quel grafico.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $X(\\omega)=A\\tau\\,\\operatorname{sinc}\\!\\left(\\frac{\\omega\\tau}{2}\\right)e^{-j\\omega t_c}$.",
   "analogia": {
-    "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
-    "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+    "testo": "Un impulso breve lascia una traccia spettrale larga, come un colpo secco che eccita molte frequenze; la durata determina la distanza tra gli zeri della sinc.",
+    "limite": "L’immagine del colpo non determina la fase: la traslazione t_c introduce e^(−jωt_c), e la normalizzazione V=|X|/π non coincide con X."
   },
   "worked_example": {
     "titolo": "Esempio guidato E2",
@@ -56,19 +56,19 @@
   "richiamo_attivo": {
     "domande": [
       {
-        "domanda": "Quali ipotesi rendono valido il modello?",
-        "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+        "domanda": "Per A=3 e τ=2 ms, che valore assume X(0) e qual è la sua unità?",
+        "risposta": "X(0)=Aτ=0,006: è l’area dell’impulso rettangolare, con unità di ampiezza per secondo."
       },
       {
         "domanda": "Qual è il passaggio chiave?",
         "risposta": "Inserisci la definizione di Fourier: X(ω)=A∫₋τ/2^τ/2 e⁻ʲωᵗdt."
       },
       {
-        "domanda": "Quale controllo indipendente applichi?",
-        "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+        "domanda": "Dove cade il primo zero positivo e quanto vale X alla pulsazione π/τ?",
+        "risposta": "Il primo zero è 2π/τ≈3141,59 rad/s; a π/τ, X=0,006·2/π≈0,00382."
       }
     ],
-    "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+    "spiega_con_parole_tue": "Collega l’area Aτ al valore X(0), poi illustra come la durata τ controlli zeri e larghezza del lobo sinc."
   },
   "riepilogo": "Integra il rettangolo → esprimi X come Aτ sinc(ωτ/2) → controlla il limite in zero → individua zeri e fase tramite arg(X).",
   "flashcard": [
@@ -77,17 +77,17 @@
       "retro": "La relazione di riferimento è $X(\\omega)=A\\tau\\,\\mathrm{sinc}\\!\\left(\\frac{\\omega\\tau}{2}\\right)e^{-j\\omega t_c}$. Dichiara sempre le ipotesi e le unità."
     },
     {
-      "fronte": "Qual è il controllo più utile?",
-      "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+      "fronte": "Che cosa fissano area e durata del rettangolo?",
+      "retro": "Per A=3, τ=2 ms: X(0)=0,006; il primo zero è circa 3141,59 rad/s e X(π/τ)≈0,00382."
     }
   ],
   "checklist": {
     "so_fare": [
-      "Imposto il problema e ricavo la formula senza saltare passaggi.",
-      "Controllo i casi limite e interpreto i grafici."
+      "Integro da −τ/2 a τ/2 e ottengo X(ω)=Aτ sinc(ωτ/2), includendo il limite in zero.",
+      "Calcolo il primo nullo 2π/τ e il valore alla pulsazione π/τ senza confondere X con |X|/π."
     ],
     "so_dire": [
-      "Spiego le ipotesi e la convenzione adottata."
+      "Descrivo il fattore di fase da traslazione e segnalo che la fase non è definita nei punti in cui X si annulla."
     ]
   },
   "figure": [
