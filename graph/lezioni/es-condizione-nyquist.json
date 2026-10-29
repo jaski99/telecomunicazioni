@@ -1,47 +1,47 @@
 {
   "id": "es-condizione-nyquist",
   "perche_ti_serve": "Serve per l’esercizio E4, gruppo A della mappa. Collega il calcolo allo schema di area 3 — condizione in frequenza per campioni impulsivi senza attribuire punteggi non documentati.",
-  "scenario": "La sequenza campionata è x[n]=x₀δ[n]. La sua trasformata discreta è costante; la trasformata della sequenza campionata è invece la somma periodica di repliche dello spettro continuo. L’uguaglianza tra le due dà il criterio richiesto. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
+  "scenario": "La sequenza campionata è $x[n]=x_{0}\\delta[n]$. La sua trasformata discreta è costante; la trasformata della sequenza campionata è invece la somma periodica di repliche dello spettro continuo. L’uguaglianza tra le due dà il criterio richiesto. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
   "definizione_esame": {
     "definizione": "Area 3 — condizione in frequenza per campioni impulsivi: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-    "scopo": "Per T=1 ms, formulare la somma delle repliche e confrontare i casi Bω minore, uguale e maggiore di π/T senza dedurre la risposta dal solo overlap.",
-    "esempio": "Con T=1 ms, classifica il caso Bω<π/T, Bω=π/T e Bω>π/T e spiega quando si può soddisfare la relazione."
+    "scopo": "Per T=1 ms, formulare la somma delle repliche e confrontare i casi $B_{\\omega}$ minore, uguale e maggiore di $\\frac{\\pi}{T}$ senza dedurre la risposta dal solo overlap.",
+    "esempio": "Con T=1 ms, classifica il caso $B_{\\omega}<\\frac{\\pi}{T}$, $B_{\\omega}=\\frac{\\pi}{T}$ e $B_{\\omega}>\\frac{\\pi}{T}$ e spiega quando si può soddisfare la relazione."
   },
-  "spiegazione": "### Dalla sequenza ai campioni\nLa prescrizione sui campioni si scrive x[n]=x₀δ[n]. La trasformata della sequenza è costante perché resta un solo termine nella somma. Questa condizione è più forte del semplice campionamento senza aliasing: impone esattamente i valori assegnati a tutti gli indici.\n\n### Repliche dello spettro\nIl pettine di campionamento genera repliche distanziate di ωs=2π/T e con fattore 1/T. La trasformata della sequenza campionata è dunque una somma periodica di X. Uguagliare tale somma a x₀ conduce alla relazione finale.\n\n### I tre casi\nPer banda sotto π/T ci sono frequenze lasciate scoperte nella periodizzazione, quindi una funzione generica non può produrre una somma costante non nulla. Al limite, un rettangolo di altezza x₀T copre esattamente un periodo. Sopra il limite sono possibili forme sovrapposte complementari; occorre verificare la somma effettiva. Questa distinzione evita di trasformare una condizione necessaria e sufficiente in una scorciatoia basata soltanto sulla banda.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $\\sum_{k=-\\infty}^{+\\infty}X\\!\\left(\\omega+k\\frac{2\\pi}{T}\\right)=x_0T$.",
+  "spiegazione": "### Dalla sequenza ai campioni\nLa prescrizione sui campioni si scrive $x[n]=x_{0}\\delta[n]$. La trasformata della sequenza è costante perché resta un solo termine nella somma. Questa condizione è più forte del semplice campionamento senza aliasing: impone esattamente i valori assegnati a tutti gli indici.\n\n### Repliche dello spettro\nIl pettine di campionamento genera repliche distanziate di $\\omega_{s}=\\frac{2\\pi}{T}$ e con fattore $\\frac{1}{T}$. La trasformata della sequenza campionata è dunque una somma periodica di X. Uguagliare tale somma a $x_{0}$ conduce alla relazione finale.\n\n### I tre casi\nPer banda sotto $\\frac{\\pi}{T}$ ci sono frequenze lasciate scoperte nella periodizzazione, quindi una funzione generica non può produrre una somma costante non nulla. Al limite, un rettangolo di altezza $x_{0}T$ copre esattamente un periodo. Sopra il limite sono possibili forme sovrapposte complementari; occorre verificare la somma effettiva. Questa distinzione evita di trasformare una condizione necessaria e sufficiente in una scorciatoia basata soltanto sulla banda.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $\\sum_{k=-\\infty}^{+\\infty}X\\!\\left(\\omega+k\\frac{2\\pi}{T}\\right)=x_0T$.",
   "analogia": {
     "testo": "Il campionamento crea copie traslate dello spettro, come trasparenze sovrapposte: la loro somma deve avere altezza costante per ottenere i campioni prescritti.",
     "limite": "Le copie sovrapposte non garantiscono da sole la condizione: occorre verificare l’identità periodizzata e assumere campionamento ideale."
   },
   "worked_example": {
     "titolo": "Esempio guidato E4",
-    "problema": "Con T=1 ms, classifica il caso Bω<π/T, Bω=π/T e Bω>π/T e spiega quando si può soddisfare la relazione.",
+    "problema": "Con T=1 ms, classifica il caso $B_{\\omega}<\\frac{\\pi}{T}$, $B_{\\omega}=\\frac{\\pi}{T}$ e $B_{\\omega}>\\frac{\\pi}{T}$ e spiega quando si può soddisfare la relazione.",
     "passi": [
-      "La sequenza prescritta vale x₀ in n=0 e zero per ogni altro intero.",
-      "La serie temporale trasformata è Xs(ω)=Σn x[n]e⁻ʲⁿωT=x₀.",
-      "Il campionamento moltiplica x(t) per un pettine di impulsi; in frequenza Xs(ω)=(1/T)Σk X(ω+kωs), ωs=2π/T.",
-      "Uguagliando le due forme, ottieni Σk X(ω+k2π/T)=x₀T.",
-      "Se Bω<π/T, rimangono intervalli di frequenza non coperti dalle repliche: per spettri generici la condizione non è realizzabile.",
-      "Se Bω=π/T, la banda rettangolare X(ω)=x₀T entro ±π/T e zero fuori realizza la somma costante, al bordo secondo la convenzione del valore al salto.",
-      "Se Bω>π/T, la sovrapposizione può ancora soddisfare la somma se le repliche sono complementari; non basta il solo valore di banda per decidere: va verificata l’identità periodizzata."
+      "La sequenza prescritta vale $x_{0}$ in n=0 e zero per ogni altro intero.",
+      "La serie temporale trasformata è $X_{s}(\\omega)=\\sum_{n} x[n]e^{-j n\\omega T}=x_{0}$.",
+      "Il campionamento moltiplica x(t) per un pettine di impulsi; in frequenza $X_{s}(\\omega)=(\\frac{1}{T})\\sum_{k} X(\\omega+k\\omega_{s})$, $\\omega_{s}=\\frac{2\\pi}{T}$.",
+      "Uguagliando le due forme, ottieni $\\sum_{k} X(\\omega+k\\,\\frac{2\\pi}{T})=x_{0}T$.",
+      "Se $B_{\\omega}<\\frac{\\pi}{T}$, rimangono intervalli di frequenza non coperti dalle repliche: per spettri generici la condizione non è realizzabile.",
+      "Se $B_{\\omega}=\\frac{\\pi}{T}$, la banda rettangolare $X(\\omega)=x_{0}T$ entro $\\frac{\\pm\\pi}{T}$ e zero fuori realizza la somma costante, al bordo secondo la convenzione del valore al salto.",
+      "Se $B_{\\omega}>\\frac{\\pi}{T}$, la sovrapposizione può ancora soddisfare la somma se le repliche sono complementari; non basta il solo valore di banda per decidere: va verificata l’identità periodizzata."
     ],
     "soluzione": "La relazione è necessaria e sufficiente per la sequenza di campioni prescritta, sotto le ipotesi della trasformata e del campionamento ideali. I tre casi sono un’analisi della possibilità in funzione della banda, non una regola che garantisce ogni spettro.",
-    "perche_funziona": "La trasformata della sequenza campionata è x₀; uguagliandola alla somma periodica delle repliche si ottiene il criterio necessario e sufficiente, mentre il grafico mostra il caso limite."
+    "perche_funziona": "La trasformata della sequenza campionata è $x_{0}$; uguagliandola alla somma periodica delle repliche si ottiene il criterio necessario e sufficiente, mentre il grafico mostra il caso limite."
   },
   "completion_problem": {
     "titolo": "Costruisci lo spettro rettangolare al limite",
-    "testo": "Con T=1 ms e x₀=2, scrivi un X(ω) rettangolare che realizza la somma costante al limite di Nyquist.",
+    "testo": "Con T=1 ms e $x_{0}=2$, scrivi un $X(\\omega)$ rettangolare che realizza la somma costante al limite di Nyquist.",
     "passi_mancanti": [
-      "Calcola π/T e il passo tra repliche.",
-      "Imponi altezza x₀T e supporto |ω|≤π/T.",
+      "Calcola $\\frac{\\pi}{T}$ e il passo tra repliche.",
+      "Imponi altezza $x_{0}T$ e supporto $|\\omega|\\le \\frac{\\pi}{T}$.",
       "Verifica che una sola replica copra ogni punto di un periodo spettrale."
     ],
-    "soluzione": "π/T=1000π rad/s e il passo tra repliche è 2π/T=2000π rad/s. Scegli X(ω)=0,002 per |ω|≤1000π e zero altrove: gli intervalli delle repliche contigue coprono un periodo e la loro somma è x₀T=0,002, a parte la convenzione ai bordi."
+    "soluzione": "$\\frac{\\pi}{T}=1000\\pi$ rad/s e il passo tra repliche è $\\frac{2\\pi}{T}=2000\\pi$ rad/s. Scegli $X(\\omega)=0{,}002$ per $|\\omega|\\le 1000\\pi$ e zero altrove: gli intervalli delle repliche contigue coprono un periodo e la loro somma è $x_{0}T=0{,}002$, a parte la convenzione ai bordi."
   },
   "esercizio_autonomo": {
     "titolo": "Verifica il caso limite con T=2 ms",
-    "testo": "Ponendo T=2 ms e x₀=3, calcola π/T, ωs e l’altezza/supporto dello spettro rettangolare al limite.",
-    "suggerimento": "Controllo che l’altezza x₀T abbia unità di trasformata.",
-    "soluzione_attesa": "π/T=500π rad/s e ωs=2π/T=1000π rad/s. Lo spettro di limite è X(ω)=0,006 per |ω|≤500π rad/s, nullo fuori. Ogni frequenza appartiene alla copertura periodica e la somma vale x₀T=0,006, con i bordi interpretati coerentemente."
+    "testo": "Ponendo T=2 ms e $x_{0}=3$, calcola $\\frac{\\pi}{T}$, $\\omega_{s}$ e l’altezza/supporto dello spettro rettangolare al limite.",
+    "suggerimento": "Controllo che l’altezza $x_{0}T$ abbia unità di trasformata.",
+    "soluzione_attesa": "$\\frac{\\pi}{T}=500\\pi$ rad/s e $\\omega_{s}=\\frac{2\\pi}{T}=1000\\pi$ rad/s. Lo spettro di limite è $X(\\omega)=0{,}006$ per $|\\omega|\\le 500\\pi$ rad/s, nullo fuori. Ogni frequenza appartiene alla copertura periodica e la somma vale $x_{0}T=0{,}006$, con i bordi interpretati coerentemente."
   },
   "errori_trappole": [
     {
@@ -49,28 +49,28 @@
       "perche_sbagliato": "La condizione riguarda la somma puntuale periodizzata."
     },
     {
-      "errore": "Confondere π/T con 2π/T.",
+      "errore": "Confondere $\\frac{\\pi}{T}$ con $\\frac{2\\pi}{T}$.",
       "perche_sbagliato": "Il primo è la semi-banda limite; il secondo è la spaziatura delle repliche."
     }
   ],
   "richiamo_attivo": {
     "domande": [
       {
-        "domanda": "Quale somma delle repliche deve valere per ottenere x[n]=x₀δ[n]?",
-        "risposta": "La somma ΣₖX(ω+2πk/T) deve essere costante e pari a x₀T; per T=1 ms, la spaziatura è 2000π rad/s."
+        "domanda": "Quale somma delle repliche deve valere per ottenere $x[n]=x_{0}\\delta[n]$?",
+        "risposta": "La somma $\\sum_{k}X(\\omega+\\frac{2\\pi k}{T})$ deve essere costante e pari a $x_{0}T$; per T=1 ms, la spaziatura è $2000\\pi$ rad/s."
       },
       {
         "domanda": "Qual è il passaggio chiave?",
-        "risposta": "La serie temporale trasformata è Xs(ω)=Σn x[n]e⁻ʲⁿωT=x₀."
+        "risposta": "La serie temporale trasformata è $X_{s}(\\omega)=\\sum_{n} x[n]e^{-j n\\omega T}=x_{0}$."
       },
       {
-        "domanda": "Con T=1 ms, quale pulsazione delimita il caso Bω=π/T?",
-        "risposta": "Il confine è π/T=1000π rad/s; la frequenza di campionamento angolare è invece 2π/T=2000π rad/s."
+        "domanda": "Con T=1 ms, quale pulsazione delimita il caso $B_{\\omega}=\\frac{\\pi}{T}$?",
+        "risposta": "Il confine è $\\frac{\\pi}{T}=1000\\pi$ rad/s; la frequenza di campionamento angolare è invece $\\frac{2\\pi}{T}=2000\\pi$ rad/s."
       }
     ],
-    "spiega_con_parole_tue": "Spiega perché una banda sopra π/T può ancora soddisfare la condizione soltanto se le repliche si sommano nel modo richiesto."
+    "spiega_con_parole_tue": "Spiega perché una banda sopra $\\frac{\\pi}{T}$ può ancora soddisfare la condizione soltanto se le repliche si sommano nel modo richiesto."
   },
-  "riepilogo": "Sequenza campionata x[n] → trasformata costante x₀ → repliche spaziate 2π/T → somma x₀T → confronto nei tre regimi di banda.",
+  "riepilogo": "Sequenza campionata $x[n] \\to$ trasformata costante $x_{0} \\to$ repliche spaziate $\\frac{2\\pi}{T} \\to$ somma $x_{0}T \\to$ confronto nei tre regimi di banda.",
   "flashcard": [
     {
       "fronte": "Qual è il risultato centrale?",
@@ -78,13 +78,13 @@
     },
     {
       "fronte": "Qual è il valore costante della periodizzazione?",
-      "retro": "La relazione è ΣₖX(ω+2πk/T)=x₀T; per T=1 ms, π/T=1000π rad/s e 2π/T=2000π rad/s."
+      "retro": "La relazione è $\\sum_{k}X(\\omega+\\frac{2\\pi k}{T})=x_{0}T$; per T=1 ms, $\\frac{\\pi}{T}=1000\\pi$ rad/s e $\\frac{2\\pi}{T}=2000\\pi$ rad/s."
     }
   ],
   "checklist": {
     "so_fare": [
-      "Scrivo la trasformata della sequenza campionata e ricavo il fattore 1/T nella somma periodica.",
-      "Confronto Bω con 1000π rad/s e controllo la somma delle repliche, non il solo grado di sovrapposizione."
+      "Scrivo la trasformata della sequenza campionata e ricavo il fattore $\\frac{1}{T}$ nella somma periodica.",
+      "Confronto $B_{\\omega}$ con $1000\\pi$ rad/s e controllo la somma delle repliche, non il solo grado di sovrapposizione."
     ],
     "so_dire": [
       "Enuncio quando un rettangolo limite realizza la somma costante e perché sopra banda serve una verifica puntuale."

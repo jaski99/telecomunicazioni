@@ -35,17 +35,17 @@
   ],
   "varianti_notazione": [
     {
-      "canonica": "ωs = 2π/T, fs = 1/T",
-      "variante": "ω0 = 2π/T e f0 = 1/T per la pulsazione e la frequenza di campionamento",
-      "fonte": "FILE1 pp. 7-9; FILE3 pp. 1-2 (in file3 anche m al posto di ω)"
+      "canonica": "$\\omega_{s} = \\frac{2\\pi}{T}$, $f_{s} = \\frac{1}{T}$",
+      "variante": "$\\omega_{0} = \\frac{2\\pi}{T}$ e $f_{0} = \\frac{1}{T}$ per la pulsazione e la frequenza di campionamento",
+      "fonte": "FILE1 pp. 7-9; FILE3 pp. 1-2 (in file3 anche m al posto di $\\omega$)"
     },
     {
-      "canonica": "ω per la pulsazione generica",
+      "canonica": "$\\omega$ per la pulsazione generica",
       "variante": "m per la pulsazione generica",
       "fonte": "FILE3 pp. 1-2"
     }
   ],
-  "idea": "Campionare ripete lo spettro ogni ωs: se le copie non si toccano, un passa-basso isola l'originale e antitrasformando nascono i seni cardinali.",
+  "idea": "Campionare ripete lo spettro ogni $\\omega_{s}$: se le copie non si toccano, un passa-basso isola l'originale e antitrasformando nascono i seni cardinali.",
   "passi": [
     {
       "n": 1,
@@ -1190,7 +1190,7 @@
   "verifica": {
     "stato": "verificata_file1_file3",
     "data": "2026-10-29",
-    "note": "Confronto pagina per pagina sulle immagini renderizzate di file1 e file3 (appunti di studenti, non il libro); il testo di Calandrino e Immovilli non è stato consultato direttamente e la sua edizione è NON TROVATO, quindi non si dichiara identità con il testo del docente. La ricostruzione con il seno cardinale e il fattore T sono presenti solo in file1 pp. 9-10; file3 si ferma alla condizione di separazione. Punto A3 risolto sulle immagini: in file1 p. 9 si legge X(ω) = T·Xs(ω) per |ω| < ω0/2 = π/T (con ω0 variante per ωs).",
+    "note": "Confronto pagina per pagina sulle immagini renderizzate di file1 e file3 (appunti di studenti, non il libro); il testo di Calandrino e Immovilli non è stato consultato direttamente e la sua edizione è NON TROVATO, quindi non si dichiara identità con il testo del docente. La ricostruzione con il seno cardinale e il fattore T sono presenti solo in file1 pp. 9-10; file3 si ferma alla condizione di separazione. Punto A3 risolto sulle immagini: in file1 p. 9 si legge $X(\\omega) = T\\cdot X_{s}(\\omega)$ per $|\\omega| < \\frac{\\omega_{0}}{2} = \\frac{\\pi}{T}$ (con $\\omega_{0}$ variante per $\\omega_{s}$).",
     "punti_aperti": [
       "Confronto con il libro di Calandrino e Immovilli non ancora fatto: edizione e pagine effettive NON TROVATO; i riferimenti del tipo p. x.y sono quelli riportati dallo studente in file1 (IPOTESI: capitolo.pagina).",
       "In file3 la formula di ricostruzione con il seno cardinale è assente: il passo 7 segue il solo file1 pp. 9-10."

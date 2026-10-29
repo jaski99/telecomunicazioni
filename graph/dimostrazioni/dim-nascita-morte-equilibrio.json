@@ -17,7 +17,7 @@
     },
     {
       "simbolo": "\\mu_k",
-      "significato": "Tasso di morte dallo stato k allo stato k−1."
+      "significato": "Tasso di morte dallo stato k allo stato $k-1$."
     },
     {
       "simbolo": "p_k(t),p_k",

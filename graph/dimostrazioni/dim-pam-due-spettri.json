@@ -36,13 +36,13 @@
   ],
   "varianti_notazione": [
     {
-      "canonica": "Gx(ω) = F[C(τ)]/π, potenza come integrale sulle pulsazioni positive",
-      "variante": "stessa definizione con Gx(ω) = F[C(τ)]/π in file1 p. 21; in file3 p. 13 il divisore è scritto sotto la trasformata",
+      "canonica": "$G_{x}(\\omega) = F[C(\\tau)]/\\pi$, potenza come integrale sulle pulsazioni positive",
+      "variante": "stessa definizione con $G_{x}(\\omega) = F[C(\\tau)]/\\pi$ in file1 p. 21; in file3 p. 13 il divisore è scritto sotto la trasformata",
       "fonte": "FILE1 pp. 20-22; FILE3 pp. 13-14"
     },
     {
-      "canonica": "2π/T per la spaziatura delle righe",
-      "variante": "ω0 = 2π/T per la stessa quantità",
+      "canonica": "$\\frac{2\\pi}{T}$ per la spaziatura delle righe",
+      "variante": "$\\omega_{0} = \\frac{2\\pi}{T}$ per la stessa quantità",
       "fonte": "FILE1 p. 20"
     }
   ],
@@ -1000,10 +1000,10 @@
   "verifica": {
     "stato": "verificata_file1_file3",
     "data": "2026-10-29",
-    "note": "Confronto pagina per pagina sulle immagini renderizzate di file1 e file3 (appunti di studenti, non il libro); il testo di Calandrino e Immovilli non è stato consultato direttamente e la sua edizione è NON TROVATO, quindi non si dichiara identità con il testo del docente. Punto A2 deciso e documentato in docs/NOTAZIONE.md: densità unilaterale in ω con Gx(ω) = F[C(τ)]/π (leggibile in file1 p. 21) e P = integrale sulle pulsazioni positive (coerente con file1 p. 23, dove P si calcola integrando fra 0 e ωm senza fattori aggiuntivi). Il punteggio di 10 punti è quello dichiarato per T5 nel materiale d'esame raccolto in file2 secondo R3.",
+    "note": "Confronto pagina per pagina sulle immagini renderizzate di file1 e file3 (appunti di studenti, non il libro); il testo di Calandrino e Immovilli non è stato consultato direttamente e la sua edizione è NON TROVATO, quindi non si dichiara identità con il testo del docente. Punto A2 deciso e documentato in docs/NOTAZIONE.md: densità unilaterale in $\\omega$ con $G_{x}(\\omega) = F[C(\\tau)]/\\pi$ (leggibile in file1 p. 21) e P = integrale sulle pulsazioni positive (coerente con file1 p. 23, dove P si calcola integrando fra 0 e $\\omega_{m}$ senza fattori aggiuntivi). Il punteggio di 10 punti è quello dichiarato per T5 nel materiale d'esame raccolto in file2 secondo R3.",
     "punti_aperti": [
       "Confronto con il libro di Calandrino e Immovilli non ancora fatto: edizione e pagine effettive NON TROVATO; i riferimenti del tipo p. x.y sono quelli riportati dallo studente in file1 (IPOTESI: capitolo.pagina).",
-      "Resta da confermare sul testo del docente che la convenzione unilaterale con il fattore 1/(πT) sia quella richiesta in sede d'esame; file1 e file3 concordano su questo fattore."
+      "Resta da confermare sul testo del docente che la convenzione unilaterale con il fattore $\\frac{1}{\\pi T}$ sia quella richiesta in sede d'esame; file1 e file3 concordano su questo fattore."
     ]
   }
 }

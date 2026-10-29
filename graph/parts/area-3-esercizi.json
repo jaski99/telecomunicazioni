@@ -6,11 +6,11 @@
     "tipo": "tipo_esercizio",
     "gruppo": "A",
     "worker": "W6",
-    "sapere": "Per campioni x(nT)=x₀δ[n], la periodizzazione X_s(ω)=(1/T)Σ_kX(ω+k2π/T) deve essere costante. La condizione equivalente è Σ_kX(ω+k2π/T)=x₀T.",
+    "sapere": "Per campioni $x(nT)=x_{0}\\delta[n]$, la periodizzazione $X_{s}(\\omega)=(\\frac{1}{T})\\sum_kX(\\omega+k\\,\\frac{2\\pi}{T})$ deve essere costante. La condizione equivalente è $\\sum_kX(\\omega+k\\,\\frac{2\\pi}{T})=x_{0}T$.",
     "saper_fare": [
       "Ricavare la trasformata della sequenza con un solo campione non nullo.",
-      "Scrivere la somma delle repliche con passo 2π/T.",
-      "Classificare i casi Bω<π/T, Bω=π/T e Bω>π/T senza concludere dal solo overlap."
+      "Scrivere la somma delle repliche con passo $\\frac{2\\pi}{T}$.",
+      "Classificare i casi $B_{\\omega}<\\frac{\\pi}{T}$, $B_{\\omega}=\\frac{\\pi}{T}$ e $B_{\\omega}>\\frac{\\pi}{T}$ senza concludere dal solo overlap."
     ],
     "prerequisiti": [
       {
@@ -32,8 +32,8 @@
     ],
     "risorse": [],
     "checklist_ripasso": [
-      "Controllo che l’altezza x₀T abbia unità di trasformata.",
-      "Verifico separatamente passo 2π/T e semi-banda π/T."
+      "Controllo che l’altezza $x_{0}T$ abbia unità di trasformata.",
+      "Verifico separatamente passo $\\frac{2\\pi}{T}$ e semi-banda $\\frac{\\pi}{T}$."
     ]
   },
   {
@@ -43,9 +43,9 @@
     "tipo": "tipo_esercizio",
     "gruppo": "A",
     "worker": "W6",
-    "sapere": "Il derivatore ideale H(jω)=jω trasforma lo spettro unilaterale d’ingresso G₀ in G_y(ω)=ω²G₀ nella banda 0≤ω≤ωₘ. Per media nulla, σ²=G₀ωₘ³/3 e l’uscita resta gaussiana.",
+    "sapere": "Il derivatore ideale $H(j\\omega)=j\\omega$ trasforma lo spettro unilaterale d’ingresso $G_{0}$ in $G_{y}(\\omega)=\\omega^{2}G_{0}$ nella banda $0\\le \\omega\\le \\omega_{m}$. Per media nulla, $\\sigma^{2}=\\frac{G_{0}\\omega_{m}^{3}}{3}$ e l’uscita resta gaussiana.",
     "saper_fare": [
-      "Moltiplicare lo spettro d’ingresso per |H|²=ω².",
+      "Moltiplicare lo spettro d’ingresso per $|H|^{2}=\\omega^{2}$.",
       "Integrare lo spettro unilaterale per ottenere la varianza.",
       "Scrivere la densità gaussiana con media zero e varianza calcolata."
     ],
@@ -74,7 +74,7 @@
     ],
     "risorse": [],
     "checklist_ripasso": [
-      "Uso |H|², non H, per trasformare la densità di potenza.",
+      "Uso $|H|^{2}$, non H, per trasformare la densità di potenza.",
       "Integro sulla semiasse positiva secondo la convenzione unilaterale canonica."
     ]
   },
@@ -85,11 +85,11 @@
     "tipo": "tipo_esercizio",
     "gruppo": "A",
     "worker": "W6",
-    "sapere": "Per simboli bipolari indipendenti equiprobabili E[aₙ]=0 ed E[aₙ²]=1. Con impulsi rettangolari unitari di durata T, le righe da media scompaiono e G_s=(T/π)sinc²(ωT/2) nella convenzione unilaterale stabilita in NOTAZIONE.md.",
+    "sapere": "Per simboli bipolari indipendenti equiprobabili $E[a_{n}]=0$ ed $E[a_{n}^{2}]=1$. Con impulsi rettangolari unitari di durata T, le righe da media scompaiono e $G_{s}=(\\frac{T}{\\pi})\\operatorname{sinc}^{2}(\\frac{\\omega T}{2})$ nella convenzione unilaterale stabilita in NOTAZIONE.md.",
     "saper_fare": [
       "Ricavare media, varianza e correlazioni del codice bipolare.",
-      "Calcolare G(ω) dell’impulso rettangolare e formare |G|².",
-      "Disegnare la densità con massimo in zero e nulli a f=k/T."
+      "Calcolare $G(\\omega)$ dell’impulso rettangolare e formare $|G|^{2}$.",
+      "Disegnare la densità con massimo in zero e nulli a $f=\\frac{k}{T}$."
     ],
     "prerequisiti": [
       {
@@ -111,7 +111,7 @@
     ],
     "risorse": [],
     "checklist_ripasso": [
-      "Applico la densità unilaterale decisa in NOTAZIONE.md, senza fattore 1/(2πT).",
+      "Applico la densità unilaterale decisa in NOTAZIONE.md, senza fattore $\\frac{1}{2\\pi T}$.",
       "Controllo che la sinc al quadrato sia non negativa."
     ]
   },
@@ -122,11 +122,11 @@
     "tipo": "tipo_esercizio",
     "gruppo": "A",
     "worker": "W6",
-    "sapere": "Per AMI con bit equiprobabili C₀=1/2, C₁=−1/4 e Cₖ=0 per k≥2. Con duty cycle 0,5, lo spettro unilaterale è (T/4π)sinc²(ωT/4)sin²(ωT/2), nullo a ogni f=k/T.",
+    "sapere": "Per AMI con bit equiprobabili $C_{0}=\\frac{1}{2}$, $C_{1}=-\\frac{1}{4}$ e $C_{k}=0$ per $k\\ge 2$. Con duty cycle 0,5, lo spettro unilaterale è $(\\frac{T}{4\\pi})\\operatorname{sinc}^{2}(\\frac{\\omega T}{4})\\sin^{2}(\\frac{\\omega T}{2})$, nullo a ogni $f=\\frac{k}{T}$.",
     "saper_fare": [
-      "Ricavare C₀ e C₁ dal codice AMI.",
-      "Usare 1/2−1/2 cos(ωT)=sin²(ωT/2).",
-      "Trovare gli zeri di entrambi i fattori ed elencare ogni multiplo k/T."
+      "Ricavare $C_{0}$ e $C_{1}$ dal codice AMI.",
+      "Usare $\\frac{1}{2}-\\frac{1}{2} \\cos(\\omega T)=\\sin^{2}(\\frac{\\omega T}{2})$.",
+      "Trovare gli zeri di entrambi i fattori ed elencare ogni multiplo $\\frac{k}{T}$."
     ],
     "prerequisiti": [
       {
@@ -148,8 +148,8 @@
     ],
     "risorse": [],
     "checklist_ripasso": [
-      "Uso tutti i k interi nella griglia f=k/T.",
-      "Distinguo gli zeri del codice da quelli dell’impulso di durata T/2."
+      "Uso tutti i k interi nella griglia $f=\\frac{k}{T}$.",
+      "Distinguo gli zeri del codice da quelli dell’impulso di durata $\\frac{T}{2}$."
     ]
   }
 ]

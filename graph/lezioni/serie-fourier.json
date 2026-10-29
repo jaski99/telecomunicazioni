@@ -40,7 +40,7 @@
   },
   "errori_trappole": [
     {
-      "errore": "Scrivere la fase come «0 se $c_n>0$, π se $c_n<0$» senza dire che i coefficienti sono reali (nota A1)",
+      "errore": "Scrivere la fase come «0 se $c_n>0$, $\\pi$ se $c_n<0$» senza dire che i coefficienti sono reali (nota A1)",
       "perche_sbagliato": "Per coefficienti complessi il confronto con zero non è definito: la regola vale solo per il segnale reale e pari con impulso centrato, dove $c_n$ è reale."
     },
     {
@@ -69,7 +69,7 @@
     ],
     "spiega_con_parole_tue": "Spiega con parole tue perché accorciare l'impulso allarga lo spettro, usando la posizione del primo zero."
   },
-  "riepilogo": "Serie esponenziale: righe alle armoniche $n\\cdot 2\\pi/T$. Impulso periodico centrato: coefficienti reali sotto l'inviluppo seno su argomento, fase solo $0$ o $\\pi$ (nota A1: in generale $\\varphi_n = -\\arg c_n$; impulso non centrato → rampa di fase). Zeri alle armoniche multiple di $T/\\tau$.",
+  "riepilogo": "Serie esponenziale: righe alle armoniche $n\\cdot 2\\pi/T$. Impulso periodico centrato: coefficienti reali sotto l'inviluppo seno su argomento, fase solo $0$ o $\\pi$ (nota A1: in generale $\\varphi_n = -\\arg c_n$; impulso non centrato $\\to$ rampa di fase). Zeri alle armoniche multiple di $T/\\tau$.",
   "flashcard": [
     {
       "fronte": "Convenzione di fase in file1?",
@@ -91,7 +91,7 @@
     ],
     "so_dire": [
       "la nota A1 sulla fase senza ambiguità",
-      "perché τ più piccolo allarga lo spettro"
+      "perché $\\tau$ più piccolo allarga lo spettro"
     ]
   },
   "figure": [

@@ -4,43 +4,43 @@
   "scenario": "La rete serie RC con uscita sul condensatore è un passa-basso del primo ordine. Il partitore di impedenza fornisce H; modulo e fase descrivono attenuazione e ritardo di fase in funzione della pulsazione. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
   "definizione_esame": {
     "definizione": "Area 2 — RC con uscita sul condensatore: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-    "scopo": "Per R=1 kΩ e C=1 μF, ricavare H(ω), valutare il punto di taglio a 1000 rad/s e descrivere i limiti del modulo e della fase.",
-    "esempio": "Per R=1 kΩ e C=1 μF, calcola H alla pulsazione di taglio e descrivi i limiti a bassa e alta frequenza."
+    "scopo": "Per $R=1 \\mathrm{k}\\Omega$ e $C=1 \\mu\\mathrm{F}$, ricavare $H(\\omega)$, valutare il punto di taglio a 1000 rad/s e descrivere i limiti del modulo e della fase.",
+    "esempio": "Per $R=1 \\mathrm{k}\\Omega$ e $C=1 \\mu\\mathrm{F}$, calcola H alla pulsazione di taglio e descrivi i limiti a bassa e alta frequenza."
   },
-  "spiegazione": "### Dal circuito a H(ω)\nIl condensatore e il resistore sono in serie e l’uscita è prelevata sul condensatore. Il partitore complesso dà H=ZC/(R+ZC). Sostituendo ZC=1/(jωC) si arriva alla forma canonica. Specificare il punto di uscita è essenziale: invertendolo cambia il comportamento passa-basso/passa-alto.\n\n### Modulo e fase\nIl modulo è l’inverso della radice di 1+(ωRC)². La fase è l’opposto dell’argomento del denominatore. La costante di tempo RC fissa il punto di taglio ωc=1/(RC), dove la potenza è dimezzata e il modulo vale 1/√2.\n\n### Schizzo qualitativo\nA frequenza zero il condensatore è aperto e la tensione d’uscita coincide con l’ingresso. A frequenza alta il condensatore offre bassa impedenza e l’uscita si riduce. Il grafico del modulo scende da uno a zero; la fase da zero a −π/2, passando per −π/4 in ωc. Questi limiti sono controlli rapidi dell’algebra.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $H(\\omega)=\\frac{1}{1+j\\omega RC},\\qquad \\omega_c=\\frac{1}{RC}$.",
+  "spiegazione": "### Dal circuito a $H(\\omega)$\nIl condensatore e il resistore sono in serie e l’uscita è prelevata sul condensatore. Il partitore complesso dà $H=\\frac{ZC}{R+ZC}$. Sostituendo $ZC=\\frac{1}{j\\omega C}$ si arriva alla forma canonica. Specificare il punto di uscita è essenziale: invertendolo cambia il comportamento passa-basso/passa-alto.\n\n### Modulo e fase\nIl modulo è l’inverso della radice di $1+(\\omega RC)^{2}$. La fase è l’opposto dell’argomento del denominatore. La costante di tempo RC fissa il punto di taglio $\\omega_{c}=\\frac{1}{RC}$, dove la potenza è dimezzata e il modulo vale $\\frac{1}{\\sqrt{2}}$.\n\n### Schizzo qualitativo\nA frequenza zero il condensatore è aperto e la tensione d’uscita coincide con l’ingresso. A frequenza alta il condensatore offre bassa impedenza e l’uscita si riduce. Il grafico del modulo scende da uno a zero; la fase da zero a $-\\frac{\\pi}{2}$, passando per $-\\frac{\\pi}{4}$ in $\\omega_{c}$. Questi limiti sono controlli rapidi dell’algebra.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $H(\\omega)=\\frac{1}{1+j\\omega RC},\\qquad \\omega_c=\\frac{1}{RC}$.",
   "analogia": {
     "testo": "Il condensatore si comporta come un serbatoio che segue variazioni lente ma attenua quelle rapide; per questo il prelievo ai suoi capi è passa-basso.",
     "limite": "Il serbatoio è solo un’immagine: il risultato dipende dall’uscita sul condensatore, da componenti ideali e dall’assenza di carico aggiuntivo."
   },
   "worked_example": {
     "titolo": "Esempio guidato E5",
-    "problema": "Per R=1 kΩ e C=1 μF, calcola H alla pulsazione di taglio e descrivi i limiti a bassa e alta frequenza.",
+    "problema": "Per $R=1 \\mathrm{k}\\Omega$ e $C=1 \\mu\\mathrm{F}$, calcola H alla pulsazione di taglio e descrivi i limiti a bassa e alta frequenza.",
     "passi": [
-      "L’impedenza del condensatore è ZC=1/(jωC), quella del resistore è R.",
-      "Poiché l’uscita è ai capi del condensatore, applica il partitore: H=ZC/(R+ZC).",
-      "Dividi numeratore e denominatore per ZC: H=1/(1+jωRC).",
-      "La pulsazione di taglio è ωc=1/(RC)=1000 rad/s.",
-      "A ω=ωc, il modulo è 1/√2≈0,707 e la fase è −π/4.",
-      "Per ω→0, |H|→1 e la fase tende a 0; per ω→∞, il modulo tende a zero e la fase a −π/2."
+      "L’impedenza del condensatore è $ZC=\\frac{1}{j\\omega C}$, quella del resistore è R.",
+      "Poiché l’uscita è ai capi del condensatore, applica il partitore: $H=\\frac{ZC}{R+ZC}$.",
+      "Dividi numeratore e denominatore per ZC: $H=\\frac{1}{1+j\\omega RC}$.",
+      "La pulsazione di taglio è $\\omega_{c}=\\frac{1}{RC}=1000$ rad/s.",
+      "A $\\omega=\\omega_{c}$, il modulo è $\\frac{1}{\\sqrt{2}}\\approx 0{,}707$ e la fase è $-\\frac{\\pi}{4}$.",
+      "Per $\\omega\\to 0$, $|H|\\to 1$ e la fase tende a 0; per $\\omega\\to \\infty$, il modulo tende a zero e la fase a $-\\frac{\\pi}{2}$."
     ],
     "soluzione": "La fase è riferita a frequenze positive. La rete passa-basso attenua le componenti rapide; non attribuire la fase positiva della configurazione CR a questa uscita.",
-    "perche_funziona": "Il partitore di impedenza individua prima la funzione complessa; separando modulo e argomento si ottengono le curve e il punto di taglio senza confondere RC con 1/RC."
+    "perche_funziona": "Il partitore di impedenza individua prima la funzione complessa; separando modulo e argomento si ottengono le curve e il punto di taglio senza confondere RC con $\\frac{1}{RC}$."
   },
   "completion_problem": {
-    "titolo": "Calcola il punto di taglio per R=1 kΩ e C=1 μF",
-    "testo": "Ricava H(ωc), il suo modulo e la fase per la rete RC dell’esempio.",
+    "titolo": "Calcola il punto di taglio per $R=1 \\mathrm{k}\\Omega$ e $C=1 \\mu\\mathrm{F}$",
+    "testo": "Ricava $H(\\omega_{c})$, il suo modulo e la fase per la rete RC dell’esempio.",
     "passi_mancanti": [
-      "Usa ωc=1/(RC).",
-      "Sostituisci ωcRC=1 in H.",
+      "Usa $\\omega_{c}=\\frac{1}{RC}$.",
+      "Sostituisci $\\omega_{c}RC=1$ in H.",
       "Valuta modulo e argomento."
     ],
-    "soluzione": "RC=10⁻³ s, quindi ωc=1000 rad/s. H(ωc)=1/(1+j)=(1−j)/2; |H|=1/√2≈0,7071 e fase −π/4 rad."
+    "soluzione": "$RC=10^{-3}$ s, quindi $\\omega_{c}=1000$ rad/s. $H(\\omega_{c})=\\frac{1}{1+j}=\\frac{1-j}{2}$; $|H|=\\frac{1}{\\sqrt{2}}\\approx 0{,}7071$ e fase $-\\frac{\\pi}{4}$ rad."
   },
   "esercizio_autonomo": {
-    "titolo": "Rete RC con R=2 kΩ e C=0,5 μF",
-    "testo": "Calcola ωc, H(ωc), modulo e fase; indica anche i limiti del modulo agli estremi di frequenza.",
+    "titolo": "Rete RC con $R=2 \\mathrm{k}\\Omega$ e $C=0{,}5 \\mu\\mathrm{F}$",
+    "testo": "Calcola $\\omega_{c}$, $H(\\omega_{c})$, modulo e fase; indica anche i limiti del modulo agli estremi di frequenza.",
     "suggerimento": "Verifico che l’uscita sia sul condensatore.",
-    "soluzione_attesa": "RC=0,001 s e ωc=1000 rad/s. H(ωc)=1/(1+j)=(1−j)/2, |H|=1/√2≈0,7071 e fase −π/4. Il modulo tende a 1 per ω→0 e a 0 per ω→∞."
+    "soluzione_attesa": "RC=0,001 s e $\\omega_{c}=1000$ rad/s. $H(\\omega_{c})=\\frac{1}{1+j}=\\frac{1-j}{2}$, $|H|=\\frac{1}{\\sqrt{2}}\\approx 0{,}7071$ e fase $-\\frac{\\pi}{4}$. Il modulo tende a 1 per $\\omega\\to 0$ e a 0 per $\\omega\\to \\infty$."
   },
   "errori_trappole": [
     {
@@ -49,27 +49,27 @@
     },
     {
       "errore": "Assegnare fase positiva al passa-basso.",
-      "perche_sbagliato": "L’argomento di 1+jωRC entra con segno negativo."
+      "perche_sbagliato": "L’argomento di $1+j\\omega RC$ entra con segno negativo."
     }
   ],
   "richiamo_attivo": {
     "domande": [
       {
-        "domanda": "A ωc=1000 rad/s, quali modulo e fase ha la rete RC con uscita sul condensatore?",
-        "risposta": "H(ωc)=(1−j)/2: il modulo è 1/√2≈0,707 e la fase −π/4."
+        "domanda": "A $\\omega_{c}=1000$ rad/s, quali modulo e fase ha la rete RC con uscita sul condensatore?",
+        "risposta": "$H(\\omega_{c})=\\frac{1-j}{2}$: il modulo è $\\frac{1}{\\sqrt{2}}\\approx 0{,}707$ e la fase $-\\frac{\\pi}{4}$."
       },
       {
         "domanda": "Qual è il passaggio chiave?",
-        "risposta": "Poiché l’uscita è ai capi del condensatore, applica il partitore: H=ZC/(R+ZC)."
+        "risposta": "Poiché l’uscita è ai capi del condensatore, applica il partitore: $H=\\frac{ZC}{R+ZC}$."
       },
       {
-        "domanda": "Che cosa accade al modulo RC quando ω tende a zero e quando cresce senza limite?",
-        "risposta": "Il modulo tende a 1 per ω→0 e a 0 per ω→∞; la fase passa da 0 a −π/2."
+        "domanda": "Che cosa accade al modulo RC quando $\\omega$ tende a zero e quando cresce senza limite?",
+        "risposta": "Il modulo tende a 1 per $\\omega\\to 0$ e a 0 per $\\omega\\to \\infty$; la fase passa da 0 a $-\\frac{\\pi}{2}$."
       }
     ],
     "spiega_con_parole_tue": "Motiva il segno negativo della fase della rete RC e collega il polo reale al comportamento passa-basso."
   },
-  "riepilogo": "Identifica uscita sul C → usa ZC nel partitore → ottieni 1/(1+jωRC) → trova taglio e limiti.",
+  "riepilogo": "Identifica uscita sul C $\\to$ usa ZC nel partitore $\\to$ ottieni $\\frac{1}{1+j\\omega RC} \\to$ trova taglio e limiti.",
   "flashcard": [
     {
       "fronte": "Qual è il risultato centrale?",
@@ -77,13 +77,13 @@
     },
     {
       "fronte": "Come riconosci il taglio della rete passa-basso?",
-      "retro": "Con RC=0,001 s, ωc=1/(RC)=1000 rad/s; al taglio |H|=1/√2 e arg H=−π/4."
+      "retro": "Con RC=0,001 s, $\\omega_{c}=\\frac{1}{RC}=1000$ rad/s; al taglio $|H|=\\frac{1}{\\sqrt{2}}$ e $\\operatorname{arg} H=-\\frac{\\pi}{4}$."
     }
   ],
   "checklist": {
     "so_fare": [
-      "Costruisco il partitore con uscita ZC e riduco H a 1/(1+jωRC).",
-      "Calcolo ωc da RC e confronto il limite in continua con il limite alle alte frequenze."
+      "Costruisco il partitore con uscita ZC e riduco H a $\\frac{1}{1+j\\omega RC}$.",
+      "Calcolo $\\omega_{c}$ da RC e confronto il limite in continua con il limite alle alte frequenze."
     ],
     "so_dire": [
       "Spiego perché l’uscita sul condensatore attenua le componenti rapide e la fase è negativa."

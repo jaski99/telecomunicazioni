@@ -6,7 +6,7 @@
   ],
   "enunciato": "La conversione A/D campiona il segnale con $\\omega_s>2\\omega_m$, quantizza i campioni su $L$ livelli e codifica ciascun livello con $b=\\lceil\\log_2 L\\rceil$ bit. La sequenza delle parole costituisce il segnale numerico PCM.",
   "ipotesi": [
-    "Segnale limitato in banda a ωm e campionamento ideale con ωs > 2ωm; l’uguaglianza richiede condizioni ulteriori.",
+    "Segnale limitato in banda a $\\omega_{m}$ e campionamento ideale con $\\omega_{s} > 2\\omega_{m}$; l’uguaglianza richiede condizioni ulteriori.",
     "Il quantizzatore ha L livelli e il segnale resta nell’intervallo di ingresso senza sovraccarico."
   ],
   "notazione": [
@@ -37,8 +37,8 @@
   ],
   "varianti_notazione": [
     {
-      "canonica": "\\omega_s=2\\pi/T",
-      "variante": "f₀=1/T",
+      "canonica": "$\\omega_s=2\\pi/T$",
+      "variante": "$f_{0}=\\frac{1}{T}$",
       "fonte": "file3 pp. 7-11"
     }
   ],
@@ -864,10 +864,10 @@
     }
   ],
   "versione_compatta": [
-    "Campionare con ωs > 2ωm.",
+    "Campionare con $\\omega_{s} > 2\\omega_{m}$.",
     "Quantizzare i campioni su L livelli.",
-    "Codificare ogni livello con b = ceil(log₂ L) bit.",
-    "Senza overhead Rb = b/T."
+    "Codificare ogni livello con $b = \\lceil \\log_{2} L\\rceil$ bit.",
+    "Senza overhead $R_{b} = \\frac{b}{T}$."
   ],
   "a_buchi": {
     "testo": "La sequenza campionata vale ___1___. Il quantizzatore associa ___2___ livelli; servono almeno ___3___ bit perché ___4___.",

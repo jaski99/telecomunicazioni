@@ -21,7 +21,7 @@
       "Applica Little: $L=\\lambda W=2$ clienti.",
       "Per la sola coda, $W_q=2/3$ min e $L_q=4/3$."
     ],
-    "soluzione": "In media ci sono 2 clienti nel sistema e la permanenza media è 1 min; la sola attesa media è 2/3 min.",
+    "soluzione": "In media ci sono 2 clienti nel sistema e la permanenza media è 1 min; la sola attesa media è $\\frac{2}{3}$ min.",
     "perche_funziona": "La stabilità è verificata e il numero nel sistema include anche il cliente in servizio."
   },
   "completion_problem": {

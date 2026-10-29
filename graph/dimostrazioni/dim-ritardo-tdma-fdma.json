@@ -57,13 +57,13 @@
       "n": 3,
       "testo": "Per TDMA esprimi l’attesa della posizione m nel ciclo.",
       "formula": "\\omega_m=(m-1)\\frac{T}{M},\\qquad m=1,\\ldots,M",
-      "perche": "Tutti i pacchetti sono generati all’inizio del ciclo; prima della posizione m passano m−1 slot."
+      "perche": "Tutti i pacchetti sono generati all’inizio del ciclo; prima della posizione m passano $m-1$ slot."
     },
     {
       "n": 4,
       "testo": "Calcola la media uniforme delle M attese.",
       "formula": "\\omega_{TD}=\\frac1M\\sum_{m=1}^{M}(m-1)\\frac{T}{M}=\\frac{T}{2}\\left(1-\\frac1M\\right)",
-      "perche": "Le posizioni sono rappresentate una volta e la somma degli interi da 0 a M−1 vale $M(M-1)/2$."
+      "perche": "Le posizioni sono rappresentate una volta e la somma degli interi da 0 a $M-1$ vale $M(M-1)/2$."
     },
     {
       "n": 5,

@@ -7,13 +7,9 @@ import { compilaLatex } from '../js/core/math.js';
 
 const __dirname = join(fileURLToPath(import.meta.url), '..');
 
-function leggiJsonSeEsiste(rel) {
+function leggiJson(rel) {
   const percorso = join(__dirname, rel);
-  try {
-    return JSON.parse(readFileSync(percorso, 'utf8'));
-  } catch (_err) {
-    return null;
-  }
+  return JSON.parse(readFileSync(percorso, 'utf8'));
 }
 
 /** Raccoglie i corpi $...$ e $$...$$ camminando ricorsivamente un oggetto JSON. */
@@ -64,23 +60,24 @@ test('compilaLatex lancia un errore con throwOnError su comando inesistente', ()
   assert.throws(() => compilaLatex('\\comandoInesistente{'), /KaTeX parse error/);
 });
 
-test('compila ogni stringa LaTeX di web/graph.json e web/quiz.json con throwOnError: true', () => {
-  // I file in web/ sono generati da web/build.sh. Se non sono ancora stati
-  // generati (checkout pulito senza build), il test si affida alle stringhe
-  // pure sopra e non fallisce per file mancanti.
+test('compila ogni formula del grafo e del quiz generati con throwOnError: true', () => {
+  // web/build.sh è un prerequisito contrattuale: i file mancanti devono far fallire il test.
+  const oggetti = [
+    ['../graph.json', leggiJson('../graph.json')],
+    ['../quiz.json', leggiJson('../quiz.json')],
+  ];
   let totale = LATEX_PURO.length;
-  for (const rel of ['../graph.json', '../quiz.json']) {
-    const oggetto = leggiJsonSeEsiste(rel);
-    if (!oggetto) continue;
+  for (const [rel, oggetto] of oggetti) {
     const raccolte = [];
     raccogliLatex(oggetto, raccolte);
     for (const latex of raccolte) {
       totale++;
+      assert.doesNotMatch(latex, /___\d+___/, `segnaposto dentro formula in ${rel}: ${latex}`);
       assert.doesNotThrow(
         () => compilaLatex(latex),
         `LaTeX non compilabile in ${rel}: ${latex}`
       );
     }
   }
-  assert.ok(totale > 0, 'nessuna stringa LaTeX da compilare');
+  assert.ok(totale > LATEX_PURO.length, 'nessuna formula del grafo o del quiz da compilare');
 });

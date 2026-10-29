@@ -9,7 +9,7 @@
   "enunciato": "La regola di Carson stima la banda occupata di una modulazione angolare mediante $B_\\omega\\approx2(\\Delta\\omega_{\\max}+\\omega_m)$: il doppio della somma della massima deviazione di pulsazione e della massima pulsazione modulante.",
   "ipotesi": [
     "Stima approssimata di banda occupata, non supporto spettrale esatto.",
-    "Per la motivazione si considera una modulante sinusoidale di pulsazione positiva e indice di modulazione β."
+    "Per la motivazione si considera una modulante sinusoidale di pulsazione positiva e indice di modulazione $\\beta$."
   ],
   "notazione": [
     {
@@ -37,7 +37,7 @@
       "n": 2,
       "testo": "Calcolare la massima deviazione di pulsazione.",
       "formula": "\\Delta\\omega_{\\max}=\\beta\\omega_m",
-      "perche": "La derivata della fase eccedente è βωm coseno, il cui valore assoluto massimo è βωm."
+      "perche": "La derivata della fase eccedente è $\\beta\\omega_{m}$ coseno, il cui valore assoluto massimo è $\\beta\\omega_{m}$."
     },
     {
       "n": 3,
@@ -127,12 +127,12 @@
     }
   ],
   "versione_compatta": [
-    "Per un tono: β = Δωmax/ωm.",
-    "Ordine significativo stimato: β + 1.",
-    "Bω ≈ 2(Δωmax + ωm)."
+    "Per un tono: $\\beta = \\frac{\\Delta\\omega_{\\max}}{\\omega_{m}}$.",
+    "Ordine significativo stimato: $\\beta + 1$.",
+    "$B_{\\omega} \\approx  2(\\Delta\\omega_{\\max} + \\omega_{m})$."
   ],
   "a_buchi": {
-    "testo": "La stima conta ___1___ lati della portante. Per un tono β = ___2___; l’ordine massimo è approssimato con β + 1 perché si usa una ___3___ sulle ampiezze laterali.",
+    "testo": "La stima conta ___1___ lati della portante. Per un tono $\\beta =$ ___2___; l’ordine massimo è approssimato con $\\beta + 1$ perché si usa una ___3___ sulle ampiezze laterali.",
     "soluzioni": {
       "1": [
         "due",
