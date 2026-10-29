@@ -1,0 +1,910 @@
+{
+  "id": "dim-impulso-dirac-trasformata",
+  "titolo": "Funzione impulsiva e sua trasformata di Fourier (T2)",
+  "domande_esame": [
+    "T2"
+  ],
+  "enunciato": "La funzione impulsiva (operatore di Dirac) $\\delta(t)$ è definita, in forma simbolica, dalla proprietà di selezione $x(t) = \\int_{-\\infty}^{+\\infty} x(\\tau) \\delta(t-\\tau)\\, d\\tau = x(t) * \\delta(t)$, ottenuta come limite per $\\Delta \\to 0$ degli impulsi rettangolari $D(t,\\Delta)$ di intensità (area) unitaria, con l'avvertenza di eseguire prima l'integrazione e poi il limite. La sua trasformata di Fourier, con la convenzione adottata, è identicamente uguale a uno: $\\int \\delta(t) e^{-j\\omega t}\\, dt = 1$ per ogni $\\omega$. Punteggio della prova T2: NON TROVATO.",
+  "ipotesi": [
+    "La funzione $x(t)$ su cui si prova la selezione è continua nel punto considerato ($t = a$ negli sviluppi).",
+    "L'impulso ausiliario $D(t,\\Delta)$ vale $1/\\Delta$ fra $0$ e $\\Delta$ e zero altrove: ha intensità (area) unitaria per ogni $\\Delta$.",
+    "Prima si integra rispetto al tempo e solo dopo si fa tendere $\\Delta$ a zero: scambiare l'ordine darebbe zero e non è lecito.",
+    "La trasformata di Fourier è quella con nucleo $e^{-j\\omega t}$ e fattore $1/(2\\pi)$ solo nell'inversa."
+  ],
+  "notazione": [
+    {
+      "simbolo": "D(t,\\Delta)",
+      "significato": "impulso rettangolare ausiliario: vale $1/\\Delta$ per $0 \\le t \\le \\Delta$, zero altrove; area unitaria"
+    },
+    {
+      "simbolo": "\\delta(t)",
+      "significato": "funzione impulsiva o operatore di Dirac, definita dalla proprietà di selezione, non una funzione ordinaria"
+    },
+    {
+      "simbolo": "x(t) * \\delta(t)",
+      "significato": "convoluzione fra $x(t)$ e $\\delta(t)$: restituisce $x(t)$ stessa"
+    },
+    {
+      "simbolo": "F[\\,\\cdot\\,]",
+      "significato": "trasformazione di Fourier con la convenzione del sito"
+    }
+  ],
+  "varianti_notazione": [
+    {
+      "canonica": "F per la trasformata",
+      "variante": "simbolo calligrafico di trasformata (F in corsivo elaborato)",
+      "fonte": "FILE3 pp. 3-4; FILE1 pp. 11-12"
+    },
+    {
+      "canonica": "ω per la pulsazione",
+      "variante": "m per la pulsazione, per esempio e alla jmt",
+      "fonte": "FILE3 p. 3"
+    }
+  ],
+  "idea": "Un rettangolo di area uno sempre più stretto seleziona il valore della funzione nel suo istante; la sua trasformata tende a uno, quindi quella del limite simbolico è uno.",
+  "passi": [
+    {
+      "n": 1,
+      "testo": "Si introduce l'impulso rettangolare $D(t,\\Delta)$ di intensità unitaria, disegnato in figura, e una funzione $x(t)$ continua in $t = a$.",
+      "formula": "D(t,\\Delta) = \\begin{cases} \\dfrac{1}{\\Delta} & 0 \\le t \\le \\Delta \\\\ 0 & \\text{altrove} \\end{cases}",
+      "perche": "È una funzione ordinaria e integrabile: permette di costruire il limite in modo controllato invece di postulare un oggetto infinito.",
+      "figura": "impulso-ausiliario-d"
+    },
+    {
+      "n": 2,
+      "testo": "Si calcola l'integrale di $x$ pesata con l'impulso traslato e ribaltato: l'impulso seleziona un intorno destro di $a$ largo $\\Delta$, e l'integrale è la media di $x$ su quell'intervallo.",
+      "formula": "\\lim_{\\Delta \\to 0} \\int_{-\\infty}^{+\\infty} x(t) D(a-t,\\Delta)\\, dt = \\lim_{\\Delta \\to 0} \\int_{-\\infty}^{+\\infty} x(a-t) D(t,\\Delta)\\, dt = \\lim_{\\Delta \\to 0} \\frac{1}{\\Delta} \\int_{0}^{\\Delta} x(a-t)\\, dt",
+      "perche": "Nel primo passaggio si cambia variabile; nel secondo si usa che $D(t,\\Delta)$ è diverso da zero solo fra $0$ e $\\Delta$, dove vale $1/\\Delta$."
+    },
+    {
+      "n": 3,
+      "testo": "Facendo tendere $\\Delta$ a zero la media tende al valore puntuale $x(a)$: è la proprietà di selezione.",
+      "formula": "\\lim_{\\Delta \\to 0} \\frac{1}{\\Delta} \\int_{0}^{\\Delta} x(a-t)\\, dt = x(a)",
+      "perche": "Vale perché $x$ è continua in $a$: su un intervallo sempre più piccolo i suoi valori si avvicinano a $x(a)$."
+    },
+    {
+      "n": 4,
+      "testo": "Chiamando $\\tau$ la variabile di integrazione e ponendo $a = t$ si ottiene la coppia di relazioni che definisce, in forma simbolica, la funzione impulsiva; il significato resta quello del limite dopo l'integrazione, mai prima.",
+      "formula": "x(t) = \\lim_{\\Delta \\to 0} \\int_{-\\infty}^{+\\infty} x(\\tau) D(t-\\tau,\\Delta)\\, d\\tau \\;\\Longleftrightarrow\\; x(t) = \\int_{-\\infty}^{+\\infty} x(\\tau) \\delta(t-\\tau)\\, d\\tau = x(t) * \\delta(t)",
+      "perche": "È la stessa selezione del passo 3 applicata al generico istante $t$; file1 p. 11 avverte che scambiare limite e integrazione darebbe zero."
+    },
+    {
+      "n": 5,
+      "testo": "Interpretazione: per $\\Delta$ piccolo il segnale è approssimato da una somma di impulsi rettangolari di ampiezza $x(n\\Delta)$; formalmente $x(t)$ è una «somma» di funzioni impulsive applicate in $\\tau$ con intensità infinitesima $x(\\tau)\\, d\\tau$.",
+      "formula": "x(t) \\cong \\sum_{n=-\\infty}^{+\\infty} x(n\\Delta) D(t-n\\Delta,\\Delta)\\, \\Delta",
+      "perche": "Si discretizza la variabile di integrazione $\\tau$ a passi $\\Delta$: più $\\Delta$ è piccolo, più l'approssimazione è precisa (figura in file1 p. 11 e file3 p. 4)."
+    },
+    {
+      "n": 6,
+      "testo": "Per calcolare la trasformata si applica la forma simbolica alla funzione $x(t) = e^{j\\omega t}$ nell'istante $t = 0$.",
+      "formula": "\\int_{-\\infty}^{+\\infty} e^{j\\omega\\tau} \\delta(-\\tau)\\, d\\tau = e^{j\\omega \\cdot 0} = 1",
+      "perche": "L'esponenziale è continuo ovunque, quindi la selezione del passo 4 è applicabile; il valore selezionato è quello in zero."
+    },
+    {
+      "n": 7,
+      "testo": "Con la sostituzione $\\tau = -t$ l'integrale diventa esattamente la definizione di trasformata di Fourier di $\\delta(t)$, che vale uno identicamente.",
+      "formula": "F[\\delta(t)] = \\int_{-\\infty}^{+\\infty} \\delta(t) e^{-j\\omega t}\\, dt = 1",
+      "perche": "Il cambio di variabile è una semplice riflessione dell'asse; la definizione di trasformata è quella del nodo sulla trasformata di Fourier."
+    },
+    {
+      "n": 8,
+      "testo": "Conferma indipendente: l'impulso $D(t,\\Delta)$ è centrato in $\\Delta/2$, quindi dalla trasformata dell'impulso rettangolare centrato si ricava la sua, il cui limite per $\\Delta \\to 0$ vale uno.",
+      "formula": "F[D(t,\\Delta)] = \\frac{\\sin \\frac{\\omega\\Delta}{2}}{\\frac{\\omega\\Delta}{2}}\\, e^{-j\\frac{\\omega\\Delta}{2}} \\;\\xrightarrow{\\;\\Delta \\to 0\\;}\\; 1",
+      "perche": "Un impulso rettangolare di ampiezza $A$ e durata $\\tau$ centrato ha trasformata $A\\tau \\sin(\\omega\\tau/2)/(\\omega\\tau/2)$; qui $A\\tau = 1$, il ritardo $\\Delta/2$ dà il fattore di fase e il limite notevole del seno dà uno.",
+      "figura": "trasformata-impulso-ausiliario"
+    }
+  ],
+  "formula_finale": "x(t) = \\int_{-\\infty}^{+\\infty} x(\\tau) \\delta(t-\\tau)\\, d\\tau = x(t) * \\delta(t), \\qquad F[\\delta(t)] = 1 \\;\\; \\forall \\omega",
+  "figure": [
+    {
+      "id": "impulso-ausiliario-d",
+      "tipo": "grafico",
+      "titolo": "Impulso ausiliario di intensità unitaria",
+      "descrizione": "Impulso rettangolare che vale uno diviso delta fra zero e delta e zero altrove; nell'esempio numerico delta vale zero virgola cinque, l'altezza vale due e l'area vale uno. Facendo tendere delta a zero l'impulso si stringe e si alza conservando area unitaria.",
+      "asse_x": {
+        "etichetta": "t (s)",
+        "min": -1,
+        "max": 1.5,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 0.5,
+            "etichetta": "Δ"
+          },
+          {
+            "valore": 1,
+            "etichetta": "1"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "D(t, Δ) (1/s)",
+        "min": 0,
+        "max": 2.4,
+        "tacche": [
+          {
+            "valore": 2,
+            "etichetta": "1/Δ"
+          }
+        ]
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              0.5,
+              2
+            ],
+            [
+              0.5,
+              0
+            ],
+            [
+              1.5,
+              0
+            ]
+          ],
+          "etichetta": "D(t, Δ) con Δ = 0,5 s"
+        }
+      ]
+    },
+    {
+      "id": "trasformata-impulso-ausiliario",
+      "tipo": "grafico",
+      "titolo": "Modulo della trasformata dell'impulso ausiliario",
+      "descrizione": "Modulo della trasformata di Fourier dell'impulso ausiliario con delta uguale a zero virgola cinque: vale uno in zero e scende come un seno diviso il suo argomento. Al tendere di delta a zero la curva si allarga e tende alla costante uno, tratteggiata: è la trasformata della funzione impulsiva.",
+      "asse_x": {
+        "etichetta": "ω (rad/s)",
+        "min": -15,
+        "max": 15,
+        "tacche": [
+          {
+            "valore": -12.5664,
+            "etichetta": "−2π/Δ"
+          },
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 12.5664,
+            "etichetta": "2π/Δ"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "|F[D(t, Δ)]|",
+        "min": 0,
+        "max": 1.15
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -15.0,
+              0.1524
+            ],
+            [
+              -14.8,
+              0.1432
+            ],
+            [
+              -14.6,
+              0.1334
+            ],
+            [
+              -14.4,
+              0.1229
+            ],
+            [
+              -14.2,
+              0.1119
+            ],
+            [
+              -14.0,
+              0.1002
+            ],
+            [
+              -13.8,
+              0.088
+            ],
+            [
+              -13.6,
+              0.0752
+            ],
+            [
+              -13.4,
+              0.0618
+            ],
+            [
+              -13.2,
+              0.0478
+            ],
+            [
+              -13.0,
+              0.0333
+            ],
+            [
+              -12.8,
+              0.0182
+            ],
+            [
+              -12.6,
+              0.0027
+            ],
+            [
+              -12.4,
+              0.0134
+            ],
+            [
+              -12.2,
+              0.03
+            ],
+            [
+              -12.0,
+              0.047
+            ],
+            [
+              -11.8,
+              0.0646
+            ],
+            [
+              -11.6,
+              0.0825
+            ],
+            [
+              -11.4,
+              0.1009
+            ],
+            [
+              -11.2,
+              0.1196
+            ],
+            [
+              -11.0,
+              0.1388
+            ],
+            [
+              -10.8,
+              0.1583
+            ],
+            [
+              -10.6,
+              0.1781
+            ],
+            [
+              -10.4,
+              0.1983
+            ],
+            [
+              -10.2,
+              0.2187
+            ],
+            [
+              -10.0,
+              0.2394
+            ],
+            [
+              -9.8,
+              0.2603
+            ],
+            [
+              -9.6,
+              0.2814
+            ],
+            [
+              -9.4,
+              0.3028
+            ],
+            [
+              -9.2,
+              0.3242
+            ],
+            [
+              -9.0,
+              0.3458
+            ],
+            [
+              -8.8,
+              0.3675
+            ],
+            [
+              -8.6,
+              0.3893
+            ],
+            [
+              -8.4,
+              0.4111
+            ],
+            [
+              -8.2,
+              0.4329
+            ],
+            [
+              -8.0,
+              0.4546
+            ],
+            [
+              -7.8,
+              0.4764
+            ],
+            [
+              -7.6,
+              0.4981
+            ],
+            [
+              -7.4,
+              0.5196
+            ],
+            [
+              -7.2,
+              0.541
+            ],
+            [
+              -7.0,
+              0.5623
+            ],
+            [
+              -6.8,
+              0.5833
+            ],
+            [
+              -6.6,
+              0.6042
+            ],
+            [
+              -6.4,
+              0.6247
+            ],
+            [
+              -6.2,
+              0.645
+            ],
+            [
+              -6.0,
+              0.665
+            ],
+            [
+              -5.8,
+              0.6846
+            ],
+            [
+              -5.6,
+              0.7039
+            ],
+            [
+              -5.4,
+              0.7228
+            ],
+            [
+              -5.2,
+              0.7412
+            ],
+            [
+              -5.0,
+              0.7592
+            ],
+            [
+              -4.8,
+              0.7767
+            ],
+            [
+              -4.6,
+              0.7937
+            ],
+            [
+              -4.4,
+              0.8102
+            ],
+            [
+              -4.2,
+              0.8261
+            ],
+            [
+              -4.0,
+              0.8415
+            ],
+            [
+              -3.8,
+              0.8562
+            ],
+            [
+              -3.6,
+              0.8704
+            ],
+            [
+              -3.4,
+              0.8839
+            ],
+            [
+              -3.2,
+              0.8967
+            ],
+            [
+              -3.0,
+              0.9089
+            ],
+            [
+              -2.8,
+              0.9203
+            ],
+            [
+              -2.6,
+              0.9311
+            ],
+            [
+              -2.4,
+              0.9411
+            ],
+            [
+              -2.2,
+              0.9503
+            ],
+            [
+              -2.0,
+              0.9589
+            ],
+            [
+              -1.8,
+              0.9666
+            ],
+            [
+              -1.6,
+              0.9735
+            ],
+            [
+              -1.4,
+              0.9797
+            ],
+            [
+              -1.2,
+              0.9851
+            ],
+            [
+              -1.0,
+              0.9896
+            ],
+            [
+              -0.8,
+              0.9933
+            ],
+            [
+              -0.6,
+              0.9963
+            ],
+            [
+              -0.4,
+              0.9983
+            ],
+            [
+              -0.2,
+              0.9996
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.2,
+              0.9996
+            ],
+            [
+              0.4,
+              0.9983
+            ],
+            [
+              0.6,
+              0.9963
+            ],
+            [
+              0.8,
+              0.9933
+            ],
+            [
+              1.0,
+              0.9896
+            ],
+            [
+              1.2,
+              0.9851
+            ],
+            [
+              1.4,
+              0.9797
+            ],
+            [
+              1.6,
+              0.9735
+            ],
+            [
+              1.8,
+              0.9666
+            ],
+            [
+              2.0,
+              0.9589
+            ],
+            [
+              2.2,
+              0.9503
+            ],
+            [
+              2.4,
+              0.9411
+            ],
+            [
+              2.6,
+              0.9311
+            ],
+            [
+              2.8,
+              0.9203
+            ],
+            [
+              3.0,
+              0.9089
+            ],
+            [
+              3.2,
+              0.8967
+            ],
+            [
+              3.4,
+              0.8839
+            ],
+            [
+              3.6,
+              0.8704
+            ],
+            [
+              3.8,
+              0.8562
+            ],
+            [
+              4.0,
+              0.8415
+            ],
+            [
+              4.2,
+              0.8261
+            ],
+            [
+              4.4,
+              0.8102
+            ],
+            [
+              4.6,
+              0.7937
+            ],
+            [
+              4.8,
+              0.7767
+            ],
+            [
+              5.0,
+              0.7592
+            ],
+            [
+              5.2,
+              0.7412
+            ],
+            [
+              5.4,
+              0.7228
+            ],
+            [
+              5.6,
+              0.7039
+            ],
+            [
+              5.8,
+              0.6846
+            ],
+            [
+              6.0,
+              0.665
+            ],
+            [
+              6.2,
+              0.645
+            ],
+            [
+              6.4,
+              0.6247
+            ],
+            [
+              6.6,
+              0.6042
+            ],
+            [
+              6.8,
+              0.5833
+            ],
+            [
+              7.0,
+              0.5623
+            ],
+            [
+              7.2,
+              0.541
+            ],
+            [
+              7.4,
+              0.5196
+            ],
+            [
+              7.6,
+              0.4981
+            ],
+            [
+              7.8,
+              0.4764
+            ],
+            [
+              8.0,
+              0.4546
+            ],
+            [
+              8.2,
+              0.4329
+            ],
+            [
+              8.4,
+              0.4111
+            ],
+            [
+              8.6,
+              0.3893
+            ],
+            [
+              8.8,
+              0.3675
+            ],
+            [
+              9.0,
+              0.3458
+            ],
+            [
+              9.2,
+              0.3242
+            ],
+            [
+              9.4,
+              0.3028
+            ],
+            [
+              9.6,
+              0.2814
+            ],
+            [
+              9.8,
+              0.2603
+            ],
+            [
+              10.0,
+              0.2394
+            ],
+            [
+              10.2,
+              0.2187
+            ],
+            [
+              10.4,
+              0.1983
+            ],
+            [
+              10.6,
+              0.1781
+            ],
+            [
+              10.8,
+              0.1583
+            ],
+            [
+              11.0,
+              0.1388
+            ],
+            [
+              11.2,
+              0.1196
+            ],
+            [
+              11.4,
+              0.1009
+            ],
+            [
+              11.6,
+              0.0825
+            ],
+            [
+              11.8,
+              0.0646
+            ],
+            [
+              12.0,
+              0.047
+            ],
+            [
+              12.2,
+              0.03
+            ],
+            [
+              12.4,
+              0.0134
+            ],
+            [
+              12.6,
+              0.0027
+            ],
+            [
+              12.8,
+              0.0182
+            ],
+            [
+              13.0,
+              0.0333
+            ],
+            [
+              13.2,
+              0.0478
+            ],
+            [
+              13.4,
+              0.0618
+            ],
+            [
+              13.6,
+              0.0752
+            ],
+            [
+              13.8,
+              0.088
+            ],
+            [
+              14.0,
+              0.1002
+            ],
+            [
+              14.2,
+              0.1119
+            ],
+            [
+              14.4,
+              0.1229
+            ],
+            [
+              14.6,
+              0.1334
+            ],
+            [
+              14.8,
+              0.1432
+            ],
+            [
+              15.0,
+              0.1524
+            ]
+          ],
+          "etichetta": "|F[D(t, Δ)]|, Δ = 0,5 s"
+        },
+        {
+          "stile": "tratteggio",
+          "punti": [
+            [
+              -15,
+              1
+            ],
+            [
+              15,
+              1
+            ]
+          ],
+          "etichetta": "limite per Δ → 0: 1"
+        }
+      ]
+    }
+  ],
+  "a_voce": "Non definisco la delta come una funzione che vale infinito: parto da un rettangolo vero, alto uno diviso delta e largo delta, quindi di area uno. Se peso una funzione continua con questo rettangolo traslato e integro, ottengo la media della funzione su un intervallino largo delta; quando delta tende a zero la media tende al valore nel punto. Questa è la selezione, e scrivendola per il generico istante t ottengo che x di t è l'integrale di x di tau per delta di t meno tau: in forma simbolica la convoluzione con la delta restituisce la funzione stessa. Attenzione all'ordine: prima integro e poi faccio il limite, altrimenti otterrei zero. Per la trasformata applico la selezione all'esponenziale in t uguale a zero e, con il cambio tau uguale a meno t, trovo che la trasformata della delta è uno per ogni pulsazione: tutte le pulsazioni sono presenti con la stessa ampiezza. Lo confermo con il rettangolo: la sua trasformata è un seno diviso il suo argomento, con una fase da ritardo, e al limite tende a uno.",
+  "errori_frequenti": [
+    {
+      "errore": "Definire $\\delta(t)$ come il limite puntuale di $D(t,\\Delta)$ e integrarlo come una funzione ordinaria uguale a zero quasi ovunque.",
+      "perche_sbagliato": "Il limite puntuale è zero per $t \\ne 0$ e non definito in zero: integrarlo darebbe zero, in contraddizione con la selezione; file1 lo segnala esplicitamente.",
+      "correzione": "Prima si integra con $D(t,\\Delta)$ e dopo si fa il limite; la forma con $\\delta$ è solo simbolica e riassume quel procedimento."
+    },
+    {
+      "errore": "Dimenticare il fattore di fase $e^{-j\\omega\\Delta/2}$ nella trasformata di $D(t,\\Delta)$.",
+      "perche_sbagliato": "L'impulso ausiliario non è centrato in zero ma in $\\Delta/2$: la trasformata dell'impulso centrato va corretta con la proprietà del ritardo.",
+      "correzione": "$F[D(t,\\Delta)] = \\frac{\\sin(\\omega\\Delta/2)}{\\omega\\Delta/2} e^{-j\\omega\\Delta/2}$; il fattore non cambia il limite, che resta uno, ma va scritto."
+    },
+    {
+      "errore": "Confondere intensità e ampiezza dell'impulso ausiliario, dicendo che «vale uno».",
+      "perche_sbagliato": "Se l'ampiezza restasse uno, l'area tenderebbe a zero con $\\Delta$ e la selezione darebbe zero invece del valore della funzione.",
+      "correzione": "Ciò che resta uguale a uno al variare di $\\Delta$ è l'area (intensità); l'ampiezza è $1/\\Delta$."
+    }
+  ],
+  "versione_compatta": [
+    "Impulso ausiliario: $D(t,\\Delta) = 1/\\Delta$ fra $0$ e $\\Delta$, area uno.",
+    "Selezione: $\\lim_{\\Delta \\to 0} \\frac{1}{\\Delta}\\int_0^\\Delta x(a-t)\\, dt = x(a)$ per $x$ continua.",
+    "Definizione simbolica: $x(t) = \\int x(\\tau)\\delta(t-\\tau)\\, d\\tau = x(t) * \\delta(t)$; prima integrare, poi il limite.",
+    "Con $x(t) = e^{j\\omega t}$ in $t=0$ e $\\tau = -t$: $\\int \\delta(t) e^{-j\\omega t} dt = 1$.",
+    "Conferma: $F[D(t,\\Delta)] = \\frac{\\sin(\\omega\\Delta/2)}{\\omega\\Delta/2} e^{-j\\omega\\Delta/2} \\to 1$."
+  ],
+  "a_buchi": {
+    "testo": "L'impulso ausiliario $D(t,\\Delta)$ ha area ___1___ perché vale $1/\\Delta$ su un intervallo largo $\\Delta$. La selezione funziona perché la media di $x$ su quell'intervallo tende a $x(a)$ quando $\\Delta \\to 0$, purché $x$ sia ___2___ in $a$. L'ordine corretto è: prima ___3___, poi il limite. Applicando la selezione a $e^{j\\omega t}$ in $t=0$ si ottiene che la trasformata di $\\delta(t)$ vale ___4___ per ogni $\\omega$.",
+    "soluzioni": {
+      "1": [
+        "uno",
+        "1",
+        "unitaria"
+      ],
+      "2": [
+        "continua"
+      ],
+      "3": [
+        "l'integrazione",
+        "integrare"
+      ],
+      "4": [
+        "uno",
+        "1"
+      ]
+    }
+  },
+  "richiamo_attivo": [
+    {
+      "domanda": "Perché l'impulso ausiliario deve avere area costante mentre si stringe?",
+      "risposta": "Perché l'integrale selettivo è una media pesata: solo con area uno la media tende al valore puntuale e non a zero o a un multiplo."
+    },
+    {
+      "domanda": "Che cosa darebbe lo scambio fra limite e integrazione e perché è vietato?",
+      "risposta": "Darebbe zero, perché il limite puntuale dell'impulso è zero per $t \\ne 0$; è vietato perché il significato della forma simbolica è proprio il limite preso dopo l'integrazione (file1 p. 11)."
+    },
+    {
+      "domanda": "Da quale scelta di $x(t)$ si ricava la trasformata della delta?",
+      "risposta": "Da $x(t) = e^{j\\omega t}$ valutata in $t = 0$: la selezione dà uno e il cambio $\\tau = -t$ mostra che quell'integrale è la trasformata di $\\delta$."
+    },
+    {
+      "domanda": "Che significato fisico ha $F[\\delta(t)] = 1$?",
+      "risposta": "Un impulso ideale contiene tutte le pulsazioni con la stessa ampiezza unitaria: per questo è la sollecitazione ideale per caratterizzare una rete a tutte le frequenze in una volta."
+    }
+  ],
+  "collegamenti": [
+    "dim-risposta-impulsiva-h",
+    "trasformata-fourier"
+  ],
+  "fonti": [
+    {
+      "chiave": "FILE3",
+      "rif": "file3 pp. 3-4"
+    },
+    {
+      "chiave": "FILE1",
+      "rif": "file1 pp. 11-12 (p. 2.56, rif. dello studente)"
+    }
+  ],
+  "verifica": {
+    "stato": "verificata_file1_file3",
+    "data": "2026-10-29",
+    "note": "Confronto pagina per pagina sulle immagini renderizzate di file1 e file3 (appunti di studenti, non il libro); il testo di Calandrino e Immovilli non è stato consultato direttamente e la sua edizione è NON TROVATO, quindi non si dichiara identità con il testo del docente. L'avvertenza sullo scambio fra limite e integrazione è esplicita solo in file1 p. 11; file3 contiene gli stessi passaggi in forma più breve.",
+    "punti_aperti": [
+      "Confronto con il libro di Calandrino e Immovilli non ancora fatto: edizione e pagine effettive NON TROVATO; i riferimenti del tipo p. x.y sono quelli riportati dallo studente in file1 (IPOTESI: capitolo.pagina)."
+    ]
+  }
+}

@@ -1,0 +1,501 @@
+{
+  "id": "sistemi-lineari-funzione-trasferimento",
+  "perche_ti_serve": "Prerequisito diretto di T4 e base degli esercizi E5-E6 sulle reti: la relazione $Y = H X$ e la lettura di ampiezza e fase sono usate in ogni dimostrazione dell'area 2 e del nodo gaussiani.",
+  "scenario": "Il collegamento telefonico numerico contiene equalizzatori e filtri: prima di inviare la voce vuoi sapere se la rete lascia passare la banda vocale senza cambiare né i livelli delle componenti né i loro ritardi relativi. È esattamente il controllo di non distorsione su $H(\\omega)$.",
+  "definizione_esame": {
+    "definizione": "Per una rete lineare permanente, $H(\\omega) = Y(\\omega)/X(\\omega)$, rapporto fra le trasformate di uscita e ingresso; si scompone in spettro di ampiezza $|H(\\omega)|$ e spettro di fase, con la stessa convenzione di segno della fase degli spettri dei segnali.",
+    "scopo": "Prevedere l'uscita nel dominio delle pulsazioni come prodotto $Y(\\omega) = H(\\omega) X(\\omega)$ e giudicare la distorsione guardando solo due grafici.",
+    "esempio": "Rete RC serie con uscita sul condensatore: $H(\\omega) = \\frac{1}{1 + j\\omega RC}$, $|H| = 1/\\sqrt{1 + (\\omega RC)^2}$, fase che ruota da $0$ verso $-\\pi/2$ (sviluppo completo negli esercizi E5-E6, file1 pp. 13-14)."
+  },
+  "spiegazione": "### Perché il rapporto è la rete\nPer una rete lineare e permanente, un esponenziale complesso in ingresso esce uguale a sé stesso moltiplicato per un numero complesso che dipende solo dalla pulsazione: quel numero è $H(\\omega)$. Per linearità lo stesso vale componente per componente di un segnale qualsiasi, da cui $$Y(\\omega) = H(\\omega) X(\\omega).$$ Il modulo $|H(\\omega)|$ dice quanto ogni componente è amplificata o attenuata; l'argomento dice quanto è ritardata in fase. In T4 dimostrerai che $H(\\omega)$ non è un oggetto nuovo: è la trasformata della risposta impulsiva.\n\n### Non distorsione: le due condizioni\nSi dice che la rete **non distorce** se l'uscita è una copia dell'ingresso al più scalata e ritardata di un tempo $t_0$ uguale per tutte le componenti: $y(t) = K x(t - t_0)$. In frequenza questo significa: **ampiezza costante** sulla banda del segnale, $|H(\\omega)| = K$ (altrimenti alcune componenti pesano più di altre: distorsione di ampiezza), e **fase lineare** in $\\omega$, cioè ritardo di gruppo costante (altrimenti le componenti arrivano con ritardi diversi e la forma d'onda si sforma anche a parità di ampiezze: distorsione di fase). Le due condizioni si controllano separatamente sui due spettri, ed è il modo in cui gli esercizi sulle reti RC e CR chiedono di commentare i grafici.\n\n### Leggere una rete del primo ordine\nPer la rete RC passa-basso il partitore in frequenza dà subito $H(\\omega) = 1/(1 + j\\omega RC)$: in continua vale $1$, alla pulsazione $\\omega = 1/(RC)$ il modulo vale $1/\\sqrt{2}$ e la fase è a metà della sua escursione verso $-\\pi/2$. La rete CR è il complementare passa-alto, $H(\\omega) = j\\omega RC/(1 + j\\omega RC)$. Non sono reti non distorcenti su banda larga: attenuano e sfasano in modo dipendente da $\\omega$, ed è proprio questo che le rende filtri utili. Tieni a mente il metodo, non solo i risultati: impedenze in $j\\omega$, partitore, poi modulo e fase.",
+  "analogia": {
+    "testo": "$H(\\omega)$ è il carattere di un interprete che ripete frasi in molte tonalità: per ogni tonalità sai quanto alza o abbassa la voce (modulo) e con quanto ritardo ripete (fase); la fedeltà richiede volume uniforme e ritardo uguale per tutte.",
+    "limite": "L'analogia non cattura che la fase deve crescere linearmente con $\\omega$: un ritardo costante in secondi corrisponde a fasi diverse per componenti diverse."
+  },
+  "worked_example": {
+    "titolo": "Lettura numerica di una rete RC",
+    "problema": "Per una rete RC con $RC = 1\\ \\mathrm{ms}$ valuta $|H|$ e la fase (come angolo di $H$) a $\\omega = 1000\\ \\mathrm{rad/s}$ e a $\\omega = 10000\\ \\mathrm{rad/s}$.",
+    "passi": [
+      "Il prodotto adimensionale è $\\omega RC$: vale $1$ alla prima pulsazione e $10$ alla seconda.",
+      "Moduli: $1/\\sqrt{1+1} = 0{,}707$ e $1/\\sqrt{101} \\approx 0{,}0995$.",
+      "Angoli di $H$: $-\\arctan(1) = -45^\\circ$ e $-\\arctan(10) \\approx -84{,}3^\\circ$."
+    ],
+    "soluzione": "Alla pulsazione di taglio la componente passa al 70,7% con $45^\\circ$ di sfasamento; una decade sopra passa circa al 10%: la rete filtra, non trasmette fedelmente.",
+    "perche_funziona": "Funziona perché tutta la risposta è governata dal solo prodotto $\\omega RC$: fissato quello, modulo e fase sono universali per ogni rete del primo ordine passa-basso."
+  },
+  "completion_problem": {
+    "titolo": "Rete non distorcente?",
+    "testo": "Una rete ha $|H(\\omega)| = 2$ costante fra $0$ e $\\omega_m$ e angolo di $H$ uguale a $-\\omega \\cdot 0{,}5\\ \\mathrm{ms}$ nella stessa banda. L'uscita per un segnale in banda è $y(t) = $ ____ e la rete è ____ (distorcente o no, e perché).",
+    "passi_mancanti": [
+      "Tradurre ampiezza costante e fase lineare in un'operazione nel tempo",
+      "Confrontare con le due condizioni di non distorsione"
+    ],
+    "soluzione": "$y(t) = 2\\, x(t - 0{,}5\\ \\mathrm{ms})$: ampiezza costante e fase lineare significano solo guadagno e ritardo uguale per tutte le componenti, quindi la rete non distorce (in quella banda). Fuori banda il giudizio non è dato."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Distorsione di sola fase",
+    "testo": "Una seconda rete ha $|H(\\omega)| = 1$ ovunque ma ritardo di gruppo che raddoppia da $\\omega$ bassa a $\\omega$ alta. Un impulso in ingresso esce uguale? Motiva in due righe.",
+    "suggerimento": "Pensa a che cosa succede alla somma delle componenti se arrivano in tempi diversi a parità di ampiezza.",
+    "soluzione_attesa": "No: è distorsione di fase. Le ampiezze sono conservate ma le componenti non si riallineano, quindi la forma d'onda cambia (l'impulso si allarga e deforma) pur conservando l'energia spettrale."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Giudicare la distorsione guardando solo il modulo di $H$",
+      "perche_sbagliato": "Un modulo piatto con fase non lineare distorce comunque la forma d'onda: servono entrambe le condizioni, ampiezza costante e fase lineare."
+    },
+    {
+      "errore": "Applicare $Y = H X$ a una rete non lineare o tempo-variante",
+      "perche_sbagliato": "Il prodotto in frequenza è equivalente alla convoluzione solo per reti lineari permanenti; fuori da quelle ipotesi $H(\\omega)$ non è nemmeno definita."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Scrivi la relazione ingresso-uscita in frequenza e le ipotesi che la rendono vera.",
+        "risposta": "$Y(\\omega) = H(\\omega) X(\\omega)$, valida per reti lineari e permanenti (tempo-invarianti)."
+      },
+      {
+        "domanda": "Quali sono le due condizioni di non distorsione?",
+        "risposta": "$|H|$ costante sulla banda del segnale e fase lineare in $\\omega$ (ritardo uguale per tutte le componenti)."
+      },
+      {
+        "domanda": "Che cosa vale $|H|$ alla pulsazione $1/(RC)$ per la rete RC?",
+        "risposta": "$1/\\sqrt{2} \\approx 0{,}707$, con sfasamento di $45$ gradi in ritardo."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega con parole tue la differenza fra distorsione di ampiezza e di fase usando un segnale a due sole componenti."
+  },
+  "riepilogo": "$H(\\omega) = Y/X$ caratterizza la rete lineare in frequenza: modulo = pesi delle componenti, fase = loro ritardi. Non distorsione se e solo se, in banda, modulo costante e fase lineare. Le reti RC e CR sono i banchi di prova per leggere i due grafici (sviluppi in E5-E6).",
+  "flashcard": [
+    {
+      "fronte": "Uscita in frequenza?",
+      "retro": "$Y(\\omega) = H(\\omega) X(\\omega)$ (rete lineare permanente)."
+    },
+    {
+      "fronte": "Non distorsione in quattro parole?",
+      "retro": "Ampiezza costante, fase lineare."
+    },
+    {
+      "fronte": "RC a $\\omega RC = 1$?",
+      "retro": "$|H| = 1/\\sqrt{2}$, fase $-45^\\circ$."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "calcolare $H$, modulo e fase di una rete del primo ordine",
+      "giudicare distorsione di ampiezza e di fase dai due spettri"
+    ],
+    "so_dire": [
+      "perché $Y = HX$ richiede linearità e permanenza",
+      "le due condizioni di non distorsione"
+    ]
+  },
+  "figure": [
+    {
+      "id": "passa-basso-primo-ordine",
+      "tipo": "grafico",
+      "titolo": "Ampiezza di un passa-basso del primo ordine",
+      "descrizione": "Modulo della funzione di trasferimento di una rete passa-basso del primo ordine con costante di tempo di un secondo: vale uno in continua, scende a uno diviso radice di due alla pulsazione di taglio di un radiante al secondo e tende a zero ad alta pulsazione. La rete distorce in ampiezza le componenti fuori banda.",
+      "asse_x": {
+        "etichetta": "ω (rad/s)",
+        "min": 0,
+        "max": 6,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 1,
+            "etichetta": "1/RC = 1"
+          },
+          {
+            "valore": 3,
+            "etichetta": "3"
+          },
+          {
+            "valore": 6,
+            "etichetta": "6"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "|H(ω)|",
+        "min": 0,
+        "max": 1.1
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0667,
+              0.9978
+            ],
+            [
+              0.1333,
+              0.9912
+            ],
+            [
+              0.2,
+              0.9806
+            ],
+            [
+              0.2667,
+              0.9662
+            ],
+            [
+              0.3333,
+              0.9487
+            ],
+            [
+              0.4,
+              0.9285
+            ],
+            [
+              0.4667,
+              0.9062
+            ],
+            [
+              0.5333,
+              0.8824
+            ],
+            [
+              0.6,
+              0.8575
+            ],
+            [
+              0.6667,
+              0.8321
+            ],
+            [
+              0.7333,
+              0.8064
+            ],
+            [
+              0.8,
+              0.7809
+            ],
+            [
+              0.8667,
+              0.7557
+            ],
+            [
+              0.9333,
+              0.7311
+            ],
+            [
+              1.0,
+              0.7071
+            ],
+            [
+              1.0667,
+              0.6839
+            ],
+            [
+              1.1333,
+              0.6616
+            ],
+            [
+              1.2,
+              0.6402
+            ],
+            [
+              1.2667,
+              0.6196
+            ],
+            [
+              1.3333,
+              0.6
+            ],
+            [
+              1.4,
+              0.5812
+            ],
+            [
+              1.4667,
+              0.5633
+            ],
+            [
+              1.5333,
+              0.5463
+            ],
+            [
+              1.6,
+              0.53
+            ],
+            [
+              1.6667,
+              0.5145
+            ],
+            [
+              1.7333,
+              0.4997
+            ],
+            [
+              1.8,
+              0.4856
+            ],
+            [
+              1.8667,
+              0.4722
+            ],
+            [
+              1.9333,
+              0.4594
+            ],
+            [
+              2.0,
+              0.4472
+            ],
+            [
+              2.0667,
+              0.4356
+            ],
+            [
+              2.1333,
+              0.4244
+            ],
+            [
+              2.2,
+              0.4138
+            ],
+            [
+              2.2667,
+              0.4036
+            ],
+            [
+              2.3333,
+              0.3939
+            ],
+            [
+              2.4,
+              0.3846
+            ],
+            [
+              2.4667,
+              0.3757
+            ],
+            [
+              2.5333,
+              0.3672
+            ],
+            [
+              2.6,
+              0.359
+            ],
+            [
+              2.6667,
+              0.3511
+            ],
+            [
+              2.7333,
+              0.3436
+            ],
+            [
+              2.8,
+              0.3363
+            ],
+            [
+              2.8667,
+              0.3294
+            ],
+            [
+              2.9333,
+              0.3227
+            ],
+            [
+              3.0,
+              0.3162
+            ],
+            [
+              3.0667,
+              0.31
+            ],
+            [
+              3.1333,
+              0.304
+            ],
+            [
+              3.2,
+              0.2983
+            ],
+            [
+              3.2667,
+              0.2927
+            ],
+            [
+              3.3333,
+              0.2873
+            ],
+            [
+              3.4,
+              0.2822
+            ],
+            [
+              3.4667,
+              0.2772
+            ],
+            [
+              3.5333,
+              0.2723
+            ],
+            [
+              3.6,
+              0.2676
+            ],
+            [
+              3.6667,
+              0.2631
+            ],
+            [
+              3.7333,
+              0.2587
+            ],
+            [
+              3.8,
+              0.2545
+            ],
+            [
+              3.8667,
+              0.2504
+            ],
+            [
+              3.9333,
+              0.2464
+            ],
+            [
+              4.0,
+              0.2425
+            ],
+            [
+              4.0667,
+              0.2388
+            ],
+            [
+              4.1333,
+              0.2352
+            ],
+            [
+              4.2,
+              0.2316
+            ],
+            [
+              4.2667,
+              0.2282
+            ],
+            [
+              4.3333,
+              0.2249
+            ],
+            [
+              4.4,
+              0.2216
+            ],
+            [
+              4.4667,
+              0.2185
+            ],
+            [
+              4.5333,
+              0.2154
+            ],
+            [
+              4.6,
+              0.2124
+            ],
+            [
+              4.6667,
+              0.2095
+            ],
+            [
+              4.7333,
+              0.2067
+            ],
+            [
+              4.8,
+              0.204
+            ],
+            [
+              4.8667,
+              0.2013
+            ],
+            [
+              4.9333,
+              0.1987
+            ],
+            [
+              5.0,
+              0.1961
+            ],
+            [
+              5.0667,
+              0.1936
+            ],
+            [
+              5.1333,
+              0.1912
+            ],
+            [
+              5.2,
+              0.1888
+            ],
+            [
+              5.2667,
+              0.1865
+            ],
+            [
+              5.3333,
+              0.1843
+            ],
+            [
+              5.4,
+              0.1821
+            ],
+            [
+              5.4667,
+              0.1799
+            ],
+            [
+              5.5333,
+              0.1778
+            ],
+            [
+              5.6,
+              0.1758
+            ],
+            [
+              5.6667,
+              0.1738
+            ],
+            [
+              5.7333,
+              0.1718
+            ],
+            [
+              5.8,
+              0.1699
+            ],
+            [
+              5.8667,
+              0.168
+            ],
+            [
+              5.9333,
+              0.1662
+            ],
+            [
+              6.0,
+              0.1644
+            ]
+          ],
+          "etichetta": "|H(ω)| = 1/√(1+(ωRC)²)"
+        }
+      ]
+    }
+  ]
+}

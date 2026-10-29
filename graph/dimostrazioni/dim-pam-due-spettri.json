@@ -1,0 +1,1009 @@
+{
+  "id": "dim-pam-due-spettri",
+  "titolo": "Segnali PAM: definizione e calcolo dei due spettri (T5, 10 punti)",
+  "domande_esame": [
+    "T5"
+  ],
+  "enunciato": "Un segnale PAM è la successione di impulsi modulati in ampiezza $s(t) = \\sum_{n} a_n\\, g(t-nT)$, dove $\\{a_n\\}$ è una serie temporale a potenza finita e $g(t)$ un impulso a energia finita. Scomponendo i simboli in valor medio e parte a valor medio zero, $s(t) = s_m(t) + x(t)$, si ottengono due spettri: $s_m(t)$ è periodica e ha uno spettro a righe alle pulsazioni $2\\pi n/T$ con coefficienti $c_n = \\frac{\\langle a_n \\rangle}{T} G\\!\\left(\\frac{2\\pi n}{T}\\right)$; $x(t)$ ha lo spettro di potenza distribuito, nella convenzione unilaterale del sito, $G_x(\\omega) = \\frac{1}{\\pi T} |G(\\omega)|^2 \\left\\{ \\langle a_n^2 \\rangle - [\\langle a_n \\rangle]^2 + 2 \\sum_{k=1}^{\\infty} \\left[ \\langle a_n a_{n+k} \\rangle - [\\langle a_n \\rangle]^2 \\right] \\cos k\\omega T \\right\\}$, che si sovrappone allo spettro a righe. La prova T5 vale 10 punti, uno dei due soli punteggi dichiarati nel materiale raccolto.",
+  "ipotesi": [
+    "La serie temporale $\\{a_n\\}$ ha valor medio temporale $\\langle a_n \\rangle$ in generale diverso da zero e potenza finita: $\\langle a_n^2 \\rangle = \\lim_{N \\to \\infty} \\frac{1}{2N} \\sum_{-N}^{N} a_n^2 < \\infty$.",
+    "L'impulso formatore $g(t)$ ha energia finita, trasformata $G(\\omega)$ e funzione di autocorrelazione $\\phi(\\tau)$ legate da $F[\\phi(\\tau)] = |G(\\omega)|^2$.",
+    "La serie centrata $x_n = a_n - \\langle a_n \\rangle$ è parzialmente coerente: esistono i limiti $C_k = \\langle x_n x_{n+k} \\rangle$ delle medie temporali dei prodotti a distanza $k$.",
+    "Lo spettro di potenza è quello unilaterale in $\\omega$ adottato in NOTAZIONE.md: $G_x(\\omega) = F[C(\\tau)]/\\pi$ per $\\omega \\ge 0$ e $P_x = \\int_0^{\\infty} G_x(\\omega)\\, d\\omega$ (decisione sul punto A2).",
+    "Attenzione al doppio uso della lettera $G$ in file1 e file3: $G(\\omega)$ è la trasformata dell'impulso, $G_x(\\omega)$ è lo spettro di potenza di $x(t)$."
+  ],
+  "notazione": [
+    {
+      "simbolo": "s(t) = \\sum_{-\\infty}^{+\\infty} a_n g(t-nT) = \\{a_n\\} * g(t)",
+      "significato": "segnale PAM: impulsi $g$ traslati di multipli di $T$ e pesati dai simboli; è la convoluzione fra serie temporale e impulso"
+    },
+    {
+      "simbolo": "\\langle a_n \\rangle,\\; \\langle a_n^2 \\rangle,\\; \\langle a_n a_{n+k} \\rangle",
+      "significato": "medie temporali della serie dei simboli: valor medio, potenza e prodotti a distanza $k$"
+    },
+    {
+      "simbolo": "s_m(t),\\; x(t),\\; x_n = a_n - \\langle a_n \\rangle",
+      "significato": "componente periodica legata al valor medio e componente PAM a valor medio zero costruita con i simboli centrati"
+    },
+    {
+      "simbolo": "C(\\tau) = \\langle x(t) x(t+\\tau) \\rangle,\\; C_k = \\langle x_n x_{n+k} \\rangle",
+      "significato": "autocorrelazione temporale di $x(t)$ e autocorrelazione discreta dei simboli centrati"
+    },
+    {
+      "simbolo": "\\phi(\\tau),\\; F[\\phi(\\tau)] = |G(\\omega)|^2",
+      "significato": "autocorrelazione dell'impulso formatore e suo spettro di energia"
+    }
+  ],
+  "varianti_notazione": [
+    {
+      "canonica": "Gx(ω) = F[C(τ)]/π, potenza come integrale sulle pulsazioni positive",
+      "variante": "stessa definizione con Gx(ω) = F[C(τ)]/π in file1 p. 21; in file3 p. 13 il divisore è scritto sotto la trasformata",
+      "fonte": "FILE1 pp. 20-22; FILE3 pp. 13-14"
+    },
+    {
+      "canonica": "2π/T per la spaziatura delle righe",
+      "variante": "ω0 = 2π/T per la stessa quantità",
+      "fonte": "FILE1 p. 20"
+    }
+  ],
+  "idea": "Si separa il valor medio dei simboli dal resto: il valor medio ripete l'impulso in modo periodico e dà righe; il resto, a media zero, dà uno spettro continuo via autocorrelazione.",
+  "passi": [
+    {
+      "n": 1,
+      "testo": "Si parte dalla serie temporale $\\{a_n\\}$ con valor medio $\\langle a_n \\rangle$ non necessariamente zero e potenza finita, e da un impulso $g(t)$ a energia finita con autocorrelazione $\\phi(\\tau)$ e trasformata $G(\\omega)$.",
+      "formula": "\\langle a_n^2 \\rangle = \\lim_{N \\to \\infty} \\frac{1}{2N} \\sum_{n=-N}^{N} a_n^2 < \\infty, \\qquad F[\\phi(\\tau)] = |G(\\omega)|^2",
+      "perche": "Sono le ipotesi che rendono definite potenza del segnale, spettro a righe e spettro distribuito; la seconda relazione è il legame fra autocorrelazione e spettro di energia dell'impulso."
+    },
+    {
+      "n": 2,
+      "testo": "Si definisce il segnale PAM come successione di impulsi ottenuti da $g(t)$ per traslazioni successive di $T$ e moltiplicati per i simboli; è una convoluzione fra la serie temporale e l'impulso.",
+      "formula": "s(t) = \\sum_{n=-\\infty}^{+\\infty} a_n\\, g(t-nT) = \\{a_n\\} * g(t)",
+      "perche": "La scrittura come convoluzione è la definizione di convoluzione fra serie temporale e funzione tempo-continua richiamata negli sviluppi.",
+      "figura": "generatore-pam"
+    },
+    {
+      "n": 3,
+      "testo": "Per l'analisi armonica generalizzata si introduce la serie centrata $x_n = a_n - \\langle a_n \\rangle$, certamente a valor medio zero, e si scompone il segnale nelle due componenti.",
+      "formula": "s(t) = s_m(t) + x(t), \\qquad s_m(t) = \\langle a_n \\rangle \\sum_{n} g(t-nT), \\qquad x(t) = \\sum_{n} x_n\\, g(t-nT)",
+      "perche": "La scomposizione è un'identità algebrica termine a termine; separa la parte deterministica periodica da quella che va trattata con l'autocorrelazione."
+    },
+    {
+      "n": 4,
+      "testo": "Primo spettro: $s_m(t)$ è la ripetizione periodica di $g(t)$ scalata dal valor medio, quindi si sviluppa in serie di Fourier esponenziale; i coefficienti sono i campioni della trasformata dell'impulso alle pulsazioni $2\\pi n/T$, divisi per $T$ e scalati dal valor medio. Nasce lo spettro a righe disegnato in figura.",
+      "formula": "s_m(t) = \\sum_{n=-\\infty}^{+\\infty} c_n e^{j n \\frac{2\\pi}{T} t}, \\qquad c_n = \\frac{\\langle a_n \\rangle}{T}\\, G\\!\\left(n \\frac{2\\pi}{T}\\right)",
+      "perche": "Un segnale periodico di periodo $T$ ha spettro a righe; il coefficiente si ottiene integrando su un periodo, e l'integrale su tutto l'asse dell'impulso con l'esponenziale è proprio $G$ valutata alla pulsazione della riga.",
+      "figura": "spettro-a-righe-pam"
+    },
+    {
+      "n": 5,
+      "testo": "Secondo spettro: per $x(t)$ si parte dalla funzione di autocorrelazione temporale e dalla definizione unilaterale dello spettro di potenza.",
+      "formula": "C(\\tau) = \\langle x(t) x(t+\\tau) \\rangle, \\qquad G_x(\\omega) = \\frac{F[C(\\tau)]}{\\pi}",
+      "perche": "$x(t)$ è un segnale di potenza a valor medio zero: il suo spettro si definisce trasformando l'autocorrelazione (Wiener-Chinchin); il divisore $\\pi$ è la convenzione unilaterale di file1 p. 21 (punto A2)."
+    },
+    {
+      "n": 6,
+      "testo": "Si sostituiscono le espressioni di $x(t)$ e $x(t+\\tau)$ come doppia somma sugli indici $n$ e $i$ e si scrive la media temporale come limite dell'integrale su $2NT$.",
+      "formula": "C(\\tau) = \\lim_{N \\to \\infty} \\frac{1}{2NT} \\int_{-NT}^{NT} \\sum_{n} \\sum_{i} x_n x_i\\, g(t-nT) g(t+\\tau-iT)\\, dt",
+      "perche": "È la definizione di media temporale applicata al prodotto delle due somme del passo 3; gli indici diversi evitano di confondere i due fattori."
+    },
+    {
+      "n": 7,
+      "testo": "Si scambiano limite, somme e integrale: l'integrale interno dipende solo da $\\tau$ e dalla differenza degli indici, ed è l'autocorrelazione dell'impulso traslata.",
+      "formula": "\\int_{-\\infty}^{+\\infty} g(t-nT) g(t+\\tau-iT)\\, dt = \\phi[\\tau - (i-n)T] \\;\\Longrightarrow\\; C(\\tau) = \\lim_{N \\to \\infty} \\frac{1}{2NT} \\sum_{n=-N}^{N} \\sum_{i} x_n x_i\\, \\phi[\\tau - (i-n)T]",
+      "perche": "Per $N$ grande gli impulsi che contano sono quelli dentro la finestra di osservazione; il cambio di variabile nell'integrale lo riduce alla definizione di $\\phi$."
+    },
+    {
+      "n": 8,
+      "testo": "Si pone $i = n + k$: a $k$ fissato la media interna tende a $C_k = \\langle x_n x_{n+k} \\rangle$, e l'autocorrelazione di $x(t)$ diventa la convoluzione, scalata di $1/T$, fra la serie $\\{C_k\\}$ e $\\phi(\\tau)$.",
+      "formula": "C(\\tau) = \\frac{1}{T} \\sum_{k=-\\infty}^{+\\infty} C_k\\, \\phi(\\tau - kT) = \\frac{1}{T}\\, \\{C_k\\} * \\phi(\\tau)",
+      "perche": "Il limite interno esiste per l'ipotesi di parziale coerenza della serie centrata; resta un fattore $1/T$ perché $2NT = T \\cdot 2N$."
+    },
+    {
+      "n": 9,
+      "testo": "Si trasforma secondo Fourier: la convoluzione diventa prodotto, la trasformata di $\\phi$ è $|G(\\omega)|^2$ e quella della serie $\\{C_k\\}$ si riscrive con i coseni accoppiando $k$ e $-k$.",
+      "formula": "G_x(\\omega) = \\frac{F[C(\\tau)]}{\\pi} = \\frac{1}{\\pi T} |G(\\omega)|^2 \\left[ C_0 + 2 \\sum_{k=1}^{+\\infty} C_k \\cos k\\omega T \\right]",
+      "perche": "Valgono il teorema della convoluzione e $F[\\phi] = |G|^2$; inoltre $C_{-k} = C_k$ perché i simboli sono reali, quindi $e^{-jk\\omega T} + e^{jk\\omega T} = 2\\cos k\\omega T$.",
+      "figura": "spettro-distribuito-pam"
+    },
+    {
+      "n": 10,
+      "testo": "Si torna ai simboli originari con $x_n = a_n - \\langle a_n \\rangle$: per ogni $k$ vale $C_k = \\langle a_n a_{n+k} \\rangle - [\\langle a_n \\rangle]^2$ e in particolare $C_0 = \\langle a_n^2 \\rangle - [\\langle a_n \\rangle]^2$. Si ottiene la formula finale dello spettro distribuito, che si sovrappone allo spettro a righe del passo 4.",
+      "formula": "G_x(\\omega) = \\frac{1}{\\pi T} |G(\\omega)|^2 \\left\\{ \\langle a_n^2 \\rangle - [\\langle a_n \\rangle]^2 + 2 \\sum_{k=1}^{+\\infty} \\left[ \\langle a_n a_{n+k} \\rangle - [\\langle a_n \\rangle]^2 \\right] \\cos k\\omega T \\right\\}",
+      "perche": "Sviluppando il prodotto $(a_n - \\langle a_n \\rangle)(a_{n+k} - \\langle a_n \\rangle)$ e mediando, i termini misti danno ciascuno $[\\langle a_n \\rangle]^2$ e resta la covarianza dei simboli a distanza $k$."
+    }
+  ],
+  "formula_finale": "c_n = \\frac{\\langle a_n \\rangle}{T} G\\!\\left(\\frac{2\\pi n}{T}\\right), \\qquad G_x(\\omega) = \\frac{1}{\\pi T} |G(\\omega)|^2 \\left\\{ \\langle a_n^2 \\rangle - [\\langle a_n \\rangle]^2 + 2 \\sum_{k=1}^{+\\infty} \\left[ \\langle a_n a_{n+k} \\rangle - [\\langle a_n \\rangle]^2 \\right] \\cos k\\omega T \\right\\}",
+  "figure": [
+    {
+      "id": "spettro-a-righe-pam",
+      "tipo": "grafico",
+      "titolo": "Spettro a righe della componente periodica del PAM",
+      "descrizione": "Spettro a righe della componente periodica di un segnale PAM: segmenti verticali alle pulsazioni multiple di due pi greco diviso T, con altezze esemplificative proporzionali al modulo dei coefficienti della serie di Fourier. Le righe esistono solo perché il valor medio dei simboli è diverso da zero e svaniscono con esso.",
+      "asse_x": {
+        "etichetta": "ω (rad/s), T = 1 s",
+        "min": 0,
+        "max": 20,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 6.2832,
+            "etichetta": "2π/T"
+          },
+          {
+            "valore": 12.5664,
+            "etichetta": "4π/T"
+          },
+          {
+            "valore": 18.8496,
+            "etichetta": "6π/T"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "ampiezza delle righe (esempio)",
+        "min": 0,
+        "max": 1.15
+      },
+      "serie": [
+        {
+          "stile": "righe",
+          "punti": [
+            [
+              0,
+              1
+            ],
+            [
+              6.2832,
+              0.8
+            ],
+            [
+              12.5664,
+              0.55
+            ],
+            [
+              18.8496,
+              0.3
+            ]
+          ],
+          "etichetta": "righe |cₙ| (altezze esemplificative)"
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": 0,
+          "y": 1.05,
+          "testo": "A₀"
+        },
+        {
+          "x": 6.2832,
+          "y": 0.85,
+          "testo": "A₁"
+        },
+        {
+          "x": 12.5664,
+          "y": 0.6,
+          "testo": "A₂"
+        }
+      ]
+    },
+    {
+      "id": "spettro-distribuito-pam",
+      "tipo": "grafico",
+      "titolo": "Spettro distribuito: inviluppo dell'impulso rettangolare",
+      "descrizione": "Andamento normalizzato del fattore di inviluppo dello spettro distribuito per un impulso formatore rettangolare lungo quanto il periodo di simbolo: massimo uno in zero e zeri alle pulsazioni multiple di due pi greco diviso T, dove si annulla il modulo quadro della trasformata dell'impulso.",
+      "asse_x": {
+        "etichetta": "ω (rad/s), T = 1 s",
+        "min": 0,
+        "max": 12.5664,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 6.2832,
+            "etichetta": "2π/T"
+          },
+          {
+            "valore": 12.5664,
+            "etichetta": "4π/T"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "|G(ω)|² normalizzato",
+        "min": 0,
+        "max": 1.15
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0785,
+              0.9995
+            ],
+            [
+              0.1571,
+              0.9979
+            ],
+            [
+              0.2356,
+              0.9954
+            ],
+            [
+              0.3142,
+              0.9918
+            ],
+            [
+              0.3927,
+              0.9872
+            ],
+            [
+              0.4712,
+              0.9816
+            ],
+            [
+              0.5498,
+              0.9751
+            ],
+            [
+              0.6283,
+              0.9675
+            ],
+            [
+              0.7069,
+              0.959
+            ],
+            [
+              0.7854,
+              0.9496
+            ],
+            [
+              0.8639,
+              0.9393
+            ],
+            [
+              0.9425,
+              0.9281
+            ],
+            [
+              1.021,
+              0.9161
+            ],
+            [
+              1.0996,
+              0.9032
+            ],
+            [
+              1.1781,
+              0.8896
+            ],
+            [
+              1.2566,
+              0.8751
+            ],
+            [
+              1.3352,
+              0.86
+            ],
+            [
+              1.4137,
+              0.8442
+            ],
+            [
+              1.4923,
+              0.8277
+            ],
+            [
+              1.5708,
+              0.8106
+            ],
+            [
+              1.6493,
+              0.7929
+            ],
+            [
+              1.7279,
+              0.7747
+            ],
+            [
+              1.8064,
+              0.756
+            ],
+            [
+              1.885,
+              0.7368
+            ],
+            [
+              1.9635,
+              0.7173
+            ],
+            [
+              2.042,
+              0.6974
+            ],
+            [
+              2.1206,
+              0.6771
+            ],
+            [
+              2.1991,
+              0.6566
+            ],
+            [
+              2.2777,
+              0.6359
+            ],
+            [
+              2.3562,
+              0.615
+            ],
+            [
+              2.4347,
+              0.5939
+            ],
+            [
+              2.5133,
+              0.5728
+            ],
+            [
+              2.5918,
+              0.5516
+            ],
+            [
+              2.6704,
+              0.5304
+            ],
+            [
+              2.7489,
+              0.5092
+            ],
+            [
+              2.8274,
+              0.4881
+            ],
+            [
+              2.906,
+              0.4671
+            ],
+            [
+              2.9845,
+              0.4463
+            ],
+            [
+              3.0631,
+              0.4257
+            ],
+            [
+              3.1416,
+              0.4053
+            ],
+            [
+              3.2201,
+              0.3852
+            ],
+            [
+              3.2987,
+              0.3653
+            ],
+            [
+              3.3772,
+              0.3459
+            ],
+            [
+              3.4558,
+              0.3267
+            ],
+            [
+              3.5343,
+              0.308
+            ],
+            [
+              3.6128,
+              0.2898
+            ],
+            [
+              3.6914,
+              0.2719
+            ],
+            [
+              3.7699,
+              0.2546
+            ],
+            [
+              3.8485,
+              0.2377
+            ],
+            [
+              3.927,
+              0.2214
+            ],
+            [
+              4.0055,
+              0.2056
+            ],
+            [
+              4.0841,
+              0.1904
+            ],
+            [
+              4.1626,
+              0.1757
+            ],
+            [
+              4.2412,
+              0.1617
+            ],
+            [
+              4.3197,
+              0.1482
+            ],
+            [
+              4.3982,
+              0.1353
+            ],
+            [
+              4.4768,
+              0.1231
+            ],
+            [
+              4.5553,
+              0.1115
+            ],
+            [
+              4.6339,
+              0.1004
+            ],
+            [
+              4.7124,
+              0.0901
+            ],
+            [
+              4.7909,
+              0.0803
+            ],
+            [
+              4.8695,
+              0.0712
+            ],
+            [
+              4.948,
+              0.0626
+            ],
+            [
+              5.0266,
+              0.0547
+            ],
+            [
+              5.1051,
+              0.0474
+            ],
+            [
+              5.1836,
+              0.0406
+            ],
+            [
+              5.2622,
+              0.0345
+            ],
+            [
+              5.3407,
+              0.0289
+            ],
+            [
+              5.4193,
+              0.0239
+            ],
+            [
+              5.4978,
+              0.0194
+            ],
+            [
+              5.5763,
+              0.0154
+            ],
+            [
+              5.6549,
+              0.0119
+            ],
+            [
+              5.7334,
+              0.009
+            ],
+            [
+              5.812,
+              0.0065
+            ],
+            [
+              5.8905,
+              0.0044
+            ],
+            [
+              5.969,
+              0.0027
+            ],
+            [
+              6.0476,
+              0.0015
+            ],
+            [
+              6.1261,
+              0.0007
+            ],
+            [
+              6.2047,
+              0.0002
+            ],
+            [
+              6.2832,
+              0.0
+            ],
+            [
+              6.3617,
+              0.0002
+            ],
+            [
+              6.4403,
+              0.0006
+            ],
+            [
+              6.5188,
+              0.0013
+            ],
+            [
+              6.5974,
+              0.0022
+            ],
+            [
+              6.6759,
+              0.0034
+            ],
+            [
+              6.7544,
+              0.0048
+            ],
+            [
+              6.833,
+              0.0063
+            ],
+            [
+              6.9115,
+              0.008
+            ],
+            [
+              6.9901,
+              0.0098
+            ],
+            [
+              7.0686,
+              0.0117
+            ],
+            [
+              7.1471,
+              0.0137
+            ],
+            [
+              7.2257,
+              0.0158
+            ],
+            [
+              7.3042,
+              0.0179
+            ],
+            [
+              7.3828,
+              0.02
+            ],
+            [
+              7.4613,
+              0.0222
+            ],
+            [
+              7.5398,
+              0.0243
+            ],
+            [
+              7.6184,
+              0.0264
+            ],
+            [
+              7.6969,
+              0.0285
+            ],
+            [
+              7.7755,
+              0.0305
+            ],
+            [
+              7.854,
+              0.0324
+            ],
+            [
+              7.9325,
+              0.0343
+            ],
+            [
+              8.0111,
+              0.036
+            ],
+            [
+              8.0896,
+              0.0377
+            ],
+            [
+              8.1682,
+              0.0392
+            ],
+            [
+              8.2467,
+              0.0407
+            ],
+            [
+              8.3252,
+              0.042
+            ],
+            [
+              8.4038,
+              0.0431
+            ],
+            [
+              8.4823,
+              0.0441
+            ],
+            [
+              8.5609,
+              0.045
+            ],
+            [
+              8.6394,
+              0.0457
+            ],
+            [
+              8.7179,
+              0.0463
+            ],
+            [
+              8.7965,
+              0.0468
+            ],
+            [
+              8.875,
+              0.047
+            ],
+            [
+              8.9536,
+              0.0472
+            ],
+            [
+              9.0321,
+              0.0472
+            ],
+            [
+              9.1106,
+              0.047
+            ],
+            [
+              9.1892,
+              0.0467
+            ],
+            [
+              9.2677,
+              0.0463
+            ],
+            [
+              9.3463,
+              0.0457
+            ],
+            [
+              9.4248,
+              0.045
+            ],
+            [
+              9.5033,
+              0.0442
+            ],
+            [
+              9.5819,
+              0.0433
+            ],
+            [
+              9.6604,
+              0.0423
+            ],
+            [
+              9.739,
+              0.0411
+            ],
+            [
+              9.8175,
+              0.0399
+            ],
+            [
+              9.896,
+              0.0386
+            ],
+            [
+              9.9746,
+              0.0372
+            ],
+            [
+              10.0531,
+              0.0358
+            ],
+            [
+              10.1317,
+              0.0343
+            ],
+            [
+              10.2102,
+              0.0328
+            ],
+            [
+              10.2887,
+              0.0312
+            ],
+            [
+              10.3673,
+              0.0295
+            ],
+            [
+              10.4458,
+              0.0279
+            ],
+            [
+              10.5244,
+              0.0263
+            ],
+            [
+              10.6029,
+              0.0246
+            ],
+            [
+              10.6814,
+              0.0229
+            ],
+            [
+              10.76,
+              0.0213
+            ],
+            [
+              10.8385,
+              0.0197
+            ],
+            [
+              10.9171,
+              0.0181
+            ],
+            [
+              10.9956,
+              0.0165
+            ],
+            [
+              11.0741,
+              0.015
+            ],
+            [
+              11.1527,
+              0.0136
+            ],
+            [
+              11.2312,
+              0.0122
+            ],
+            [
+              11.3098,
+              0.0108
+            ],
+            [
+              11.3883,
+              0.0095
+            ],
+            [
+              11.4668,
+              0.0083
+            ],
+            [
+              11.5454,
+              0.0072
+            ],
+            [
+              11.6239,
+              0.0061
+            ],
+            [
+              11.7025,
+              0.0051
+            ],
+            [
+              11.781,
+              0.0042
+            ],
+            [
+              11.8595,
+              0.0034
+            ],
+            [
+              11.9381,
+              0.0027
+            ],
+            [
+              12.0166,
+              0.002
+            ],
+            [
+              12.0952,
+              0.0015
+            ],
+            [
+              12.1737,
+              0.001
+            ],
+            [
+              12.2522,
+              0.0007
+            ],
+            [
+              12.3308,
+              0.0004
+            ],
+            [
+              12.4093,
+              0.0002
+            ],
+            [
+              12.4879,
+              0.0
+            ],
+            [
+              12.5664,
+              0.0
+            ]
+          ],
+          "etichetta": "inviluppo |G(ω)|², impulso rettangolare"
+        }
+      ]
+    },
+    {
+      "id": "generatore-pam",
+      "tipo": "blocchi",
+      "titolo": "Generazione di un segnale PAM",
+      "descrizione": "Schema a blocchi della generazione PAM: la serie temporale dei simboli entra in un formatore che emette, ogni T secondi, una copia dell'impulso g di t scalata dal simbolo corrente; l'uscita è il segnale PAM tempo-continuo.",
+      "blocchi": [
+        {
+          "id": "in",
+          "etichetta": "Serie temporale {aₙ}",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 2
+        },
+        {
+          "id": "form",
+          "etichetta": "Formatore: impulso g(t) ogni T, pesato da aₙ",
+          "forma": "rettangolo",
+          "colonna": 5,
+          "riga": 2
+        },
+        {
+          "id": "out",
+          "etichetta": "s(t) segnale PAM",
+          "forma": "uscita",
+          "colonna": 10,
+          "riga": 2
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "in",
+          "a": "form"
+        },
+        {
+          "da": "form",
+          "a": "out"
+        }
+      ]
+    }
+  ],
+  "a_voce": "È la domanda da dieci punti e la imposto con calma. Un segnale PAM è una fila di impulsi uguali, uno ogni T, ciascuno scalato dal simbolo corrispondente: lo scrivo come convoluzione fra la serie dei simboli e l'impulso formatore. Poi separo il valor medio: la parte costante dei simboli ripete l'impulso in modo periodico, e un segnale periodico ha spettro a righe; le righe stanno ai multipli di due pi greco diviso T e le loro ampiezze sono la trasformata dell'impulso campionata in quei punti, divisa per T e moltiplicata per il valor medio. La parte che resta ha valor medio zero e va trattata con l'autocorrelazione: calcolo la media temporale del prodotto fra il segnale e la sua copia ritardata, faccio il cambio di indice i uguale a n più k e scopro che l'autocorrelazione è la convoluzione fra l'autocorrelazione dei simboli centrati e quella dell'impulso, divisa per T. Trasformando ottengo il secondo spettro: modulo quadro della trasformata dell'impulso, fattore uno diviso pi greco T per la convenzione unilaterale, e una serie di coseni con le covarianze dei simboli. I due spettri si sovrappongono: righe più continuo.",
+  "errori_frequenti": [
+    {
+      "errore": "Scrivere il fattore dello spettro distribuito come $1/(2\\pi T)$ mescolando le convenzioni, o omettere del tutto il divisore $\\pi$.",
+      "perche_sbagliato": "Con la densità unilaterale in $\\omega$ ($P = \\int_0^{\\infty} G\\, d\\omega$) deve essere $G_x = F[C]/\\pi$; il fattore $1/(2\\pi T)$ appartiene alla densità bilaterale per radiante, diversa.",
+      "correzione": "$G_x(\\omega) = \\frac{1}{\\pi T}|G(\\omega)|^2[\\dots]$ nella convenzione adottata e dichiarata in NOTAZIONE.md (punto A2); se si passa alla bilaterale vanno cambiati anche definizione e integrale della potenza."
+    },
+    {
+      "errore": "Attribuire le righe spettrali anche a un codice con $\\langle a_n \\rangle = 0$.",
+      "perche_sbagliato": "I coefficienti $c_n$ sono proporzionali al valor medio: se è zero, la componente periodica $s_m(t)$ non esiste e resta il solo spettro distribuito.",
+      "correzione": "Le righe ci sono solo se $\\langle a_n \\rangle \\ne 0$; controllare sempre il valor medio del codice prima di disegnarle."
+    },
+    {
+      "errore": "Saltare il cambio di indice $i = n + k$ e scrivere direttamente la serie di coseni.",
+      "perche_sbagliato": "È proprio quel cambio che fa emergere le covarianze $C_k$ a distanza $k$ e la struttura di convoluzione con $\\phi$: senza, la formula finale è un atto di fede e la domanda chiede il calcolo.",
+      "correzione": "Mostrare i passi 6-9: doppia somma, integrale che dà $\\phi[\\tau-(i-n)T]$, cambio $i = n+k$, trasformata e accoppiamento $k$ con $-k$ che produce $2\\cos k\\omega T$."
+    }
+  ],
+  "versione_compatta": [
+    "PAM: $s(t) = \\sum_n a_n g(t-nT) = \\{a_n\\} * g(t)$, $\\langle a_n^2 \\rangle < \\infty$, $F[\\phi] = |G(\\omega)|^2$.",
+    "Centro i simboli: $x_n = a_n - \\langle a_n \\rangle$, $s(t) = s_m(t) + x(t)$.",
+    "Spettro a righe di $s_m$: $c_n = \\frac{\\langle a_n \\rangle}{T} G(2\\pi n/T)$ alle pulsazioni $2\\pi n/T$.",
+    "Autocorrelazione: $C(\\tau) = \\frac{1}{T}\\sum_k C_k \\phi(\\tau-kT)$ (cambio $i = n+k$).",
+    "Trasformo e accoppio $\\pm k$: $G_x(\\omega) = \\frac{1}{\\pi T}|G(\\omega)|^2 [C_0 + 2\\sum_{k \\ge 1} C_k \\cos k\\omega T]$.",
+    "Con $C_k = \\langle a_n a_{n+k} \\rangle - [\\langle a_n \\rangle]^2$: formula finale; continuo sovrapposto alle righe."
+  ],
+  "a_buchi": {
+    "testo": "Il segnale PAM è $s(t) = \\sum_n$ ___1___ $g(t-nT)$. La componente periodica nasce dal ___2___ dei simboli e ha righe a pulsazioni multiple di ___3___. Per la componente a valor medio zero si calcola l'___4___ $C(\\tau)$; con il cambio di indice $i = n + k$ essa diventa $(1/T)\\sum_k C_k \\phi(\\tau - kT)$, dove $\\phi$ è l'autocorrelazione dell'___5___. Trasformando si ottiene il fattore $|G(\\omega)|^2$ e, nella convenzione unilaterale, il fattore complessivo ___6___ davanti alla serie di coseni.",
+    "soluzioni": {
+      "1": [
+        "a_n",
+        "a con pedice n"
+      ],
+      "2": [
+        "valor medio"
+      ],
+      "3": [
+        "2π/T",
+        "due pi greco diviso T"
+      ],
+      "4": [
+        "autocorrelazione"
+      ],
+      "5": [
+        "impulso formatore",
+        "impulso g"
+      ],
+      "6": [
+        "1/(πT)",
+        "uno diviso pi greco T"
+      ]
+    }
+  },
+  "richiamo_attivo": [
+    {
+      "domanda": "Perché si scompone il PAM in $s_m(t) + x(t)$ invece di calcolare subito lo spettro di $s(t)$?",
+      "risposta": "Perché le due parti hanno natura diversa: $s_m$ è deterministica e periodica (serie di Fourier, righe), mentre $x$ è un segnale di potenza a media zero il cui spettro viene dall'autocorrelazione; insieme darebbero una mistura non trattabile con un solo strumento."
+    },
+    {
+      "domanda": "Da dove viene il fattore $1/(\\pi T)$ e a quale convenzione appartiene?",
+      "risposta": "Da $G_x = F[C]/\\pi$ (densità unilaterale in $\\omega$, con $P = \\int_0^{\\infty} G_x\\, d\\omega$) combinato con il fattore $1/T$ dell'autocorrelazione; è la decisione sul punto A2, coerente con file1 pp. 21 e 23."
+    },
+    {
+      "domanda": "Che cosa resta della formula se i simboli sono a valor medio zero e $C_k = 0$ per $k \\ne 0$?",
+      "risposta": "Le righe spariscono e lo spettro distribuito si riduce a $\\frac{1}{\\pi T}|G(\\omega)|^2 \\langle a_n^2 \\rangle$: la forma è decisa solo dall'impulso formatore."
+    },
+    {
+      "domanda": "Quale ruolo ha il fattore $|G(\\omega)|^2$ nel disegno dello spettro distribuito?",
+      "risposta": "È l'inviluppo continuo imposto dall'impulso: i suoi zeri sono zeri di tutto lo spettro distribuito, qualunque sia la statistica dei simboli."
+    }
+  ],
+  "collegamenti": [
+    "segnali-pam",
+    "energia-potenza-spettri",
+    "criterio-nyquist-isi"
+  ],
+  "fonti": [
+    {
+      "chiave": "FILE3",
+      "rif": "file3 pp. 12-15"
+    },
+    {
+      "chiave": "FILE1",
+      "rif": "file1 pp. 19-22 (p. 4.30, rif. dello studente)"
+    }
+  ],
+  "verifica": {
+    "stato": "verificata_file1_file3",
+    "data": "2026-10-29",
+    "note": "Confronto pagina per pagina sulle immagini renderizzate di file1 e file3 (appunti di studenti, non il libro); il testo di Calandrino e Immovilli non è stato consultato direttamente e la sua edizione è NON TROVATO, quindi non si dichiara identità con il testo del docente. Punto A2 deciso e documentato in docs/NOTAZIONE.md: densità unilaterale in ω con Gx(ω) = F[C(τ)]/π (leggibile in file1 p. 21) e P = integrale sulle pulsazioni positive (coerente con file1 p. 23, dove P si calcola integrando fra 0 e ωm senza fattori aggiuntivi). Il punteggio di 10 punti è quello dichiarato per T5 nel materiale d'esame raccolto in file2 secondo R3.",
+    "punti_aperti": [
+      "Confronto con il libro di Calandrino e Immovilli non ancora fatto: edizione e pagine effettive NON TROVATO; i riferimenti del tipo p. x.y sono quelli riportati dallo studente in file1 (IPOTESI: capitolo.pagina).",
+      "Resta da confermare sul testo del docente che la convenzione unilaterale con il fattore 1/(πT) sia quella richiesta in sede d'esame; file1 e file3 concordano su questo fattore."
+    ]
+  }
+}

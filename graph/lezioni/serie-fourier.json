@@ -1,0 +1,193 @@
+{
+  "id": "serie-fourier",
+  "perche_ti_serve": "Gruppo A, tema di quiz M15 e base dell'esercizio E1: gli spettri a righe dell'impulso periodico sono anche il primo spettro della T5 sui PAM. Punteggio autonomo di M15: NON TROVATO.",
+  "scenario": "La rete telefonica numerica lavora con trame che si ripetono a ritmo fisso: ogni struttura periodica del collegamento (trame, impulsi di clock) si descrive con righe spettrali a multipli della frequenza di ripetizione, esattamente come la successione periodica di impulsi di questo nodo.",
+  "definizione_esame": {
+    "definizione": "Per $x(t)$ periodica di periodo $T$ e pulsazione fondamentale $\\Omega = 2\\pi/T$ (il $\\omega_0$ degli appunti): $x(t) = \\sum_{n} c_n e^{jn\\Omega t}$ con $c_n = \\frac{1}{T}\\int_{-T/2}^{T/2} x(t) e^{-jn\\Omega t}\\, dt$; per $n \\ge 1$ vale $2c_n = A_n e^{-j\\varphi_n}$.",
+    "scopo": "Rappresentare il segnale periodico con spettri a righe di ampiezza $A_n$ e fase $\\varphi_n$, leggibili armonica per armonica.",
+    "esempio": "Impulsi rettangolari centrati di ampiezza $A$, durata $\\tau$, periodo $T$: $c_n = \\frac{I}{T}\\, \\frac{\\sin(n\\Omega\\tau/2)}{n\\Omega\\tau/2}$ con $I = A\\tau$ (file1 p. 1)."
+  },
+  "spiegazione": "### Forma esponenziale e coefficienti\nLa forma comoda per i calcoli è quella esponenziale complessa: ogni armonica è un esponenziale $e^{jn\\Omega t}$ pesato dal coefficiente complesso $c_n$, ottenuto proiettando il segnale su quell'esponenziale in un periodo. Per segnali reali vale la simmetria $c_{-n} = c_n^{*}$, così la coppia di armoniche $\\pm n$ si ricombina in un solo coseno reale di ampiezza $A_n$ e fase $\\varphi_n$ definiti da $$2c_n = A_n e^{-j\\varphi_n} = a_n - j b_n \\qquad (n \\ge 1).$$ Con questa convenzione, usata in file1, è $\\varphi_n = -\\arg(c_n)$ e $A_n = 2|c_n|$; il termine $n = 0$ è il valor medio $c_0 = A_0$. Altri testi definiscono la fase con il segno opposto: all'esame va dichiarata la convenzione, altrimenti il grafico di fase risulta ribaltato.\n\n### Il caso guida: impulsi rettangolari periodici centrati\nCon l'impulso **centrato in zero** (da $-\\tau/2$ a $\\tau/2$, come nella figura di file1 p. 1) l'integrale si calcola subito e dà $c_n = \\frac{A}{T}\\int_{-\\tau/2}^{\\tau/2} e^{-jn\\Omega t} dt = \\frac{I}{T}\\, \\frac{\\sin(n\\Omega\\tau/2)}{n\\Omega\\tau/2}$ con $I = A\\tau$ intensità dell'impulso. Poiché il segnale è reale e pari, i coefficienti sono **reali**: la fase può valere solo $0$ dove $c_n > 0$ e $\\pi$ dove $c_n < 0$, ed è questa la forma compatta che trovi negli appunti. Le ampiezze sono $A_0 = I/T$ e $A_n = \\frac{2I}{T}\\left|\\frac{\\sin(n\\Omega\\tau/2)}{n\\Omega\\tau/2}\\right|$ per $n \\ge 1$: le righe stanno sotto l'inviluppo «seno diviso argomento» e si annullano quando $n\\Omega\\tau/2$ è multiplo di $\\pi$, cioè alle armoniche multiple di $T/\\tau$. Al diminuire di $\\tau$ il primo zero si allontana e **aumenta il numero di armoniche significative**: impulsi più stretti chiedono più banda.\n\n### Nota A1: quando la fase non è solo zero o pi greco\nLa forma $\\varphi_n \\in \\{0, \\pi\\}$ **non è generale**: vale perché con l'impulso centrato $c_n$ è reale. In generale $\\varphi_n = -\\arg(c_n)$ (modulo $2\\pi$). Se l'impulso parte da $0$ e dura $\\tau$ (centro in $\\tau/2$), i coefficienti acquistano il fattore di ritardo $e^{-jn\\Omega\\tau/2}$: $c_n = \\frac{I}{T}\\, \\frac{\\sin(n\\Omega\\tau/2)}{n\\Omega\\tau/2}\\, e^{-jn\\Omega\\tau/2}$, e la fase diventa $\\varphi_n = n\\Omega\\tau/2$ più l'eventuale $\\pi$ quando il fattore reale cambia segno: una rampa lineare in $n$ con salti di $\\pi$, non più solo due valori. Scrivere «$c_n > 0$» per un coefficiente complesso non ha senso: è l'ambiguità segnalata in R3, risolta qui dichiarando ipotesi (impulso centrato) e definizione generale.",
+  "analogia": {
+    "testo": "Le righe sono le note di un accordo che si ripete identico: la fondamentale fissa il ritmo, le armoniche danno il timbro; ampiezza e fase dicono quanto forte e con quale sfasamento suona ogni nota.",
+    "limite": "L'analogia acustica nasconde la fase relativa fra armoniche positive e negative, che nei calcoli è codificata nei coefficienti complessi coniugati."
+  },
+  "worked_example": {
+    "titolo": "Coefficienti con numeri",
+    "problema": "Impulsi centrati con $A = 1$, $\\tau = 1\\ \\mathrm{ms}$, $T = 4\\ \\mathrm{ms}$. Calcolare $c_0$, $c_1$, $c_4$ e le fasi.",
+    "passi": [
+      "Intensità: $I = A\\tau = 1\\ \\mathrm{ms}$; $c_0 = I/T = 0{,}25$: è il valor medio del segnale (un quarto del tempo vale 1).",
+      "Per $n = 1$: $n\\Omega\\tau/2 = \\pi\\tau/T = \\pi/4$; $c_1 = 0{,}25 \\cdot \\frac{\\sin(\\pi/4)}{\\pi/4} = 0{,}25 \\cdot 0{,}9003 \\approx 0{,}2251$, positivo: $\\varphi_1 = 0$, $A_1 = 2c_1 \\approx 0{,}4502$.",
+      "Per $n = 4$: l'argomento del seno è $\\pi$, quindi $c_4 = 0$: la quarta armonica manca, come atteso visto che $T/\\tau = 4$."
+    ],
+    "soluzione": "$c_0 = 0{,}25$; $c_1 \\approx 0{,}2251$ con $\\varphi_1 = 0$; $c_4 = 0$.",
+    "perche_funziona": "Funziona perché i coefficienti campionano l'inviluppo continuo alle sole armoniche: dove l'inviluppo si annulla, l'armonica corrispondente sparisce dal segnale periodico."
+  },
+  "completion_problem": {
+    "titolo": "Impulso che parte da zero",
+    "testo": "Stessi dati ma impulso fra $0$ e $\\tau$. Il coefficiente è $c_n = $ ____ $\\cdot e^{-jn\\Omega\\tau/2}$ e la fase $\\varphi_1$ vale ____ (a meno del salto di $\\pi$, qui assente perché il fattore reale è positivo).",
+    "passi_mancanti": [
+      "Scrivere il fattore reale davanti all'esponenziale",
+      "Ricavare la fase dal fattore di ritardo con la convenzione $2c_n = A_n e^{-j\\varphi_n}$"
+    ],
+    "soluzione": "Fattore reale: $\\frac{I}{T}\\, \\frac{\\sin(n\\Omega\\tau/2)}{n\\Omega\\tau/2}$, identico al caso centrato. Il ritardo $e^{-jn\\Omega\\tau/2}$ ha argomento $-n\\Omega\\tau/2$, quindi $\\varphi_n = -\\arg(c_n) = n\\Omega\\tau/2$; per $n=1$ e i dati dell'esempio: $\\varphi_1 = \\pi/4$ radianti, non più zero."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Duty cycle dimezzato",
+    "testo": "Con $T = 4\\ \\mathrm{ms}$ fisso, porti $\\tau$ da $1$ a $0{,}5\\ \\mathrm{ms}$ (impulso centrato). Dove cade il primo zero delle ampiezze? Quante armoniche stanno nel lobo principale?",
+    "suggerimento": "Il primo zero è all'armonica $n = T/\\tau$.",
+    "soluzione_attesa": "Prima $T/\\tau = 4$: primo zero in $n = 4$. Dopo: $T/\\tau = 8$: primo zero in $n = 8$, il lobo principale contiene il doppio delle armoniche. Impulso più stretto, spettro più largo."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Scrivere la fase come «0 se $c_n>0$, π se $c_n<0$» senza dire che i coefficienti sono reali (nota A1)",
+      "perche_sbagliato": "Per coefficienti complessi il confronto con zero non è definito: la regola vale solo per il segnale reale e pari con impulso centrato, dove $c_n$ è reale."
+    },
+    {
+      "errore": "Dimenticare il fattore 2 passando da $c_n$ ad $A_n$",
+      "perche_sbagliato": "L'ampiezza del coseno reale somma i contributi delle armoniche $+n$ e $-n$: $A_n = 2|c_n|$ per $n \\ge 1$, mentre $A_0 = c_0$."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Perché i coefficienti dell'impulso periodico centrato sono reali?",
+        "risposta": "Perché il segnale in un periodo è reale e pari: la parte immaginaria dell'integrale è dispari e si annulla."
+      },
+      {
+        "domanda": "Dove si annullano le ampiezze dell'impulso periodico?",
+        "risposta": "Alle armoniche multiple di $T/\\tau$, dove l'inviluppo seno diviso argomento attraversa lo zero."
+      },
+      {
+        "domanda": "Che cosa aggiunge alla fase un impulso che parte da 0 invece che centrato?",
+        "risposta": "Il fattore di ritardo $e^{-jn\\Omega\\tau/2}$: la fase cresce linearmente con $n$ (più gli eventuali salti di $\\pi$ al cambio di segno)."
+      },
+      {
+        "domanda": "M15 in una frase: che cosa non può rappresentare un segnale periodico?",
+        "risposta": "Non lo si rappresenta con l'integrale di Fourier ordinario pensato per gli aperiodici di energia: il suo strumento è la serie, con spettro a righe."
+      }
+    ],
+    "spiega_con_parole_tue": "Spiega con parole tue perché accorciare l'impulso allarga lo spettro, usando la posizione del primo zero."
+  },
+  "riepilogo": "Serie esponenziale: righe alle armoniche $n\\cdot 2\\pi/T$. Impulso periodico centrato: coefficienti reali sotto l'inviluppo seno su argomento, fase solo $0$ o $\\pi$ (nota A1: in generale $\\varphi_n = -\\arg c_n$; impulso non centrato → rampa di fase). Zeri alle armoniche multiple di $T/\\tau$.",
+  "flashcard": [
+    {
+      "fronte": "Convenzione di fase in file1?",
+      "retro": "$2c_n = A_n e^{-j\\varphi_n}$, quindi $\\varphi_n = -\\arg(c_n)$."
+    },
+    {
+      "fronte": "Primo zero delle righe, impulso periodico?",
+      "retro": "Armonica $n = T/\\tau$."
+    },
+    {
+      "fronte": "$A_n$ da $c_n$ per $n \\ge 1$?",
+      "retro": "$A_n = 2|c_n|$."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "calcolare e disegnare righe di ampiezza e fase dell'impulso periodico centrato",
+      "correggere i coefficienti se l'impulso parte da zero"
+    ],
+    "so_dire": [
+      "la nota A1 sulla fase senza ambiguità",
+      "perché τ più piccolo allarga lo spettro"
+    ]
+  },
+  "figure": [
+    {
+      "id": "spettro-righe-impulsi-periodici",
+      "tipo": "grafico",
+      "titolo": "Spettro a righe di impulsi rettangolari periodici",
+      "descrizione": "Coefficienti della serie di Fourier, in valore con segno, di una successione periodica di impulsi rettangolari di ampiezza uno, durata un secondo e periodo quattro secondi: le righe seguono l'inviluppo di un seno diviso il suo argomento e si annullano quando l'indice è multiplo di quattro.",
+      "asse_x": {
+        "etichetta": "n (indice dell'armonica)",
+        "min": 0,
+        "max": 12,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 4,
+            "etichetta": "4"
+          },
+          {
+            "valore": 8,
+            "etichetta": "8"
+          },
+          {
+            "valore": 12,
+            "etichetta": "12"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "cₙ (con segno)",
+        "min": -0.12,
+        "max": 0.3
+      },
+      "serie": [
+        {
+          "stile": "righe",
+          "punti": [
+            [
+              0,
+              0.25
+            ],
+            [
+              1,
+              0.2251
+            ],
+            [
+              2,
+              0.1592
+            ],
+            [
+              3,
+              0.075
+            ],
+            [
+              4,
+              0.0
+            ],
+            [
+              5,
+              -0.045
+            ],
+            [
+              6,
+              -0.0531
+            ],
+            [
+              7,
+              -0.0322
+            ],
+            [
+              8,
+              -0.0
+            ],
+            [
+              9,
+              0.025
+            ],
+            [
+              10,
+              0.0318
+            ],
+            [
+              11,
+              0.0205
+            ],
+            [
+              12,
+              0.0
+            ]
+          ],
+          "etichetta": "cₙ, A = 1, τ = 1 s, T = 4 s"
+        }
+      ]
+    }
+  ]
+}
