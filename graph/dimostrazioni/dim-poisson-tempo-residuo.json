@@ -4,7 +4,7 @@
   "domande_esame": [
     "T13"
   ],
-  "enunciato": "T13, riformulazione da file2 p. 1: ricavare la legge dell’attesa residua dopo un intervallo già trascorso senza arrivi. Punteggio NON TROVATO.",
+  "enunciato": "Per un processo di Poisson omogeneo di tasso $\\lambda>0$, sia $X$ l’interarrivo e sia $R=X-t_0$ il tempo residuo sapendo che $X>t_0$, con $t_0\\ge0$. Per ogni $r\\ge0$ vale $P(R>r\\mid X>t_0)=e^{-\\lambda r}$: il residuo è esponenziale con lo stesso tasso e non dipende dal tempo già atteso.",
   "ipotesi": [
     "Arrivi di Poisson omogenei con tasso costante $\\lambda>0$; intervalli disgiunti hanno incrementi indipendenti.",
     "$X$ è il tempo interarrivo dopo un evento; si osserva $X>t_0$ per un tempo fissato $t_0\\ge0$.",
@@ -335,7 +335,7 @@
   "fonti": [
     {
       "chiave": "FILE2",
-      "rif": "file2 p. 1: T13, titolo riformulato"
+      "rif": "file2 p. 1: T13, titolo riformulato; punteggio NON TROVATO"
     },
     {
       "chiave": "FILE3",

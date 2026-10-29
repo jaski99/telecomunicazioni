@@ -15,7 +15,7 @@
     "tempo_studio_min": 25,
     "priorita": {
       "livello": "media",
-      "motivazione": "Concetto del programma o delle domande introduttive; frequenza NON TROVATO."
+      "motivazione": "Le domande introduttive I1, I2, I3, I4, I5, I6, I7, I8 e I9 richiedono i fondamenti delle reti e dei mezzi di comunicazione."
     },
     "fonti": [
       {
@@ -45,13 +45,13 @@
       {
         "id": "reti-concetti-introduttivi",
         "forza": "hard",
-        "motivo": "Serve per comprendere e applicare questo argomento."
+        "motivo": "La distinzione fra nodi, protocolli e servizi chiarisce quali funzioni ripartire nei livelli OSI e TCP/IP."
       }
     ],
     "tempo_studio_min": 25,
     "priorita": {
       "livello": "media",
-      "motivazione": "Concetto del programma o delle domande introduttive; frequenza NON TROVATO."
+      "motivazione": "Le prove M4 e M5 riguardano le architetture a strati; il livello di collegamento prepara inoltre la finestra di T12."
     },
     "fonti": [
       {
@@ -85,13 +85,13 @@
       {
         "id": "reti-concetti-introduttivi",
         "forza": "hard",
-        "motivo": "Serve per comprendere e applicare questo argomento."
+        "motivo": "Nodi e collegamenti consentono di confrontare risorse riservate e inoltro di pacchetti attraverso la rete."
       }
     ],
     "tempo_studio_min": 25,
     "priorita": {
       "livello": "media",
-      "motivazione": "Concetto del programma o delle domande introduttive; frequenza NON TROVATO."
+      "motivazione": "Nessuna prova è associata direttamente dal contratto; circuito e pacchetto applicano i fondamenti del percorso introduttivo I1–I9."
     },
     "fonti": [
       {
@@ -121,13 +121,13 @@
       {
         "id": "architetture-iso-osi-tcpip",
         "forza": "hard",
-        "motivo": "Serve per comprendere e applicare questo argomento."
+        "motivo": "Il modello a strati colloca HDLC e la finestra nel livello di collegamento, distinguendoli dal trasporto."
       }
     ],
     "tempo_studio_min": 35,
     "priorita": {
       "livello": "alta",
-      "motivazione": "Prova teorica diretta o prerequisito diretto di una prova teorica; frequenza NON TROVATO."
+      "motivazione": "Nessuna prova è associata direttamente; le finestre sono prerequisito di T12 e le trame preparano i codici di M28."
     },
     "fonti": [
       {
@@ -161,13 +161,13 @@
       {
         "id": "protocolli-linea-hdlc-sliding-window",
         "forza": "hard",
-        "motivo": "Serve per comprendere e applicare questo argomento."
+        "motivo": "Conoscere finestra, trame e ACK permette di contare i bit utili e confrontare la durata dell’invio con TT."
       }
     ],
     "tempo_studio_min": 45,
     "priorita": {
       "livello": "alta",
-      "motivazione": "Prova teorica diretta o prerequisito diretto di una prova teorica; frequenza NON TROVATO."
+      "motivazione": "La dimostrazione T12 richiede di confrontare l’efficienza nei due regimi della finestra e di interpretare gli ACK."
     },
     "fonti": [
       {
@@ -201,13 +201,13 @@
       {
         "id": "protocolli-linea-hdlc-sliding-window",
         "forza": "hard",
-        "motivo": "Serve per comprendere e applicare questo argomento."
+        "motivo": "Le trame e il controllo di collegamento individuano dove aggiungere ridondanza e rilevare eventuali errori."
       }
     ],
     "tempo_studio_min": 30,
     "priorita": {
       "livello": "media",
-      "motivazione": "Concetto del programma o delle domande introduttive; frequenza NON TROVATO."
+      "motivazione": "La prova M28 richiama i codici di rivelazione: la ridondanza permette di riconoscere alcune alterazioni delle trame."
     },
     "fonti": [
       {
@@ -241,13 +241,13 @@
       {
         "id": "reti-concetti-introduttivi",
         "forza": "hard",
-        "motivo": "Serve per comprendere e applicare questo argomento."
+        "motivo": "Il collegamento tra nodi fornisce distanza e capacità da cui ricavare tempi di propagazione e trasmissione."
       }
     ],
     "tempo_studio_min": 25,
     "priorita": {
       "livello": "alta",
-      "motivazione": "Prova teorica diretta o prerequisito diretto di una prova teorica; frequenza NON TROVATO."
+      "motivazione": "Le prove M19 e M24 coinvolgono il rapporto tra propagazione e trasmissione; il parametro è un prerequisito diretto di T16."
     },
     "fonti": [
       {
@@ -281,13 +281,13 @@
       {
         "id": "parametro-a-propagazione-trasmissione",
         "forza": "hard",
-        "motivo": "Serve per comprendere e applicare questo argomento."
+        "motivo": "Il rapporto fra propagazione e durata di trama aiuta a valutare quanto una collisione può rimanere non rilevata."
       }
     ],
     "tempo_studio_min": 35,
     "priorita": {
       "livello": "alta",
-      "motivazione": "Prova teorica diretta o prerequisito diretto di una prova teorica; frequenza NON TROVATO."
+      "motivazione": "Le prove M30 e M31 confrontano ritardi e velocità in TDMA e FDMA; il modello di accesso prepara T15 e T17."
     },
     "fonti": [
       {
@@ -321,13 +321,13 @@
       {
         "id": "accesso-multiplo-deterministico-casuale",
         "forza": "hard",
-        "motivo": "Serve per comprendere e applicare questo argomento."
+        "motivo": "La divisione temporale o in frequenza fissa slot, sottobande e risorse disponibili per confrontare i ritardi."
       }
     ],
     "tempo_studio_min": 40,
     "priorita": {
       "livello": "alta",
-      "motivazione": "Prova teorica diretta o prerequisito diretto di una prova teorica; frequenza NON TROVATO."
+      "motivazione": "La dimostrazione T17 confronta i ritardi medi di TDMA e FDMA alle ipotesi di generazione e risorse indicate."
     },
     "fonti": [
       {
@@ -361,18 +361,18 @@
       {
         "id": "accesso-multiplo-deterministico-casuale",
         "forza": "hard",
-        "motivo": "Serve per comprendere e applicare questo argomento."
+        "motivo": "Le collisioni nell’accesso casuale individuano l’intervallo vulnerabile del modello ALOHA."
       },
       {
         "id": "processo-poisson",
         "forza": "hard",
-        "motivo": "Serve per comprendere e applicare questo argomento."
+        "motivo": "La legge di Poisson permette di calcolare la probabilità di zero tentativi concorrenti nella finestra vulnerabile."
       }
     ],
     "tempo_studio_min": 45,
     "priorita": {
       "livello": "alta",
-      "motivazione": "Prova teorica diretta o prerequisito diretto di una prova teorica; frequenza NON TROVATO."
+      "motivazione": "La prova T15 e i quiz M2 e M3 riguardano il throughput ALOHA; il confronto tra collisioni prepara anche T16."
     },
     "fonti": [
       {
@@ -406,18 +406,18 @@
       {
         "id": "dim-aloha-throughput",
         "forza": "hard",
-        "motivo": "Serve per comprendere e applicare questo argomento."
+        "motivo": "Il throughput e le collisioni ALOHA offrono un confronto con contesa e ascolto del mezzo in CSMA/CD."
       },
       {
         "id": "parametro-a-propagazione-trasmissione",
         "forza": "hard",
-        "motivo": "Serve per comprendere e applicare questo argomento."
+        "motivo": "Il rapporto $a=T_p/T_f$ esprime la durata $2T_p$ degli slot falliti come frazione della durata di un frame."
       }
     ],
     "tempo_studio_min": 45,
     "priorita": {
       "livello": "alta",
-      "motivazione": "Prova teorica diretta o prerequisito diretto di una prova teorica; frequenza NON TROVATO."
+      "motivazione": "La dimostrazione T16 richiede la probabilità di successo in contesa e il throughput CSMA/CD in funzione di a."
     },
     "fonti": [
       {
@@ -451,13 +451,13 @@
       {
         "id": "dim-csma-cd-throughput",
         "forza": "hard",
-        "motivo": "Serve per comprendere e applicare questo argomento."
+        "motivo": "Il modello di contesa e rilevazione delle collisioni distingue Ethernet condivisa dal collegamento full duplex commutato."
       }
     ],
     "tempo_studio_min": 20,
     "priorita": {
       "livello": "bassa",
-      "motivazione": "Approfondimento oltre le prove teoriche associate; frequenza NON TROVATO."
+      "motivazione": "Nessuna prova è associata direttamente dal contratto; Ethernet applica il modello CSMA/CD studiato per T16 soltanto nel caso condiviso."
     },
     "fonti": [
       {

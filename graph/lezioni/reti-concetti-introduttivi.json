@@ -71,7 +71,7 @@
         "risposta": "Sono riportate negli appunti; verifica indipendente dei dettagli NON TROVATO."
       }
     ],
-    "spiega_con_parole_tue": "Senza guardare, spiega le ipotesi e ricostruisci un esempio, indicando anche quando il modello non si applica."
+    "spiega_con_parole_tue": "Con tre terminali e un nodo intermedio, distingui nodo, collegamento, protocollo e indirizzo; confronta rame, fibra e radio come mezzi."
   },
   "riepilogo": "Rete: nodi e linee; servizio: utenti e fornitori; protocollo: regole; indirizzo: destinatario. Mezzo e modello determinano la propagazione.",
   "flashcard": [

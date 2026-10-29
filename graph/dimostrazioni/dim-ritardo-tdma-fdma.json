@@ -4,7 +4,7 @@
   "domande_esame": [
     "T17"
   ],
-  "enunciato": "T17, riformulazione da file2 p. 1: calcolare e confrontare i tempi medi di consegna dei pacchetti nelle due ripartizioni. Punteggio NON TROVATO.",
+  "enunciato": "Per $M\\ge1$ utenti con uguali risorse, un pacchetto per utente generato all’inizio del ciclo e nessuna coda o overhead, i ritardi medi dalla generazione alla fine della trasmissione sono $D_{FD}=T$ e $D_{TD}=\\frac{T(M+1)}{2M}$, dove $T$ è la durata del ciclo. Quindi $D_{TD}\\le D_{FD}$, con uguaglianza solo per $M=1$; l’ipotesi sugli istanti di generazione resta da verificare.",
   "ipotesi": [
     "M utenti con pacchetti di $b$ bit, capacità aggregata $R$ e nessun tempo di guardia o overhead.",
     "IPOTESI di ricostruzione della media degli appunti: ogni utente genera un pacchetto all’inizio del ciclo e ciascuna delle M posizioni TDMA è rappresentata una volta.",
@@ -298,7 +298,7 @@
   "fonti": [
     {
       "chiave": "FILE2",
-      "rif": "file2 p. 1: T17, titolo riformulato"
+      "rif": "file2 p. 1: T17, titolo riformulato; punteggio NON TROVATO"
     },
     {
       "chiave": "FILE3",

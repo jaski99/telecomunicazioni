@@ -62,7 +62,7 @@
         "risposta": "No: alcuni errori sono multipli del generatore."
       }
     ],
-    "spiega_con_parole_tue": "Senza guardare, spiega le ipotesi e ricostruisci un esempio, indicando anche quando il modello non si applica."
+    "spiega_con_parole_tue": "Applica il controllo CRC al messaggio 101 con generatore $x+1$, ricava il bit di controllo e spiega perché un resto zero non esclude ogni errore."
   },
   "riepilogo": "Un codice aggiunge ridondanza; un CRC verifica la divisibilità binaria. Rivelazione e correzione sono capacità differenti.",
   "flashcard": [

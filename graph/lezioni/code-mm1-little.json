@@ -67,7 +67,7 @@
         "risposta": "$L=\\lambda W$, con tasso effettivo e definizioni coerenti."
       }
     ],
-    "spiega_con_parole_tue": "Senza guardare, spiega le ipotesi e ricostruisci un esempio, indicando anche quando il modello non si applica."
+    "spiega_con_parole_tue": "Per una M/M/1 con $\\lambda=2$/min e $\\mu=3$/min, verifica la stabilità e ricava occupazione e tempo medio nel sistema con la legge di Little."
   },
   "riepilogo": "M/M/1 richiede $\\lambda<\\mu$. In equilibrio Little lega numero e permanenza; separa sistema e sola coda.",
   "flashcard": [

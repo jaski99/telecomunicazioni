@@ -63,7 +63,7 @@
         "risposta": "No, vale solo per il modello di contesa dichiarato."
       }
     ],
-    "spiega_con_parole_tue": "Senza guardare, spiega le ipotesi e ricostruisci un esempio, indicando anche quando il modello non si applica."
+    "spiega_con_parole_tue": "Confronta un bus Ethernet condiviso con due porte full duplex di uno switch: descrivi le trame MAC e quando è pertinente CSMA/CD."
   },
   "riepilogo": "Le LAN usano trame e collegamenti. CSMA/CD è pertinente al mezzo condiviso, non automaticamente a porte full duplex.",
   "flashcard": [

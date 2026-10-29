@@ -62,7 +62,7 @@
         "risposta": "Solo per due link uguali e senza propagazione, elaborazione o coda."
       }
     ],
-    "spiega_con_parole_tue": "Senza guardare, spiega le ipotesi e ricostruisci un esempio, indicando anche quando il modello non si applica."
+    "spiega_con_parole_tue": "Confronta instaurazione del circuito e inoltro store-and-forward; spiega quando due link introducono un tempo di serializzazione $2b/C$."
   },
   "riepilogo": "Il circuito riserva risorse; i pacchetti condividono capacità. I ritardi richiedono sempre un modello esplicito.",
   "flashcard": [

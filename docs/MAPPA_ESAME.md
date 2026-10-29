@@ -3,73 +3,103 @@
 > Generato automaticamente da `scripts/gen_docs.py`. Non modificare a mano.
 > Fonte: `graph/esame.json` (se presente) e `graph/graph.json`. Avvertenza: raccolta di studenti (file2), non prova ufficiale; frequenze e punteggi non indicati = NON TROVATO.
 
-Nessuna prova configurata in `graph/esame.json` (in attesa di W6).
+## Domande teoriche (T)
 
-Struttura prevista (da file2):
+| ID | Titolo | Punti | Nodi | Stato verifica |
+|---|---|---|---|---|
 
-- **Teoria (T1–T17)**: 17 domande — solo T5 e T11 valgono 10 punti, altre NON TROVATO
-- **Esercizi (E1–E9)**: 9 esercizi — punteggio NON TROVATO
-- **Quiz (M1–M34)**: 34 domande a risposta multipla — punteggio NON TROVATO
-- **Intro reti (I1–I9)**: 9 domande introduttive — punteggio NON TROVATO
+| T1 | Teorema del campionamento nel tempo | NON TROVATO | `dim-teorema-campionamento` | dim-teorema-campionamento:verificata_file1_file3 |
+| T10 | Modulazione a prodotto, QAM ed errore di fase | NON TROVATO | `dim-modulazione-prodotto-qam-errore-fase` | — |
+| T11 | Quadripoli e passa-basso equivalente | 10 | `dim-quadripoli-passa-basso-equivalente` | — |
+| T12 | Efficienza sliding window senza errori | NON TROVATO | `dim-sliding-window-efficienza` | dim-sliding-window-efficienza:da_verificare |
+| T13 | Tempo residuo in un processo di Poisson | NON TROVATO | `dim-poisson-tempo-residuo` | dim-poisson-tempo-residuo:verificata_file1_file3 |
+| T14 | Equilibrio dei processi nascita-morte | NON TROVATO | `dim-nascita-morte-equilibrio` | dim-nascita-morte-equilibrio:verificata_file1_file3 |
+| T15 | Throughput normalizzato ALOHA | NON TROVATO | `dim-aloha-throughput` | dim-aloha-throughput:verificata_file1_file3 |
+| T16 | Throughput CSMA/CD e parametro a | NON TROVATO | `dim-csma-cd-throughput` | dim-csma-cd-throughput:da_verificare |
+| T17 | Ritardo medio TDMA rispetto a FDMA | NON TROVATO | `dim-ritardo-tdma-fdma` | dim-ritardo-tdma-fdma:da_verificare |
+| T2 | Trasformata della funzione impulsiva | NON TROVATO | `dim-impulso-dirac-trasformata` | dim-impulso-dirac-trasformata:verificata_file1_file3 |
+| T3 | Filtro trasversale e funzione di trasferimento | NON TROVATO | `dim-filtro-trasversale` | dim-filtro-trasversale:verificata_file1_file3 |
+| T4 | Risposta impulsiva e funzione di trasferimento | NON TROVATO | `dim-risposta-impulsiva-h` | dim-risposta-impulsiva-h:verificata_file1_file3 |
+| T5 | Segnali PAM e due spettri | 10 | `dim-pam-due-spettri` | dim-pam-due-spettri:verificata_file1_file3 |
+| T6 | Spettri della modulazione a prodotto | NON TROVATO | `dim-spettri-modulazione-prodotto` | — |
+| T7 | Conversione analogico-digitale in tre fasi | NON TROVATO | `dim-conversione-ad` | — |
+| T8 | Conversione digitale-analogica e ricostruzione | NON TROVATO | `dim-conversione-da` | — |
+| T9 | Conversione tra modulatori PM e FM | NON TROVATO | `dim-pm-fm-trasformazione` | — |
 
-## Mappa contratto (ID → domande)
+## Esercizi (E)
 
-| Nodo | Area | Tipo | Domande |
-|---|---|---|---|
+| ID | Titolo | Punti | Nodi | Stato verifica |
+|---|---|---|---|---|
 
-| `dim-impulso-dirac-trasformata` | 1 | dimostrazione | T2 |
-| `energia-potenza-spettri` | 1 | concetto | M29 |
-| `es-antitrasformata-rettangolare` | 1 | tipo_esercizio | E3 |
-| `es-spettri-impulsi-periodici` | 1 | tipo_esercizio | E1 |
-| `es-spettri-impulso-rettangolare` | 1 | tipo_esercizio | E2 |
-| `segnali-deterministici` | 1 | concetto | — |
-| `serie-fourier` | 1 | concetto | M15 |
-| `trasformata-fourier` | 1 | concetto | M9 |
-| `dim-filtro-trasversale` | 2 | dimostrazione | T3 |
-| `dim-risposta-impulsiva-h` | 2 | dimostrazione | T4 |
-| `es-rete-cr` | 2 | tipo_esercizio | E6 |
-| `es-rete-rc` | 2 | tipo_esercizio | E5 |
-| `filtri-ricorrenti-trasversali` | 2 | concetto | M16, M17, M18 |
-| `sistemi-lineari-funzione-trasferimento` | 2 | concetto | — |
-| `criterio-nyquist-isi` | 3 | concetto | M25, M26 |
-| `dim-pam-due-spettri` | 3 | dimostrazione | T5 |
-| `dim-teorema-campionamento` | 3 | dimostrazione | T1 |
-| `es-condizione-nyquist` | 3 | tipo_esercizio | E4 |
-| `es-derivatore-processo-gaussiano` | 3 | tipo_esercizio | E7 |
-| `es-pam-ami` | 3 | tipo_esercizio | E9 |
-| `es-pam-bipolare` | 3 | tipo_esercizio | E8 |
-| `processi-aleatori-stazionarieta-ergodicita` | 3 | concetto | M6, M10 |
-| `processi-gaussiani-funzione-errore` | 3 | concetto | — |
-| `segnali-pam` | 3 | concetto | — |
-| `serie-temporali-trasformata` | 3 | concetto | — |
-| `collegamento-numerico-tdm-pcm` | 4 | concetto | — |
-| `conversione-ad-quantizzazione-pcm` | 4 | concetto | — |
-| `dim-conversione-ad` | 4 | dimostrazione | T7 |
-| `dim-conversione-da` | 4 | dimostrazione | T8 |
-| `demodulazione-coerente-non-coerente` | 5 | concetto | M21, M22 |
-| `dim-formula-carson` | 5 | dimostrazione | M12, M13, M14 |
-| `dim-modulazione-prodotto-qam-errore-fase` | 5 | dimostrazione | T10 |
-| `dim-pm-fm-trasformazione` | 5 | dimostrazione | T9 |
-| `dim-quadripoli-passa-basso-equivalente` | 5 | dimostrazione | T11 |
-| `dim-spettri-modulazione-prodotto` | 5 | dimostrazione | T6 |
-| `modulazione-prodotto-dsb-ssb` | 5 | concetto | M1, M11, M20, M23, M27, M34 |
-| `modulazioni-angolo-pm-fm` | 5 | concetto | M7, M8, M32, M33 |
-| `modulazioni-numeriche` | 5 | concetto | — |
-| `segnali-passa-banda-inviluppo-complesso` | 5 | concetto | — |
-| `accesso-multiplo-deterministico-casuale` | 6 | concetto | M30, M31 |
-| `architetture-iso-osi-tcpip` | 6 | concetto | M4, M5 |
-| `codici-rivelazione-errore` | 6 | concetto | M28 |
-| `commutazione-circuito-pacchetto` | 6 | concetto | — |
-| `dim-aloha-throughput` | 6 | dimostrazione | T15, M2, M3 |
-| `dim-csma-cd-throughput` | 6 | dimostrazione | T16 |
-| `dim-ritardo-tdma-fdma` | 6 | dimostrazione | T17 |
-| `dim-sliding-window-efficienza` | 6 | dimostrazione | T12 |
-| `lan-ieee802-ethernet` | 6 | concetto | — |
-| `parametro-a-propagazione-trasmissione` | 6 | concetto | M19, M24 |
-| `protocolli-linea-hdlc-sliding-window` | 6 | concetto | — |
-| `reti-concetti-introduttivi` | 6 | concetto | I1, I2, I3, I4, I5, I6, I7, I8, I9 |
-| `code-mm1-little` | 7 | concetto | — |
-| `dim-nascita-morte-equilibrio` | 7 | dimostrazione | T14 |
-| `dim-poisson-tempo-residuo` | 7 | dimostrazione | T13 |
-| `es-teoria-traffico-extra` | 7 | tipo_esercizio | — |
-| `processo-poisson` | 7 | concetto | — |
+| E1 | Spettro di una successione periodica rettangolare | NON TROVATO | `es-spettri-impulsi-periodici` | — |
+| E2 | Spettro di un impulso rettangolare isolato | NON TROVATO | `es-spettri-impulso-rettangolare` | — |
+| E3 | Antitrasformata di uno spettro rettangolare | NON TROVATO | `es-antitrasformata-rettangolare` | — |
+| E4 | Campionamento con un solo campione non nullo | NON TROVATO | `es-condizione-nyquist` | — |
+| E5 | Risposta in frequenza della rete RC | NON TROVATO | `es-rete-rc` | — |
+| E6 | Risposta in frequenza della rete CR | NON TROVATO | `es-rete-cr` | — |
+| E7 | Uscita di un derivatore con ingresso gaussiano | NON TROVATO | `es-derivatore-processo-gaussiano` | — |
+| E8 | Spettro PAM con codice bipolare | NON TROVATO | `es-pam-bipolare` | — |
+| E9 | Spettro PAM con codice AMI | NON TROVATO | `es-pam-ami` | — |
+
+## Risposta multipla (M)
+
+| ID | Titolo | Punti | Nodi | Stato verifica |
+|---|---|---|---|---|
+
+| M1 | Concetto: equivalenza SSB-BC | NON TROVATO | `modulazione-prodotto-dsb-ssb` | — |
+| M10 | Concetto: stazionarietà ed ergodicità | NON TROVATO | `processi-aleatori-stazionarieta-ergodicita` | — |
+| M11 | Concetto: simmetria spettrale in modulazione prodotto | NON TROVATO | `modulazione-prodotto-dsb-ssb` | — |
+| M12 | Concetto: interpretazione di Carson | NON TROVATO | `dim-formula-carson` | — |
+| M13 | Concetto: banda di un segnale modulato d’angolo | NON TROVATO | `dim-formula-carson` | — |
+| M14 | Concetto: espressione di Carson | NON TROVATO | `dim-formula-carson` | — |
+| M15 | Concetto: rappresentazione dei periodici | NON TROVATO | `serie-fourier` | — |
+| M16 | Concetto: filtro ricorrente | NON TROVATO | `filtri-ricorrenti-trasversali` | — |
+| M17 | Concetto: filtro ricorsivo puro | NON TROVATO | `filtri-ricorrenti-trasversali` | — |
+| M18 | Concetto: filtro trasversale | NON TROVATO | `filtri-ricorrenti-trasversali` | — |
+| M19 | Concetto: rapporto propagazione-trasmissione | NON TROVATO | `parametro-a-propagazione-trasmissione` | — |
+| M2 | Concetto: massimo slotted ALOHA | NON TROVATO | `dim-aloha-throughput` | dim-aloha-throughput:verificata_file1_file3 |
+| M20 | Concetto: conversione di frequenza | NON TROVATO | `modulazione-prodotto-dsb-ssb` | — |
+| M21 | Concetto: demodulazione coerente | NON TROVATO | `demodulazione-coerente-non-coerente` | — |
+| M22 | Concetto: demodulazione non coerente | NON TROVATO | `demodulazione-coerente-non-coerente` | — |
+| M23 | Concetto: bande laterali prodotto | NON TROVATO | `modulazione-prodotto-dsb-ssb` | — |
+| M24 | Concetto: valore problematico di a | NON TROVATO | `parametro-a-propagazione-trasmissione` | — |
+| M25 | Concetto: banda di Nyquist per sequenza impulsiva | NON TROVATO | `criterio-nyquist-isi` | — |
+| M26 | Concetto: criterio di Nyquist | NON TROVATO | `criterio-nyquist-isi` | — |
+| M27 | Concetto: altro nome di AM | NON TROVATO | `modulazione-prodotto-dsb-ssb` | — |
+| M28 | Concetto: codice sistematico | NON TROVATO | `codici-rivelazione-errore` | — |
+| M29 | Concetto: spettro energia e autocorrelazione | NON TROVATO | `energia-potenza-spettri` | — |
+| M3 | Concetto: confronto slotted e puro ALOHA | NON TROVATO | `dim-aloha-throughput` | dim-aloha-throughput:verificata_file1_file3 |
+| M30 | Concetto: ritardo TDMA e FDMA | NON TROVATO | `accesso-multiplo-deterministico-casuale` | — |
+| M31 | Concetto: velocità FDMA e TDMA | NON TROVATO | `accesso-multiplo-deterministico-casuale` | — |
+| M32 | Concetto: conversione PM-FM | NON TROVATO | `modulazioni-angolo-pm-fm` | — |
+| M33 | Concetto: conversione FM-PM | NON TROVATO | `modulazioni-angolo-pm-fm` | — |
+| M34 | Concetto: passa-banda modulato | NON TROVATO | `modulazione-prodotto-dsb-ssb` | — |
+| M4 | Concetto: livello 4 OSI | NON TROVATO | `architetture-iso-osi-tcpip` | — |
+| M5 | Concetto: livello 5 OSI | NON TROVATO | `architetture-iso-osi-tcpip` | — |
+| M6 | Concetto: informazione energetica del processo | NON TROVATO | `processi-aleatori-stazionarieta-ergodicita` | — |
+| M7 | Concetto: PM per ottenere FM | NON TROVATO | `modulazioni-angolo-pm-fm` | — |
+| M8 | Concetto: FM per ottenere PM | NON TROVATO | `modulazioni-angolo-pm-fm` | — |
+| M9 | Concetto: integrabilità e potenza | NON TROVATO | `trasformata-fourier` | — |
+
+## Domande introduttive reti (I)
+
+| ID | Titolo | Punti | Nodi | Stato verifica |
+|---|---|---|---|---|
+
+| I1 | Reti: componenti di una rete | NON TROVATO | `reti-concetti-introduttivi` | — |
+| I2 | Reti: definizione strutturale di rete | NON TROVATO | `reti-concetti-introduttivi` | — |
+| I3 | Reti: protocollo di comunicazione | NON TROVATO | `reti-concetti-introduttivi` | — |
+| I4 | Reti: funzione degli indirizzi | NON TROVATO | `reti-concetti-introduttivi` | — |
+| I5 | Reti: scopo della standardizzazione | NON TROVATO | `reti-concetti-introduttivi` | — |
+| I6 | Reti: attribuzione storica del telefono | NON TROVATO | `reti-concetti-introduttivi` | — |
+| I7 | Reti: obiettivi della telefonia | NON TROVATO | `reti-concetti-introduttivi` | — |
+| I8 | Reti: prime radiocomunicazioni | NON TROVATO | `reti-concetti-introduttivi` | — |
+| I9 | Reti: mezzi trasmissivi | NON TROVATO | `reti-concetti-introduttivi` | — |
+
+## Legenda verifica
+
+- `verificata_testo_prof`: confrontata col libro del prof.
+- `verificata_file1_file3`: confrontata con file1 e file3
+- `solo_file3`: solo da file3
+- `ricostruzione_non_del_prof`: ricostruzione standard, non del testo
+- `da_verificare`: da verificare

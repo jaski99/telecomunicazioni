@@ -4,7 +4,7 @@
   "domande_esame": [
     "T14"
   ],
-  "enunciato": "T14, riformulazione da file2 p. 1: trovare le probabilità di stato stazionarie di un processo nascita–morte e il fattore di normalizzazione. Punteggio NON TROVATO.",
+  "enunciato": "In un processo nascita–morte irriducibile con stati finiti $0,\\ldots,N$ e tassi positivi $\\lambda_i$ di nascita e $\\mu_{i+1}$ di morte, le probabilità stazionarie soddisfano $p_k=p_0\\prod_{i=0}^{k-1}\\frac{\\lambda_i}{\\mu_{i+1}}$ per $1\\le k\\le N$, con normalizzazione $p_0=\\left(1+\\sum_{k=1}^{N}\\prod_{i=0}^{k-1}\\frac{\\lambda_i}{\\mu_{i+1}}\\right)^{-1}$. Per infiniti stati occorrono non esplosività e convergenza della serie di normalizzazione.",
   "ipotesi": [
     "Catena di Markov a tempo continuo sugli stati finiti $0,1,\\ldots,N$ con sole transizioni tra vicini.",
     "$\\lambda_k>0$ per $0\\le k<N$, $\\mu_k>0$ per $1\\le k\\le N$, $\\mu_0=0$ e $\\lambda_N=0$.",
@@ -267,7 +267,7 @@
   "fonti": [
     {
       "chiave": "FILE2",
-      "rif": "file2 p. 1: T14, titolo riformulato"
+      "rif": "file2 p. 1: T14, titolo riformulato; punteggio NON TROVATO"
     },
     {
       "chiave": "FILE3",

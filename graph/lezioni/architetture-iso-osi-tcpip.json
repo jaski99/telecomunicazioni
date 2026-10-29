@@ -62,7 +62,7 @@
         "risposta": "Nel livello Internet, associato alle funzioni di rete."
       }
     ],
-    "spiega_con_parole_tue": "Senza guardare, spiega le ipotesi e ricostruisci un esempio, indicando anche quando il modello non si applica."
+    "spiega_con_parole_tue": "Ricostruisci i sette livelli OSI, colloca IP e TCP nella vista TCP/IP e descrivi come un messaggio viene incapsulato."
   },
   "riepilogo": "OSI separa sette livelli; TCP/IP li raggruppa diversamente. Trasporto è il quarto, sessione il quinto.",
   "flashcard": [

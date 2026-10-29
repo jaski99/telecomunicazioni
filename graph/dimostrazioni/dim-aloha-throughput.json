@@ -6,7 +6,7 @@
     "M2",
     "M3"
   ],
-  "enunciato": "T15, riformulazione da file2 p. 1: ricavare il throughput normalizzato in funzione del traffico totale e confrontare le due versioni ALOHA. Punteggio NON TROVATO.",
+  "enunciato": "Nel modello ALOHA ideale, con trame uguali e tentativi poissoniani, sia $G$ il carico totale normalizzato, incluse le ritrasmissioni: il throughput puro è $\\rho_{\\mathrm{puro}}=Ge^{-2G}$ e raggiunge il massimo $1/(2e)$ per $G=1/2$. Con slot sincronizzati è $\\rho_{\\mathrm{slot}}=Ge^{-G}$ e raggiunge il massimo $1/e$ per $G=1$.",
   "ipotesi": [
     "Trame tutte lunghe $b$ bit, capacità $R>0$ e durata $\\tau=b/R$ costante.",
     "Nel modello ideale, gli altri tentativi complessivi, incluse le ritrasmissioni, sono poissoniani e indipendenti dal tentativo di riferimento.",
@@ -834,7 +834,7 @@
   "fonti": [
     {
       "chiave": "FILE2",
-      "rif": "file2 pp. 1 e 9: T15, M2, M3, temi riformulati"
+      "rif": "file2 pp. 1 e 9: T15, M2, M3, temi riformulati; punteggio NON TROVATO"
     },
     {
       "chiave": "FILE3",

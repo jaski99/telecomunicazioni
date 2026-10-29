@@ -62,7 +62,7 @@
         "risposta": "Il massimo slotted $1/e$ è il doppio del massimo puro $1/(2e)$."
       }
     ],
-    "spiega_con_parole_tue": "Senza guardare, spiega le ipotesi e ricostruisci un esempio, indicando anche quando il modello non si applica."
+    "spiega_con_parole_tue": "Con quattro utenti, confronta la divisione delle risorse in TDMA e FDMA con i tentativi casuali ALOHA; spiega che cosa aggiunge l’ascolto CSMA."
   },
   "riepilogo": "TDMA e FDMA ripartiscono risorse; ALOHA e CSMA competono. Ogni confronto richiede capacità, carico e ipotesi.",
   "flashcard": [

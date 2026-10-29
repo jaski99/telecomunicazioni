@@ -15,7 +15,7 @@
     "tempo_studio_min": 30,
     "priorita": {
       "livello": "alta",
-      "motivazione": "Prova teorica diretta o prerequisito diretto di una prova teorica; frequenza NON TROVATO."
+      "motivazione": "Nessuna prova è associata direttamente; il modello degli arrivi è prerequisito delle dimostrazioni T13, T14 e T15."
     },
     "fonti": [
       {
@@ -49,13 +49,13 @@
       {
         "id": "processo-poisson",
         "forza": "hard",
-        "motivo": "Serve per comprendere e applicare questo argomento."
+        "motivo": "La probabilità di zero arrivi in un intervallo fornisce la sopravvivenza esponenziale necessaria al residuo."
       }
     ],
     "tempo_studio_min": 40,
     "priorita": {
       "livello": "alta",
-      "motivazione": "Prova teorica diretta o prerequisito diretto di una prova teorica; frequenza NON TROVATO."
+      "motivazione": "La dimostrazione T13 usa l’assenza di memoria dell’interarrivo esponenziale per ricavare la legge del tempo residuo."
     },
     "fonti": [
       {
@@ -89,13 +89,13 @@
       {
         "id": "processo-poisson",
         "forza": "hard",
-        "motivo": "Serve per comprendere e applicare questo argomento."
+        "motivo": "Gli arrivi poissoniani a tasso costante illustrano un tasso di nascita; il modello generale ammette tassi dipendenti dallo stato."
       }
     ],
     "tempo_studio_min": 45,
     "priorita": {
       "livello": "alta",
-      "motivazione": "Prova teorica diretta o prerequisito diretto di una prova teorica; frequenza NON TROVATO."
+      "motivazione": "La dimostrazione T14 richiede i bilanci fra stati adiacenti e la normalizzazione delle probabilità di equilibrio."
     },
     "fonti": [
       {
@@ -129,13 +129,13 @@
       {
         "id": "dim-nascita-morte-equilibrio",
         "forza": "hard",
-        "motivo": "Serve per comprendere e applicare questo argomento."
+        "motivo": "Le probabilità di nascita–morte, specializzate a $\\lambda$ e $\\mu$ costanti, descrivono la coda M/M/1 stabile."
       }
     ],
     "tempo_studio_min": 30,
     "priorita": {
       "livello": "bassa",
-      "motivazione": "Approfondimento oltre le prove teoriche associate; frequenza NON TROVATO."
+      "motivazione": "Nessuna prova è associata direttamente dal contratto; la coda M/M/1 specializza il modello nascita–morte della T14."
     },
     "fonti": [
       {

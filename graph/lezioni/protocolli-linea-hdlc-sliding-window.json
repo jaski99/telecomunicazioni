@@ -67,7 +67,7 @@
         "risposta": "Quando $WF\\ge CTT$, sotto le altre ipotesi ideali."
       }
     ],
-    "spiega_con_parole_tue": "Senza guardare, spiega le ipotesi e ricostruisci un esempio, indicando anche quando il modello non si applica."
+    "spiega_con_parole_tue": "Con $W=2$, trame da un secondo e $TT=3$ s, disegna invii, ACK e attesa; spiega quando la finestra ricomincia a scorrere."
   },
   "riepilogo": "La finestra controlla le trame non confermate. L’ACK libera spazio; il confronto tra $WF$ e $CTT$ decide se si attende.",
   "flashcard": [

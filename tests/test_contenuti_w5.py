@@ -4,6 +4,8 @@ import datetime
 import json
 import math
 import re
+import unicodedata
+from collections import defaultdict
 from pathlib import Path
 
 import pytest
@@ -173,6 +175,39 @@ def strings(value, path=()):
     elif isinstance(value, list):
         for index, item in enumerate(value):
             yield from strings(item, (*path, index))
+
+
+def w5_source_files():
+    # I soli sorgenti: graph.json incorpora già una copia dei contenuti.
+    paths = [GRAPH / f"parts/area-{area}.json" for area in (6, 7)]
+    for node_id, spec in sorted(w5_contract().items()):
+        directory = "dimostrazioni" if spec["tipo"] == "dimostrazione" else "lezioni"
+        paths.append(GRAPH / directory / f"{node_id}.json")
+    return paths
+
+
+def duplicate_exempt(path, text):
+    field = path[-1] if path else None
+    if field in {"id", "stato", "figura", "corsia"}:
+        return True
+    if field in {"da", "a"} and "collegamenti" in path:
+        return True
+    if len(path) >= 2 and isinstance(field, int) and path[-2] in {"collegamenti", "domande_esame"}:
+        return True
+    return "punti_aperti" in path and "NON TROVATO" in text
+
+
+def repeated_texts(documents):
+    occurrences = defaultdict(list)
+    for filename, document in documents:
+        for path, text in strings(document):
+            if duplicate_exempt(path, text):
+                continue
+            normalized = re.sub(r"\s+", " ", unicodedata.normalize("NFC", text)).strip()
+            if len(normalized) > 30:
+                occurrences[normalized].append((str(filename), path))
+    return {text: locations for text, locations in occurrences.items()
+            if len({filename for filename, _ in locations}) > 1}
 
 
 def formulas(text):
@@ -356,9 +391,92 @@ def test_dimostrazione_completa(node_id):
     datetime.date.fromisoformat(verify["data"])
     if not verify["stato"].startswith("verificata_"):
         assert verify["punti_aperti"]
-    assert "NON TROVATO" in proof["enunciato"]
+    assert any(source["chiave"] == "FILE2" and "NON TROVATO" in source["rif"]
+               for source in proof["fonti"])
+    assert all("file2" not in text.lower() for path, text in strings(proof) if "fonti" not in path)
+    assert "punteggio" not in proof["enunciato"].lower()
     check_figures(proof["figure"])
     check_text(proof)
+
+
+@pytest.mark.parametrize("node_id,fragments", [
+    ("dim-sliding-window-efficienza", (r"WF\le C\,TT", r"WF>C\,TT", r"\eta=\dfrac{WD}{C\,TT}", r"\eta=\dfrac{D}{F}")),
+    ("dim-poisson-tempo-residuo", (r"X>t_0", r"P(R>r\mid X>t_0)=e^{-\lambda r}")),
+    ("dim-nascita-morte-equilibrio", (r"p_k=p_0\prod_{i=0}^{k-1}\frac{\lambda_i}{\mu_{i+1}}", r"p_0=\left(1+\sum_{k=1}^{N}")),
+    ("dim-aloha-throughput", (r"Ge^{-2G}", r"Ge^{-G}", "1/(2e)", "1/e", "G=1/2", "G=1")),
+    ("dim-csma-cd-throughput", (r"S=\frac{1}{1+2a(1-A)/A}", r"A=Np(1-p)^{N-1}", r"A_{\max}=\left(1-\frac{1}{N}\right)^{N-1}", "verificare")),
+    ("dim-ritardo-tdma-fdma", (r"D_{FD}=T", r"D_{TD}=\frac{T(M+1)}{2M}", "inizio del ciclo", "verificare")),
+])
+def test_enunciato_esplicita_risultato_e_ipotesi(node_id, fragments):
+    statement = content(node_id, "dimostrazioni")["enunciato"]
+    for fragment in fragments:
+        assert fragment in statement, (node_id, fragment)
+
+
+def test_motivazioni_e_prerequisiti_specifici():
+    all_nodes = nodes()
+    specs = w5_contract()
+    motivations = [node["priorita"]["motivazione"] for node in all_nodes]
+    reasons = [p["motivo"] for node in all_nodes for p in node["prerequisiti"]]
+    assert len(motivations) == len(set(motivations))
+    assert len(reasons) == len(set(reasons))
+    assert all(len(reason.strip()) > 30 for reason in reasons)
+    for node in all_nodes:
+        motivation = node["priorita"]["motivazione"]
+        questions = specs[node["id"]]["domande_esame"]
+        for question in questions:
+            assert re.search(rf"(?<![A-Za-z0-9]){re.escape(question)}(?![0-9])", motivation), (node["id"], question)
+        if not questions:
+            assert "nessuna prova" in motivation.lower(), node["id"]
+
+
+def test_compiti_di_richiamo_specifici_per_lezione():
+    markers = {
+        "reti-concetti-introduttivi": ("nodo", "protocollo"),
+        "architetture-iso-osi-tcpip": ("OSI", "TCP"),
+        "commutazione-circuito-pacchetto": ("circuito", "store-and-forward"),
+        "protocolli-linea-hdlc-sliding-window": ("W=2", "ACK"),
+        "codici-rivelazione-errore": ("CRC", "101"),
+        "parametro-a-propagazione-trasmissione": ("200 m", "T_p"),
+        "accesso-multiplo-deterministico-casuale": ("TDMA", "ALOHA"),
+        "lan-ieee802-ethernet": ("Ethernet", "CSMA/CD"),
+        "processo-poisson": ("arrivi/s", "residuo"),
+        "code-mm1-little": ("M/M/1", "Little"),
+    }
+    assert set(markers) == set(CONCEPTS)
+    tasks = [content(node_id, "lezioni")["richiamo_attivo"]["spiega_con_parole_tue"] for node_id in CONCEPTS]
+    assert len(tasks) == len(set(tasks))
+    for node_id, expected in markers.items():
+        task = content(node_id, "lezioni")["richiamo_attivo"]["spiega_con_parole_tue"]
+        assert all(marker in task for marker in expected), node_id
+
+
+def test_rilevatore_ripetizioni_e_sole_eccezioni_consentite():
+    identifier = "identificatore-di-riferimento-molto-lungo"
+    state = "stato-di-verifica-con-nome-molto-lungo"
+    missing = "Confronto con la fonte originale: NON TROVATO."
+    shared_open = "La condizione sul ritardo deve ancora essere verificata."
+    common = "Una spiegazione descrittiva più lunga di trenta caratteri."
+    only_one = "Una frase ripetuta soltanto dentro il medesimo file."
+    ordinary_text = "questotestolungononeunidentificatoredistruttura"
+    docs = [
+        ("primo.json", {"id": identifier, "stato": state, "collegamenti": [identifier],
+                        "punti_aperti": [missing, shared_open], "testo": common,
+                        "esempio": ordinary_text, "breve": "x" * 30, "interno": [only_one, only_one]}),
+        ("secondo.json", {"id": identifier, "stato": state, "collegamenti": [identifier],
+                          "punti_aperti": [missing, shared_open], "testo": f"  {common}\n",
+                          "esempio": ordinary_text, "breve": "x" * 30}),
+    ]
+    duplicates = repeated_texts(docs)
+    assert set(duplicates) == {common, ordinary_text, shared_open}
+    assert all(len({filename for filename, _ in locations}) == 2 for locations in duplicates.values())
+
+
+def test_nessuna_stringa_lunga_ripetuta_tra_file_w5():
+    paths = w5_source_files()
+    assert len(paths) == 18
+    duplicates = repeated_texts((path.relative_to(ROOT), read(path)) for path in paths)
+    assert not duplicates, "Stringhe ripetute: " + repr(duplicates)
 
 
 def test_introduzione_reti_nove_temi_e_fonti():

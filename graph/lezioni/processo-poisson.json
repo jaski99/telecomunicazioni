@@ -62,7 +62,7 @@
         "risposta": "No, sotto le ipotesi di Poisson omogeneo."
       }
     ],
-    "spiega_con_parole_tue": "Senza guardare, spiega le ipotesi e ricostruisci un esempio, indicando anche quando il modello non si applica."
+    "spiega_con_parole_tue": "Con tasso $\\lambda=2$ arrivi/s, calcola la probabilità di nessun arrivo in mezzo secondo e spiega perché il tempo residuo non dipende dall’attesa trascorsa."
   },
   "riepilogo": "Poisson descrive conteggi, esponenziale gli interarrivi. Tasso costante e incrementi indipendenti sono essenziali.",
   "flashcard": [

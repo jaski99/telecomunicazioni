@@ -63,7 +63,7 @@
         "risposta": "Il tempo di andata e ritorno supera il frame, quindi cade l’ipotesi di rilevazione entro la trasmissione."
       }
     ],
-    "spiega_con_parole_tue": "Senza guardare, spiega le ipotesi e ricostruisci un esempio, indicando anche quando il modello non si applica."
+    "spiega_con_parole_tue": "Per 200 m, velocità $2\\cdot10^8$ m/s, trama di 8000 bit e capacità 800 Mbit/s, ricava $T_p$, $T_f$, $a$ e il tempo $2T_p$."
   },
   "riepilogo": "Propagazione e trasmissione misurano fenomeni diversi. $a$ è il loro rapporto; lo slot del modello dura $2T_p$.",
   "flashcard": [

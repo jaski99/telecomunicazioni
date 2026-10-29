@@ -4,7 +4,7 @@
   "domande_esame": [
     "T16"
   ],
-  "enunciato": "T16, riformulazione da file2 p. 1: ricavare e rappresentare il throughput del modello CSMA/CD al variare del rapporto a. Punteggio NON TROVATO.",
+  "enunciato": "Nel modello CSMA/CD a slot con $N\\ge2$ stazioni indipendenti, probabilità di tentativo $p$ e $A=Np(1-p)^{N-1}>0$, il throughput è $S=\\frac{1}{1+2a(1-A)/A}$. Il massimo della probabilità di successo si ottiene per $p=1/N$ ed è $A_{\\max}=\\left(1-\\frac{1}{N}\\right)^{N-1}$. Il rapporto $a=T_p/T_f$, con $T_p$ tempo di propagazione unidirezionale, $T_f$ durata del frame e $0<a\\le1/2$, è un’interpretazione da verificare sui lucidi.",
   "ipotesi": [
     "Bus condiviso, N stazioni uguali e indipendenti; in ciascuno slot di contesa ciascuna tenta con probabilità p costante.",
     "Gli slot falliti, vuoti o con collisione, sono indipendenti e durano $2T_p$; lo slot che contiene l’avvio riuscito è incluso nel frame, non contato anche come attesa.",
@@ -189,7 +189,7 @@
     {
       "id": "csma-cd-throughput-grafico",
       "tipo": "grafico",
-      "titolo": "Throughput CSMA/CD in funzione di a",
+      "titolo": "Massimo CSMA/CD al variare del rapporto a",
       "descrizione": "Curve ideali ottimizzate per due e dieci stazioni, decrescenti con a tra zero e 0,5. Il limite a zero è indicato per continuità.",
       "asse_x": {
         "etichetta": "a = Tp/Tf (adimensionale)",
@@ -714,7 +714,7 @@
   "fonti": [
     {
       "chiave": "FILE2",
-      "rif": "file2 p. 1: T16, titolo riformulato"
+      "rif": "file2 p. 1: T16, titolo riformulato; punteggio NON TROVATO"
     },
     {
       "chiave": "FILE3",

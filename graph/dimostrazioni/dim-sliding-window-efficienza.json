@@ -4,7 +4,7 @@
   "domande_esame": [
     "T12"
   ],
-  "enunciato": "T12, riformulazione da file2 p. 1: ricavare l’efficienza utile senza errori e spiegare i due diagrammi temporali. Punteggio NON TROVATO.",
+  "enunciato": "Per una finestra scorrevole di $W$ trame senza errori, con trama $F=D+H$ bit, ACK di $A$ bit, capacità $C$, ritardo $I$ per tratta e tempo al primo riscontro $TT=F/C+I+A/C+I$, l’efficienza utile è $\\eta=\\dfrac{WD}{C\\,TT}$ se $WF\\le C\\,TT$ e $\\eta=\\dfrac{D}{F}$ se $WF>C\\,TT$. Nel primo regime la finestra non supera il ciclo di riscontro; nel secondo il canale può restare continuamente occupato.",
   "ipotesi": [
     "Trame di $F=D+H$ bit, $D>0$, $H\\ge0$; capacità costante $C>0$ e finestra intera $W\\ge1$.",
     "Trasmettitore sempre alimentato, assenza di errori, perdite e ritrasmissioni; ACK su ritorno indipendente e senza contesa.",
@@ -401,7 +401,7 @@
   "fonti": [
     {
       "chiave": "FILE2",
-      "rif": "file2 p. 1: T12, titolo riformulato"
+      "rif": "file2 p. 1: T12, titolo riformulato; punteggio NON TROVATO"
     },
     {
       "chiave": "FILE3",
