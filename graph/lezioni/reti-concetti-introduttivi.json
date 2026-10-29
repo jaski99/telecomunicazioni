@@ -1,0 +1,105 @@
+{
+  "id": "reti-concetti-introduttivi",
+  "perche_ti_serve": "I1–I9, gruppo A: prepari risposte brevi e consapevoli ai temi introduttivi sulle reti.",
+  "scenario": "Una persona vuole chiamare un collega attraverso dispositivi, collegamenti e un servizio fornito da un operatore: ricostruisci gli elementi necessari.",
+  "definizione_esame": {
+    "definizione": "Una rete di telecomunicazioni collega nodi tramite linee per offrire comunicazione a utenti.",
+    "scopo": "Separare componenti tecnici, regole di comunicazione e organizzazione del servizio.",
+    "esempio": "Due terminali e un nodo intermedio scambiano dati attraverso due collegamenti."
+  },
+  "spiegazione": "### I1–I4: servizio, rete, protocollo e indirizzi\n**I1.** Negli appunti di studenti file2 p. 8 il servizio è descritto attraverso utenti, fornitori e pagamento: sono elementi organizzativi, non una definizione fisica esaustiva. Una rete può essere studiata anche quando la modalità di pagamento specifica è **NON TROVATO**.\n\n**I2.** La rappresentazione minima è un insieme di nodi e collegamenti. Se i nodi sono $V$ e i collegamenti $E$, si può rappresentare la topologia con $\\mathcal{G}=(V,E)$. Un nodo può inoltrare o terminare una comunicazione; una linea porta il segnale tra nodi. La mappa non descrive da sola capacità, guasti o ritardi.\n\n**I3.** Un protocollo è un insieme concordato di regole per formato, invio e ricezione dei dati: le controparti interpretano messaggi e risposte nello stesso modo. **I4.** Gli indirizzi permettono di identificare il destinatario nel sistema di indirizzamento adottato. Un indirizzo non è il percorso effettivamente seguito.\n\n### I5–I8: interfacce e riferimenti storici\n**I5.** La standardizzazione rende compatibili le interfacce, anche se le realizzazioni interne differiscono. Gli appunti citano l'ITU e il 1865; la verifica storica indipendente dei dettagli è **NON TROVATO**. **I6.** Gli appunti associano un passo importante nella storia del telefono a Meucci, riportando il 1871 e un riconoscimento nel 2002; il valore giuridico preciso dell'affermazione e una verifica indipendente sono **NON TROVATO**.\n\n**I7.** Per la comunicazione telefonica gli appunti evidenziano intelligibilità della voce e riconoscimento della persona che parla: sentire un suono non basta se il messaggio non è comprensibile. **I8.** Gli appunti attribuiscono l'avvio delle radiocomunicazioni a Guglielmo Marconi e citano la possibilità di ricezione oltre una traiettoria rettilinea; dettagli dell'esperimento e verifica indipendente **NON TROVATO**. Queste attribuzioni provengono dalla raccolta studentesca, non da lucidi consultati.\n\n### I9: mezzi e attenuazione\n**I9.** Il rame, per esempio nel cavo coassiale, guida segnali elettrici e può condividere il mezzo con divisione in frequenza. La fibra guida la luce tra nucleo e rivestimento: il termine fisico è **riflessione interna totale**, una correzione terminologica rispetto agli appunti. La radio usa propagazione nell'ambiente e può raggiungere più ricevitori. I mezzi reali attenuano il segnale; l'andamento con distanza e frequenza dipende dal modello, dalle antenne e dall'ambiente. Una legge universale ricavabile dai soli appunti è **NON TROVATO**.",
+  "analogia": {
+    "testo": "I collegamenti sono come strade tra incroci; gli indirizzi indicano dove consegnare, le regole indicano come scambiare.",
+    "limite": "Le strade non rappresentano correttamente propagazione, congestione, riscontri o differenze tra livelli protocollari."
+  },
+  "worked_example": {
+    "titolo": "Una rete minima",
+    "problema": "Tre terminali A, B, C sono collegati tramite un unico nodo X. Come si rappresentano topologia e destinatario?",
+    "passi": [
+      "Elenca i quattro nodi $V=\\{A,B,C,X\\}$.",
+      "Indica i tre collegamenti A–X, B–X e C–X.",
+      "Assegna a C un indirizzo nel protocollo adottato e lascia a X la scelta di inoltro."
+    ],
+    "soluzione": "Il grafo ha quattro nodi e tre collegamenti; l’indirizzo identifica C, non la linea completa da percorrere.",
+    "perche_funziona": "Topologia, indirizzamento e protocollo descrivono aspetti diversi e complementari."
+  },
+  "completion_problem": {
+    "titolo": "Completa il percorso",
+    "testo": "A vuole inviare a C passando da X: separa rete e regole.",
+    "passi_mancanti": [
+      "Individua i nodi e i due collegamenti utilizzati.",
+      "Indica quale informazione identifica il destinatario."
+    ],
+    "soluzione": "Nodi A, X, C e collegamenti A–X, X–C; il destinatario è individuato dal suo indirizzo."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Interfacce compatibili",
+    "testo": "Due dispositivi di produttori diversi devono comunicare: che cosa deve essere comune?",
+    "suggerimento": "Pensa alla separazione tra interfaccia esterna e realizzazione interna.",
+    "soluzione_attesa": "Devono rispettare un’interfaccia e un protocollo compatibili; l’implementazione interna può differire."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Confondere protocollo e mezzo fisico.",
+      "perche_sbagliato": "Il primo stabilisce regole, il secondo trasporta segnali."
+    },
+    {
+      "errore": "Presentare come verificati i dettagli storici degli appunti.",
+      "perche_sbagliato": "La raccolta è studentesca e la verifica indipendente è NON TROVATO."
+    },
+    {
+      "errore": "Trattare la crescita dell’attenuazione come legge identica per ogni collegamento radio.",
+      "perche_sbagliato": "La dipendenza quantitativa richiede modello, distanza e caratteristiche delle antenne."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Che differenza c’è tra nodo e linea?",
+        "risposta": "Il nodo termina o inoltra; la linea collega nodi e trasporta il segnale."
+      },
+      {
+        "domanda": "Perché serve uno standard?",
+        "risposta": "Per rendere compatibili interfacce e regole tra implementazioni diverse."
+      },
+      {
+        "domanda": "Quali mezzi sono richiamati in I9?",
+        "risposta": "Rame, fibra ottica e radio, con proprietà e condizioni differenti."
+      },
+      {
+        "domanda": "Cosa si sa delle attribuzioni storiche?",
+        "risposta": "Sono riportate negli appunti; verifica indipendente dei dettagli NON TROVATO."
+      }
+    ],
+    "spiega_con_parole_tue": "Senza guardare, spiega le ipotesi e ricostruisci un esempio, indicando anche quando il modello non si applica."
+  },
+  "riepilogo": "Rete: nodi e linee; servizio: utenti e fornitori; protocollo: regole; indirizzo: destinatario. Mezzo e modello determinano la propagazione.",
+  "flashcard": [
+    {
+      "fronte": "Che differenza c’è tra nodo e linea?",
+      "retro": "Il nodo termina o inoltra; la linea collega nodi e trasporta il segnale."
+    },
+    {
+      "fronte": "Perché serve uno standard?",
+      "retro": "Per rendere compatibili interfacce e regole tra implementazioni diverse."
+    },
+    {
+      "fronte": "Quali mezzi sono richiamati in I9?",
+      "retro": "Rame, fibra ottica e radio, con proprietà e condizioni differenti."
+    },
+    {
+      "fronte": "Cosa si sa delle attribuzioni storiche?",
+      "retro": "Sono riportate negli appunti; verifica indipendente dei dettagli NON TROVATO."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "So riformulare I1–I9 senza inventare dettagli.",
+      "So disegnare nodi e collegamenti."
+    ],
+    "so_dire": [
+      "So distinguere fatti degli appunti e verifica indipendente.",
+      "So descrivere standard e mezzi."
+    ]
+  }
+}

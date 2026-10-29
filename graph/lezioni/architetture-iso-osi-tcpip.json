@@ -1,0 +1,91 @@
+{
+  "id": "architetture-iso-osi-tcpip",
+  "perche_ti_serve": "M4 e M5, gruppo A: colloca trasporto e sessione nel modello ISO/OSI.",
+  "scenario": "Un’applicazione invia un messaggio a un’altra: il dato attraversa più funzioni prima di diventare segnale sul collegamento.",
+  "definizione_esame": {
+    "definizione": "Un’architettura a strati ripartisce le funzioni di comunicazione in livelli con servizi e interfacce.",
+    "scopo": "Ridurre la complessità e permettere a implementazioni compatibili di interagire.",
+    "esempio": "Trasporto end-to-end sopra rete; collegamento e fisico sotto rete."
+  },
+  "spiegazione": "### I sette livelli OSI\nDal basso verso l'alto: 1 fisico, 2 collegamento dati, 3 rete, 4 trasporto, 5 sessione, 6 presentazione, 7 applicazione. Il fisico riguarda i segnali sul mezzo; il collegamento organizza la comunicazione tra nodi adiacenti e le trame; la rete indirizza e inoltra tra reti. Il trasporto offre comunicazione tra processi di estremità e, secondo il protocollo, può aggiungere affidabilità e controllo del flusso. Sessione coordina il dialogo, presentazione riguarda rappresentazione dei dati, applicazione offre funzioni ai programmi.\n\n### Incapsulamento e corrispondenze\nOgni livello usa il servizio sottostante e aggiunge informazioni di controllo al proprio dato. Se il dato iniziale occupa $L$ bit e tre intestazioni occupano $h_1,h_2,h_3$ bit, l'unità trasmessa occupa $L+h_1+h_2+h_3$ bit, trascurando eventuali code e trailer. Al ricevitore si interpretano le intestazioni nell'ordine inverso. Una trama non coincide necessariamente con il messaggio dell'applicazione.\n\nTCP/IP è spesso presentato con quattro gruppi: accesso alla rete, Internet, trasporto e applicazione. IP appartiene al livello Internet, mentre TCP è un protocollo di trasporto; i servizi di sessione e presentazione possono essere svolti dalle applicazioni. La corrispondenza con OSI è indicativa e non impone che ogni implementazione abbia sette moduli separati. Esistono anche presentazioni a cinque livelli: indicare sempre la convenzione. I temi M4 e M5 della raccolta studentesca richiedono rispettivamente trasporto al livello 4 e sessione al livello 5; non si deducono da essi punteggi o frequenza.",
+  "analogia": {
+    "testo": "Una spedizione passa da contenuto a imballaggio, instradamento e consegna.",
+    "limite": "I livelli sono interfacce logiche: non sono necessariamente uffici o dispositivi fisici distinti."
+  },
+  "worked_example": {
+    "titolo": "Dati e intestazioni",
+    "problema": "Un messaggio di 1000 bit riceve intestazioni di 80, 160 e 112 bit. Quanto occupa?",
+    "passi": [
+      "Somma le intestazioni: $80+160+112=352$ bit.",
+      "Aggiungile ai 1000 bit del messaggio.",
+      "Distingui i 1352 bit trasmessi dai 1000 bit utili."
+    ],
+    "soluzione": "La lunghezza totale è 1352 bit, senza eventuali altri campi.",
+    "perche_funziona": "L’incapsulamento aggiunge le lunghezze indicate una sola volta."
+  },
+  "completion_problem": {
+    "titolo": "Completa gli strati",
+    "testo": "La numerazione OSI parte dal fisico e arriva all’applicazione.",
+    "passi_mancanti": [
+      "Quali sono i livelli 4 e 5?"
+    ],
+    "soluzione": "Il livello 4 è trasporto e il 5 è sessione."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Rimozione intestazioni",
+    "testo": "Se una trama da 900 bit contiene 100 bit di intestazione di collegamento, quanti bit restano?",
+    "suggerimento": "Sottrai solo il campo esplicitamente indicato.",
+    "soluzione_attesa": "Restano 800 bit; non è detto che siano tutti dati applicativi."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Scambiare trasporto con rete.",
+      "perche_sbagliato": "Hanno responsabilità diverse: processi di estremità rispetto a inoltro tra reti."
+    },
+    {
+      "errore": "Supporre una corrispondenza uno a uno tra TCP/IP e OSI.",
+      "perche_sbagliato": "I raggruppamenti delle funzioni e le convenzioni non coincidono esattamente."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Quali sono i livelli OSI 4 e 5?",
+        "risposta": "Trasporto e sessione."
+      },
+      {
+        "domanda": "Che cosa fa l’incapsulamento?",
+        "risposta": "Aggiunge informazioni di controllo al dato per i servizi dei livelli."
+      },
+      {
+        "domanda": "Dove si colloca IP nella comune vista TCP/IP?",
+        "risposta": "Nel livello Internet, associato alle funzioni di rete."
+      }
+    ],
+    "spiega_con_parole_tue": "Senza guardare, spiega le ipotesi e ricostruisci un esempio, indicando anche quando il modello non si applica."
+  },
+  "riepilogo": "OSI separa sette livelli; TCP/IP li raggruppa diversamente. Trasporto è il quarto, sessione il quinto.",
+  "flashcard": [
+    {
+      "fronte": "Quali sono i livelli OSI 4 e 5?",
+      "retro": "Trasporto e sessione."
+    },
+    {
+      "fronte": "Che cosa fa l’incapsulamento?",
+      "retro": "Aggiunge informazioni di controllo al dato per i servizi dei livelli."
+    },
+    {
+      "fronte": "Dove si colloca IP nella comune vista TCP/IP?",
+      "retro": "Nel livello Internet, associato alle funzioni di rete."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "So ordinare i sette livelli.",
+      "So calcolare una lunghezza incapsulata."
+    ],
+    "so_dire": [
+      "So distinguere rete e trasporto."
+    ]
+  }
+}

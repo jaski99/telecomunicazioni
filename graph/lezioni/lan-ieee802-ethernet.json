@@ -1,0 +1,91 @@
+{
+  "id": "lan-ieee802-ethernet",
+  "perche_ti_serve": "Gruppo C: collega il modello di T16 alle reti locali senza generalizzarlo a ogni Ethernet.",
+  "scenario": "Una piccola rete collega terminali e apparati: alcuni collegamenti sono dedicati, altri modelli usano un mezzo condiviso.",
+  "definizione_esame": {
+    "definizione": "Una LAN connette dispositivi in un ambito locale secondo tecnologie e protocolli di collegamento.",
+    "scopo": "Distinguere indirizzi, trame, inoltro locale e modalità di accesso al mezzo.",
+    "esempio": "Un apparato di commutazione inoltra trame verso la porta pertinente."
+  },
+  "spiegazione": "### Collegamento locale e famiglia IEEE 802\nUna rete locale collega dispositivi mediante collegamenti e apparati di interconnessione. Il programma pubblico citato in R1 include IEEE 802 ed Ethernet; qui si usa una spiegazione tecnica generale, non una trascrizione dei lucidi. Una trama contiene dati e informazioni di controllo di collegamento; il suo destinatario sul collegamento è identificato da un indirizzo appropriato. La rete può essere collegata ad altre reti tramite funzioni di livello superiore. I dettagli di topologia, capacità e standard in uso vanno dichiarati, non si deducono dalla sola parola LAN.\n\n### Mezzo condiviso e collisioni\nNel modello storico di Ethernet condivisa e half duplex, più stazioni possono contendersi lo stesso mezzo. Ascoltare prima di trasmettere riduce alcune collisioni ma non elimina quelle dovute al ritardo di propagazione. In CSMA/CD una stazione che rileva una collisione interrompe il tentativo e applica le regole di ritrasmissione del protocollo; la produttività dipende dal traffico e dai dettagli del modello. Per il modello ideale di T16 lo slot di contesa è $2T_p$ e $a=T_p/T_f$.\n\n### Collegamenti commutati\nSu collegamenti Ethernet dedicati full duplex tra due interfacce si può trasmettere e ricevere contemporaneamente su direzioni separate: non si usa la contesa CSMA/CD del mezzo condiviso half duplex. Uno switch inoltra le trame tra porte secondo le informazioni di collegamento disponibili; non bisogna identificare automaticamente uno switch con un apparato che sceglie percorsi tra reti IP. La formula di T16 è quindi un modello didattico di contesa, non una formula di throughput universale per ogni LAN o collegamento commutato.",
+  "analogia": {
+    "testo": "Una stanza condivisa richiede turni per non parlarsi sopra; due linee separate permettono conversazioni indipendenti.",
+    "limite": "Nelle reti effettive cablaggio, apparati e standard definiscono comportamenti più specifici della metafora."
+  },
+  "worked_example": {
+    "titolo": "Mezzo e collisioni",
+    "problema": "Due PC sono collegati a porte dedicate full duplex di uno switch. Si applica la contesa CSMA/CD del bus condiviso?",
+    "passi": [
+      "Individua due collegamenti separati, non un unico bus condiviso.",
+      "Riconosci la modalità full duplex delle porte.",
+      "Distingui il modello del bus condiviso dal caso descritto."
+    ],
+    "soluzione": "No: in questo caso non si usa la contesa CSMA/CD del mezzo condiviso half duplex.",
+    "perche_funziona": "Le direzioni full duplex e le porte dedicate non formano il dominio di contesa del modello."
+  },
+  "completion_problem": {
+    "titolo": "Individua il modello",
+    "testo": "Su un bus condiviso due stazioni possono iniziare prima di sentire il segnale remoto.",
+    "passi_mancanti": [
+      "Quale fenomeno resta possibile?",
+      "Quale parametro temporale contribuisce?"
+    ],
+    "soluzione": "Resta possibile una collisione, a causa del ritardo di propagazione."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Indirizzo locale",
+    "testo": "Una trama contiene un indirizzo di destinazione di collegamento. Che cosa identifica nel modello locale?",
+    "suggerimento": "Non confondere il livello di collegamento con il percorso tra reti.",
+    "soluzione_attesa": "Identifica la destinazione secondo l’indirizzamento del collegamento; da solo non descrive l’intero percorso IP."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Applicare CSMA/CD a ogni collegamento Ethernet moderno.",
+      "perche_sbagliato": "La contesa del mezzo condiviso non descrive le porte dedicate full duplex."
+    },
+    {
+      "errore": "Chiamare indirizzo locale e percorso IP la stessa cosa.",
+      "perche_sbagliato": "Appartengono a funzioni distinte e non sono intercambiabili."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Quando è pertinente CSMA/CD?",
+        "risposta": "Nel modello di mezzo condiviso con rilevazione di collisione e trasmissione half duplex."
+      },
+      {
+        "domanda": "Che cosa porta una trama?",
+        "risposta": "Dati e informazioni di controllo del livello di collegamento."
+      },
+      {
+        "domanda": "La formula di T16 è universale?",
+        "risposta": "No, vale solo per il modello di contesa dichiarato."
+      }
+    ],
+    "spiega_con_parole_tue": "Senza guardare, spiega le ipotesi e ricostruisci un esempio, indicando anche quando il modello non si applica."
+  },
+  "riepilogo": "Le LAN usano trame e collegamenti. CSMA/CD è pertinente al mezzo condiviso, non automaticamente a porte full duplex.",
+  "flashcard": [
+    {
+      "fronte": "Quando è pertinente CSMA/CD?",
+      "retro": "Nel modello di mezzo condiviso con rilevazione di collisione e trasmissione half duplex."
+    },
+    {
+      "fronte": "Che cosa porta una trama?",
+      "retro": "Dati e informazioni di controllo del livello di collegamento."
+    },
+    {
+      "fronte": "La formula di T16 è universale?",
+      "retro": "No, vale solo per il modello di contesa dichiarato."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "So distinguere un bus condiviso da porte dedicate."
+    ],
+    "so_dire": [
+      "So collocare le trame nel livello di collegamento."
+    ]
+  }
+}

@@ -1,0 +1,357 @@
+{
+  "id": "dim-poisson-tempo-residuo",
+  "titolo": "Distribuzione del tempo residuo poissoniano",
+  "domande_esame": [
+    "T13"
+  ],
+  "enunciato": "T13, riformulazione da file2 p. 1: ricavare la legge dell’attesa residua dopo un intervallo già trascorso senza arrivi. Punteggio NON TROVATO.",
+  "ipotesi": [
+    "Arrivi di Poisson omogenei con tasso costante $\\lambda>0$; intervalli disgiunti hanno incrementi indipendenti.",
+    "$X$ è il tempo interarrivo dopo un evento; si osserva $X>t_0$ per un tempo fissato $t_0\\ge0$.",
+    "Si considera $r\\ge0$ e il residuo $R=X-t_0$ condizionatamente a $X>t_0$."
+  ],
+  "notazione": [
+    {
+      "simbolo": "\\lambda",
+      "significato": "Tasso di arrivi, in eventi per secondo."
+    },
+    {
+      "simbolo": "X",
+      "significato": "Tempo tra due arrivi successivi."
+    },
+    {
+      "simbolo": "t_0",
+      "significato": "Tempo già atteso senza nuovi arrivi."
+    },
+    {
+      "simbolo": "R,r",
+      "significato": "Tempo residuo e valore non negativo a cui se ne valuta la distribuzione."
+    },
+    {
+      "simbolo": "F_R(r)",
+      "significato": "Probabilità condizionata che il residuo non superi r."
+    }
+  ],
+  "varianti_notazione": [],
+  "idea": "La sopravvivenza esponenziale si fattorizza: il tempo trascorso si elimina nel rapporto condizionato.",
+  "passi": [
+    {
+      "n": 1,
+      "testo": "Dalla probabilità di zero eventi in t ricava la sopravvivenza dell’interarrivo.",
+      "formula": "P(X>t)=P(N(t)=0)=e^{-\\lambda t},\\qquad t\\ge0",
+      "perche": "Nessun arrivo entro t equivale al primo arrivo successivo a t.",
+      "figura": "poisson-distribuzione-residuo"
+    },
+    {
+      "n": 2,
+      "testo": "Scrivi la distribuzione e la densità dell’interarrivo.",
+      "formula": "F_X(t)=1-e^{-\\lambda t},\\qquad f_X(t)=\\lambda e^{-\\lambda t}",
+      "perche": "Si prende il complementare della sopravvivenza e si deriva la distribuzione per t positivo."
+    },
+    {
+      "n": 3,
+      "testo": "Esprimi l’evento residuo mediante la probabilità condizionata.",
+      "formula": "P(R>r\\mid X>t_0)=\\frac{P(X>t_0+r)}{P(X>t_0)}",
+      "perche": "Per r non negativo, $X>t_0+r$ implica $X>t_0$, e il denominatore è positivo."
+    },
+    {
+      "n": 4,
+      "testo": "Sostituisci le due sopravvivenze e semplifica.",
+      "formula": "P(R>r\\mid X>t_0)=\\frac{e^{-\\lambda(t_0+r)}}{e^{-\\lambda t_0}}=e^{-\\lambda r}",
+      "perche": "L’esponenziale del tempo totale si separa nel prodotto delle due durate."
+    },
+    {
+      "n": 5,
+      "testo": "Passa alla funzione di ripartizione e alla media del residuo.",
+      "formula": "F_R(r)=1-e^{-\\lambda r},\\qquad E[R\\mid X>t_0]=\\int_0^\\infty e^{-\\lambda r}\\,dr=\\frac1\\lambda",
+      "perche": "Si usa il complementare e si integra la sopravvivenza di una variabile non negativa."
+    }
+  ],
+  "formula_finale": "F_R(r)=P(R\\le r\\mid X>t_0)=1-e^{-\\lambda r},\\qquad E[R\\mid X>t_0]=\\frac1\\lambda\\quad(r\\ge0).",
+  "figure": [
+    {
+      "id": "poisson-distribuzione-residuo",
+      "tipo": "grafico",
+      "titolo": "Distribuzione del tempo residuo",
+      "descrizione": "Funzione di ripartizione del tempo residuo esponenziale per tasso 0,5 al secondo; non dipende dal tempo già atteso.",
+      "asse_x": {
+        "etichetta": "Residuo r (s)",
+        "min": 0,
+        "max": 8
+      },
+      "asse_y": {
+        "etichetta": "Probabilità F(r)",
+        "min": 0,
+        "max": 1
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "F(r), λ = 0,5 s⁻¹",
+          "punti": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.2,
+              0.095162582
+            ],
+            [
+              0.4,
+              0.181269247
+            ],
+            [
+              0.6,
+              0.259181779
+            ],
+            [
+              0.8,
+              0.329679954
+            ],
+            [
+              1.0,
+              0.39346934
+            ],
+            [
+              1.2,
+              0.451188364
+            ],
+            [
+              1.4,
+              0.503414696
+            ],
+            [
+              1.6,
+              0.550671036
+            ],
+            [
+              1.8,
+              0.59343034
+            ],
+            [
+              2.0,
+              0.632120559
+            ],
+            [
+              2.2,
+              0.667128916
+            ],
+            [
+              2.4,
+              0.698805788
+            ],
+            [
+              2.6,
+              0.727468207
+            ],
+            [
+              2.8,
+              0.753403036
+            ],
+            [
+              3.0,
+              0.77686984
+            ],
+            [
+              3.2,
+              0.798103482
+            ],
+            [
+              3.4,
+              0.817316476
+            ],
+            [
+              3.6,
+              0.834701112
+            ],
+            [
+              3.8,
+              0.850431381
+            ],
+            [
+              4.0,
+              0.864664717
+            ],
+            [
+              4.2,
+              0.877543572
+            ],
+            [
+              4.4,
+              0.889196842
+            ],
+            [
+              4.6,
+              0.899741156
+            ],
+            [
+              4.8,
+              0.909282047
+            ],
+            [
+              5.0,
+              0.917915001
+            ],
+            [
+              5.2,
+              0.925726422
+            ],
+            [
+              5.4,
+              0.932794487
+            ],
+            [
+              5.6,
+              0.939189937
+            ],
+            [
+              5.8,
+              0.94497678
+            ],
+            [
+              6.0,
+              0.950212932
+            ],
+            [
+              6.2,
+              0.954950798
+            ],
+            [
+              6.4,
+              0.959237796
+            ],
+            [
+              6.6,
+              0.963116833
+            ],
+            [
+              6.8,
+              0.96662673
+            ],
+            [
+              7.0,
+              0.969802617
+            ],
+            [
+              7.2,
+              0.972676278
+            ],
+            [
+              7.4,
+              0.975276474
+            ],
+            [
+              7.6,
+              0.977629228
+            ],
+            [
+              7.8,
+              0.979758089
+            ],
+            [
+              8.0,
+              0.981684361
+            ]
+          ]
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": 2,
+          "y": 0.6321205588285577,
+          "testo": "F(2 s) ≈ 0,632"
+        }
+      ]
+    }
+  ],
+  "a_voce": "Parto da un processo di Poisson omogeneo: nessun arrivo nei prossimi t secondi ha probabilità esponenziale negativa. Questa è la probabilità che l’interarrivo X superi t. Ora suppongo di avere già aspettato t zero senza arrivi e considero l’ulteriore attesa R. La probabilità che R superi r è la probabilità che X superi t zero più r, divisa per quella che superi t zero. Sostituisco le due esponenziali e il fattore del tempo già trascorso si semplifica. Ottengo una sopravvivenza e alla meno lambda r e una ripartizione uno meno questa quantità. Il residuo ha media uno su lambda: è la proprietà di assenza di memoria, non una proprietà di tutte le attese.",
+  "errori_frequenti": [
+    {
+      "errore": "Scrivere $P(X>t_0+r)/P(X>r)$.",
+      "perche_sbagliato": "Il condizionamento osservato è $X>t_0$, non $X>r$.",
+      "correzione": "Metti $P(X>t_0)$ al denominatore."
+    },
+    {
+      "errore": "Sostenere che il prossimo arrivo è immediato dopo una lunga attesa.",
+      "perche_sbagliato": "Nel modello omogeneo il residuo mantiene la stessa distribuzione.",
+      "correzione": "Calcola la probabilità condizionata."
+    },
+    {
+      "errore": "Usare la formula con un tasso variabile senza cambiare ipotesi.",
+      "perche_sbagliato": "Una legge con intensità dipendente dal tempo non ha in generale la stessa memoria assente.",
+      "correzione": "Specifica l’intensità e integra il tasso nel periodo rilevante."
+    }
+  ],
+  "versione_compatta": [
+    "$P(X>t)=e^{-\\lambda t}$.",
+    "$P(R>r\\mid X>t_0)=e^{-\\lambda(t_0+r)}/e^{-\\lambda t_0}$.",
+    "$F_R(r)=1-e^{-\\lambda r}$, $E[R]=1/\\lambda$.",
+    "Il risultato richiede il modello omogeneo."
+  ],
+  "a_buchi": {
+    "testo": "Dopo $t_0$ senza arrivi, $P(R>r\\mid X>t_0)=$ ___1___, perché si divide per ___2___ e si semplifica il fattore ___3___. La media residua è ___4___.",
+    "soluzioni": {
+      "1": [
+        "$e^{-\\lambda r}$",
+        "e^{-\\lambda r}"
+      ],
+      "2": [
+        "$P(X>t_0)$",
+        "P(X>t_0)"
+      ],
+      "3": [
+        "$e^{-\\lambda t_0}$",
+        "e^{-\\lambda t_0}"
+      ],
+      "4": [
+        "$1/\\lambda$",
+        "1/\\lambda"
+      ]
+    }
+  },
+  "richiamo_attivo": [
+    {
+      "domanda": "Quale evento dà la sopravvivenza dell’interarrivo?",
+      "risposta": "L’assenza di arrivi durante l’intervallo considerato."
+    },
+    {
+      "domanda": "Perché il tempo trascorso scompare?",
+      "risposta": "I fattori esponenziali relativi a $t_0$ si cancellano nel rapporto condizionato."
+    },
+    {
+      "domanda": "Quanto vale la media residua?",
+      "risposta": "$1/\\lambda$, nelle stesse unità di tempo associate al tasso."
+    },
+    {
+      "domanda": "La proprietà è universale?",
+      "risposta": "No, dipende dalla distribuzione esponenziale e dalle ipotesi del processo."
+    }
+  ],
+  "collegamenti": [
+    "processo-poisson",
+    "dim-aloha-throughput"
+  ],
+  "fonti": [
+    {
+      "chiave": "FILE2",
+      "rif": "file2 p. 1: T13, titolo riformulato"
+    },
+    {
+      "chiave": "FILE3",
+      "rif": "file3 p. 47: Poisson e residuo; numerazione interna stampata 40"
+    },
+    {
+      "chiave": "FILE1",
+      "rif": "file1 pp. 51–53: slide 106 Reti citata, non consultata"
+    }
+  ],
+  "verifica": {
+    "stato": "verificata_file1_file3",
+    "data": "2026-10-28",
+    "note": "A15: il tempo residuo è a p. 47 del PDF file3, p. 40 nella numerazione stampata. La prova condizionata estesa segue file1. Libro e lucidi non consultati.",
+    "punti_aperti": [
+      "Confronto diretto con la slide del docente: NON TROVATO."
+    ]
+  }
+}

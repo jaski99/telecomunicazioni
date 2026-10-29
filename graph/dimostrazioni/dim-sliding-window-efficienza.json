@@ -1,0 +1,428 @@
+{
+  "id": "dim-sliding-window-efficienza",
+  "titolo": "Efficienza sliding window senza errori",
+  "domande_esame": [
+    "T12"
+  ],
+  "enunciato": "T12, riformulazione da file2 p. 1: ricavare l’efficienza utile senza errori e spiegare i due diagrammi temporali. Punteggio NON TROVATO.",
+  "ipotesi": [
+    "Trame di $F=D+H$ bit, $D>0$, $H\\ge0$; capacità costante $C>0$ e finestra intera $W\\ge1$.",
+    "Trasmettitore sempre alimentato, assenza di errori, perdite e ritrasmissioni; ACK su ritorno indipendente e senza contesa.",
+    "Il primo ACK è disponibile dopo $TT=F/C+I+A/C+I$ dall’inizio della trama; stesso $C$ e stesso ritardo $I$ in entrambe le direzioni nel modello degli appunti.",
+    "IPOTESI per il solo denominatore abbreviato degli appunti: la lunghezza dell’ACK è $A=H$; il dato non è dichiarato esplicitamente."
+  ],
+  "notazione": [
+    {
+      "simbolo": "W",
+      "significato": "Numero massimo di trame trasmesse e ancora senza conferma."
+    },
+    {
+      "simbolo": "D,H,F",
+      "significato": "Bit utili, intestazione e lunghezza totale: $F=D+H$."
+    },
+    {
+      "simbolo": "C",
+      "significato": "Capacità di trasmissione in bit/s."
+    },
+    {
+      "simbolo": "A",
+      "significato": "Lunghezza della conferma ACK in bit."
+    },
+    {
+      "simbolo": "I",
+      "significato": "Ritardo per tratta assunto negli appunti, somma di propagazione e quota di elaborazione."
+    },
+    {
+      "simbolo": "TT",
+      "significato": "Dall’inizio del primo frame al completamento del suo ACK presso il mittente."
+    },
+    {
+      "simbolo": "\\eta",
+      "significato": "Bit utili consegnati per unità di tempo divisi per $C$."
+    }
+  ],
+  "varianti_notazione": [
+    {
+      "canonica": "A",
+      "variante": "ACK",
+      "fonte": "file3 pp. 29–30; file1 p. 49"
+    }
+  ],
+  "idea": "Confronta il tempo necessario a consumare la finestra con il tempo di ritorno dell’ACK.",
+  "passi": [
+    {
+      "n": 1,
+      "testo": "Definisci il tempo di serializzazione e l’intero ciclo di riscontro.",
+      "formula": "F=D+H,\\qquad T_f=F/C,\\qquad TT=F/C+I+A/C+I",
+      "perche": "Il tempo di ciclo include l’intero frame, i due ritardi e la serializzazione dell’ACK.",
+      "figura": "finestra-con-attesa"
+    },
+    {
+      "n": 2,
+      "testo": "Calcola quanti bit totali il canale può immettere durante un ciclo.",
+      "formula": "C\\,TT=F+A+2IC",
+      "perche": "Moltiplicare un tempo in secondi per la capacità in bit/s dà un numero di bit."
+    },
+    {
+      "n": 3,
+      "testo": "Nel caso di finestra insufficiente, conta i bit utili inviati in un ciclo.",
+      "formula": "WF\\le C\\,TT:\\qquad \\eta=\\frac{WD}{C\\,TT}=\\frac{WD}{D+H+A+2IC}",
+      "perche": "Si inviano W trame per ciclo; all’uguaglianza il riscontro è appena in tempo.",
+      "figura": "finestra-con-attesa"
+    },
+    {
+      "n": 4,
+      "testo": "Se la finestra copre il ciclo, il trasmettitore può restare occupato.",
+      "formula": "WF>C\\,TT:\\qquad \\eta=\\frac{D}{F}=\\frac{D}{D+H}",
+      "perche": "Dopo il riempimento della pipeline si trasmettono trame consecutive; solo D bit per trama sono utili.",
+      "figura": "finestra-continua"
+    },
+    {
+      "n": 5,
+      "testo": "Unisci i regimi e confronta il denominatore speciale degli appunti.",
+      "formula": "\\eta=\\frac{D}{F}\\min\\!\\left(1,\\frac{WF}{C\\,TT}\\right),\\qquad A=H\\Rightarrow C\\,TT=D+2H+2IC",
+      "perche": "La saturazione impedisce di superare la frazione utile; la sostituzione A=H è un’ipotesi esplicita."
+    }
+  ],
+  "formula_finale": "\\eta=\\begin{cases}\\dfrac{WD}{C\\,TT}=\\dfrac{WD}{D+H+A+2IC},&WF\\le C\\,TT,\\\\[4pt]\\dfrac{D}{D+H},&WF>C\\,TT.\\end{cases}",
+  "figure": [
+    {
+      "id": "finestra-con-attesa",
+      "tipo": "temporale",
+      "titolo": "Finestra W = 2: attesa del riscontro",
+      "descrizione": "Con trame da 1 s, ACK da 1 s e propagazione di 0,5 s per tratta, il primo ACK termina a 3 s: il mittente attende da 2 a 3 s.",
+      "asse_t": {
+        "etichetta": "Tempo (s)",
+        "min": 0,
+        "max": 4.5
+      },
+      "corsie": [
+        {
+          "id": "mittente",
+          "etichetta": "Mittente: trame"
+        },
+        {
+          "id": "ricezione",
+          "etichetta": "Destinatario: ricezione"
+        },
+        {
+          "id": "riscontro",
+          "etichetta": "Destinatario: ACK"
+        },
+        {
+          "id": "ack-ricevuto",
+          "etichetta": "Mittente: ricezione ACK"
+        }
+      ],
+      "intervalli": [
+        {
+          "corsia": "mittente",
+          "t0": 0,
+          "t1": 1,
+          "etichetta": "Trama 0",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "mittente",
+          "t0": 1,
+          "t1": 2,
+          "etichetta": "Trama 1",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "mittente",
+          "t0": 2,
+          "t1": 3,
+          "etichetta": "Attesa",
+          "stile": "attesa"
+        },
+        {
+          "corsia": "mittente",
+          "t0": 3,
+          "t1": 4,
+          "etichetta": "Trama 2",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "ricezione",
+          "t0": 0.5,
+          "t1": 1.5,
+          "etichetta": "Trama 0 ricevuta",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "ricezione",
+          "t0": 1.5,
+          "t1": 2.5,
+          "etichetta": "Trama 1 ricevuta",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "riscontro",
+          "t0": 1.5,
+          "t1": 2.5,
+          "etichetta": "ACK 0 inviato",
+          "stile": "ack"
+        },
+        {
+          "corsia": "ack-ricevuto",
+          "t0": 2,
+          "t1": 3,
+          "etichetta": "ACK 0 ricevuto",
+          "stile": "ack"
+        }
+      ],
+      "frecce": [
+        {
+          "da": {
+            "corsia": "mittente",
+            "t": 0
+          },
+          "a": {
+            "corsia": "ricezione",
+            "t": 0.5
+          },
+          "etichetta": "Propagazione"
+        },
+        {
+          "da": {
+            "corsia": "riscontro",
+            "t": 2.5
+          },
+          "a": {
+            "corsia": "ack-ricevuto",
+            "t": 3
+          },
+          "etichetta": "Ultimo bit ACK"
+        }
+      ],
+      "marcatori": [
+        {
+          "t": 0,
+          "etichetta": "Inizio"
+        },
+        {
+          "t": 2,
+          "etichetta": "Finestra esaurita"
+        },
+        {
+          "t": 3,
+          "etichetta": "TT e ACK completo"
+        }
+      ]
+    },
+    {
+      "id": "finestra-continua",
+      "tipo": "temporale",
+      "titolo": "Finestra W = 4: invio continuo",
+      "descrizione": "Con lo stesso ciclo di 3 s, quattro posti nella finestra consentono di trasmettere senza pausa; la prima conferma termina a 3 s.",
+      "asse_t": {
+        "etichetta": "Tempo (s)",
+        "min": 0,
+        "max": 4.5
+      },
+      "corsie": [
+        {
+          "id": "mittente",
+          "etichetta": "Mittente: trame"
+        },
+        {
+          "id": "ricezione",
+          "etichetta": "Destinatario: ricezione"
+        },
+        {
+          "id": "riscontro",
+          "etichetta": "Destinatario: ACK"
+        },
+        {
+          "id": "ack-ricevuto",
+          "etichetta": "Mittente: ricezione ACK"
+        }
+      ],
+      "intervalli": [
+        {
+          "corsia": "mittente",
+          "t0": 0,
+          "t1": 1,
+          "etichetta": "Trama 0",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "mittente",
+          "t0": 1,
+          "t1": 2,
+          "etichetta": "Trama 1",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "mittente",
+          "t0": 2,
+          "t1": 3,
+          "etichetta": "Trama 2",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "mittente",
+          "t0": 3,
+          "t1": 4,
+          "etichetta": "Trama 3",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "ricezione",
+          "t0": 0.5,
+          "t1": 1.5,
+          "etichetta": "Trama 0 ricevuta",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "riscontro",
+          "t0": 1.5,
+          "t1": 2.5,
+          "etichetta": "ACK 0 inviato",
+          "stile": "ack"
+        },
+        {
+          "corsia": "ack-ricevuto",
+          "t0": 2,
+          "t1": 3,
+          "etichetta": "ACK 0 ricevuto",
+          "stile": "ack"
+        }
+      ],
+      "frecce": [
+        {
+          "da": {
+            "corsia": "mittente",
+            "t": 0
+          },
+          "a": {
+            "corsia": "ricezione",
+            "t": 0.5
+          },
+          "etichetta": "Propagazione"
+        },
+        {
+          "da": {
+            "corsia": "riscontro",
+            "t": 2.5
+          },
+          "a": {
+            "corsia": "ack-ricevuto",
+            "t": 3
+          },
+          "etichetta": "Ultimo bit ACK"
+        }
+      ],
+      "marcatori": [
+        {
+          "t": 0,
+          "etichetta": "Inizio"
+        },
+        {
+          "t": 3,
+          "etichetta": "TT e ACK completo"
+        },
+        {
+          "t": 4,
+          "etichetta": "Fine trama 3"
+        }
+      ]
+    }
+  ],
+  "a_voce": "Definisco D come i bit utili, H come intestazione e F come dimensione della trama. La finestra W limita le trame ancora senza conferma. Il tempo TT parte dal primo bit inviato e termina quando arriva l’ultimo bit dell’ACK: include serializzazione, due ritardi e lunghezza del riscontro. Se WF è minore di CTT, la finestra si esaurisce e mando W volte D bit utili per ciclo; all’uguaglianza l’ACK arriva appena in tempo. Se invece la finestra copre il ciclo, trasmetto senza pause e resta solo l’overhead H. La formula con D più due H nel denominatore richiede l’ipotesi aggiuntiva ACK lungo H bit, da verificare sui lucidi.",
+  "errori_frequenti": [
+    {
+      "errore": "Sostituire TT con il solo doppio tempo di propagazione.",
+      "perche_sbagliato": "Si perdono la serializzazione del frame e dell’ACK e gli eventuali ritardi di elaborazione.",
+      "correzione": "Usa la definizione di TT completa."
+    },
+    {
+      "errore": "Usare WD/(CTT) anche con finestra molto grande.",
+      "perche_sbagliato": "Il risultato può superare la frazione utile massima D/F.",
+      "correzione": "Satura con il minimo oppure usa i due casi."
+    },
+    {
+      "errore": "Attribuire automaticamente A=H agli appunti.",
+      "perche_sbagliato": "La formula stampata lo suggerisce ma la definizione di A è separata.",
+      "correzione": "Indica A=H come IPOTESI e verifica i lucidi."
+    }
+  ],
+  "versione_compatta": [
+    "$F=D+H$, $TT=F/C+I+A/C+I$.",
+    "Per $WF\\le CTT$: $\\eta=WD/(CTT)$.",
+    "Per $WF>CTT$: $\\eta=D/F$.",
+    "Con $A=H$: $CTT=D+2H+2IC$; ipotesi da verificare."
+  ],
+  "a_buchi": {
+    "testo": "La finestra contiene al massimo ___1___ trame non confermate. Per $WF\\le CTT$, $\\eta=$ ___2___ perché si consegnano ___3___ bit utili per ciclo. La formula $D+2H+2IC$ richiede ___4___.",
+    "soluzioni": {
+      "1": [
+        "W",
+        "$W$"
+      ],
+      "2": [
+        "WD/(CTT)",
+        "$WD/(CTT)$"
+      ],
+      "3": [
+        "WD",
+        "$WD$"
+      ],
+      "4": [
+        "A=H",
+        "$A=H$",
+        "ACK lungo H bit"
+      ]
+    }
+  },
+  "richiamo_attivo": [
+    {
+      "domanda": "Quando non c’è pausa tra le trame?",
+      "risposta": "Quando $WF\\ge CTT$, con traffico disponibile e le altre ipotesi ideali."
+    },
+    {
+      "domanda": "Che cosa comprende TT?",
+      "risposta": "Frame, due ritardi per tratta e serializzazione dell’ACK."
+    },
+    {
+      "domanda": "Perché il denominatore stampato contiene due H?",
+      "risposta": "È coerente con l’ipotesi aggiuntiva $A=H$, da confermare."
+    },
+    {
+      "domanda": "Il rapporto include gli errori?",
+      "risposta": "No: assume assenza di errori e di ritrasmissioni."
+    }
+  ],
+  "collegamenti": [
+    "protocolli-linea-hdlc-sliding-window",
+    "parametro-a-propagazione-trasmissione"
+  ],
+  "fonti": [
+    {
+      "chiave": "FILE2",
+      "rif": "file2 p. 1: T12, titolo riformulato"
+    },
+    {
+      "chiave": "FILE3",
+      "rif": "file3 pp. 29–30: diagrammi e formula"
+    },
+    {
+      "chiave": "FILE1",
+      "rif": "file1 pp. 49–50: slide 75 Reti citata, non consultata"
+    },
+    {
+      "chiave": "RICOSTRUZIONE",
+      "rif": "Interpretazione esplicita di ACK e uguaglianza, derivata dal modello"
+    }
+  ],
+  "verifica": {
+    "stato": "da_verificare",
+    "data": "2026-10-28",
+    "note": "Confronto visivo delle due fonti studentesche. A8: la formula è leggibile, ma $A=H$ non è dichiarato esplicitamente; i lucidi non sono stati consultati.",
+    "punti_aperti": [
+      "A8: verificare sui lucidi se l’ACK è lungo H bit e se I include le stesse componenti in entrambe le direzioni.",
+      "Corrispondenza esatta ai lucidi del docente: NON TROVATO."
+    ]
+  }
+}

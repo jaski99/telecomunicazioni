@@ -1,0 +1,478 @@
+[
+  {
+    "id": "reti-concetti-introduttivi",
+    "titolo": "Concetti introduttivi delle reti",
+    "area": 6,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W5",
+    "sapere": "Distinguere rete fisica, servizi, protocolli, indirizzi, standard e mezzi; riformulare i nove temi introduttivi I1–I9.",
+    "saper_fare": [
+      "So spiegare i nove temi e distinguere un nodo da un collegamento.",
+      "So confrontare rame, fibra e radio indicando limiti delle affermazioni storiche."
+    ],
+    "prerequisiti": [],
+    "tempo_studio_min": 25,
+    "priorita": {
+      "livello": "media",
+      "motivazione": "Concetto del programma o delle domande introduttive; frequenza NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE2",
+        "rif": "file2 p. 8: nove temi introduttivi, risposte di studenti"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "So spiegare i nove temi e distinguere un nodo da un collegamento.",
+      "So confrontare rame, fibra e radio indicando limiti delle affermazioni storiche."
+    ]
+  },
+  {
+    "id": "architetture-iso-osi-tcpip",
+    "titolo": "Architetture ISO/OSI e TCP/IP",
+    "area": 6,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W5",
+    "sapere": "Distinguere servizi e responsabilità degli strati, incapsulamento e corrispondenze indicative tra ISO/OSI e TCP/IP.",
+    "saper_fare": [
+      "So nominare gli strati OSI in ordine, soprattutto trasporto e sessione.",
+      "So seguire un messaggio attraverso le intestazioni."
+    ],
+    "prerequisiti": [
+      {
+        "id": "reti-concetti-introduttivi",
+        "forza": "hard",
+        "motivo": "Serve per comprendere e applicare questo argomento."
+      }
+    ],
+    "tempo_studio_min": 25,
+    "priorita": {
+      "livello": "media",
+      "motivazione": "Concetto del programma o delle domande introduttive; frequenza NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE2",
+        "rif": "file2 p. 9: temi M4 e M5"
+      },
+      {
+        "chiave": "ESSE3_2016",
+        "rif": "Programma storico: modelli ISO/OSI e TCP/IP, R1 §3"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "So nominare gli strati OSI in ordine, soprattutto trasporto e sessione.",
+      "So seguire un messaggio attraverso le intestazioni."
+    ]
+  },
+  {
+    "id": "commutazione-circuito-pacchetto",
+    "titolo": "Commutazione di circuito e di pacchetto",
+    "area": 6,
+    "tipo": "concetto",
+    "gruppo": "B",
+    "worker": "W5",
+    "sapere": "Confrontare risorse dedicate e inoltro a pacchetti, tempi di trasmissione e costi della condivisione.",
+    "saper_fare": [
+      "So distinguere prenotazione, trasmissione e rilascio.",
+      "So calcolare il tempo di serializzazione su due collegamenti ideali."
+    ],
+    "prerequisiti": [
+      {
+        "id": "reti-concetti-introduttivi",
+        "forza": "hard",
+        "motivo": "Serve per comprendere e applicare questo argomento."
+      }
+    ],
+    "tempo_studio_min": 25,
+    "priorita": {
+      "livello": "media",
+      "motivazione": "Concetto del programma o delle domande introduttive; frequenza NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "ESSE3_2016",
+        "rif": "Programma storico: commutazione di circuito e pacchetto, R1 §3"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "So distinguere prenotazione, trasmissione e rilascio.",
+      "So calcolare il tempo di serializzazione su due collegamenti ideali."
+    ]
+  },
+  {
+    "id": "protocolli-linea-hdlc-sliding-window",
+    "titolo": "HDLC e protocolli a finestra scorrevole",
+    "area": 6,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W5",
+    "sapere": "Spiegare incorniciamento, controllo della sequenza, riscontri e scorrimento della finestra di trasmissione.",
+    "saper_fare": [
+      "So descrivere il ruolo del riscontro e il limite W.",
+      "So distinguere stop-and-wait, invio continuo e attesa."
+    ],
+    "prerequisiti": [
+      {
+        "id": "architetture-iso-osi-tcpip",
+        "forza": "hard",
+        "motivo": "Serve per comprendere e applicare questo argomento."
+      }
+    ],
+    "tempo_studio_min": 35,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Prova teorica diretta o prerequisito diretto di una prova teorica; frequenza NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "file3 pp. 29–30: finestra scorrevole"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 49–50: diagrammi e slide 75 Reti citata"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "So descrivere il ruolo del riscontro e il limite W.",
+      "So distinguere stop-and-wait, invio continuo e attesa."
+    ]
+  },
+  {
+    "id": "dim-sliding-window-efficienza",
+    "titolo": "Efficienza della finestra scorrevole senza errori",
+    "area": 6,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W5",
+    "sapere": "Ricavare i due regimi di efficienza utile e disegnare tempi di invio, riscontro e attesa.",
+    "saper_fare": [
+      "So ricavare TT e spiegare la soglia WF = CTT.",
+      "So disegnare un caso con attesa e uno continuo."
+    ],
+    "prerequisiti": [
+      {
+        "id": "protocolli-linea-hdlc-sliding-window",
+        "forza": "hard",
+        "motivo": "Serve per comprendere e applicare questo argomento."
+      }
+    ],
+    "tempo_studio_min": 45,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Prova teorica diretta o prerequisito diretto di una prova teorica; frequenza NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "file3 pp. 29–30"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 49–50; slide 75 Reti citata, non consultata"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "So ricavare TT e spiegare la soglia WF = CTT.",
+      "So disegnare un caso con attesa e uno continuo."
+    ]
+  },
+  {
+    "id": "codici-rivelazione-errore",
+    "titolo": "Codici per la rivelazione degli errori",
+    "area": 6,
+    "tipo": "concetto",
+    "gruppo": "B",
+    "worker": "W5",
+    "sapere": "Distinguere informazione e ridondanza, costruire un semplice controllo polinomiale e interpretare la sindrome.",
+    "saper_fare": [
+      "So distinguere rivelare e correggere un errore.",
+      "So eseguire una divisione elementare modulo due."
+    ],
+    "prerequisiti": [
+      {
+        "id": "protocolli-linea-hdlc-sliding-window",
+        "forza": "hard",
+        "motivo": "Serve per comprendere e applicare questo argomento."
+      }
+    ],
+    "tempo_studio_min": 30,
+    "priorita": {
+      "livello": "media",
+      "motivazione": "Concetto del programma o delle domande introduttive; frequenza NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "file3 p. 46: esercizio su codice polinomiale"
+      },
+      {
+        "chiave": "FILE2",
+        "rif": "file2: tema M28 sui codici sistematici; pagina specifica NON TROVATO"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "So distinguere rivelare e correggere un errore.",
+      "So eseguire una divisione elementare modulo due."
+    ]
+  },
+  {
+    "id": "parametro-a-propagazione-trasmissione",
+    "titolo": "Parametro a: propagazione e trasmissione",
+    "area": 6,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W5",
+    "sapere": "Calcolare il rapporto adimensionale tra propagazione unidirezionale e serializzazione della trama, distinguendolo dal tempo di andata e ritorno.",
+    "saper_fare": [
+      "So ricavare a da distanza, velocità di propagazione e durata del frame.",
+      "So spiegare perché lo slot di contesa del modello CSMA/CD vale due propagazioni."
+    ],
+    "prerequisiti": [
+      {
+        "id": "reti-concetti-introduttivi",
+        "forza": "hard",
+        "motivo": "Serve per comprendere e applicare questo argomento."
+      }
+    ],
+    "tempo_studio_min": 25,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Prova teorica diretta o prerequisito diretto di una prova teorica; frequenza NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "file3 p. 22: tempo di propagazione e slot CSMA/CD"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "file1 p. 47: slot e frame normalizzati"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "So ricavare a da distanza, velocità di propagazione e durata del frame.",
+      "So spiegare perché lo slot di contesa del modello CSMA/CD vale due propagazioni."
+    ]
+  },
+  {
+    "id": "accesso-multiplo-deterministico-casuale",
+    "titolo": "Accesso multiplo deterministico e casuale",
+    "area": 6,
+    "tipo": "concetto",
+    "gruppo": "A",
+    "worker": "W5",
+    "sapere": "Confrontare ripartizione nel tempo o in frequenza con accesso a contesa e collisioni, specificando i modelli di ritardo.",
+    "saper_fare": [
+      "So confrontare TDMA e FDMA a parità di risorse.",
+      "So spiegare la differenza tra ALOHA e ascolto del canale."
+    ],
+    "prerequisiti": [
+      {
+        "id": "parametro-a-propagazione-trasmissione",
+        "forza": "hard",
+        "motivo": "Serve per comprendere e applicare questo argomento."
+      }
+    ],
+    "tempo_studio_min": 35,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Prova teorica diretta o prerequisito diretto di una prova teorica; frequenza NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "file3 pp. 20–22 e 31: ALOHA, CSMA/CD e ritardi TDMA/FDMA"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 45–48: Accesso multiplo, slide 5, 12 e 25 citate"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "So confrontare TDMA e FDMA a parità di risorse.",
+      "So spiegare la differenza tra ALOHA e ascolto del canale."
+    ]
+  },
+  {
+    "id": "dim-ritardo-tdma-fdma",
+    "titolo": "Ritardo medio: TDMA e FDMA",
+    "area": 6,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W5",
+    "sapere": "Calcolare attesa e durata di invio nel modello idealizzato e confrontare i ritardi a pari risorse.",
+    "saper_fare": [
+      "So sommare le attese delle M posizioni TDMA.",
+      "So individuare i limiti del confronto con FDMA."
+    ],
+    "prerequisiti": [
+      {
+        "id": "accesso-multiplo-deterministico-casuale",
+        "forza": "hard",
+        "motivo": "Serve per comprendere e applicare questo argomento."
+      }
+    ],
+    "tempo_studio_min": 40,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Prova teorica diretta o prerequisito diretto di una prova teorica; frequenza NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "file3 p. 31"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "file1 p. 48; slide 25 Accesso multiplo citata, non consultata"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "So sommare le attese delle M posizioni TDMA.",
+      "So individuare i limiti del confronto con FDMA."
+    ]
+  },
+  {
+    "id": "dim-aloha-throughput",
+    "titolo": "Throughput di ALOHA puro e slotted",
+    "area": 6,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W5",
+    "sapere": "Ricavare la probabilità di successo e i massimi di throughput nel modello ideale a tentativi poissoniani.",
+    "saper_fare": [
+      "So disegnare le finestre vulnerabili e il grafico ρ(G).",
+      "So individuare i due massimi senza confonderli."
+    ],
+    "prerequisiti": [
+      {
+        "id": "accesso-multiplo-deterministico-casuale",
+        "forza": "hard",
+        "motivo": "Serve per comprendere e applicare questo argomento."
+      },
+      {
+        "id": "processo-poisson",
+        "forza": "hard",
+        "motivo": "Serve per comprendere e applicare questo argomento."
+      }
+    ],
+    "tempo_studio_min": 45,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Prova teorica diretta o prerequisito diretto di una prova teorica; frequenza NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "file3 pp. 20–21; refuso nella riga di probabilità a p. 20"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 45–46; slide 5 Accesso multiplo citata, non consultata"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "So disegnare le finestre vulnerabili e il grafico ρ(G).",
+      "So individuare i due massimi senza confonderli."
+    ]
+  },
+  {
+    "id": "dim-csma-cd-throughput",
+    "titolo": "Throughput CSMA/CD in funzione di a",
+    "area": 6,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W5",
+    "sapere": "Ricavare il throughput nel modello di contesa a slot, motivare la media geometrica e disegnare S(a).",
+    "saper_fare": [
+      "So distinguere 2a dalla durata di un frame in slot.",
+      "So ricavare la formula e precisarne il modello."
+    ],
+    "prerequisiti": [
+      {
+        "id": "dim-aloha-throughput",
+        "forza": "hard",
+        "motivo": "Serve per comprendere e applicare questo argomento."
+      },
+      {
+        "id": "parametro-a-propagazione-trasmissione",
+        "forza": "hard",
+        "motivo": "Serve per comprendere e applicare questo argomento."
+      }
+    ],
+    "tempo_studio_min": 45,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Prova teorica diretta o prerequisito diretto di una prova teorica; frequenza NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "file3 p. 22"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "file1 p. 47; slide 12 Accesso multiplo citata, non consultata"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "So distinguere 2a dalla durata di un frame in slot.",
+      "So ricavare la formula e precisarne il modello."
+    ]
+  },
+  {
+    "id": "lan-ieee802-ethernet",
+    "titolo": "LAN, IEEE 802 ed Ethernet",
+    "area": 6,
+    "tipo": "concetto",
+    "gruppo": "C",
+    "worker": "W5",
+    "sapere": "Riconoscere l’ambito delle reti locali e distinguere il mezzo condiviso con collisioni dai collegamenti commutati full duplex.",
+    "saper_fare": [
+      "So spiegare quando è pertinente CSMA/CD.",
+      "So distinguere indirizzamento di collegamento e inoltro di rete."
+    ],
+    "prerequisiti": [
+      {
+        "id": "dim-csma-cd-throughput",
+        "forza": "hard",
+        "motivo": "Serve per comprendere e applicare questo argomento."
+      }
+    ],
+    "tempo_studio_min": 20,
+    "priorita": {
+      "livello": "bassa",
+      "motivazione": "Approfondimento oltre le prove teoriche associate; frequenza NON TROVATO."
+    },
+    "fonti": [
+      {
+        "chiave": "ESSE3_2016",
+        "rif": "Programma storico: reti, LAN e protocolli, R1 §3"
+      },
+      {
+        "chiave": "PROGRAMMA",
+        "rif": "Programma pubblico senza anno: IEEE 802 ed Ethernet, R1 §3"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "So spiegare quando è pertinente CSMA/CD.",
+      "So distinguere indirizzamento di collegamento e inoltro di rete."
+    ]
+  }
+]

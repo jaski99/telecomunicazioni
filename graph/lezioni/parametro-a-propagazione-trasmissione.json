@@ -1,0 +1,92 @@
+{
+  "id": "parametro-a-propagazione-trasmissione",
+  "perche_ti_serve": "M19, M24 e prerequisito di T16, gruppo A: collega dimensioni del mezzo e tempi del protocollo.",
+  "scenario": "Due stazioni sono agli estremi di un mezzo condiviso; mentre una invia una trama, il segnale impiega tempo per raggiungere l’altra.",
+  "definizione_esame": {
+    "definizione": "Il parametro $a$ è il rapporto tra propagazione unidirezionale e tempo di trasmissione della trama.",
+    "scopo": "Misurare quanto rapidamente una stazione può conoscere un evento remoto rispetto alla durata della trama.",
+    "esempio": "Con propagazione di 1 µs e trama di 10 µs, $a=0{,}1$."
+  },
+  "spiegazione": "### Due tempi diversi\nIl tempo di propagazione unidirezionale $T_p$ è il tempo necessario al segnale per percorrere una tratta; con distanza $d$ e velocità di propagazione $v$ costante, $T_p=d/v$. Il tempo di trasmissione $T_f=b/R$ è invece il tempo per immettere sul mezzo una trama di $b$ bit a capacità $R$ bit/s. Il primo dipende dal percorso, il secondo da dimensione e velocità di trasmissione. Entrambi sono tempi, ma non descrivono lo stesso fenomeno.\n\n### Il rapporto e il doppio percorso\nDefiniamo $a=T_p/T_f$, grandezza adimensionale. Se $a$ cresce, una maggiore parte della durata del frame trascorre prima che il segnale raggiunga l'altro estremo; la rilevazione distribuita delle collisioni diventa meno tempestiva in rapporto alla trasmissione. Nel modello idealizzato degli appunti CSMA/CD, lo slot di contesa è $2T_p$, non $T_p$: il rapporto tra durata dello slot e durata del frame è $2a$. Perciò un frame dura $T_f/(2T_p)=1/(2a)$ slot, non $1/(2a)$ secondi. Il caso $a=0$ è un limite ideale: la conversione in numero di slot si usa per $a>0$.\n\n### Interpretazione e validità\nSe la trama finisce prima del possibile ritorno dell'informazione di collisione, non si deve supporre che il mittente stia ancora trasmettendo quando la collisione diventa visibile. In un modello con rilevazione entro la trasmissione è naturale richiedere $T_f\\ge 2T_p$, cioè $a\\le 1/2$. Questo vincolo descrive il modello fisico specificato, non tutte le reti. La lettura di $a$ come rapporto è coerente con la normalizzazione a frame unitario in file1 p. 47 e file3 p. 22; la definizione esatta sui lucidi citati resta da verificare.",
+  "analogia": {
+    "testo": "Contare quanto dura una risposta rispetto al tempo che impieghi a pronunciare una frase.",
+    "limite": "Un mezzo condiviso può contenere segnali simultanei e le collisioni non sono un dialogo tra due sole persone."
+  },
+  "worked_example": {
+    "titolo": "Da distanza e bit al rapporto",
+    "problema": "Distanza 200 m, velocità $2\\cdot10^8$ m/s, trama 8000 bit e $R=800$ Mbit/s.",
+    "passi": [
+      "$T_p=200/(2\\cdot10^8)=1$ µs.",
+      "$T_f=8000/(800\\cdot10^6)=10$ µs.",
+      "Dividi: $a=1/10=0{,}1$ e lo slot è $2$ µs."
+    ],
+    "soluzione": "$a=0{,}1$; una trama occupa cinque slot da 2 µs.",
+    "perche_funziona": "Propagazione e serializzazione sono espresse nella stessa unità prima del rapporto."
+  },
+  "completion_problem": {
+    "titolo": "Slot normalizzato",
+    "testo": "Se $a=0{,}25$ e la durata del frame è 1 unità, trova lo slot e il numero di slot per frame.",
+    "passi_mancanti": [
+      "Usa $2a$ per la durata dello slot normalizzata.",
+      "Dividi una durata di frame per la durata dello slot."
+    ],
+    "soluzione": "Lo slot dura 0,5 unità di frame e un frame occupa 2 slot."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Rilevazione tardiva",
+    "testo": "Un frame dura 4 µs e la propagazione unidirezionale 3 µs. Può durare fino al ritorno peggiore?",
+    "suggerimento": "Confronta il frame con $2T_p$.",
+    "soluzione_attesa": "No: $4<6$ µs; l’ipotesi di rilevazione entro la trasmissione non è soddisfatta."
+  },
+  "errori_trappole": [
+    {
+      "errore": "Chiamare a un tempo in secondi.",
+      "perche_sbagliato": "È il rapporto tra due tempi e quindi non ha unità."
+    },
+    {
+      "errore": "Interpretare $1/(2a)$ come durata dello slot.",
+      "perche_sbagliato": "È il numero di slot per frame nel modello normalizzato, mentre lo slot dura $2T_p$."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Come si definisce a?",
+        "risposta": "$a=T_p/T_f$, propagazione unidirezionale divisa per durata della trama."
+      },
+      {
+        "domanda": "Quanto vale lo slot di contesa nel modello?",
+        "risposta": "$2T_p$, cioè $2a$ durate di trama."
+      },
+      {
+        "domanda": "Che cosa significa $a>1/2$?",
+        "risposta": "Il tempo di andata e ritorno supera il frame, quindi cade l’ipotesi di rilevazione entro la trasmissione."
+      }
+    ],
+    "spiega_con_parole_tue": "Senza guardare, spiega le ipotesi e ricostruisci un esempio, indicando anche quando il modello non si applica."
+  },
+  "riepilogo": "Propagazione e trasmissione misurano fenomeni diversi. $a$ è il loro rapporto; lo slot del modello dura $2T_p$.",
+  "flashcard": [
+    {
+      "fronte": "Come si definisce a?",
+      "retro": "$a=T_p/T_f$, propagazione unidirezionale divisa per durata della trama."
+    },
+    {
+      "fronte": "Quanto vale lo slot di contesa nel modello?",
+      "retro": "$2T_p$, cioè $2a$ durate di trama."
+    },
+    {
+      "fronte": "Che cosa significa $a>1/2$?",
+      "retro": "Il tempo di andata e ritorno supera il frame, quindi cade l’ipotesi di rilevazione entro la trasmissione."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "So calcolare $T_p$, $T_f$ e $a$.",
+      "So convertire frame in slot."
+    ],
+    "so_dire": [
+      "So distinguere unidirezionale e andata–ritorno."
+    ]
+  }
+}
