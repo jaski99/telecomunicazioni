@@ -1,0 +1,180 @@
+{
+  "id": "es-condizione-nyquist",
+  "perche_ti_serve": "Serve per l’esercizio E4, gruppo A della mappa. Collega il calcolo allo schema di area 3 — condizione in frequenza per campioni impulsivi senza attribuire punteggi non documentati.",
+  "scenario": "La sequenza campionata è x[n]=x₀δ[n]. La sua trasformata discreta è costante; la trasformata della sequenza campionata è invece la somma periodica di repliche dello spettro continuo. L’uguaglianza tra le due dà il criterio richiesto. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
+  "definizione_esame": {
+    "definizione": "Area 3 — condizione in frequenza per campioni impulsivi: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
+    "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+    "esempio": "Con T=1 ms, classifica il caso Bω<π/T, Bω=π/T e Bω>π/T e spiega quando si può soddisfare la relazione."
+  },
+  "spiegazione": "### Dalla sequenza ai campioni\nLa prescrizione sui campioni si scrive x[n]=x₀δ[n]. La trasformata della sequenza è costante perché resta un solo termine nella somma. Questa condizione è più forte del semplice campionamento senza aliasing: impone esattamente i valori assegnati a tutti gli indici.\n\n### Repliche dello spettro\nIl pettine di campionamento genera repliche distanziate di ωs=2π/T e con fattore 1/T. La trasformata della sequenza campionata è dunque una somma periodica di X. Uguagliare tale somma a x₀ conduce alla relazione finale.\n\n### I tre casi\nPer banda sotto π/T ci sono frequenze lasciate scoperte nella periodizzazione, quindi una funzione generica non può produrre una somma costante non nulla. Al limite, un rettangolo di altezza x₀T copre esattamente un periodo. Sopra il limite sono possibili forme sovrapposte complementari; occorre verificare la somma effettiva. Questa distinzione evita di trasformare una condizione necessaria e sufficiente in una scorciatoia basata soltanto sulla banda.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n",
+  "analogia": {
+    "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
+    "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+  },
+  "worked_example": {
+    "titolo": "Esempio guidato E4",
+    "problema": "Con T=1 ms, classifica il caso Bω<π/T, Bω=π/T e Bω>π/T e spiega quando si può soddisfare la relazione.",
+    "passi": [
+      "La sequenza prescritta vale x₀ in n=0 e zero per ogni altro intero.",
+      "La serie temporale trasformata è Xs(ω)=Σn x[n]e⁻ʲⁿωT=x₀.",
+      "Il campionamento moltiplica x(t) per un pettine di impulsi; in frequenza Xs(ω)=(1/T)Σk X(ω+kωs), ωs=2π/T.",
+      "Uguagliando le due forme, ottieni Σk X(ω+k2π/T)=x₀T.",
+      "Se Bω<π/T, rimangono intervalli di frequenza non coperti dalle repliche: per spettri generici la condizione non è realizzabile.",
+      "Se Bω=π/T, la banda rettangolare X(ω)=x₀T entro ±π/T e zero fuori realizza la somma costante, al bordo secondo la convenzione del valore al salto.",
+      "Se Bω>π/T, la sovrapposizione può ancora soddisfare la somma se le repliche sono complementari; non basta il solo valore di banda per decidere: va verificata l’identità periodizzata."
+    ],
+    "soluzione": "La relazione è necessaria e sufficiente per la sequenza di campioni prescritta, sotto le ipotesi della trasformata e del campionamento ideali. I tre casi sono un’analisi della possibilità in funzione della banda, non una regola che garantisce ogni spettro.",
+    "perche_funziona": "Ogni formula discende dalla definizione del modello e da proprietà dichiarate; i valori numerici servono a controllare i fattori e non sostituiscono il ragionamento simbolico."
+  },
+  "completion_problem": {
+    "titolo": "Completa i passaggi essenziali",
+    "testo": "Nel problema: Con T=1 ms, classifica il caso Bω<π/T, Bω=π/T e Bω>π/T e spiega quando si può soddisfare la relazione.",
+    "passi_mancanti": [
+      "Scrivi la relazione di partenza e le ipotesi.",
+      "Esegui l’integrazione o la sostituzione che porta al risultato.",
+      "Indica il controllo finale su unità, zeri o limiti."
+    ],
+    "soluzione": "Usa i passaggi numerati dell’esempio come guida; la risposta completa è la formula conclusiva e il controllo di coerenza descritti sopra."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Prova da solo: E4",
+    "testo": "Risolvi una variante di area 3 — condizione in frequenza per campioni impulsivi cambiando un parametro, mantenendo esplicite le unità e disegnando la forma attesa.",
+    "suggerimento": "Prima scrivi la formula simbolica; solo dopo sostituisci i numeri. Controlla un caso limite.",
+    "soluzione_attesa": [
+      "Con T=2 ms, quanto vale π/T?",
+      "Perché Bω>π/T non implica automaticamente che la condizione fallisca?"
+    ]
+  },
+  "errori_trappole": [
+    {
+      "errore": "Sostituire i numeri prima di fissare notazione e unità.",
+      "perche_sbagliato": "Si perdono fattori e non è possibile controllare dimensionalmente la formula."
+    },
+    {
+      "errore": "Disegnare lo spettro senza indicare supporto e zeri.",
+      "perche_sbagliato": "La figura non distingue una curva continua da righe o da uno spettro nullo fuori banda."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Quali ipotesi rendono valido il modello?",
+        "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+      },
+      {
+        "domanda": "Qual è il passaggio chiave?",
+        "risposta": "La serie temporale trasformata è Xs(ω)=Σn x[n]e⁻ʲⁿωT=x₀."
+      },
+      {
+        "domanda": "Quale controllo indipendente applichi?",
+        "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+      }
+    ],
+    "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+  },
+  "riepilogo": "Sequenza campionata x[n] → trasformata costante x₀ → repliche spaziate 2π/T → somma x₀T → confronto nei tre regimi di banda.",
+  "flashcard": [
+    {
+      "fronte": "Qual è il risultato centrale?",
+      "retro": "La relazione di riferimento è $\\sum_{k=-\\infty}^{+\\infty}X\\!\\left(\\omega+k\\frac{2\\pi}{T}\\right)=x_0T$. Dichiara sempre le ipotesi e le unità."
+    },
+    {
+      "fronte": "Qual è il controllo più utile?",
+      "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "Imposto il problema e ricavo la formula senza saltare passaggi.",
+      "Controllo i casi limite e interpreto i grafici."
+    ],
+    "so_dire": [
+      "Spiego le ipotesi e la convenzione adottata."
+    ]
+  },
+  "figure": [
+    {
+      "id": "nyquist-repliche",
+      "tipo": "grafico",
+      "titolo": "Repliche spettrali al limite di Nyquist",
+      "descrizione": "Un rettangolo di ampiezza x₀T e larghezza 2π/T replica senza lacune; la somma periodica resta costante nel modello ideale.",
+      "asse_x": {
+        "etichetta": "ωT/π",
+        "min": -3,
+        "max": 3
+      },
+      "asse_y": {
+        "etichetta": "ampiezza normalizzata",
+        "min": 0,
+        "max": 1.2
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -3,
+              1
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              3,
+              1
+            ]
+          ],
+          "etichetta": "somma periodica costante"
+        },
+        {
+          "stile": "tratteggio",
+          "punti": [
+            [
+              -3,
+              0
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              3,
+              0
+            ]
+          ],
+          "etichetta": "replica centrale"
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": -1,
+          "y": 0.1,
+          "testo": "−π/T"
+        },
+        {
+          "x": 1,
+          "y": 0.1,
+          "testo": "π/T"
+        }
+      ]
+    }
+  ]
+}

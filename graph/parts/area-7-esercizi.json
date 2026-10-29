@@ -1,0 +1,38 @@
+[
+  {
+    "id": "es-teoria-traffico-extra",
+    "titolo": "Esercizi integrativi di teoria del traffico",
+    "area": 7,
+    "tipo": "tipo_esercizio",
+    "gruppo": "C",
+    "worker": "W6",
+    "sapere": "Esercizi integrativi di teoria del traffico. Si applicano formule e ipotesi esplicite, si controllano unità, casi limite e convenzioni prima di concludere.",
+    "saper_fare": [
+      "Impostare e risolvere esercizi integrativi di teoria del traffico motivando i passaggi.",
+      "Verificare il risultato con unità, limiti e una rappresentazione qualitativa."
+    ],
+    "prerequisiti": [
+      {
+        "id": "code-mm1-little",
+        "forza": "hard",
+        "motivo": "Prerequisito indicato dal contratto per comprendere e svolgere l’esercizio."
+      }
+    ],
+    "tempo_studio_min": 50,
+    "priorita": {
+      "livello": "bassa",
+      "motivazione": "Approfondimento extra, non associato a quesito d’esame identificato."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file3 pp. 44, 53-57"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "Dichiaro ipotesi e convenzione spettrale.",
+      "Controllo unità, casi limite e forma del grafico."
+    ]
+  }
+]

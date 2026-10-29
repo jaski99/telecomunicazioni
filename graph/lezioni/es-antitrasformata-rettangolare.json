@@ -1,0 +1,146 @@
+{
+  "id": "es-antitrasformata-rettangolare",
+  "perche_ti_serve": "Serve per l’esercizio E3, gruppo A della mappa. Collega il calcolo allo schema di area 1 — spettro rettangolare bilatero senza attribuire punteggi non documentati.",
+  "scenario": "Una banda rettangolare simmetrica in pulsazione corrisponde a una sinc nel tempo. L’antitrasformata conserva il fattore 1/(2π); è utile valutare separatamente il limite in t=0. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
+  "definizione_esame": {
+    "definizione": "Area 1 — spettro rettangolare bilatero: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
+    "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+    "esempio": "Per X₀=2 e ωm=4 rad/s, ricava x(t), il valore in zero e i primi zeri."
+  },
+  "spiegazione": "### Dalla banda alla sinc\nLa trasformata assegnata è reale, pari e costante nella banda. In questa lezione sinc(u)=sin(u)/u, con valore uno in zero per continuità. Inserendo la banda finita nell’antitrasformata, la parte dispari dell’esponenziale si cancella e resta un integrale coseno. Il risultato è una sinc: la banda più larga produce una risposta temporale più stretta.\n\n### Valore al centro e zeri\nLa formula sin(ωm t)/t ha una forma apparentemente singolare in zero; il limite è finito e vale X₀ωm/π. Gli zeri si ripetono a multipli di π/ωm, non di 2π/ωm. La banda unilaterale di taglio è ωm, mentre la larghezza bilatera è 2ωm.\n\n### Verifiche dimensionali e grafiche\nX₀ ha unità di trasformata, per cui il fattore ωm restituisce unità di ampiezza nel tempo. Il grafico ha un lobo principale tra i primi zeri e lobi laterali alternati. Per ogni esercizio controlla il limite in zero e segna gli zeri prima di disegnare.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n",
+  "analogia": {
+    "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
+    "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+  },
+  "worked_example": {
+    "titolo": "Esempio guidato E3",
+    "problema": "Per X₀=2 e ωm=4 rad/s, ricava x(t), il valore in zero e i primi zeri.",
+    "passi": [
+      "Scrivi l’antitrasformata: x(t)=1/(2π)∫₋ωm^ωm X₀eʲωᵗdω.",
+      "Usa la simmetria: l’integrale diventa X₀/π ∫₀^ωm cos(ωt)dω.",
+      "Integra rispetto a ω: x(t)=X₀ sin(ωm t)/(πt), per t diverso da zero.",
+      "Valuta il limite t→0 con sin u/u→1: x(0)=X₀ωm/π=8/π.",
+      "Gli zeri non nulli soddisfano ωm t=kπ, quindi t=kπ/ωm; i primi sono ±π/4 s.",
+      "Il massimo è al centro; lobi laterali alternano segno e decadono come 1/|t|."
+    ],
+    "soluzione": "La variabile ω è in rad/s e il supporto dello spettro è [−ωm,ωm]. Non confondere ωm con la larghezza totale 2ωm. La formula del valore in t=0 si ottiene per limite, non sostituendo direttamente nella forma con denominatore t.",
+    "perche_funziona": "Ogni formula discende dalla definizione del modello e da proprietà dichiarate; i valori numerici servono a controllare i fattori e non sostituiscono il ragionamento simbolico."
+  },
+  "completion_problem": {
+    "titolo": "Completa i passaggi essenziali",
+    "testo": "Nel problema: Per X₀=2 e ωm=4 rad/s, ricava x(t), il valore in zero e i primi zeri.",
+    "passi_mancanti": [
+      "Scrivi la relazione di partenza e le ipotesi.",
+      "Esegui l’integrazione o la sostituzione che porta al risultato.",
+      "Indica il controllo finale su unità, zeri o limiti."
+    ],
+    "soluzione": "Usa i passaggi numerati dell’esempio come guida; la risposta completa è la formula conclusiva e il controllo di coerenza descritti sopra."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Prova da solo: E3",
+    "testo": "Risolvi una variante di area 1 — spettro rettangolare bilatero cambiando un parametro, mantenendo esplicite le unità e disegnando la forma attesa.",
+    "suggerimento": "Prima scrivi la formula simbolica; solo dopo sostituisci i numeri. Controlla un caso limite.",
+    "soluzione_attesa": [
+      "Per ωm=2 e X₀=π, trova x(0) e il primo zero positivo.",
+      "Perché compare il fattore 1/(2π) nell’antitrasformata?"
+    ]
+  },
+  "errori_trappole": [
+    {
+      "errore": "Sostituire i numeri prima di fissare notazione e unità.",
+      "perche_sbagliato": "Si perdono fattori e non è possibile controllare dimensionalmente la formula."
+    },
+    {
+      "errore": "Disegnare lo spettro senza indicare supporto e zeri.",
+      "perche_sbagliato": "La figura non distingue una curva continua da righe o da uno spettro nullo fuori banda."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Quali ipotesi rendono valido il modello?",
+        "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+      },
+      {
+        "domanda": "Qual è il passaggio chiave?",
+        "risposta": "Usa la simmetria: l’integrale diventa X₀/π ∫₀^ωm cos(ωt)dω."
+      },
+      {
+        "domanda": "Quale controllo indipendente applichi?",
+        "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+      }
+    ],
+    "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+  },
+  "riepilogo": "Antitrasformata su [−ωm,ωm] → usa simmetria → integra cos(ωt) → sinc temporale → limite in zero e zeri.",
+  "flashcard": [
+    {
+      "fronte": "Qual è il risultato centrale?",
+      "retro": "La relazione di riferimento è $x(t)=\\frac{X_0\\sin(\\omega_m t)}{\\pi t}=\\frac{X_0\\omega_m}{\\pi}\\,\\mathrm{sinc}(\\omega_m t)$. Dichiara sempre le ipotesi e le unità."
+    },
+    {
+      "fronte": "Qual è il controllo più utile?",
+      "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "Imposto il problema e ricavo la formula senza saltare passaggi.",
+      "Controllo i casi limite e interpreto i grafici."
+    ],
+    "so_dire": [
+      "Spiego le ipotesi e la convenzione adottata."
+    ]
+  },
+  "figure": [
+    {
+      "id": "spettro-rettangolare",
+      "tipo": "grafico",
+      "titolo": "Spettro rettangolare bilatero",
+      "descrizione": "Banda piatta da −ωm a +ωm con supporto simmetrico.",
+      "asse_x": {
+        "etichetta": "ω/ωₘ",
+        "min": -2,
+        "max": 2
+      },
+      "asse_y": {
+        "etichetta": "Ampiezza normalizzata",
+        "min": 0,
+        "max": 1
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -2,
+              0
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ]
+          ],
+          "etichetta": "X(ω)/X₀"
+        }
+      ],
+      "annotazioni": []
+    }
+  ]
+}

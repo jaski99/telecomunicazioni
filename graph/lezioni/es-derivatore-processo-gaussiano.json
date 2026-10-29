@@ -1,0 +1,238 @@
+{
+  "id": "es-derivatore-processo-gaussiano",
+  "perche_ti_serve": "Serve per l’esercizio E7, gruppo A della mappa. Collega il calcolo allo schema di area 3 — derivatore e processo gaussiano senza attribuire punteggi non documentati.",
+  "scenario": "Un derivatore ideale ha H(jω)=jω, quindi moltiplica lo spettro di potenza per |H|²=ω². Un filtro lineare applicato a un processo gaussiano produce ancora un processo gaussiano; media zero e varianza si ottengono integrando la densità secondo la convenzione unilaterale indicata negli appunti. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
+  "definizione_esame": {
+    "definizione": "Area 3 — derivatore e processo gaussiano: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
+    "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+    "esempio": "Assumendo la convenzione unilaterale A2, con G₀=2 e ωm=3 rad/s calcola la varianza e scrivi la densità di y(t)."
+  },
+  "spiegazione": "### Spettro all’uscita\nIl derivatore moltiplica ciascuna componente sinusoidale per jω. Per gli spettri di potenza conta il modulo quadro: |jω|²=ω². Pertanto l’uscita non ha spettro piatto: cresce quadraticamente fino al limite ωm e si annulla fuori banda.\n\n### Potenza e densità\nCon la convenzione unilaterale A2, la potenza è l’integrale da zero a ωm. L’integrale di G₀ω² produce G₀ωm³/3, che coincide con la varianza dato il valor medio nullo. Poiché l’uscita è gaussiana, la densità del primo ordine è determinata da media e varianza.\n\n### Precisazione della convenzione\nIl fattore numerico dipende dalla definizione bilaterale o unilaterale dello spettro. R3 segnala il dubbio; il contratto assegna a W3 la decisione in NOTAZIONE.md, che qui non è ancora disponibile. Perciò questo svolgimento dichiara esplicitamente l’ipotesi unilaterale e riporta il risultato letto sulla pagina d’immagine di file1, inclusa la correzione Gᵧ=ω²G₀.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n",
+  "analogia": {
+    "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
+    "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+  },
+  "worked_example": {
+    "titolo": "Esempio guidato E7",
+    "problema": "Assumendo la convenzione unilaterale A2, con G₀=2 e ωm=3 rad/s calcola la varianza e scrivi la densità di y(t).",
+    "passi": [
+      "La risposta in frequenza del derivatore è H(jω)=jω.",
+      "Per il filtraggio di processi, Gᵧ(ω)=|H(jω)|²Gₓ(ω)=ω²G₀ entro la banda e zero oltre.",
+      "Con A2, integra sulla sola semiasse positiva: σ²=∫₀^ωm ω²G₀dω.",
+      "Integra: σ²=G₀ωm³/3=2·27/3=18.",
+      "Il derivatore elimina la componente costante; l’ingresso e l’uscita hanno media nulla.",
+      "Essendo y gaussiano, pᵧ(y)=1/√(2πσ²) exp(−y²/(2σ²))=1/√(36π) exp(−y²/36)."
+    ],
+    "soluzione": "La convenzione unilaterale in pulsazione è un’IPOTESI di lavoro A2, da applicare in modo coerente: se si adotta una densità bilaterale, cambiano i fattori di normalizzazione. La lettura di file1 p. 23 mostra il fattore ω², non G₀ costante all’uscita.",
+    "perche_funziona": "Ogni formula discende dalla definizione del modello e da proprietà dichiarate; i valori numerici servono a controllare i fattori e non sostituiscono il ragionamento simbolico."
+  },
+  "completion_problem": {
+    "titolo": "Completa i passaggi essenziali",
+    "testo": "Nel problema: Assumendo la convenzione unilaterale A2, con G₀=2 e ωm=3 rad/s calcola la varianza e scrivi la densità di y(t).",
+    "passi_mancanti": [
+      "Scrivi la relazione di partenza e le ipotesi.",
+      "Esegui l’integrazione o la sostituzione che porta al risultato.",
+      "Indica il controllo finale su unità, zeri o limiti."
+    ],
+    "soluzione": "Usa i passaggi numerati dell’esempio come guida; la risposta completa è la formula conclusiva e il controllo di coerenza descritti sopra."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Prova da solo: E7",
+    "testo": "Risolvi una variante di area 3 — derivatore e processo gaussiano cambiando un parametro, mantenendo esplicite le unità e disegnando la forma attesa.",
+    "suggerimento": "Prima scrivi la formula simbolica; solo dopo sostituisci i numeri. Controlla un caso limite.",
+    "soluzione_attesa": [
+      "Con G₀=3, ωm=2, trova σ².",
+      "Perché una gaussiana resta gaussiana dopo un sistema lineare?"
+    ]
+  },
+  "errori_trappole": [
+    {
+      "errore": "Sostituire i numeri prima di fissare notazione e unità.",
+      "perche_sbagliato": "Si perdono fattori e non è possibile controllare dimensionalmente la formula."
+    },
+    {
+      "errore": "Disegnare lo spettro senza indicare supporto e zeri.",
+      "perche_sbagliato": "La figura non distingue una curva continua da righe o da uno spettro nullo fuori banda."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Quali ipotesi rendono valido il modello?",
+        "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+      },
+      {
+        "domanda": "Qual è il passaggio chiave?",
+        "risposta": "Per il filtraggio di processi, Gᵧ(ω)=|H(jω)|²Gₓ(ω)=ω²G₀ entro la banda e zero oltre."
+      },
+      {
+        "domanda": "Quale controllo indipendente applichi?",
+        "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+      }
+    ],
+    "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+  },
+  "riepilogo": "H=jω → Gᵧ=ω²G₀ → integra la densità (convenzione dichiarata) → ottieni la varianza → scrivi la gaussiana a media zero.",
+  "flashcard": [
+    {
+      "fronte": "Qual è il risultato centrale?",
+      "retro": "La relazione di riferimento è $G_y(\\omega)=\\omega^2G_0\\ (0\\leq\\omega\\leq\\omega_m),\\qquad \\sigma_y^2=\\frac{G_0\\omega_m^3}{3}$. Dichiara sempre le ipotesi e le unità."
+    },
+    {
+      "fronte": "Qual è il controllo più utile?",
+      "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "Imposto il problema e ricavo la formula senza saltare passaggi.",
+      "Controllo i casi limite e interpreto i grafici."
+    ],
+    "so_dire": [
+      "Spiego le ipotesi e la convenzione adottata."
+    ]
+  },
+  "figure": [
+    {
+      "id": "derivatore-uscita",
+      "tipo": "grafico",
+      "titolo": "Spettro di potenza dopo derivazione",
+      "descrizione": "La densità unilaterale cresce come ω² fino a ωm e poi è nulla.",
+      "asse_x": {
+        "etichetta": "ω/ωₘ",
+        "min": 0,
+        "max": 1.4
+      },
+      "asse_y": {
+        "etichetta": "Ampiezza normalizzata",
+        "min": 0,
+        "max": 1
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.05,
+              0.0025000000000000005
+            ],
+            [
+              0.1,
+              0.010000000000000002
+            ],
+            [
+              0.15,
+              0.0225
+            ],
+            [
+              0.2,
+              0.04000000000000001
+            ],
+            [
+              0.25,
+              0.0625
+            ],
+            [
+              0.3,
+              0.09
+            ],
+            [
+              0.35,
+              0.12249999999999998
+            ],
+            [
+              0.4,
+              0.16000000000000003
+            ],
+            [
+              0.45,
+              0.2025
+            ],
+            [
+              0.5,
+              0.25
+            ],
+            [
+              0.55,
+              0.30250000000000005
+            ],
+            [
+              0.6,
+              0.36
+            ],
+            [
+              0.65,
+              0.42250000000000004
+            ],
+            [
+              0.7,
+              0.48999999999999994
+            ],
+            [
+              0.75,
+              0.5625
+            ],
+            [
+              0.8,
+              0.6400000000000001
+            ],
+            [
+              0.85,
+              0.7224999999999999
+            ],
+            [
+              0.9,
+              0.81
+            ],
+            [
+              0.95,
+              0.9025
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              1.05,
+              0
+            ],
+            [
+              1.1,
+              0
+            ],
+            [
+              1.15,
+              0
+            ],
+            [
+              1.2,
+              0
+            ],
+            [
+              1.25,
+              0
+            ],
+            [
+              1.3,
+              0
+            ],
+            [
+              1.35,
+              0
+            ],
+            [
+              1.4,
+              0
+            ]
+          ],
+          "etichetta": "Gᵧ(ω)/(G₀ωₘ²)"
+        }
+      ],
+      "annotazioni": []
+    }
+  ]
+}

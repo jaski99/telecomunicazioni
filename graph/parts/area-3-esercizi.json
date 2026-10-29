@@ -1,0 +1,151 @@
+[
+  {
+    "id": "es-condizione-nyquist",
+    "titolo": "Area 3 — condizione in frequenza per campioni impulsivi",
+    "area": 3,
+    "tipo": "tipo_esercizio",
+    "gruppo": "A",
+    "worker": "W6",
+    "sapere": "Area 3 — condizione in frequenza per campioni impulsivi. Si applicano formule e ipotesi esplicite, si controllano unità, casi limite e convenzioni prima di concludere.",
+    "saper_fare": [
+      "Impostare e risolvere area 3 — condizione in frequenza per campioni impulsivi motivando i passaggi.",
+      "Verificare il risultato con unità, limiti e una rappresentazione qualitativa."
+    ],
+    "prerequisiti": [
+      {
+        "id": "criterio-nyquist-isi",
+        "forza": "hard",
+        "motivo": "Prerequisito indicato dal contratto per comprendere e svolgere l’esercizio."
+      }
+    ],
+    "tempo_studio_min": 35,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Esercizio della raccolta d’esame."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 4-6 (rif. p. 2.35)"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "Dichiaro ipotesi e convenzione spettrale.",
+      "Controllo unità, casi limite e forma del grafico."
+    ]
+  },
+  {
+    "id": "es-derivatore-processo-gaussiano",
+    "titolo": "Area 3 — derivatore e processo gaussiano",
+    "area": 3,
+    "tipo": "tipo_esercizio",
+    "gruppo": "A",
+    "worker": "W6",
+    "sapere": "Area 3 — derivatore e processo gaussiano. Si applicano formule e ipotesi esplicite, si controllano unità, casi limite e convenzioni prima di concludere.",
+    "saper_fare": [
+      "Impostare e risolvere area 3 — derivatore e processo gaussiano motivando i passaggi.",
+      "Verificare il risultato con unità, limiti e una rappresentazione qualitativa."
+    ],
+    "prerequisiti": [
+      {
+        "id": "processi-gaussiani-funzione-errore",
+        "forza": "hard",
+        "motivo": "Prerequisito indicato dal contratto per comprendere e svolgere l’esercizio."
+      },
+      {
+        "id": "sistemi-lineari-funzione-trasferimento",
+        "forza": "hard",
+        "motivo": "Prerequisito indicato dal contratto per comprendere e svolgere l’esercizio."
+      }
+    ],
+    "tempo_studio_min": 35,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Esercizio della raccolta d’esame."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 p. 23 (rif. p. 5.29)"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "Dichiaro ipotesi e convenzione spettrale.",
+      "Controllo unità, casi limite e forma del grafico."
+    ]
+  },
+  {
+    "id": "es-pam-bipolare",
+    "titolo": "Area 3 — PAM bipolare a duty cycle unitario",
+    "area": 3,
+    "tipo": "tipo_esercizio",
+    "gruppo": "A",
+    "worker": "W6",
+    "sapere": "Area 3 — PAM bipolare a duty cycle unitario. Si applicano formule e ipotesi esplicite, si controllano unità, casi limite e convenzioni prima di concludere.",
+    "saper_fare": [
+      "Impostare e risolvere area 3 — pam bipolare a duty cycle unitario motivando i passaggi.",
+      "Verificare il risultato con unità, limiti e una rappresentazione qualitativa."
+    ],
+    "prerequisiti": [
+      {
+        "id": "dim-pam-due-spettri",
+        "forza": "hard",
+        "motivo": "Prerequisito indicato dal contratto per comprendere e svolgere l’esercizio."
+      }
+    ],
+    "tempo_studio_min": 35,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Esercizio della raccolta d’esame."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 24-25 (rif. p. 5.43)"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "Dichiaro ipotesi e convenzione spettrale.",
+      "Controllo unità, casi limite e forma del grafico."
+    ]
+  },
+  {
+    "id": "es-pam-ami",
+    "titolo": "Area 3 — PAM AMI con duty cycle 0,5",
+    "area": 3,
+    "tipo": "tipo_esercizio",
+    "gruppo": "A",
+    "worker": "W6",
+    "sapere": "Area 3 — PAM AMI con duty cycle 0,5. Si applicano formule e ipotesi esplicite, si controllano unità, casi limite e convenzioni prima di concludere.",
+    "saper_fare": [
+      "Impostare e risolvere area 3 — pam ami con duty cycle 0,5 motivando i passaggi.",
+      "Verificare il risultato con unità, limiti e una rappresentazione qualitativa."
+    ],
+    "prerequisiti": [
+      {
+        "id": "dim-pam-due-spettri",
+        "forza": "hard",
+        "motivo": "Prerequisito indicato dal contratto per comprendere e svolgere l’esercizio."
+      }
+    ],
+    "tempo_studio_min": 35,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Esercizio della raccolta d’esame."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 pp. 26-27 (rif. p. 5.45)"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "Dichiaro ipotesi e convenzione spettrale.",
+      "Controllo unità, casi limite e forma del grafico."
+    ]
+  }
+]

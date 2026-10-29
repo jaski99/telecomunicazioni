@@ -1,0 +1,110 @@
+[
+  {
+    "id": "es-spettri-impulsi-periodici",
+    "titolo": "Area 1 — successione periodica di rettangoli",
+    "area": 1,
+    "tipo": "tipo_esercizio",
+    "gruppo": "A",
+    "worker": "W6",
+    "sapere": "Area 1 — successione periodica di rettangoli. Si applicano formule e ipotesi esplicite, si controllano unità, casi limite e convenzioni prima di concludere.",
+    "saper_fare": [
+      "Impostare e risolvere area 1 — successione periodica di rettangoli motivando i passaggi.",
+      "Verificare il risultato con unità, limiti e una rappresentazione qualitativa."
+    ],
+    "prerequisiti": [
+      {
+        "id": "serie-fourier",
+        "forza": "hard",
+        "motivo": "Prerequisito indicato dal contratto per comprendere e svolgere l’esercizio."
+      }
+    ],
+    "tempo_studio_min": 35,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Esercizio della raccolta d’esame."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 p. 1 (rif. p. 2.13)"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "Dichiaro ipotesi e convenzione spettrale.",
+      "Controllo unità, casi limite e forma del grafico."
+    ]
+  },
+  {
+    "id": "es-spettri-impulso-rettangolare",
+    "titolo": "Area 1 — impulso rettangolare aperiodico",
+    "area": 1,
+    "tipo": "tipo_esercizio",
+    "gruppo": "A",
+    "worker": "W6",
+    "sapere": "Area 1 — impulso rettangolare aperiodico. Si applicano formule e ipotesi esplicite, si controllano unità, casi limite e convenzioni prima di concludere.",
+    "saper_fare": [
+      "Impostare e risolvere area 1 — impulso rettangolare aperiodico motivando i passaggi.",
+      "Verificare il risultato con unità, limiti e una rappresentazione qualitativa."
+    ],
+    "prerequisiti": [
+      {
+        "id": "trasformata-fourier",
+        "forza": "hard",
+        "motivo": "Prerequisito indicato dal contratto per comprendere e svolgere l’esercizio."
+      }
+    ],
+    "tempo_studio_min": 35,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Esercizio della raccolta d’esame."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 p. 2 (rif. p. 2.14)"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "Dichiaro ipotesi e convenzione spettrale.",
+      "Controllo unità, casi limite e forma del grafico."
+    ]
+  },
+  {
+    "id": "es-antitrasformata-rettangolare",
+    "titolo": "Area 1 — spettro rettangolare bilatero",
+    "area": 1,
+    "tipo": "tipo_esercizio",
+    "gruppo": "A",
+    "worker": "W6",
+    "sapere": "Area 1 — spettro rettangolare bilatero. Si applicano formule e ipotesi esplicite, si controllano unità, casi limite e convenzioni prima di concludere.",
+    "saper_fare": [
+      "Impostare e risolvere area 1 — spettro rettangolare bilatero motivando i passaggi.",
+      "Verificare il risultato con unità, limiti e una rappresentazione qualitativa."
+    ],
+    "prerequisiti": [
+      {
+        "id": "trasformata-fourier",
+        "forza": "hard",
+        "motivo": "Prerequisito indicato dal contratto per comprendere e svolgere l’esercizio."
+      }
+    ],
+    "tempo_studio_min": 35,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Esercizio della raccolta d’esame."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 p. 3 (rif. p. 2.19)"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "Dichiaro ipotesi e convenzione spettrale.",
+      "Controllo unità, casi limite e forma del grafico."
+    ]
+  }
+]

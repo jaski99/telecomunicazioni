@@ -1,0 +1,967 @@
+{
+  "id": "es-rete-cr",
+  "perche_ti_serve": "Serve per l’esercizio E6, gruppo A della mappa. Collega il calcolo allo schema di area 2 — cr con uscita sul resistore senza attribuire punteggi non documentati.",
+  "scenario": "La rete con condensatore in serie e uscita sul resistore è un passa-alto del primo ordine. A bassa frequenza blocca, mentre ad alta frequenza trasferisce quasi tutta la tensione. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
+  "definizione_esame": {
+    "definizione": "Area 2 — CR con uscita sul resistore: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
+    "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+    "esempio": "Con R=2 kΩ e C=0,25 μF calcola ωc, modulo e fase in ωc."
+  },
+  "spiegazione": "### Riconosci l’uscita\nQui il condensatore è in serie all’ingresso e il resistore è collegato verso il riferimento; l’uscita è sul resistore. Il partitore complesso produce H=R/(R+ZC), quindi la presenza del fattore ω al numeratore anticipa il comportamento passa-alto.\n\n### Caratteristiche\nIl modulo cresce da zero a uno e raggiunge 1/√2 in ωc=1/(RC). L’argomento di jωRC è π/2, mentre quello del denominatore è arctan(ωRC); sottraendoli si ottiene la fase. A taglio la fase vale π/4.\n\n### Confronto e trappole\nLa rete RC con uscita sul condensatore ha H=1/(1+jωRC), modulo decrescente e fase negativa. La rete CR di questo esercizio ha il fattore jωRC, modulo crescente e fase che scende da π/2 a zero. Non scambiare né la formula del modulo né il segno della fase. Dimensioni: ωRC è adimensionale.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n",
+  "analogia": {
+    "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
+    "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+  },
+  "worked_example": {
+    "titolo": "Esempio guidato E6",
+    "problema": "Con R=2 kΩ e C=0,25 μF calcola ωc, modulo e fase in ωc.",
+    "passi": [
+      "Le impedenze sono ZC=1/(jωC) e ZR=R; l’uscita è sul resistore.",
+      "Applica il partitore: H=R/(R+1/(jωC)).",
+      "Moltiplica numeratore e denominatore per jωC: H=jωRC/(1+jωRC).",
+      "La pulsazione di taglio è 1/(RC)=2000 rad/s.",
+      "In ωc, il modulo è 1/√2 e la fase π/2−π/4=π/4.",
+      "Per ω→0 il modulo tende a zero; per ω→∞ tende a uno e la fase tende a zero."
+    ],
+    "soluzione": "Usa fase non negativa per ω>0: l’argomento del numeratore jωRC è π/2. La rete differisce dalla RC per la posizione dei componenti e del prelievo d’uscita.",
+    "perche_funziona": "Ogni formula discende dalla definizione del modello e da proprietà dichiarate; i valori numerici servono a controllare i fattori e non sostituiscono il ragionamento simbolico."
+  },
+  "completion_problem": {
+    "titolo": "Completa i passaggi essenziali",
+    "testo": "Nel problema: Con R=2 kΩ e C=0,25 μF calcola ωc, modulo e fase in ωc.",
+    "passi_mancanti": [
+      "Scrivi la relazione di partenza e le ipotesi.",
+      "Esegui l’integrazione o la sostituzione che porta al risultato.",
+      "Indica il controllo finale su unità, zeri o limiti."
+    ],
+    "soluzione": "Usa i passaggi numerati dell’esempio come guida; la risposta completa è la formula conclusiva e il controllo di coerenza descritti sopra."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Prova da solo: E6",
+    "testo": "Risolvi una variante di area 2 — cr con uscita sul resistore cambiando un parametro, mantenendo esplicite le unità e disegnando la forma attesa.",
+    "suggerimento": "Prima scrivi la formula simbolica; solo dopo sostituisci i numeri. Controlla un caso limite.",
+    "soluzione_attesa": [
+      "Con R=10 kΩ e C=0,1 μF calcola ωc e la fase a ωc.",
+      "Qual è il limite del modulo per ω→0?"
+    ]
+  },
+  "errori_trappole": [
+    {
+      "errore": "Sostituire i numeri prima di fissare notazione e unità.",
+      "perche_sbagliato": "Si perdono fattori e non è possibile controllare dimensionalmente la formula."
+    },
+    {
+      "errore": "Disegnare lo spettro senza indicare supporto e zeri.",
+      "perche_sbagliato": "La figura non distingue una curva continua da righe o da uno spettro nullo fuori banda."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Quali ipotesi rendono valido il modello?",
+        "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+      },
+      {
+        "domanda": "Qual è il passaggio chiave?",
+        "risposta": "Applica il partitore: H=R/(R+1/(jωC))."
+      },
+      {
+        "domanda": "Quale controllo indipendente applichi?",
+        "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+      }
+    ],
+    "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+  },
+  "riepilogo": "Uscita sul resistore → partitore R/(R+ZC) → passa-alto jωRC/(1+jωRC) → controllo di taglio e limiti.",
+  "flashcard": [
+    {
+      "fronte": "Qual è il risultato centrale?",
+      "retro": "La relazione di riferimento è $H(\\omega)=\\frac{j\\omega RC}{1+j\\omega RC},\\quad |H|=\\frac{\\omega RC}{\\sqrt{1+(\\omega RC)^2}},\\quad \\arg H=\\frac{\\pi}{2}-\\arctan(\\omega RC)$. Dichiara sempre le ipotesi e le unità."
+    },
+    {
+      "fronte": "Qual è il controllo più utile?",
+      "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "Imposto il problema e ricavo la formula senza saltare passaggi.",
+      "Controllo i casi limite e interpreto i grafici."
+    ],
+    "so_dire": [
+      "Spiego le ipotesi e la convenzione adottata."
+    ]
+  },
+  "figure": [
+    {
+      "id": "cr-modulo",
+      "tipo": "grafico",
+      "titolo": "Modulo del passa-alto CR",
+      "descrizione": "Il modulo cresce da zero a uno e vale 1/√2 per ωRC=1.",
+      "asse_x": {
+        "etichetta": "ωRC",
+        "min": 0,
+        "max": 5
+      },
+      "asse_y": {
+        "etichetta": "|H(ω)|",
+        "min": 0,
+        "max": 1.05
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.05,
+              0.04993761694389223
+            ],
+            [
+              0.1,
+              0.09950371902099893
+            ],
+            [
+              0.15,
+              0.14834045293024462
+            ],
+            [
+              0.2,
+              0.19611613513818402
+            ],
+            [
+              0.25,
+              0.24253562503633297
+            ],
+            [
+              0.3,
+              0.2873478855663454
+            ],
+            [
+              0.35,
+              0.33035042472810605
+            ],
+            [
+              0.4,
+              0.37139067635410367
+            ],
+            [
+              0.45,
+              0.41036467732879783
+            ],
+            [
+              0.5,
+              0.4472135954999579
+            ],
+            [
+              0.55,
+              0.48191874977215593
+            ],
+            [
+              0.6,
+              0.5144957554275266
+            ],
+            [
+              0.65,
+              0.5449883505954141
+            ],
+            [
+              0.7,
+              0.5734623443633283
+            ],
+            [
+              0.75,
+              0.6
+            ],
+            [
+              0.8,
+              0.6246950475544243
+            ],
+            [
+              0.85,
+              0.6476484200955405
+            ],
+            [
+              0.9,
+              0.6689647316224496
+            ],
+            [
+              0.95,
+              0.6887494619146931
+            ],
+            [
+              1.0,
+              0.7071067811865475
+            ],
+            [
+              1.05,
+              0.7241379310344828
+            ],
+            [
+              1.1,
+              0.7399400733959437
+            ],
+            [
+              1.15,
+              0.7546055221635046
+            ],
+            [
+              1.2,
+              0.7682212795973759
+            ],
+            [
+              1.25,
+              0.7808688094430304
+            ],
+            [
+              1.3,
+              0.7926239891046001
+            ],
+            [
+              1.35,
+              0.8035571933447457
+            ],
+            [
+              1.4,
+              0.8137334712067349
+            ],
+            [
+              1.45,
+              0.8232127859153062
+            ],
+            [
+              1.5,
+              0.8320502943378437
+            ],
+            [
+              1.55,
+              0.8402966482242443
+            ],
+            [
+              1.6,
+              0.8479983040050879
+            ],
+            [
+              1.65,
+              0.855197831554018
+            ],
+            [
+              1.7,
+              0.8619342151577695
+            ],
+            [
+              1.75,
+              0.8682431421244593
+            ],
+            [
+              1.8,
+              0.8741572761215378
+            ],
+            [
+              1.85,
+              0.8797065135761271
+            ],
+            [
+              1.9,
+              0.8849182223819825
+            ],
+            [
+              1.95,
+              0.8898174628127369
+            ],
+            [
+              2.0,
+              0.8944271909999159
+            ],
+            [
+              2.05,
+              0.8987684456438995
+            ],
+            [
+              2.1,
+              0.9028605188239304
+            ],
+            [
+              2.15,
+              0.9067211118885071
+            ],
+            [
+              2.2,
+              0.9103664774626048
+            ],
+            [
+              2.25,
+              0.9138115486202573
+            ],
+            [
+              2.3,
+              0.917070056253235
+            ],
+            [
+              2.35,
+              0.9201546356285784
+            ],
+            [
+              2.4,
+              0.923076923076923
+            ],
+            [
+              2.45,
+              0.9258476436951986
+            ],
+            [
+              2.5,
+              0.9284766908852594
+            ],
+            [
+              2.55,
+              0.9309731984870632
+            ],
+            [
+              2.6,
+              0.9333456062030595
+            ],
+            [
+              2.65,
+              0.9356017189507421
+            ],
+            [
+              2.7,
+              0.9377487607237036
+            ],
+            [
+              2.75,
+              0.939793423488437
+            ],
+            [
+              2.8,
+              0.9417419115948373
+            ],
+            [
+              2.85,
+              0.9435999821328808
+            ],
+            [
+              2.9,
+              0.945372981626272
+            ],
+            [
+              2.95,
+              0.9470658794157988
+            ],
+            [
+              3.0,
+              0.9486832980505138
+            ],
+            [
+              3.05,
+              0.9502295409734978
+            ],
+            [
+              3.1,
+              0.9517086177605508
+            ],
+            [
+              3.15,
+              0.9531242671445427
+            ],
+            [
+              3.2,
+              0.9544799780350297
+            ],
+            [
+              3.25,
+              0.95577900872195
+            ],
+            [
+              3.3,
+              0.9570244044334736
+            ],
+            [
+              3.35,
+              0.958219013401263
+            ],
+            [
+              3.4,
+              0.9593655015712705
+            ],
+            [
+              3.45,
+              0.9604663660846076
+            ],
+            [
+              3.5,
+              0.9615239476408232
+            ],
+            [
+              3.55,
+              0.9625404418449638
+            ],
+            [
+              3.6,
+              0.9635179096299405
+            ],
+            [
+              3.65,
+              0.9644582868368908
+            ],
+            [
+              3.7,
+              0.9653633930282663
+            ],
+            [
+              3.75,
+              0.9662349396012463
+            ],
+            [
+              3.8,
+              0.9670745372626464
+            ],
+            [
+              3.85,
+              0.967883702920719
+            ],
+            [
+              3.9,
+              0.968663866044045
+            ],
+            [
+              3.95,
+              0.9694163745330329
+            ],
+            [
+              4.0,
+              0.9701425001453319
+            ],
+            [
+              4.05,
+              0.970843443512661
+            ],
+            [
+              4.1,
+              0.9715203387831296
+            ],
+            [
+              4.15,
+              0.9721742579200405
+            ],
+            [
+              4.2,
+              0.9728062146853669
+            ],
+            [
+              4.25,
+              0.973417168333576
+            ],
+            [
+              4.3,
+              0.9740080270391965
+            ],
+            [
+              4.35,
+              0.9745796510794565
+            ],
+            [
+              4.4,
+              0.9751328557914598
+            ],
+            [
+              4.45,
+              0.9756684143216708
+            ],
+            [
+              4.5,
+              0.9761870601839528
+            ],
+            [
+              4.55,
+              0.9766894896410069
+            ],
+            [
+              4.6,
+              0.9771763639228009
+            ],
+            [
+              4.65,
+              0.9776483112944344
+            ],
+            [
+              4.7,
+              0.9781059289848354
+            ],
+            [
+              4.75,
+              0.9785497849867489
+            ],
+            [
+              4.8,
+              0.9789804197376051
+            ],
+            [
+              4.85,
+              0.9793983476900748
+            ],
+            [
+              4.9,
+              0.9798040587804068
+            ],
+            [
+              4.95,
+              0.9801980198019803
+            ],
+            [
+              5.0,
+              0.9805806756909202
+            ]
+          ],
+          "etichetta": "modulo"
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": 1,
+          "y": 0.7071067811865475,
+          "testo": "ωcRC=1; modulo 1/√2"
+        }
+      ]
+    },
+    {
+      "id": "cr-fase",
+      "tipo": "grafico",
+      "titolo": "Fase del passa-alto CR",
+      "descrizione": "La fase parte da π/2, passa per π/4 al taglio e tende a zero.",
+      "asse_x": {
+        "etichetta": "ωRC",
+        "min": 0,
+        "max": 5
+      },
+      "asse_y": {
+        "etichetta": "fase (rad)",
+        "min": -0.1,
+        "max": 1.8
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              0.0,
+              1.5707963267948966
+            ],
+            [
+              0.05,
+              1.5208379310729538
+            ],
+            [
+              0.1,
+              1.4711276743037345
+            ],
+            [
+              0.15,
+              1.4219063791853994
+            ],
+            [
+              0.2,
+              1.3734007669450157
+            ],
+            [
+              0.25,
+              1.3258176636680323
+            ],
+            [
+              0.3,
+              1.2793395323170293
+            ],
+            [
+              0.35,
+              1.2341215074081693
+            ],
+            [
+              0.4,
+              1.1902899496825317
+            ],
+            [
+              0.45,
+              1.1479424006619559
+            ],
+            [
+              0.5,
+              1.1071487177940904
+            ],
+            [
+              0.55,
+              1.0679531158670357
+            ],
+            [
+              0.6,
+              1.0303768265243125
+            ],
+            [
+              0.65,
+              0.9944211062037128
+            ],
+            [
+              0.7,
+              0.960070362405688
+            ],
+            [
+              0.75,
+              0.9272952180016122
+            ],
+            [
+              0.8,
+              0.8960553845713438
+            ],
+            [
+              0.85,
+              0.8663022625526788
+            ],
+            [
+              0.9,
+              0.83798122500839
+            ],
+            [
+              0.95,
+              0.8110335719191257
+            ],
+            [
+              1.0,
+              0.7853981633974483
+            ],
+            [
+              1.05,
+              0.7610127542247297
+            ],
+            [
+              1.1,
+              0.7378150601204648
+            ],
+            [
+              1.15,
+              0.7157435896688801
+            ],
+            [
+              1.2,
+              0.6947382761967031
+            ],
+            [
+              1.25,
+              0.6747409422235526
+            ],
+            [
+              1.3,
+              0.6556956262415361
+            ],
+            [
+              1.35,
+              0.6375487981386927
+            ],
+            [
+              1.4,
+              0.6202494859828215
+            ],
+            [
+              1.45,
+              0.6037493333974363
+            ],
+            [
+              1.5,
+              0.5880026035475675
+            ],
+            [
+              1.55,
+              0.5729661428887061
+            ],
+            [
+              1.6,
+              0.5585993153435624
+            ],
+            [
+              1.65,
+              0.5448639154515436
+            ],
+            [
+              1.7,
+              0.5317240672588055
+            ],
+            [
+              1.75,
+              0.5191461142465228
+            ],
+            [
+              1.8,
+              0.5070985043923368
+            ],
+            [
+              1.85,
+              0.4955516734858285
+            ],
+            [
+              1.9,
+              0.48447792903702314
+            ],
+            [
+              1.95,
+              0.4738513364947603
+            ],
+            [
+              2.0,
+              0.46364760900080615
+            ],
+            [
+              2.05,
+              0.45384400152151017
+            ],
+            [
+              2.1,
+              0.44441920990109884
+            ],
+            [
+              2.15,
+              0.4353532751523024
+            ],
+            [
+              2.2,
+              0.4266274931268761
+            ],
+            [
+              2.25,
+              0.41822432957922895
+            ],
+            [
+              2.3,
+              0.4101273405414909
+            ],
+            [
+              2.35,
+              0.40232109786044057
+            ],
+            [
+              2.4,
+              0.39479111969976155
+            ],
+            [
+              2.45,
+              0.3875238057802788
+            ],
+            [
+              2.5,
+              0.3805063771123649
+            ],
+            [
+              2.55,
+              0.37372681996555346
+            ],
+            [
+              2.6,
+              0.3671738338182191
+            ],
+            [
+              2.65,
+              0.36083678303309075
+            ],
+            [
+              2.7,
+              0.3547056520109402
+            ],
+            [
+              2.75,
+              0.3487710035839069
+            ],
+            [
+              2.8,
+              0.3430239404207034
+            ],
+            [
+              2.85,
+              0.3374560692277815
+            ],
+            [
+              2.9,
+              0.3320594675428854
+            ],
+            [
+              2.95,
+              0.3268266529299406
+            ],
+            [
+              3.0,
+              0.32175055439664213
+            ],
+            [
+              3.05,
+              0.3168244858682192
+            ],
+            [
+              3.1,
+              0.3120421215625333
+            ],
+            [
+              3.15,
+              0.3073974731228215
+            ],
+            [
+              3.2,
+              0.3028848683749714
+            ],
+            [
+              3.25,
+              0.29849893158617924
+            ],
+            [
+              3.3,
+              0.29423456511118773
+            ],
+            [
+              3.35,
+              0.290086932321028
+            ],
+            [
+              3.4,
+              0.2860514417173181
+            ],
+            [
+              3.45,
+              0.28212373214271524
+            ],
+            [
+              3.5,
+              0.2782996590051112
+            ],
+            [
+              3.55,
+              0.2745752814396254
+            ],
+            [
+              3.6,
+              0.2709468503384205
+            ],
+            [
+              3.65,
+              0.2674107971838735
+            ],
+            [
+              3.7,
+              0.2639637236257044
+            ],
+            [
+              3.75,
+              0.260602391747341
+            ],
+            [
+              3.8,
+              0.2573237149710885
+            ],
+            [
+              3.85,
+              0.254124749555634
+            ],
+            [
+              3.9,
+              0.2510026866430346
+            ],
+            [
+              3.95,
+              0.24795484481569074
+            ],
+            [
+              4.0,
+              0.244978663126864
+            ],
+            [
+              4.05,
+              0.242071694571119
+            ],
+            [
+              4.1,
+              0.2392315999636605
+            ],
+            [
+              4.15,
+              0.23645614219991717
+            ],
+            [
+              4.2,
+              0.23374318086890145
+            ],
+            [
+              4.25,
+              0.231090667195897
+            ],
+            [
+              4.3,
+              0.22849663929186215
+            ],
+            [
+              4.35,
+              0.2259592176886407
+            ],
+            [
+              4.4,
+              0.22347660114063284
+            ],
+            [
+              4.45,
+              0.22104706267501872
+            ],
+            [
+              4.5,
+              0.21866894587394192
+            ],
+            [
+              4.55,
+              0.21634066137329055
+            ],
+            [
+              4.6,
+              0.21406068356382146
+            ],
+            [
+              4.65,
+              0.2118275474814173
+            ],
+            [
+              4.7,
+              0.20963984587421236
+            ],
+            [
+              4.75,
+              0.2074962264352027
+            ],
+            [
+              4.8,
+              0.2053953891897673
+            ],
+            [
+              4.85,
+              0.20333608402827563
+            ],
+            [
+              4.9,
+              0.20131710837464079
+            ],
+            [
+              4.95,
+              0.19933730498232394
+            ],
+            [
+              5.0,
+              0.19739555984988066
+            ]
+          ],
+          "etichetta": "fase"
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": 1,
+          "y": 0.7853981633974483,
+          "testo": "π/4 al taglio"
+        }
+      ]
+    }
+  ]
+}

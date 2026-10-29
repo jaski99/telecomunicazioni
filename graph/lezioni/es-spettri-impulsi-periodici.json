@@ -1,0 +1,275 @@
+{
+  "id": "es-spettri-impulsi-periodici",
+  "perche_ti_serve": "Serve per l’esercizio E1, gruppo A della mappa. Collega il calcolo allo schema di area 1 — successione periodica di rettangoli senza attribuire punteggi non documentati.",
+  "scenario": "Una trama periodica di impulsi rettangolari rappresenta un segnale deterministico a potenza. I coefficienti della serie complessa descrivono righe alle armoniche, non una curva continua. La durata governa l’inviluppo sinc, il periodo la distanza tra le righe. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
+  "definizione_esame": {
+    "definizione": "Area 1 — successione periodica di rettangoli: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
+    "scopo": "Ricavare una quantità richiesta e interpretare il risultato, senza confondere convenzioni diverse.",
+    "esempio": "Considera A=2, durata τ=T/3 e impulsi centrati in t=0 in ogni periodo. Calcola la componente continua e le prime armoniche, quindi indica le fasi."
+  },
+  "spiegazione": "### Dalla forma d’onda alle righe spettrali\nScegli un periodo e integra soltanto dove il segnale è diverso da zero. La periodicità impone che lo spettro sia discreto: ogni indice intero n individua una riga a nω₀. Qui sinc(u)=sin(u)/u. Per il rettangolo centrato la simmetria annulla la parte immaginaria dei coefficienti.\n\n### Fase: il controllo che evita la scorciatoia sbagliata\nPer il rettangolo centrato, cₙ è reale: un coefficiente positivo ha fase 0, uno negativo fase π, e uno nullo non ha fase definita. Se il rettangolo è centrato in t_c, compare e⁻ʲⁿω₀t_c e la regola robusta è φₙ=arg(cₙ), non la sola classificazione 0/π.\n\n### Ampiezza e zeri\nLa componente continua è Aτ/T. La sinc determina l’inviluppo e gli zeri quando nτ/T è intero non nullo. Distingui i coefficienti complessi cₙ dagli ampiezza-fase della serie trigonometrica: per n>0, l’ampiezza reale è 2|cₙ|. Il disegno è a righe, distanziate ω₀, con inviluppo sinc.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n",
+  "analogia": {
+    "testo": "La trasformazione matematica agisce come una lente: rende visibile una caratteristica del segnale che nel dominio originale era meno immediata.",
+    "limite": "La metafora non sostituisce le ipotesi di linearità, periodicità o convenzione spettrale necessarie alle formule."
+  },
+  "worked_example": {
+    "titolo": "Esempio guidato E1",
+    "problema": "Considera A=2, durata τ=T/3 e impulsi centrati in t=0 in ogni periodo. Calcola la componente continua e le prime armoniche, quindi indica le fasi.",
+    "passi": [
+      "La pulsazione fondamentale è ω₀=2π/T; le righe sono in ω=nω₀.",
+      "Integra il rettangolo in un periodo: cₙ=(1/T)∫₋τ/2^τ/2 A e⁻ʲⁿω₀ᵗdt.",
+      "Per n=0, l’integrale vale Aτ, dunque c₀=Aτ/T=2/3.",
+      "Per n≠0, integra l’esponenziale simmetrico: cₙ=(Aτ/T)sinc(nω₀τ/2)=(2/3)sinc(nπ/3).",
+      "Per n=1: c₁=(2/3)(sin(π/3)/(π/3))=√3/π≈0,551; la fase è 0.",
+      "Per n=2: c₂=(2/3)(sin(2π/3)/(2π/3))=√3/(2π)≈0,276; fase 0.",
+      "Per n=3, il seno si annulla: c₃=0, quindi la fase non è definita su quella riga. Per un impulso traslato di t_c moltiplica per e⁻ʲⁿω₀t_c e usa sempre φₙ=arg(cₙ)."
+    ],
+    "soluzione": "Per il rettangolo centrato i coefficienti sono reali e la fase può essere 0 o π secondo il segno; per impulsi traslati la fase comprende il termine lineare in n. La frase “fase 0/π” non vale in generale senza dichiarare la centratura. A2 sulle densità unilaterali/bilaterali non riguarda questa serie a righe.",
+    "perche_funziona": "Ogni formula discende dalla definizione del modello e da proprietà dichiarate; i valori numerici servono a controllare i fattori e non sostituiscono il ragionamento simbolico."
+  },
+  "completion_problem": {
+    "titolo": "Completa i passaggi essenziali",
+    "testo": "Nel problema: Considera A=2, durata τ=T/3 e impulsi centrati in t=0 in ogni periodo. Calcola la componente continua e le prime armoniche, quindi indica le fasi.",
+    "passi_mancanti": [
+      "Scrivi la relazione di partenza e le ipotesi.",
+      "Esegui l’integrazione o la sostituzione che porta al risultato.",
+      "Indica il controllo finale su unità, zeri o limiti."
+    ],
+    "soluzione": "Usa i passaggi numerati dell’esempio come guida; la risposta completa è la formula conclusiva e il controllo di coerenza descritti sopra."
+  },
+  "esercizio_autonomo": {
+    "titolo": "Prova da solo: E1",
+    "testo": "Risolvi una variante di area 1 — successione periodica di rettangoli cambiando un parametro, mantenendo esplicite le unità e disegnando la forma attesa.",
+    "suggerimento": "Prima scrivi la formula simbolica; solo dopo sostituisci i numeri. Controlla un caso limite.",
+    "soluzione_attesa": [
+      "Sostituisci τ=T/4 e calcola c₀,c₁,c₂ usando la stessa formula; determina le fasi con arg(cₙ).",
+      "Perché la terza armonica si annulla quando τ=T/3?"
+    ]
+  },
+  "errori_trappole": [
+    {
+      "errore": "Sostituire i numeri prima di fissare notazione e unità.",
+      "perche_sbagliato": "Si perdono fattori e non è possibile controllare dimensionalmente la formula."
+    },
+    {
+      "errore": "Disegnare lo spettro senza indicare supporto e zeri.",
+      "perche_sbagliato": "La figura non distingue una curva continua da righe o da uno spettro nullo fuori banda."
+    }
+  ],
+  "richiamo_attivo": {
+    "domande": [
+      {
+        "domanda": "Quali ipotesi rendono valido il modello?",
+        "risposta": "Quelle elencate nella spiegazione e dichiarate prima del calcolo; se manca la verifica, il risultato va qualificato."
+      },
+      {
+        "domanda": "Qual è il passaggio chiave?",
+        "risposta": "Integra il rettangolo in un periodo: cₙ=(1/T)∫₋τ/2^τ/2 A e⁻ʲⁿω₀ᵗdt."
+      },
+      {
+        "domanda": "Quale controllo indipendente applichi?",
+        "risposta": "Unità, simmetria, zeri e limiti nei casi semplici."
+      }
+    ],
+    "spiega_con_parole_tue": "Racconta perché la formula contiene quel fattore e cosa cambierebbe se cambiassero le ipotesi."
+  },
+  "riepilogo": "Impulsi periodici → serie di Fourier complessa → integrate sul solo rettangolo → sinc alle armoniche → fase arg(cₙ), inclusa la traslazione.",
+  "flashcard": [
+    {
+      "fronte": "Qual è il risultato centrale?",
+      "retro": "La relazione di riferimento è $c_n=\\frac{A\\tau}{T}\\,\\mathrm{sinc}\\!\\left(\\frac{n\\pi\\tau}{T}\\right)e^{-jn\\omega_0t_c},\\quad \\omega_0=\\frac{2\\pi}{T}$. Dichiara sempre le ipotesi e le unità."
+    },
+    {
+      "fronte": "Qual è il controllo più utile?",
+      "retro": "Verifica i limiti, gli zeri e la coerenza dimensionale."
+    }
+  ],
+  "checklist": {
+    "so_fare": [
+      "Imposto il problema e ricavo la formula senza saltare passaggi.",
+      "Controllo i casi limite e interpreto i grafici."
+    ],
+    "so_dire": [
+      "Spiego le ipotesi e la convenzione adottata."
+    ]
+  },
+  "figure": [
+    {
+      "id": "spettro-a-righe",
+      "tipo": "grafico",
+      "titolo": "Righe armoniche con inviluppo sinc",
+      "descrizione": "Righe a multipli della pulsazione fondamentale; l’altezza segue l’inviluppo sinc e la fase è arg dei coefficienti.",
+      "asse_x": {
+        "etichetta": "ω/ω₀",
+        "min": -5,
+        "max": 5
+      },
+      "asse_y": {
+        "etichetta": "Ampiezza normalizzata",
+        "min": 0,
+        "max": 1
+      },
+      "serie": [
+        {
+          "stile": "righe",
+          "punti": [
+            [
+              -4,
+              0.15
+            ],
+            [
+              -3,
+              0
+            ],
+            [
+              -2,
+              0.41
+            ],
+            [
+              -1,
+              0.83
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0.83
+            ],
+            [
+              2,
+              0.41
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              4,
+              0.15
+            ]
+          ],
+          "etichetta": "|cₙ|"
+        },
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -5,
+              0.1
+            ],
+            [
+              -4,
+              0.2
+            ],
+            [
+              -3,
+              0
+            ],
+            [
+              -2,
+              0.41
+            ],
+            [
+              -1,
+              0.83
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0.83
+            ],
+            [
+              2,
+              0.41
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              4,
+              0.2
+            ],
+            [
+              5,
+              0.1
+            ]
+          ],
+          "etichetta": "inviluppo sinc"
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": 0,
+          "y": 1,
+          "testo": "c₀=Aτ/T"
+        }
+      ]
+    },
+    {
+      "id": "fase-serie-impulsi",
+      "tipo": "grafico",
+      "titolo": "Fase delle righe della serie",
+      "descrizione": "Per impulsi centrati i coefficienti reali hanno fase zero se positivi e π se negativi; le righe nulle non hanno fase definita.",
+      "asse_x": {
+        "etichetta": "n=ω/ω₀",
+        "min": -5,
+        "max": 5
+      },
+      "asse_y": {
+        "etichetta": "fase (rad)",
+        "min": 0,
+        "max": 3.3
+      },
+      "serie": [
+        {
+          "stile": "punti",
+          "punti": [
+            [
+              -5,
+              3.14159265
+            ],
+            [
+              -4,
+              3.14159265
+            ],
+            [
+              -2,
+              0
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              4,
+              3.14159265
+            ],
+            [
+              5,
+              3.14159265
+            ]
+          ],
+          "etichetta": "arg(cₙ), con nulli esclusi"
+        }
+      ]
+    }
+  ]
+}

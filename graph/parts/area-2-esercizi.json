@@ -1,0 +1,74 @@
+[
+  {
+    "id": "es-rete-rc",
+    "titolo": "Area 2 — RC con uscita sul condensatore",
+    "area": 2,
+    "tipo": "tipo_esercizio",
+    "gruppo": "A",
+    "worker": "W6",
+    "sapere": "Area 2 — RC con uscita sul condensatore. Si applicano formule e ipotesi esplicite, si controllano unità, casi limite e convenzioni prima di concludere.",
+    "saper_fare": [
+      "Impostare e risolvere area 2 — rc con uscita sul condensatore motivando i passaggi.",
+      "Verificare il risultato con unità, limiti e una rappresentazione qualitativa."
+    ],
+    "prerequisiti": [
+      {
+        "id": "sistemi-lineari-funzione-trasferimento",
+        "forza": "hard",
+        "motivo": "Prerequisito indicato dal contratto per comprendere e svolgere l’esercizio."
+      }
+    ],
+    "tempo_studio_min": 35,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Esercizio della raccolta d’esame."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 p. 14 (rif. p. 3.11)"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "Dichiaro ipotesi e convenzione spettrale.",
+      "Controllo unità, casi limite e forma del grafico."
+    ]
+  },
+  {
+    "id": "es-rete-cr",
+    "titolo": "Area 2 — CR con uscita sul resistore",
+    "area": 2,
+    "tipo": "tipo_esercizio",
+    "gruppo": "A",
+    "worker": "W6",
+    "sapere": "Area 2 — CR con uscita sul resistore. Si applicano formule e ipotesi esplicite, si controllano unità, casi limite e convenzioni prima di concludere.",
+    "saper_fare": [
+      "Impostare e risolvere area 2 — cr con uscita sul resistore motivando i passaggi.",
+      "Verificare il risultato con unità, limiti e una rappresentazione qualitativa."
+    ],
+    "prerequisiti": [
+      {
+        "id": "sistemi-lineari-funzione-trasferimento",
+        "forza": "hard",
+        "motivo": "Prerequisito indicato dal contratto per comprendere e svolgere l’esercizio."
+      }
+    ],
+    "tempo_studio_min": 35,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "Esercizio della raccolta d’esame."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE1",
+        "rif": "file1 p. 13 (rif. p. 3.12)"
+      }
+    ],
+    "risorse": [],
+    "checklist_ripasso": [
+      "Dichiaro ipotesi e convenzione spettrale.",
+      "Controllo unità, casi limite e forma del grafico."
+    ]
+  }
+]
