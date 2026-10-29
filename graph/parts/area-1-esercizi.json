@@ -6,11 +6,11 @@
     "tipo": "tipo_esercizio",
     "gruppo": "A",
     "worker": "W6",
-    "sapere": "La successione di rettangoli centrati ha righe a nω₀, c₀=Aτ/T e cₙ=(Aτ/T)sinc(nπτ/T). Una traslazione del rettangolo moltiplica cₙ per e⁻ʲⁿω₀t_c; la fase generale è arg(cₙ).",
+    "sapere": "La successione di rettangoli centrati ha righe a $n\\omega_{0}$, $c_{0}=\\frac{A\\tau}{T}$ e $c_{n}=(\\frac{A\\tau}{T})\\operatorname{sinc}(\\frac{n\\pi\\tau}{T})$. Una traslazione del rettangolo moltiplica $c_{n}$ per $e^{-j n\\omega_{0} t_{c}}$; la fase generale è $\\operatorname{arg}(c_{n})$.",
     "saper_fare": [
-      "Calcolare c₀ e le armoniche cₙ da un integrale su un periodo.",
-      "Disegnare righe in nω₀ e il loro inviluppo sinc campionato densamente.",
-      "Determinare la fase da arg(cₙ), escludendo le armoniche nulle."
+      "Calcolare $c_{0}$ e le armoniche $c_{n}$ da un integrale su un periodo.",
+      "Disegnare righe in $n\\omega_{0}$ e il loro inviluppo sinc campionato densamente.",
+      "Determinare la fase da $\\operatorname{arg}(c_{n})$, escludendo le armoniche nulle."
     ],
     "prerequisiti": [
       {
@@ -32,8 +32,8 @@
     ],
     "risorse": [],
     "checklist_ripasso": [
-      "Controllo che le righe siano distanziate di ω₀.",
-      "Dichiaro se il rettangolo è centrato o traslato e uso arg(cₙ)."
+      "Controllo che le righe siano distanziate di $\\omega_{0}$.",
+      "Dichiaro se il rettangolo è centrato o traslato e uso $\\operatorname{arg}(c_{n})$."
     ]
   },
   {
@@ -43,10 +43,10 @@
     "tipo": "tipo_esercizio",
     "gruppo": "A",
     "worker": "W6",
-    "sapere": "L’impulso rettangolare isolato di ampiezza A e durata τ ha trasformata continua Aτ sinc(ωτ/2)e⁻ʲωt_c. Gli zeri sono ω=2πk/τ; la fase è arg X(ω), non è definita ai nodi.",
+    "sapere": "L’impulso rettangolare isolato di ampiezza A e durata $\\tau$ ha trasformata continua $A\\tau \\operatorname{sinc}(\\frac{\\omega\\tau}{2})e^{-j\\omega t_{c}}$. Gli zeri sono $\\omega=\\frac{2\\pi k}{\\tau}$; la fase è $\\operatorname{arg} X(\\omega)$, non è definita ai nodi.",
     "saper_fare": [
-      "Integrare il rettangolo centrato e ottenere X(ω).",
-      "Valutare il limite X(0)=Aτ e individuare gli zeri.",
+      "Integrare il rettangolo centrato e ottenere $X(\\omega)$.",
+      "Valutare il limite $X(0)=A\\tau$ e individuare gli zeri.",
       "Disegnare modulo e fase, includendo la traslazione temporale."
     ],
     "prerequisiti": [
@@ -80,9 +80,9 @@
     "tipo": "tipo_esercizio",
     "gruppo": "A",
     "worker": "W6",
-    "sapere": "Uno spettro bilatero costante X₀ per |ω|≤ωₘ ha antitrasformata x(t)=X₀ sin(ωₘt)/(πt), con limite x(0)=X₀ωₘ/π e zeri a t=kπ/ωₘ.",
+    "sapere": "Uno spettro bilatero costante $X_{0}$ per $|\\omega|\\le \\omega_{m}$ ha antitrasformata $x(t)=\\frac{X_{0} \\sin(\\omega_{m}t)}{\\pi t}$, con limite $x(0)=\\frac{X_{0}\\omega_{m}}{\\pi}$ e zeri a $t=\\frac{k\\pi}{\\omega_{m}}$.",
     "saper_fare": [
-      "Eseguire l’antitrasformata con il fattore 1/(2π).",
+      "Eseguire l’antitrasformata con il fattore $\\frac{1}{2\\pi}$.",
       "Valutare il limite al centro e localizzare i primi zeri.",
       "Disegnare il lobo principale e i lobi laterali alternati."
     ],
@@ -106,7 +106,7 @@
     ],
     "risorse": [],
     "checklist_ripasso": [
-      "Controllo il fattore 1/(2π) della trasformata inversa.",
+      "Controllo il fattore $\\frac{1}{2\\pi}$ della trasformata inversa.",
       "Verifico valore al centro e zeri prima di disegnare."
     ]
   }

@@ -6,8 +6,8 @@
   ],
   "enunciato": "La demodulazione coerente di una DSB-SC con errore di fase $\\Delta$ restituisce $\\hat{x}=x\\cos\\Delta$. In QAM, con riferimento locale $\\cos(\\omega_0t-\\Delta)$, le uscite sono $\\hat{x}_1=x_1\\cos\\Delta-x_2\\sin\\Delta$ e $\\hat{x}_2=x_1\\sin\\Delta+x_2\\cos\\Delta$: le componenti sono ruotate di $\\Delta$.",
   "ipotesi": [
-    "I messaggi x₁ e x₂ sono reali e limitati in banda sotto ω₀; il filtro passa-basso elimina i termini attorno a 2ω₀.",
-    "Oscillatore locale di frequenza corretta e scarto di fase costante Δ; guadagno del demodulatore pari a 2."
+    "I messaggi $x_{1}$ e $x_{2}$ sono reali e limitati in banda sotto $\\omega_{0}$; il filtro passa-basso elimina i termini attorno a $2\\omega_{0}$.",
+    "Oscillatore locale di frequenza corretta e scarto di fase costante $\\Delta$; guadagno del demodulatore pari a 2."
   ],
   "notazione": [
     {
@@ -24,7 +24,7 @@
     },
     {
       "simbolo": "\\Delta",
-      "significato": "Errore di fase locale nella convenzione cos(ω₀t−Δ)."
+      "significato": "Errore di fase locale nella convenzione $\\cos(\\omega_{0}t-\\Delta)$."
     },
     {
       "simbolo": "x(t)",
@@ -34,7 +34,7 @@
   "varianti_notazione": [
     {
       "canonica": "\\omega_0",
-      "variante": "m₀",
+      "variante": "$m_{0}$",
       "fonte": "file3 pp. 23-24"
     }
   ],
@@ -77,7 +77,7 @@
       "n": 6,
       "testo": "Filtrare il primo ramo.",
       "formula": "\\hat{x}_1=x_1\\cos\\Delta-x_2\\sin\\Delta",
-      "perche": "Il passa-basso elimina i termini centrati a 2ω₀ e conserva la componente in banda base."
+      "perche": "Il passa-basso elimina i termini centrati a $2\\omega_{0}$ e conserva la componente in banda base."
     },
     {
       "n": 7,
@@ -89,7 +89,7 @@
       "n": 8,
       "testo": "Considerare la demodulazione coerente ideale.",
       "formula": "\\Delta=0\\ \\Longrightarrow\\ (\\hat{x}_1,\\hat{x}_2)=(x_1,x_2)",
-      "perche": "Per fase corretta cos Δ vale uno e sin Δ vale zero."
+      "perche": "Per fase corretta $\\cos \\Delta$ vale uno e $\\sin \\Delta$ vale zero."
     }
   ],
   "formula_finale": "\\begin{pmatrix}\\hat{x}_1\\\\\\hat{x}_2\\end{pmatrix}=\\begin{pmatrix}\\cos\\Delta&-\\sin\\Delta\\\\\\sin\\Delta&\\cos\\Delta\\end{pmatrix}\\begin{pmatrix}x_1\\\\x_2\\end{pmatrix}",
@@ -314,13 +314,13 @@
     }
   ],
   "versione_compatta": [
-    "QAM: x₁ cos ω₀t − x₂ sin ω₀t.",
-    "Moltiplicare per 2 cos(ω₀t − Δ) e −2 sin(ω₀t − Δ).",
+    "QAM: $x_{1} \\cos \\omega_{0}t - x_{2} \\sin \\omega_{0}t$.",
+    "Moltiplicare per $2 \\cos(\\omega_{0}t - \\Delta)$ e $-2 \\sin(\\omega_{0}t - \\Delta)$.",
     "Filtrare i termini al doppio della portante.",
-    "Le uscite sono la coppia ruotata di Δ."
+    "Le uscite sono la coppia ruotata di $\\Delta$."
   ],
   "a_buchi": {
-    "testo": "Le portanti dei due rami sono in ___1___. Il filtro elimina i termini a ___2___ e conserva la banda base perché le bande sono ___3___. Se Δ = 0 si ottengono ___4___.",
+    "testo": "Le portanti dei due rami sono in ___1___. Il filtro elimina i termini a ___2___ e conserva la banda base perché le bande sono ___3___. Se $\\Delta = 0$ si ottengono ___4___.",
     "soluzioni": {
       "1": [
         "quadratura"
@@ -349,7 +349,7 @@
       "risposta": "I termini centrati sul doppio della pulsazione portante."
     },
     {
-      "domanda": "Che cosa accade per Δ = 0?",
+      "domanda": "Che cosa accade per $\\Delta = 0$?",
       "risposta": "Le uscite ideali coincidono con i due messaggi."
     }
   ],

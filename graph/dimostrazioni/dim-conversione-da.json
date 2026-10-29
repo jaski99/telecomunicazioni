@@ -7,9 +7,9 @@
   "enunciato": "Trascurando la quantizzazione, il PAM ottenuto dai campioni ha spettro $S(\\omega)=\\frac{G(\\omega)}{T}\\sum_k X(\\omega-k\\omega_s)$. Il passa-basso isola la replica centrale e l’equalizzatore $T/G(\\omega)$ compensa la forma d’impulso; per un impulso rettangolare breve $\\tau\\ll T$ può essere omesso se basta una ricostruzione a meno di un guadagno. La quantizzazione lascia un errore, detto rumore di quantizzazione.",
   "ipotesi": [
     "Parole ricevute senza errori, codifica nota e campionamento senza aliasing nel caso ideale non quantizzato.",
-    "Impulso di ricostruzione g noto e G(ω) diverso da zero nella banda utile; si trascurano ritardi e rumore di canale.",
+    "Impulso di ricostruzione g noto e $G(\\omega)$ diverso da zero nella banda utile; si trascurano ritardi e rumore di canale.",
     "La formula spettrale con X vale trascurando la quantizzazione: con campioni quantizzati il risultato differisce dal segnale originale.",
-    "Per omettere l’equalizzatore si assume un impulso rettangolare centrato di durata τ molto minore di T e si ammette un guadagno costante."
+    "Per omettere l’equalizzatore si assume un impulso rettangolare centrato di durata $\\tau$ molto minore di T e si ammette un guadagno costante."
   ],
   "notazione": [
     {
@@ -36,7 +36,7 @@
   "varianti_notazione": [
     {
       "canonica": "\\omega_s=2\\pi/T",
-      "variante": "f₀=1/T",
+      "variante": "$f_{0}=\\frac{1}{T}$",
       "fonte": "file3 pp. 7-11"
     }
   ],
@@ -77,7 +77,7 @@
       "n": 6,
       "testo": "Considerare un impulso rettangolare centrato sufficientemente breve.",
       "formula": "G(\\omega)=\\tau\\,\\frac{\\sin(\\omega\\tau/2)}{\\omega\\tau/2}\\approx\\tau,\\quad |\\omega|\\le\\omega_m,\\quad \\tau\\ll T",
-      "perche": "Con campionamento sopra Nyquist, nella banda utile il prodotto ωτ è piccolo; resta un guadagno circa costante."
+      "perche": "Con campionamento sopra Nyquist, nella banda utile il prodotto $\\omega\\tau$ è piccolo; resta un guadagno circa costante."
     },
     {
       "n": 7,

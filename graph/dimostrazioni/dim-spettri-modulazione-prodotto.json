@@ -6,7 +6,7 @@
   ],
   "enunciato": "Per $s(t)=x(t)\\cos(\\omega_0t)$, la trasformata bilaterale è $S(\\omega)=[X(\\omega-\\omega_0)+X(\\omega+\\omega_0)]/2$. Nella banda positiva, le due bande laterali sono speculari: quella inferiore è ribaltata e la sua fase cambia segno rispetto alla superiore, dove definita.",
   "ipotesi": [
-    "Il segnale x è reale e limitato a |ω| ≤ ωm, con ω₀ > ωm; la portante ha fase zero.",
+    "Il segnale x è reale e limitato a $|\\omega| \\le  \\omega_{m}$, con $\\omega_{0} > \\omega_{m}$; la portante ha fase zero.",
     "Le espressioni della fase si riferiscono ai punti in cui lo spettro non si annulla."
   ],
   "notazione": [
@@ -24,7 +24,7 @@
     },
     {
       "simbolo": "\\phi(\\Omega)",
-      "significato": "Argomento di X(Ω), per Ω positiva."
+      "significato": "Argomento di $X(\\Omega)$, per $\\Omega$ positiva."
     }
   ],
   "varianti_notazione": [
@@ -58,7 +58,7 @@
       "n": 4,
       "testo": "Valutare la banda laterale superiore positiva.",
       "formula": "S(\\omega_0+\\Omega)=\\frac{1}{2}X(\\Omega),\\quad 0<\\Omega\\le\\omega_m",
-      "perche": "La replica centrata su meno ω₀ non contribuisce perché le bande sono disgiunte."
+      "perche": "La replica centrata su meno $\\omega_{0}$ non contribuisce perché le bande sono disgiunte."
     },
     {
       "n": 5,
@@ -70,7 +70,7 @@
       "n": 6,
       "testo": "Confrontare ampiezze e fasi delle due bande.",
       "formula": "|S(\\omega_0\\pm\\Omega)|=\\frac{1}{2}|X(\\Omega)|,\\quad \\arg S(\\omega_0\\pm\\Omega)=\\pm\\phi(\\Omega)",
-      "perche": "Il coniugato mantiene il modulo e cambia il segno dell’argomento, modulo 2π.",
+      "perche": "Il coniugato mantiene il modulo e cambia il segno dell’argomento, modulo $2\\pi$.",
       "figura": "fase"
     }
   ],
@@ -243,7 +243,7 @@
   ],
   "versione_compatta": [
     "Scrivere il coseno come somma di esponenziali.",
-    "Traslare X a ±ω₀ con fattore 1/2.",
+    "Traslare X a $\\pm\\omega_{0}$ con fattore $\\frac{1}{2}$.",
     "La banda inferiore è coniugata della superiore.",
     "La fase è definita solo dove il modulo non è zero."
   ],
@@ -276,7 +276,7 @@
       "risposta": "La fase non è definita."
     },
     {
-      "domanda": "Come si ricava la replica centrata a −ω₀?",
+      "domanda": "Come si ricava la replica centrata a $-\\omega_{0}$?",
       "risposta": "Traslando la trasformata del messaggio e moltiplicandola per un mezzo."
     }
   ],

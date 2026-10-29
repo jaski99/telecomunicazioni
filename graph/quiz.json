@@ -39,21 +39,21 @@
         "M2"
       ],
       "domanda": "Qual è il massimo throughput normalizzato dello slotted ALOHA?",
-      "spiegazione": "Per S=Ge⁻ᴳ il massimo si ha a G=1 ed è 1/e; la finestra di uno slot distingue lo slotted dal puro ALOHA.",
+      "spiegazione": "Per $S=Ge^{-G}$ il massimo si ha a G=1 ed è $\\frac{1}{e}$; la finestra di uno slot distingue lo slotted dal puro ALOHA.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "1/(2e), circa 0,184 trame riuscite per trama",
+          "testo": "$\\frac{1}{2e}$, circa 0,184 trame riuscite per trama",
           "perche_sbagliata": "Questo è il massimo del puro ALOHA, con finestra vulnerabile doppia."
         },
         {
           "id": "b",
-          "testo": "1/2, pari a 0,5 trame riuscite per trama",
-          "perche_sbagliata": "La curva slotted Ge⁻ᴳ ha massimo 1/e, non 1/2."
+          "testo": "$\\frac{1}{2}$, pari a 0,5 trame riuscite per trama",
+          "perche_sbagliata": "La curva slotted $Ge^{-G}$ ha massimo $\\frac{1}{e}$, non $\\frac{1}{2}$."
         },
         {
           "id": "c",
-          "testo": "1/e, circa 0,368 trame riuscite per trama"
+          "testo": "$\\frac{1}{e}$, circa 0,368 trame riuscite per trama"
         }
       ],
       "corretta": "c"
@@ -67,12 +67,12 @@
         "M3"
       ],
       "domanda": "Come si confrontano i picchi slotted e puro ALOHA?",
-      "spiegazione": "Il puro ALOHA ha massimo 1/(2e), mentre lo slotted ha massimo 1/e; il rapporto tra i picchi è due.",
+      "spiegazione": "Il puro ALOHA ha massimo $\\frac{1}{2e}$, mentre lo slotted ha massimo $\\frac{1}{e}$; il rapporto tra i picchi è due.",
       "opzioni": [
         {
           "id": "a",
           "testo": "I due picchi coincidono se il carico medio è identico",
-          "perche_sbagliata": "Le finestre vulnerabili diverse producono massimi distinti, 1/e contro 1/(2e)."
+          "perche_sbagliata": "Le finestre vulnerabili diverse producono massimi distinti, $\\frac{1}{e}$ contro $\\frac{1}{2e}$."
         },
         {
           "id": "b",
@@ -179,7 +179,7 @@
         "M7"
       ],
       "domanda": "Che rete si antepone a un modulatore PM per realizzare FM?",
-      "spiegazione": "Per PM→FM si antepone un integratore al modulatore PM; la chiave è coerente con la relazione fase-frequenza.",
+      "spiegazione": "Per $PM\\to FM$ si antepone un integratore al modulatore PM; la chiave è coerente con la relazione fase-frequenza.",
       "opzioni": [
         {
           "id": "a",
@@ -207,12 +207,12 @@
         "M8"
       ],
       "domanda": "Come si ottiene PM usando un modulatore FM?",
-      "spiegazione": "Per FM→PM si antepone un derivatore al messaggio, coerentemente con la relazione tra fase e frequenza istantanea.",
+      "spiegazione": "Per $FM\\to PM$ si antepone un derivatore al messaggio, coerentemente con la relazione tra fase e frequenza istantanea.",
       "opzioni": [
         {
           "id": "a",
           "testo": "Anteponendo un integratore al messaggio",
-          "perche_sbagliata": "L’integratore prima di FM conduce alla conversione opposta, PM→FM."
+          "perche_sbagliata": "L’integratore prima di FM conduce alla conversione opposta, $PM\\to FM$."
         },
         {
           "id": "b",
@@ -347,11 +347,11 @@
         "M13"
       ],
       "domanda": "Dove è collocata la banda di Carson nel segnale modulato?",
-      "spiegazione": "La descrizione del quesito colloca lo spettro attorno a ω₀; la formula esprime la larghezza, non il centro del passa-banda.",
+      "spiegazione": "La descrizione del quesito colloca lo spettro attorno a $\\omega_{0}$; la formula esprime la larghezza, non il centro del passa-banda.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "Attorno alla portante ω₀ del segnale passa-banda"
+          "testo": "Attorno alla portante $\\omega_{0}$ del segnale passa-banda"
         },
         {
           "id": "b",
@@ -379,17 +379,17 @@
       "opzioni": [
         {
           "id": "a",
-          "testo": "Bω=Δωmax−ωm",
+          "testo": "$B_{\\omega}=\\Delta\\omega_{\\max}-\\omega_{m}$",
           "perche_sbagliata": "La somma dei contributi va raddoppiata per coprire entrambi i lati."
         },
         {
           "id": "b",
-          "testo": "Bω=2(ω₀+ωm)",
+          "testo": "$B_{\\omega}=2(\\omega_{0}+\\omega_{m})$",
           "perche_sbagliata": "La portante individua il centro; non è la deviazione massima nella stima della banda."
         },
         {
           "id": "c",
-          "testo": "Bω=2(Δωmax+ωm)"
+          "testo": "$B_{\\omega}=2(\\Delta\\omega_{\\max}+\\omega_{m})$"
         }
       ],
       "corretta": "c"
@@ -627,7 +627,7 @@
         "M23"
       ],
       "domanda": "Dove si collocano le bande laterali della modulazione a prodotto?",
-      "spiegazione": "Moltiplicare il messaggio per una portante produce repliche spostate ai lati di ω₀.",
+      "spiegazione": "Moltiplicare il messaggio per una portante produce repliche spostate ai lati di $\\omega_{0}$.",
       "opzioni": [
         {
           "id": "a",
@@ -682,8 +682,8 @@
       "temi": [
         "M25"
       ],
-      "domanda": "Che cosa rappresenta la banda di Nyquist per x[n]=x₀δ[n]?",
-      "spiegazione": "Per la sequenza con un solo campione non nullo, la banda bilatera limite è |ω|≤π/T nella convenzione indicata.",
+      "domanda": "Che cosa rappresenta la banda di Nyquist per $x[n]=x_{0}\\delta[n]$?",
+      "spiegazione": "Per la sequenza con un solo campione non nullo, la banda bilatera limite è $|\\omega|\\le \\frac{\\pi}{T}$ nella convenzione indicata.",
       "opzioni": [
         {
           "id": "a",
@@ -912,7 +912,7 @@
         {
           "id": "a",
           "testo": "Anteponendo un integratore al messaggio modulante",
-          "perche_sbagliata": "L’integratore porta alla conversione PM→FM, non FM→PM."
+          "perche_sbagliata": "L’integratore porta alla conversione $PM\\to FM$, non $FM\\to PM$."
         },
         {
           "id": "b",
@@ -1241,8 +1241,8 @@
         "P3"
       ],
       "domanda": "Valuta l’affermazione sul tema struttura di un FIR trasversale.",
-      "spiegazione": "Il modello trasversale ideale combina ritardi e coefficienti; la sua H è un polinomio in z⁻¹. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
-      "affermazione": "Il modello trasversale ideale combina ritardi e coefficienti; la sua H è un polinomio in z⁻¹.",
+      "spiegazione": "Il modello trasversale ideale combina ritardi e coefficienti; la sua H è un polinomio in $z^{-1}$. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
+      "affermazione": "Il modello trasversale ideale combina ritardi e coefficienti; la sua H è un polinomio in $z^{-1}$.",
       "risposta_corretta": true
     },
     {
@@ -1514,8 +1514,8 @@
         "P24"
       ],
       "domanda": "Valuta l’affermazione sul tema punto di taglio RC.",
-      "spiegazione": "Il modulo al taglio è 1/√2 del valore passante, cioè il punto a −3 dB.",
-      "affermazione": "Al taglio RC del primo ordine il modulo è 1/2 del guadagno passante.",
+      "spiegazione": "Il modulo al taglio è $\\frac{1}{\\sqrt{2}}$ del valore passante, cioè il punto a $-3$ dB.",
+      "affermazione": "Al taglio RC del primo ordine il modulo è $\\frac{1}{2}$ del guadagno passante.",
       "risposta_corretta": false
     },
     {
@@ -1527,8 +1527,8 @@
         "P25"
       ],
       "domanda": "Valuta l’affermazione sul tema derivatore ideale.",
-      "spiegazione": "Il modulo quadro della risposta di un derivatore è ω². La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
-      "affermazione": "Il modulo quadro della risposta di un derivatore è ω².",
+      "spiegazione": "Il modulo quadro della risposta di un derivatore è $\\omega^{2}$. La verifica si basa sulla definizione specifica del tema e sulle ipotesi dichiarate, non su una regola generale più ampia.",
+      "affermazione": "Il modulo quadro della risposta di un derivatore è $\\omega^{2}$.",
       "risposta_corretta": true
     },
     {
@@ -1578,7 +1578,7 @@
       "temi": [],
       "domanda": "Completa i passaggi della formula senza cambiare convenzione.",
       "spiegazione": "Controlla le unità e confronta ogni risposta con la definizione della rete o del segnale; le soluzioni accettate includono forme equivalenti.",
-      "testo_con_buchi": "H(ω)=1/(1+jωRC), taglio ωc=___1___ rad/s per R e C assegnati.",
+      "testo_con_buchi": "$H(\\omega)=\\frac{1}{1+j\\omega RC}$, taglio $\\omega_{c}=$___1___ rad/s per R e C assegnati.",
       "soluzioni": {
         "1": [
           "1/(RC)",
@@ -1594,7 +1594,7 @@
       "temi": [],
       "domanda": "Completa i passaggi della formula senza cambiare convenzione.",
       "spiegazione": "Controlla le unità e confronta ogni risposta con la definizione della rete o del segnale; le soluzioni accettate includono forme equivalenti.",
-      "testo_con_buchi": "La rete CR con uscita sul resistore ha modulo ___1___ in ω=0 e ___2___ in ω→∞.",
+      "testo_con_buchi": "La rete CR con uscita sul resistore ha modulo ___1___ in $\\omega=0$ e ___2___ in $\\omega\\to \\infty$.",
       "soluzioni": {
         "1": [
           "0",
@@ -1614,7 +1614,7 @@
       "temi": [],
       "domanda": "Completa i passaggi della formula senza cambiare convenzione.",
       "spiegazione": "Controlla le unità e confronta ogni risposta con la definizione della rete o del segnale; le soluzioni accettate includono forme equivalenti.",
-      "testo_con_buchi": "Il primo zero positivo della sinc rettangolare si trova a ω=___1___/τ.",
+      "testo_con_buchi": "Il primo zero positivo della sinc rettangolare si trova a $\\omega=$___1___$/\\tau$.",
       "soluzioni": {
         "1": [
           "2π",
@@ -1630,7 +1630,7 @@
       "temi": [],
       "domanda": "Completa i passaggi della formula senza cambiare convenzione.",
       "spiegazione": "Controlla le unità e confronta ogni risposta con la definizione della rete o del segnale; le soluzioni accettate includono forme equivalenti.",
-      "testo_con_buchi": "Per simboli bipolari equiprobabili E[aₙ]=___1___ e E[aₙ²]=___2___.",
+      "testo_con_buchi": "Per simboli bipolari equiprobabili $E[a_{n}]=$___1___ e $E[a_{n}^{2}]=$___2___.",
       "soluzioni": {
         "1": [
           "0",
@@ -1650,7 +1650,7 @@
       "temi": [],
       "domanda": "Completa i passaggi della formula senza cambiare convenzione.",
       "spiegazione": "Controlla le unità e confronta ogni risposta con la definizione della rete o del segnale; le soluzioni accettate includono forme equivalenti.",
-      "testo_con_buchi": "Il fattore AMI sin²(ωT/2) si annulla quando f=___1___/T per k intero.",
+      "testo_con_buchi": "Il fattore AMI $\\sin^{2}(\\frac{\\omega T}{2})$ si annulla quando $f=$___1___$/T$ per k intero.",
       "soluzioni": {
         "1": [
           "k",
@@ -1666,7 +1666,7 @@
       "temi": [],
       "domanda": "Completa i passaggi della formula senza cambiare convenzione.",
       "spiegazione": "Controlla le unità e confronta ogni risposta con la definizione della rete o del segnale; le soluzioni accettate includono forme equivalenti.",
-      "testo_con_buchi": "Per un derivatore ideale |H(ω)|²=___1___ e Gᵧ(ω)=___2___G₀.",
+      "testo_con_buchi": "Per un derivatore ideale $|H(\\omega)|^{2}=$___1___ e $G_{y}(\\omega)=$___2___$G_{0}$.",
       "soluzioni": {
         "1": [
           "ω²",
@@ -1684,22 +1684,22 @@
       "area": 7,
       "nodo_id": "es-teoria-traffico-extra",
       "temi": [],
-      "domanda": "Quale legge collega N, λ e W in regime stazionario?",
+      "domanda": "Quale legge collega N, $\\lambda$ e W in regime stazionario?",
       "spiegazione": "Little moltiplica tasso d’arrivo e permanenza media; la stabilità e il confine del sistema devono essere coerenti.",
       "opzioni": [
         {
           "id": "a",
-          "testo": "N=λ/W, dividendo impropriamente per W",
+          "testo": "$N=\\frac{\\lambda}{W}$, dividendo impropriamente per W",
           "perche_sbagliata": "Le unità non restituiscono un numero medio di utenti/pacchetti."
         },
         {
           "id": "b",
-          "testo": "N=W/λ, scambiando tasso e permanenza media",
+          "testo": "$N=\\frac{W}{\\lambda}$, scambiando tasso e permanenza media",
           "perche_sbagliata": "Il rapporto tempo/tasso non è la legge di Little e ha unità errate."
         },
         {
           "id": "c",
-          "testo": "N=λW, con quantità medie riferite allo stesso sistema"
+          "testo": "$N=\\lambda W$, con quantità medie riferite allo stesso sistema"
         }
       ],
       "corretta": "c"

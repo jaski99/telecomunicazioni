@@ -52,7 +52,7 @@
       "n": 2,
       "testo": "Calcola la probabilità che una sola stazione tenti.",
       "formula": "A=\\binom N1p(1-p)^{N-1}=Np(1-p)^{N-1}",
-      "perche": "Ci sono N possibili stazioni vincenti e le altre N−1 devono restare silenziose indipendentemente."
+      "perche": "Ci sono N possibili stazioni vincenti e le altre $N-1$ devono restare silenziose indipendentemente."
     },
     {
       "n": 3,

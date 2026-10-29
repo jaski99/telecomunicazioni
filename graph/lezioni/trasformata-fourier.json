@@ -69,14 +69,14 @@
     ],
     "spiega_con_parole_tue": "Spiega a parole tue, in cinque righe, perché lo spettro rettangolare genera nel tempo un seno cardinale con zeri equispaziati."
   },
-  "riepilogo": "Trasformata con $1/(2\\pi)$ solo nell'inversa; spettri unilaterali $V = |X|/\\pi$ e $\\varphi = -\\arg X$ per $\\omega \\ge 0$. Coppie chiave: rettangolo nel tempo ↔ seno su argomento in $\\omega$ e rettangolo in $\\omega$ ↔ seno cardinale nel tempo. Proprietà di ritardo, convoluzione e simmetria sono gli attrezzi di T1-T5.",
+  "riepilogo": "Trasformata con $1/(2\\pi)$ solo nell'inversa; spettri unilaterali $V = |X|/\\pi$ e $\\varphi = -\\arg X$ per $\\omega \\ge 0$. Coppie chiave: rettangolo nel tempo $\\leftrightarrow$ seno su argomento in $\\omega$ e rettangolo in $\\omega$ $\\leftrightarrow$ seno cardinale nel tempo. Proprietà di ritardo, convoluzione e simmetria sono gli attrezzi di T1-T5.",
   "flashcard": [
     {
       "fronte": "Dove sta $1/(2\\pi)$?",
       "retro": "Solo nell'antitrasformata."
     },
     {
-      "fronte": "Zeri della trasformata dell'impulso di durata τ?",
+      "fronte": "Zeri della trasformata dell'impulso di durata $\\tau$?",
       "retro": "In $\\omega = 2\\pi k/\\tau$, primo a $f = 1/\\tau$."
     },
     {

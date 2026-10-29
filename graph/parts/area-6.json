@@ -354,7 +354,7 @@
     "worker": "W5",
     "sapere": "Ricavare la probabilità di successo e i massimi di throughput nel modello ideale a tentativi poissoniani.",
     "saper_fare": [
-      "So disegnare le finestre vulnerabili e il grafico ρ(G).",
+      "So disegnare le finestre vulnerabili e il grafico $\\rho(G)$.",
       "So individuare i due massimi senza confonderli."
     ],
     "prerequisiti": [
@@ -386,7 +386,7 @@
     ],
     "risorse": [],
     "checklist_ripasso": [
-      "So disegnare le finestre vulnerabili e il grafico ρ(G).",
+      "So disegnare le finestre vulnerabili e il grafico $\\rho(G)$.",
       "So individuare i due massimi senza confonderli."
     ]
   },

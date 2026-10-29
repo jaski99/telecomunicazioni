@@ -1,6 +1,6 @@
 {
   "id": "dim-filtro-trasversale",
-  "titolo": "Filtro trasversale: schema a blocchi e H(ω) (T3)",
+  "titolo": "Filtro trasversale: schema a blocchi e $H(\\omega)$ (T3)",
   "domande_esame": [
     "T3"
   ],
@@ -307,7 +307,7 @@
     {
       "id": "ampiezza-h-trasversale-esempio",
       "tipo": "grafico",
-      "titolo": "Esempio: ampiezza di H(ω) per due soli pesi",
+      "titolo": "Esempio: ampiezza di $H(\\omega)$ per due soli pesi",
       "descrizione": "Modulo della funzione di trasferimento di un filtro trasversale con due soli pesi, uno e zero virgola cinque, e ritardo elementare di un secondo: la curva è periodica in pulsazione con periodo due pi greco diviso T, vale uno virgola cinque in continua e zero virgola cinque a metà periodo.",
       "asse_x": {
         "etichetta": "ω (rad/s), T = 1 s",
@@ -850,7 +850,7 @@
     }
   ],
   "versione_compatta": [
-    "Schema generale: linea di ritardo su $x$ (pesi $h_k$) + linea su $y$ (pesi $h'_k$) → unico sommatore.",
+    "Schema generale: linea di ritardo su $x$ (pesi $h_k$) + linea su $y$ (pesi $h'_k$) $\\to$ unico sommatore.",
     "Tempo: $y(t) = \\sum_{k=0}^{N-1} h_k x(t-kT) + \\sum_{k=1}^{M} h'_k y(t-kT)$.",
     "Fourier: ritardo $kT \\to e^{-jk\\omega T}$; raccolgo $Y$ e divido per $X$.",
     "Ricorrente: $H(\\omega) = \\dfrac{\\sum_0^{N-1} h_k e^{-jk\\omega T}}{1 - \\sum_1^{M} h'_k e^{-jk\\omega T}}$, periodica con periodo $2\\pi/T$.",
@@ -918,7 +918,7 @@
   "verifica": {
     "stato": "verificata_file1_file3",
     "data": "2026-10-29",
-    "note": "Confronto pagina per pagina sulle immagini renderizzate di file1 e file3 (appunti di studenti, non il libro); il testo di Calandrino e Immovilli non è stato consultato direttamente e la sua edizione è NON TROVATO, quindi non si dichiara identità con il testo del docente. Punto A4 risolto sulle immagini: numeratore, denominatore e indici delle somme coincidono in file1 p. 15 e nella pagina di file3; la nota sulla periodicità di H(ω) è leggibile in entrambe le fonti.",
+    "note": "Confronto pagina per pagina sulle immagini renderizzate di file1 e file3 (appunti di studenti, non il libro); il testo di Calandrino e Immovilli non è stato consultato direttamente e la sua edizione è NON TROVATO, quindi non si dichiara identità con il testo del docente. Punto A4 risolto sulle immagini: numeratore, denominatore e indici delle somme coincidono in file1 p. 15 e nella pagina di file3; la nota sulla periodicità di $H(\\omega)$ è leggibile in entrambe le fonti.",
     "punti_aperti": [
       "Confronto con il libro di Calandrino e Immovilli non ancora fatto: edizione e pagine effettive NON TROVATO; i riferimenti del tipo p. x.y sono quelli riportati dallo studente in file1 (IPOTESI: capitolo.pagina)."
     ]

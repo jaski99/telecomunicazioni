@@ -6,11 +6,11 @@
     "tipo": "tipo_esercizio",
     "gruppo": "A",
     "worker": "W6",
-    "sapere": "Per RC serie con uscita sul condensatore, H(ω)=1/(1+jωRC), |H|=1/√(1+(ωRC)²), fase −atan(ωRC) e ωc=1/(RC).",
+    "sapere": "Per RC serie con uscita sul condensatore, $H(\\omega)=\\frac{1}{1+j\\omega RC}$, $|H|=\\frac{1}{\\sqrt{1+(\\omega RC)^{2}}}$, fase $-\\arctan(\\omega RC)$ e $\\omega_{c}=\\frac{1}{RC}$.",
     "saper_fare": [
-      "Impostare il partitore con ZC=1/(jωC) all’uscita sul condensatore.",
+      "Impostare il partitore con $ZC=\\frac{1}{j\\omega C}$ all’uscita sul condensatore.",
       "Ricavare modulo, fase e pulsazione di taglio.",
-      "Disegnare i limiti a bassa/alta frequenza e il punto −3 dB."
+      "Disegnare i limiti a bassa/alta frequenza e il punto $-3$ dB."
     ],
     "prerequisiti": [
       {
@@ -33,7 +33,7 @@
     "risorse": [],
     "checklist_ripasso": [
       "Verifico che l’uscita sia sul condensatore.",
-      "Controllo |H(ωc)|=1/√2 e fase −π/4."
+      "Controllo $|H(\\omega_{c})|=\\frac{1}{\\sqrt{2}}$ e fase $-\\frac{\\pi}{4}$."
     ]
   },
   {
@@ -43,7 +43,7 @@
     "tipo": "tipo_esercizio",
     "gruppo": "A",
     "worker": "W6",
-    "sapere": "Per il circuito CR con uscita sul resistore, H(ω)=jωRC/(1+jωRC), |H|=ωRC/√(1+(ωRC)²), fase π/2−atan(ωRC) e ωc=1/(RC).",
+    "sapere": "Per il circuito CR con uscita sul resistore, $H(\\omega)=\\frac{j\\omega RC}{1+j\\omega RC}$, $|H|=\\frac{\\omega RC}{\\sqrt{1+(\\omega RC)^{2}}}$, fase $\\frac{\\pi}{2}-\\arctan(\\omega RC)$ e $\\omega_{c}=\\frac{1}{RC}$.",
     "saper_fare": [
       "Applicare il partitore con uscita sul resistore.",
       "Ricavare modulo, fase e pulsazione di taglio.",

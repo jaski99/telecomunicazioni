@@ -24,7 +24,7 @@
     "perche_funziona": "Funziona perché le convenzioni ridefiniscono solo come si spalma la stessa potenza sull'asse: unilaterale concentra tutto in $\\omega \\ge 0$ con valori doppi rispetto alla bilaterale per radiante."
   },
   "completion_problem": {
-    "titolo": "Uscita di una rete con |H|² dato",
+    "titolo": "Uscita di una rete con $|H|^{2}$ dato",
     "testo": "In ingresso $G_x(\\omega) = 3$ per $0 \\le \\omega \\le 2$. Una rete ha $|H(\\omega)|^2 = \\omega^2$. Allora $G_y(\\omega) = $ ____ e la potenza in uscita è ____.",
     "passi_mancanti": [
       "Moltiplicare lo spettro per il modulo quadro",

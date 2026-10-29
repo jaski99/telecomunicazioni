@@ -5,9 +5,9 @@
   "definizione_esame": {
     "definizione": "Gli esercizi integrativi di traffico applicano modelli di coda, ritardo e capacità a nodi, linee e apparati.",
     "scopo": "Tradurre i dati del problema in grandezze medie coerenti e distinguere ciò che è calcolabile da ciò che richiede un modello aggiuntivo.",
-    "esempio": "Con tasso medio di arrivo λ=10 pacchetti/s e permanenza media δ=3 s, la legge di Little dà N=λδ=30 pacchetti medi nel sistema."
+    "esempio": "Con tasso medio di arrivo $\\lambda=10$ pacchetti/s e permanenza media $\\delta=3$ s, la legge di Little dà $N=\\lambda\\delta=30$ pacchetti medi nel sistema."
   },
-  "spiegazione": "### Legge di Little e consistenza\nLa legge di Little, N=λW, collega il numero medio di elementi nel sistema N, il tasso medio di arrivo λ e il tempo medio di permanenza W. Si applica in regime stazionario con grandezze finite e definizioni coerenti del confine del sistema. Verifica le unità: pacchetti/s per secondi restituisce pacchetti. Se il tasso d’arrivo supera la capacità di servizio, la stazionarietà può mancare e la relazione non va applicata senza verificare il modello.\n\n### Code e prestazioni\nPer una coda M/M/1, se gli arrivi sono Poisson, i tempi di servizio esponenziali, il singolo servente è stabile e ρ=λ/μ<1, il numero medio nel sistema è ρ/(1−ρ) e il tempo medio è 1/(μ−λ). Queste formule valgono solo sotto le ipotesi esplicite: se il testo non specifica disciplina, distribuzioni, buffer o stabilità, scrivi NON TROVATO per il dato mancante invece di scegliere una formula a caso.\n\n### Linee, apparati e perdita\nNegli esercizi su una linea, separa ritardo di trasmissione (lunghezza del pacchetto divisa per il bit rate) e propagazione (distanza divisa per velocità). Per più linee d’uscita, ripartisci l’arrivo solo se il modello afferma bilanciamento o indipendenza. La probabilità di perdita richiede una capacità finita e un modello di buffer; non si deduce dal solo tasso medio. Un commutatore con più ingressi e uscite può essere limitato dall’uscita più congestionata, non soltanto dal totale aggregato.\n\n### Metodo di risoluzione\nDisegna il confine del sistema, converti tutte le unità, identifica gli arrivi e il servizio, verifica la stabilità e applica una relazione solo dopo averne elencato le ipotesi. Chiudi con un controllo: Little deve restituire unità di pacchetti; un ritardo deve essere non negativo; una probabilità deve appartenere a [0,1].\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $N=\\lambda W,\\qquad \\delta=\\theta+\\eta$.",
+  "spiegazione": "### Legge di Little e consistenza\nLa legge di Little, $N=\\lambda W$, collega il numero medio di elementi nel sistema N, il tasso medio di arrivo $\\lambda$ e il tempo medio di permanenza W. Si applica in regime stazionario con grandezze finite e definizioni coerenti del confine del sistema. Verifica le unità: pacchetti/s per secondi restituisce pacchetti. Se il tasso d’arrivo supera la capacità di servizio, la stazionarietà può mancare e la relazione non va applicata senza verificare il modello.\n\n### Code e prestazioni\nPer una coda M/M/1, se gli arrivi sono Poisson, i tempi di servizio esponenziali, il singolo servente è stabile e $\\rho=\\frac{\\lambda}{\\mu}<1$, il numero medio nel sistema è $\\frac{\\rho}{1-\\rho}$ e il tempo medio è $\\frac{1}{\\mu-\\lambda}$. Queste formule valgono solo sotto le ipotesi esplicite: se il testo non specifica disciplina, distribuzioni, buffer o stabilità, scrivi NON TROVATO per il dato mancante invece di scegliere una formula a caso.\n\n### Linee, apparati e perdita\nNegli esercizi su una linea, separa ritardo di trasmissione (lunghezza del pacchetto divisa per il bit rate) e propagazione (distanza divisa per velocità). Per più linee d’uscita, ripartisci l’arrivo solo se il modello afferma bilanciamento o indipendenza. La probabilità di perdita richiede una capacità finita e un modello di buffer; non si deduce dal solo tasso medio. Un commutatore con più ingressi e uscite può essere limitato dall’uscita più congestionata, non soltanto dal totale aggregato.\n\n### Metodo di risoluzione\nDisegna il confine del sistema, converti tutte le unità, identifica gli arrivi e il servizio, verifica la stabilità e applica una relazione solo dopo averne elencato le ipotesi. Chiudi con un controllo: Little deve restituire unità di pacchetti; un ritardo deve essere non negativo; una probabilità deve appartenere a [0,1].\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $N=\\lambda W,\\qquad \\delta=\\theta+\\eta$.",
   "analogia": {
     "testo": "Una coda assomiglia a una fila allo sportello: l’afflusso e il tempo di permanenza determinano quante persone si trovano mediamente dentro.",
     "limite": "L’analogia non specifica distribuzioni, disciplina di servizio, capacità del buffer né condizioni di stabilità."
@@ -16,30 +16,30 @@
     "titolo": "Numero medio nel nodo con legge di Little",
     "problema": "La raccolta di esercizi riporta un flusso medio di 10 pacchetti/s e una permanenza media di 3 s. Calcola il numero medio di pacchetti nel nodo.",
     "passi": [
-      "Definisci N come numero medio nel sistema, λ=10 pacchetti/s e W=3 s.",
+      "Definisci N come numero medio nel sistema, $\\lambda=10$ pacchetti/s e W=3 s.",
       "Verifica che arrivi e permanenza descrivano lo stesso confine del nodo e che si assuma regime stazionario.",
-      "Applica Little: N=λW.",
+      "Applica Little: $N=\\lambda W$.",
       "Sostituisci le quantità: N=(10 pacchetti/s)(3 s)=30 pacchetti.",
       "Controlla le unità: i secondi si cancellano e resta un numero medio di pacchetti."
     ],
     "soluzione": "N=30 pacchetti medi, sotto l’ipotesi di regime stazionario e definizioni coerenti.",
-    "perche_funziona": "La legge di Little fornisce la popolazione media dal prodotto tra tasso e permanenza; la scomposizione δ=θ+η separa servizio e attesa come richiesto dal problema."
+    "perche_funziona": "La legge di Little fornisce la popolazione media dal prodotto tra tasso e permanenza; la scomposizione $\\delta=\\theta+\\eta$ separa servizio e attesa come richiesto dal problema."
   },
   "completion_problem": {
     "titolo": "Applica Little al flusso 10 pacchetti/s",
     "testo": "Con permanenza media 3 s, calcola N e poi il tempo medio in coda se il servizio medio è 1 s.",
     "passi_mancanti": [
-      "Calcola N=λδ.",
+      "Calcola $N=\\lambda\\delta$.",
       "Sottrai il tempo medio di servizio dal tempo di permanenza.",
       "Riporta unità e interpretazione."
     ],
-    "soluzione": "N=10·3=30 pacchetti medi. In assenza di perdite, δ=θ+η; quindi η=3−1=2 s di attesa media in coda."
+    "soluzione": "$N=10\\cdot 3=30$ pacchetti medi. In assenza di perdite, $\\delta=\\theta+\\eta$; quindi $\\eta=3-1=2$ s di attesa media in coda."
   },
   "esercizio_autonomo": {
     "titolo": "Sportello con nove utenti medi",
     "testo": "Per permanenza media 15 minuti e popolazione media desiderata pari a 9 utenti, trova il tasso d’ingresso.",
     "suggerimento": "Controllo che arrivi, permanenza e popolazione descrivano lo stesso sistema.",
-    "soluzione_attesa": "λ=N/W=9/15=0,6 utenti/minuto=0,01 utenti/s. La relazione presuppone regime stazionario e lo stesso confine del sistema per N, λ e W."
+    "soluzione_attesa": "$\\lambda=\\frac{N}{W}=\\frac{9}{15}=0,6$ utenti/minuto=0,01 utenti/s. La relazione presuppone regime stazionario e lo stesso confine del sistema per N, $\\lambda$ e W."
   },
   "errori_trappole": [
     {
@@ -47,18 +47,18 @@
       "perche_sbagliato": "La legge collega medie finite riferite allo stesso sistema."
     },
     {
-      "errore": "Applicare M/M/1 senza controllare λ<μ.",
+      "errore": "Applicare M/M/1 senza controllare $\\lambda<\\mu$.",
       "perche_sbagliato": "Se la coda non è stabile, le medie stazionarie non sono finite."
     }
   ],
   "richiamo_attivo": {
     "domande": [
       {
-        "domanda": "Quando si può usare N=λW?",
+        "domanda": "Quando si può usare $N=\\lambda W$?",
         "risposta": "In regime stazionario, con grandezze medie finite riferite allo stesso sistema."
       },
       {
-        "domanda": "Qual è l’unità di λW?",
+        "domanda": "Qual è l’unità di $\\lambda W$?",
         "risposta": "Pacchetti/s moltiplicato per secondi dà pacchetti medi."
       },
       {
@@ -68,15 +68,15 @@
     ],
     "spiega_con_parole_tue": "Spiega perché una media d’arrivo e una media di permanenza determinano una popolazione media, e quali limiti impediscono l’uso automatico della formula."
   },
-  "riepilogo": "Dichiara il modello e verifica stabilità. Little: N=λW. Separa trasmissione e propagazione. Le code richiedono ipotesi esplicite; i dati mancanti restano NON TROVATO.",
+  "riepilogo": "Dichiara il modello e verifica stabilità. Little: $N=\\lambda W$. Separa trasmissione e propagazione. Le code richiedono ipotesi esplicite; i dati mancanti restano NON TROVATO.",
   "flashcard": [
     {
       "fronte": "Formula di Little?",
-      "retro": "N=λW, se regime e sistema sono coerenti."
+      "retro": "$N=\\lambda W$, se regime e sistema sono coerenti."
     },
     {
       "fronte": "Condizione M/M/1 stabile?",
-      "retro": "ρ=λ/μ<1, oltre alle ipotesi esponenziali e di singolo servente."
+      "retro": "$\\rho=\\frac{\\lambda}{\\mu}<1$, oltre alle ipotesi esponenziali e di singolo servente."
     }
   ],
   "checklist": {

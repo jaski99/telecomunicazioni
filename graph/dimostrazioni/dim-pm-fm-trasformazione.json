@@ -182,8 +182,8 @@
   "versione_compatta": [
     "PM: fase proporzionale al messaggio.",
     "FM: fase proporzionale all’integrale del messaggio.",
-    "Integratore → PM realizza FM.",
-    "Derivatore → FM realizza PM, con fase iniziale corretta."
+    "Integratore $\\to$ PM realizza FM.",
+    "Derivatore $\\to$ FM realizza PM, con fase iniziale corretta."
   ],
   "a_buchi": {
     "testo": "Per ottenere FM si antepone un ___1___ alla PM; per ottenere PM si antepone un ___2___ alla FM. Il secondo passaggio funziona perché l’integrale della derivata restituisce il messaggio a meno di ___3___.",

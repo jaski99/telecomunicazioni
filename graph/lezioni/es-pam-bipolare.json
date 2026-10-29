@@ -1,62 +1,62 @@
 {
   "id": "es-pam-bipolare",
   "perche_ti_serve": "Serve per l’esercizio E8, gruppo A della mappa. Collega il calcolo allo schema di area 3 — pam bipolare a duty cycle unitario senza attribuire punteggi non documentati.",
-  "scenario": "Per simboli bipolari indipendenti ed equiprobabili, i valori hanno media zero e varianza unitaria. La componente a righe dovuta alla media scompare; resta la parte continua, pari al prodotto della densità dei simboli per |G(ω)|². Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
+  "scenario": "Per simboli bipolari indipendenti ed equiprobabili, i valori hanno media zero e varianza unitaria. La componente a righe dovuta alla media scompare; resta la parte continua, pari al prodotto della densità dei simboli per $|G(\\omega)|^{2}$. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
   "definizione_esame": {
     "definizione": "Area 3 — PAM bipolare a duty cycle unitario: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-    "scopo": "Per il codice bipolare e T=1 ms, motivare l’assenza di righe, valutare Gs(0)=0,001/π e localizzare i primi zeri positivi.",
-    "esempio": "Con T=1 ms, determina la forma dello spettro, il valore in ω=0 e i primi zeri positivi, seguendo la convenzione unilaterale decisa in NOTAZIONE.md §5.2."
+    "scopo": "Per il codice bipolare e T=1 ms, motivare l’assenza di righe, valutare $G_{s}(0)=\\frac{0,001}{\\pi}$ e localizzare i primi zeri positivi.",
+    "esempio": "Con T=1 ms, determina la forma dello spettro, il valore in $\\omega=0$ e i primi zeri positivi, seguendo la convenzione unilaterale decisa in NOTAZIONE.md §5.2."
   },
-  "spiegazione": "### Separare codice e impulso\nIl segnale PAM è la somma degli impulsi pesati dai simboli. La statistica del codice stabilisce i termini di correlazione; la forma dell’impulso stabilisce G(ω). La convenzione è sinc(u)=sin(u)/u. Per il codice bipolare equiprobabile la media è zero, quindi non compare una riga discreta associata alla media.\n\n### Calcolo dello spettro\nLa correlazione a ritardo zero vale uno e quella a ritardi non nulli è zero per simboli indipendenti a media nulla. Rimane la densità continua, con fattore 1/(πT) nella convenzione unilaterale decisa in NOTAZIONE.md §5.2. L’impulso rettangolare di ampiezza uno e durata T ha trasformata T sinc(ωT/2).\n\n### Forma e controlli\nIl modulo quadro genera una sinc quadrata. Il massimo è in zero e i nulli si trovano quando ωT/2 è un multiplo non nullo di π. La formula e il disegno sono unilaterali per la densità; se si mostra lo spettro bilatero, mantenere l’informazione sulla convenzione e sulla scala.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Dichiara le ipotesi del modello; per le densità spettrali applica la convenzione unilaterale fissata in NOTAZIONE.md §5.2. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $G_s(\\omega)=\\frac{T}{\\pi}\\left[\\frac{\\sin(\\omega T/2)}{\\omega T/2}\\right]^2$.",
+  "spiegazione": "### Separare codice e impulso\nIl segnale PAM è la somma degli impulsi pesati dai simboli. La statistica del codice stabilisce i termini di correlazione; la forma dell’impulso stabilisce $G(\\omega)$. La convenzione è sinc(u)=sin(u)/u. Per il codice bipolare equiprobabile la media è zero, quindi non compare una riga discreta associata alla media.\n\n### Calcolo dello spettro\nLa correlazione a ritardo zero vale uno e quella a ritardi non nulli è zero per simboli indipendenti a media nulla. Rimane la densità continua, con fattore $\\frac{1}{\\pi T}$ nella convenzione unilaterale decisa in NOTAZIONE.md §5.2. L’impulso rettangolare di ampiezza uno e durata T ha trasformata T $\\operatorname{sinc}(\\frac{\\omega T}{2})$.\n\n### Forma e controlli\nIl modulo quadro genera una sinc quadrata. Il massimo è in zero e i nulli si trovano quando $\\frac{\\omega T}{2}$ è un multiplo non nullo di $\\pi$. La formula e il disegno sono unilaterali per la densità; se si mostra lo spettro bilatero, mantenere l’informazione sulla convenzione e sulla scala.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Dichiara le ipotesi del modello; per le densità spettrali applica la convenzione unilaterale fissata in NOTAZIONE.md §5.2. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $G_s(\\omega)=\\frac{T}{\\pi}\\left[\\frac{\\sin(\\omega T/2)}{\\omega T/2}\\right]^2$.",
   "analogia": {
-    "testo": "I simboli +1 e −1 bilanciano le aree positive e negative nel lungo periodo; resta una densità continua senza riga dovuta alla media.",
+    "testo": "I simboli +1 e $-1$ bilanciano le aree positive e negative nel lungo periodo; resta una densità continua senza riga dovuta alla media.",
     "limite": "Il bilanciamento medio non rende piatto lo spettro: la forma rettangolare degli impulsi produce una sinc quadrata con zeri regolari."
   },
   "worked_example": {
     "titolo": "Esempio guidato E8",
-    "problema": "Con T=1 ms, determina la forma dello spettro, il valore in ω=0 e i primi zeri positivi, seguendo la convenzione unilaterale decisa in NOTAZIONE.md §5.2.",
+    "problema": "Con T=1 ms, determina la forma dello spettro, il valore in $\\omega=0$ e i primi zeri positivi, seguendo la convenzione unilaterale decisa in NOTAZIONE.md §5.2.",
     "passi": [
-      "Per codifica bipolare equiprobabile aₙ∈{−1,+1}, E[aₙ]=0, E[aₙ²]=1 e i campioni distinti sono indipendenti.",
+      "Per codifica bipolare equiprobabile $a_{n}\\in\\{-1,+1\\}$, $E[a_{n}]=0$, $E[a_{n}^{2}]=1$ e i campioni distinti sono indipendenti.",
       "La media nulla elimina le righe di spettro dovute alla componente periodica media.",
-      "Per impulsi rettangolari di durata T e ampiezza unitaria, G(ω)=T sinc(ωT/2).",
-      "La formula PAM con densità unilaterale fornisce Gs=(1/(πT))|G|² per simboli indipendenti a media nulla.",
-      "Sostituisci G: Gs(ω)=T/π sinc²(ωT/2).",
-      "In zero, il valore è T/π; gli zeri positivi sono ω=2πk/T, k=1,2,…; col T assegnato il primo è 2000π rad/s."
+      "Per impulsi rettangolari di durata T e ampiezza unitaria, $G(\\omega)=T \\operatorname{sinc}(\\frac{\\omega T}{2})$.",
+      "La formula PAM con densità unilaterale fornisce $G_{s}=(\\frac{1}{\\pi T})|G|^{2}$ per simboli indipendenti a media nulla.",
+      "Sostituisci G: $G_{s}(\\omega)=\\frac{T}{\\pi} \\operatorname{sinc}^{2}(\\frac{\\omega T}{2})$.",
+      "In zero, il valore è $\\frac{T}{\\pi}$; gli zeri positivi sono $\\omega=\\frac{2\\pi k}{T}$, k=1,2,…; col T assegnato il primo è $2000\\pi$ rad/s."
     ],
-    "soluzione": "La convenzione A2 è stata decisa da W3 in NOTAZIONE.md §5.2: densità unilaterale per ω≥0. Il grafico è pari se rappresentato bilateralmente; la formula di densità qui riportata è unilaterale in ω≥0. Non trasferire il coefficiente alla versione bilaterale senza adeguare la normalizzazione.",
+    "soluzione": "La convenzione A2 è stata decisa da W3 in NOTAZIONE.md §5.2: densità unilaterale per $\\omega\\ge 0$. Il grafico è pari se rappresentato bilateralmente; la formula di densità qui riportata è unilaterale in $\\omega\\ge 0$. Non trasferire il coefficiente alla versione bilaterale senza adeguare la normalizzazione.",
     "perche_funziona": "La media nulla elimina la componente a righe; l’indipendenza annulla le correlazioni non nulle e resta la densità continua proporzionale al modulo quadro della trasformata dell’impulso."
   },
   "completion_problem": {
     "titolo": "Trova massimo e primi zeri per T=2 ms",
-    "testo": "Usa la formula unilaterale PAM per determinare G_s(0) e i primi due zeri positivi.",
+    "testo": "Usa la formula unilaterale PAM per determinare $G_{s}(0)$ e i primi due zeri positivi.",
     "passi_mancanti": [
-      "Sostituisci ω=0 usando sinc(0)=1.",
-      "Risolvi ωT/2=kπ per i primi interi positivi.",
+      "Sostituisci $\\omega=0$ usando sinc(0)=1.",
+      "Risolvi $\\frac{\\omega T}{2}=k\\pi$ per i primi interi positivi.",
       "Converti le pulsazioni trovate in Hz."
     ],
-    "soluzione": "G_s(0)=T/π=0,002/π≈6,366·10⁻⁴. I primi zeri sono ω=2π/T=1000π rad/s e 2000π rad/s, equivalenti a f=500 Hz e 1000 Hz."
+    "soluzione": "$G_{s}(0)=\\frac{T}{\\pi}=\\frac{0,002}{\\pi}\\approx 6,366\\cdot 10^{-4}$. I primi zeri sono $\\omega=\\frac{2\\pi}{T}=1000\\pi$ rad/s e $2000\\pi$ rad/s, equivalenti a f=500 Hz e 1000 Hz."
   },
   "esercizio_autonomo": {
     "titolo": "PAM bipolare con periodo T=2 ms",
     "testo": "Calcola il valore della densità in zero e i primi due zeri positivi in Hz.",
-    "suggerimento": "Applico la densità unilaterale decisa in NOTAZIONE.md, senza fattore 1/(2πT).",
-    "soluzione_attesa": "G_s(0)=0,002/π≈6,366·10⁻⁴. I nulli si hanno a f=k/T: per k=1 e 2 sono 500 Hz e 1000 Hz. Non ci sono righe perché il valor medio dei simboli è zero."
+    "suggerimento": "Applico la densità unilaterale decisa in NOTAZIONE.md, senza fattore $\\frac{1}{2\\pi T}$.",
+    "soluzione_attesa": "$G_{s}(0)=\\frac{0,002}{\\pi}\\approx 6,366\\cdot 10^{-4}$. I nulli si hanno a $f=\\frac{k}{T}$: per k=1 e 2 sono 500 Hz e 1000 Hz. Non ci sono righe perché il valor medio dei simboli è zero."
   },
   "errori_trappole": [
     {
       "errore": "Aggiungere righe spettrali nonostante la media nulla.",
-      "perche_sbagliato": "Le righe da media scompaiono per E[aₙ]=0."
+      "perche_sbagliato": "Le righe da media scompaiono per $E[a_{n}]=0$."
     },
     {
       "errore": "Usare i nulli della sinc non normalizzata.",
-      "perche_sbagliato": "Con sinc(u)=sin(u)/u i nulli positivi sono ω=2πk/T."
+      "perche_sbagliato": "Con sinc(u)=sin(u)/u i nulli positivi sono $\\omega=\\frac{2\\pi k}{T}$."
     }
   ],
   "richiamo_attivo": {
     "domande": [
       {
         "domanda": "Con T=1 ms e impulsi bipolari unitari, quanto vale Gs(0) nella convenzione unilaterale?",
-        "risposta": "Gs(0)=T/π=0,001/π≈3,183·10⁻⁴; la media nulla elimina la riga discreta."
+        "risposta": "$G_{s}(0)=\\frac{T}{\\pi}=\\frac{0,001}{\\pi}\\approx 3,183\\cdot 10^{-4}$; la media nulla elimina la riga discreta."
       },
       {
         "domanda": "Qual è il passaggio chiave?",
@@ -64,12 +64,12 @@
       },
       {
         "domanda": "Dove si trova il primo zero positivo della sinc quadrata quando T=1 ms?",
-        "risposta": "ω=2π/T=2000π rad/s, equivalente a f=1/T=1000 Hz; i successivi sono multipli interi."
+        "risposta": "$\\omega=\\frac{2\\pi}{T}=2000\\pi$ rad/s, equivalente a $f=\\frac{1}{T}=1000$ Hz; i successivi sono multipli interi."
       }
     ],
     "spiega_con_parole_tue": "Collega la media nulla del codice alla scomparsa delle righe e la durata T alla posizione dei nulli della sinc."
   },
-  "riepilogo": "Codice bipolare → media zero, varianza uno → nessuna riga → densità proporzionale a |G|² → sinc² con nulli a 2πk/T.",
+  "riepilogo": "Codice bipolare $\\to$ media zero, varianza uno $\\to$ nessuna riga $\\to$ densità proporzionale a $|G|^{2} \\to  \\operatorname{sinc}^{2}$ con nulli a $\\frac{2\\pi k}{T}$.",
   "flashcard": [
     {
       "fronte": "Qual è il risultato centrale?",
@@ -77,13 +77,13 @@
     },
     {
       "fronte": "Perché il codice bipolare non ha righe spettrali?",
-      "retro": "Per T=1 ms, Gs(0)=0,001/π≈3,183·10⁻⁴; i primi zeri sono a 2000π e 4000π rad/s."
+      "retro": "Per T=1 ms, $G_{s}(0)=\\frac{0,001}{\\pi}\\approx 3,183\\cdot 10^{-4}$; i primi zeri sono a $2000\\pi$ e $4000\\pi$ rad/s."
     }
   ],
   "checklist": {
     "so_fare": [
-      "Calcolo i momenti del codice ±1 e verifico che la media sia zero prima di formare Gs.",
-      "Sostituisco T=1 ms nella sinc quadrata e converto ω=2π/T in frequenza 1000 Hz."
+      "Calcolo i momenti del codice $\\pm1$ e verifico che la media sia zero prima di formare Gs.",
+      "Sostituisco T=1 ms nella sinc quadrata e converto $\\omega=\\frac{2\\pi}{T}$ in frequenza 1000 Hz."
     ],
     "so_dire": [
       "Distinguo la densità continua dalla riga della media e dichiaro la normalizzazione unilaterale A2."
@@ -94,7 +94,7 @@
       "id": "pam-bipolare-spettro",
       "tipo": "grafico",
       "titolo": "Densità spettrale PAM bipolare",
-      "descrizione": "Sinc quadrata con nulli ai multipli non nulli di 2π/T.",
+      "descrizione": "Sinc quadrata con nulli ai multipli non nulli di $\\frac{2\\pi}{T}$.",
       "asse_x": {
         "etichetta": "ωT/(2π)",
         "min": 0,

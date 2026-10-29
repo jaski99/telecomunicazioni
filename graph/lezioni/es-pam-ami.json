@@ -1,51 +1,51 @@
 {
   "id": "es-pam-ami",
   "perche_ti_serve": "Serve per l’esercizio E9, gruppo A della mappa. Collega il calcolo allo schema di area 3 — pam ami con duty cycle 0,5 senza attribuire punteggi non documentati.",
-  "scenario": "Nel codice AMI gli uno alternano il segno e gli zeri producono ampiezza zero. Con bit equiprobabili i momenti a ritardo zero e uno sono rispettivamente 1/2 e −1/4; oltre un simbolo la correlazione è nulla nel modello usato. Il fattore di correlazione crea nulli aggiuntivi. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
+  "scenario": "Nel codice AMI gli uno alternano il segno e gli zeri producono ampiezza zero. Con bit equiprobabili i momenti a ritardo zero e uno sono rispettivamente $\\frac{1}{2}$ e $-\\frac{1}{4}$; oltre un simbolo la correlazione è nulla nel modello usato. Il fattore di correlazione crea nulli aggiuntivi. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
   "definizione_esame": {
     "definizione": "Area 3 — PAM AMI con duty cycle 0,5: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-    "scopo": "Per AMI con duty cycle 0,5 e T=2 ms, trovare i nulli fino a 4π/T e distinguere quelli del fattore di codice da quelli della sinc.",
-    "esempio": "Con T=2 ms usa la formula unilaterale decisa in NOTAZIONE.md §5.2 per trovare gli zeri positivi fino a 4π/T e spiega quali fattori li generano."
+    "scopo": "Per AMI con duty cycle 0,5 e T=2 ms, trovare i nulli fino a $\\frac{4\\pi}{T}$ e distinguere quelli del fattore di codice da quelli della sinc.",
+    "esempio": "Con T=2 ms usa la formula unilaterale decisa in NOTAZIONE.md §5.2 per trovare gli zeri positivi fino a $\\frac{4\\pi}{T}$ e spiega quali fattori li generano."
   },
-  "spiegazione": "### Due contributi distinti\nLo spettro dipende sia dalla correlazione del codice sia dalla forma dell’impulso. Qui sinc(u)=sin(u)/u. Per AMI con bit equiprobabili la correlazione tra simboli adiacenti è negativa: questo porta al fattore 1/2−1/2 cos(ωT). Con la formula di bisezione diventa sin²(ωT/2).\n\n### Duty cycle e forma d’impulso\nL’impulso ha ampiezza unitaria e durata T/2, perciò la trasformata è (T/2)sinc(ωT/4). Il suo modulo quadro è T²/4 per la sinc quadrata. Combinando con il fattore 1/(πT) e i momenti del codice si ottiene la formula complessiva.\n\n### Tutti i nulli, non solo i primi\nIl fattore sin² annulla a ω=2πk/T per ogni intero k, incluso k=0. La sinc² annulla a ω=4πq/T, che coincide con una parte dei nulli già presenti. In frequenza ordinaria la griglia completa del fattore AMI è f=k/T. È errato limitarsi a elencare zero e ±2/T: il controllo va fatto simbolicamente su entrambi i fattori.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Dichiara le ipotesi del modello; per le densità spettrali applica la convenzione unilaterale fissata in NOTAZIONE.md §5.2. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $G_s(\\omega)=\\frac{T}{4\\pi}\\left[\\frac{\\sin(\\omega T/4)}{\\omega T/4}\\right]^2\\sin^2\\!\\left(\\frac{\\omega T}{2}\\right)$.",
+  "spiegazione": "### Due contributi distinti\nLo spettro dipende sia dalla correlazione del codice sia dalla forma dell’impulso. Qui sinc(u)=sin(u)/u. Per AMI con bit equiprobabili la correlazione tra simboli adiacenti è negativa: questo porta al fattore $\\frac{1}{2}-\\frac{1}{2} \\cos(\\omega T)$. Con la formula di bisezione diventa $\\sin^{2}(\\frac{\\omega T}{2})$.\n\n### Duty cycle e forma d’impulso\nL’impulso ha ampiezza unitaria e durata $\\frac{T}{2}$, perciò la trasformata è $(\\frac{T}{2})\\operatorname{sinc}(\\frac{\\omega T}{4})$. Il suo modulo quadro è $\\frac{T^{2}}{4}$ per la sinc quadrata. Combinando con il fattore $\\frac{1}{\\pi T}$ e i momenti del codice si ottiene la formula complessiva.\n\n### Tutti i nulli, non solo i primi\nIl fattore $\\sin^{2}$ annulla a $\\omega=\\frac{2\\pi k}{T}$ per ogni intero k, incluso k=0. La $\\operatorname{sinc}^{2}$ annulla a $\\omega=\\frac{4\\pi q}{T}$, che coincide con una parte dei nulli già presenti. In frequenza ordinaria la griglia completa del fattore AMI è $f=\\frac{k}{T}$. È errato limitarsi a elencare zero e $\\frac{\\pm2}{T}$: il controllo va fatto simbolicamente su entrambi i fattori.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Dichiara le ipotesi del modello; per le densità spettrali applica la convenzione unilaterale fissata in NOTAZIONE.md §5.2. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $G_s(\\omega)=\\frac{T}{4\\pi}\\left[\\frac{\\sin(\\omega T/4)}{\\omega T/4}\\right]^2\\sin^2\\!\\left(\\frac{\\omega T}{2}\\right)$.",
   "analogia": {
     "testo": "Nell’AMI i simboli non nulli alternano segno: questa memoria a un passo introduce zeri spettrali oltre a quelli dovuti alla forma dell’impulso.",
-    "limite": "L’alternanza descrive la correlazione del codice, non basta da sola per fissare lo spettro: va moltiplicata per la sinc del rettangolo di durata T/2."
+    "limite": "L’alternanza descrive la correlazione del codice, non basta da sola per fissare lo spettro: va moltiplicata per la sinc del rettangolo di durata $\\frac{T}{2}$."
   },
   "worked_example": {
     "titolo": "Esempio guidato E9",
-    "problema": "Con T=2 ms usa la formula unilaterale decisa in NOTAZIONE.md §5.2 per trovare gli zeri positivi fino a 4π/T e spiega quali fattori li generano.",
+    "problema": "Con T=2 ms usa la formula unilaterale decisa in NOTAZIONE.md §5.2 per trovare gli zeri positivi fino a $\\frac{4\\pi}{T}$ e spiega quali fattori li generano.",
     "passi": [
-      "Per AMI equiprobabile, i momenti sono E[aₙ]=0, C₀=E[aₙ²]=1/2, C₁=E[aₙaₙ₊₁]=−1/4; le correlazioni successive sono nulle nel modello adottato.",
-      "Con duty cycle 1/2 l’impulso rettangolare dura T/2 e ha trasformata G(ω)=(T/2)sinc(ωT/4).",
-      "La parte di codice si riduce a C₀+2C₁cos(ωT)=1/2−1/2 cos(ωT)=sin²(ωT/2).",
-      "Moltiplica: Gs=(1/(πT))|G|² sin²(ωT/2)=(T/(4π))sinc²(ωT/4)sin²(ωT/2).",
-      "Il fattore sin²(ωT/2) annulla lo spettro per ω=2πk/T, k intero, incluso zero.",
-      "La sinc² dell’impulso si annulla quando ωT/4=qπ, ossia ω=4πq/T; tali zeri sono già inclusi nella griglia 2πk/T (k=2q). Fino a 4π/T: 0, 2π/T e 4π/T."
+      "Per AMI equiprobabile, i momenti sono $E[a_{n}]=0$, $C_{0}=E[a_{n}^{2}]=\\frac{1}{2}$, $C_{1}=E[a_{n}a_{n+1}]=-\\frac{1}{4}$; le correlazioni successive sono nulle nel modello adottato.",
+      "Con duty cycle $\\frac{1}{2}$ l’impulso rettangolare dura $\\frac{T}{2}$ e ha trasformata $G(\\omega)=(\\frac{T}{2})\\operatorname{sinc}(\\frac{\\omega T}{4})$.",
+      "La parte di codice si riduce a $C_{0}+2C_{1}\\cos(\\omega T)=\\frac{1}{2}-\\frac{1}{2} \\cos(\\omega T)=\\sin^{2}(\\frac{\\omega T}{2})$.",
+      "Moltiplica: $G_{s}=(\\frac{1}{\\pi T})|G|^{2} \\sin^{2}(\\frac{\\omega T}{2})=(\\frac{T}{4\\pi})\\operatorname{sinc}^{2}(\\frac{\\omega T}{4})\\sin^{2}(\\frac{\\omega T}{2})$.",
+      "Il fattore $\\sin^{2}(\\frac{\\omega T}{2})$ annulla lo spettro per $\\omega=\\frac{2\\pi k}{T}$, k intero, incluso zero.",
+      "La $\\operatorname{sinc}^{2}$ dell’impulso si annulla quando $\\frac{\\omega T}{4}=q\\pi$, ossia $\\omega=\\frac{4\\pi q}{T}$; tali zeri sono già inclusi nella griglia $\\frac{2\\pi k}{T} (k=2q)$. Fino a $\\frac{4\\pi}{T}$: 0, $\\frac{2\\pi}{T}$ e $\\frac{4\\pi}{T}$."
     ],
-    "soluzione": "Per duty cycle 0,5 il fattore di codice annulla a tutti i multipli k/T in frequenza f, equivalenti a ω=2πk/T; non soltanto a zero e ±2/T. La sinc dell’impulso aggiunge zeri in f=2q/T, che sono sottoinsieme dei precedenti. Il fattore 1/(4π) segue la convenzione A2 unilaterale, come fissato da W3 in NOTAZIONE.md §5.2.",
-    "perche_funziona": "I momenti C₀ e C₁ producono il fattore sin²; la durata T/2 dell’impulso genera la sinc². Il prodotto consente di unire i due insiemi di zeri e mostra che tutti i multipli k/T sono nulli."
+    "soluzione": "Per duty cycle 0,5 il fattore di codice annulla a tutti i multipli $\\frac{k}{T}$ in frequenza f, equivalenti a $\\omega=\\frac{2\\pi k}{T}$; non soltanto a zero e $\\frac{\\pm2}{T}$. La sinc dell’impulso aggiunge zeri in $f=\\frac{2q}{T}$, che sono sottoinsieme dei precedenti. Il fattore $\\frac{1}{4\\pi}$ segue la convenzione A2 unilaterale, come fissato da W3 in NOTAZIONE.md §5.2.",
+    "perche_funziona": "I momenti $C_{0}$ e $C_{1}$ producono il fattore $\\sin^{2}$; la durata $\\frac{T}{2}$ dell’impulso genera la $\\operatorname{sinc}^{2}$. Il prodotto consente di unire i due insiemi di zeri e mostra che tutti i multipli $\\frac{k}{T}$ sono nulli."
   },
   "completion_problem": {
     "titolo": "Trova i nulli per T=2 ms fino a 1,5 kHz",
     "testo": "Determina i nulli AMI positivi in banda fino a 1,5 kHz e specifica se provengono dal codice o dall’impulso.",
     "passi_mancanti": [
-      "Individua gli zeri del fattore sin²(ωT/2).",
-      "Trova la griglia di zeri della sinc dell’impulso T/2.",
+      "Individua gli zeri del fattore $\\sin^{2}(\\frac{\\omega T}{2})$.",
+      "Trova la griglia di zeri della sinc dell’impulso $\\frac{T}{2}$.",
       "Confronta i due insiemi fino al limite richiesto."
     ],
-    "soluzione": "Il fattore AMI dà f=k/T: con T=2 ms si ottengono 500, 1000 e 1500 Hz (k=1,2,3). La sinc² dell’impulso si annulla a f=2q/T, cioè 1000 Hz entro l’intervallo considerato, già incluso nella griglia AMI. A f=0 c’è inoltre un nullo."
+    "soluzione": "Il fattore AMI dà $f=\\frac{k}{T}$: con T=2 ms si ottengono 500, 1000 e 1500 Hz (k=1,2,3). La $\\operatorname{sinc}^{2}$ dell’impulso si annulla a $f=\\frac{2q}{T}$, cioè 1000 Hz entro l’intervallo considerato, già incluso nella griglia AMI. A f=0 c’è inoltre un nullo."
   },
   "esercizio_autonomo": {
     "titolo": "AMI con T=1 ms e duty cycle 0,5",
     "testo": "Elenca i primi tre nulli positivi in Hz e indica quali sono anche zeri della sinc dell’impulso.",
-    "suggerimento": "Uso tutti i k interi nella griglia f=k/T.",
-    "soluzione_attesa": "Il fattore sin² annulla a f=k/T: 1, 2 e 3 kHz per k=1,2,3. La sinc dell’impulso T/2 annulla a f=2q/T; quindi 2 kHz è anche uno zero della sinc, mentre 1 e 3 kHz provengono dal fattore di correlazione AMI."
+    "suggerimento": "Uso tutti i k interi nella griglia $f=\\frac{k}{T}$.",
+    "soluzione_attesa": "Il fattore $\\sin^{2}$ annulla a $f=\\frac{k}{T}$: 1, 2 e 3 kHz per k=1,2,3. La sinc dell’impulso $\\frac{T}{2}$ annulla a $f=\\frac{2q}{T}$; quindi 2 kHz è anche uno zero della sinc, mentre 1 e 3 kHz provengono dal fattore di correlazione AMI."
   },
   "errori_trappole": [
     {
       "errore": "Elencare solo il nullo in zero.",
-      "perche_sbagliato": "Il fattore AMI si annulla per ogni f=k/T."
+      "perche_sbagliato": "Il fattore AMI si annulla per ogni $f=\\frac{k}{T}$."
     },
     {
       "errore": "Attribuire alla sinc tutti i nulli del prodotto.",
@@ -55,38 +55,38 @@
   "richiamo_attivo": {
     "domande": [
       {
-        "domanda": "Con T=2 ms, quali nulli AMI cadono tra zero e 4π/T?",
-        "risposta": "ω=2π/T e 4π/T, corrispondenti a f=500 Hz e 1000 Hz; il secondo è anche uno zero della sinc dell’impulso."
+        "domanda": "Con T=2 ms, quali nulli AMI cadono tra zero e $\\frac{4\\pi}{T}$?",
+        "risposta": "$\\omega=\\frac{2\\pi}{T}$ e $\\frac{4\\pi}{T}$, corrispondenti a f=500 Hz e 1000 Hz; il secondo è anche uno zero della sinc dell’impulso."
       },
       {
         "domanda": "Qual è il passaggio chiave?",
-        "risposta": "Con duty cycle 1/2 l’impulso rettangolare dura T/2 e ha trasformata G(ω)=(T/2)sinc(ωT/4)."
+        "risposta": "Con duty cycle $\\frac{1}{2}$ l’impulso rettangolare dura $\\frac{T}{2}$ e ha trasformata $G(\\omega)=(\\frac{T}{2})\\operatorname{sinc}(\\frac{\\omega T}{4})$."
       },
       {
         "domanda": "Quale fattore produce la griglia completa di zeri del codice AMI?",
-        "risposta": "sin²(ωT/2) si annulla per ω=2πk/T, ossia f=k/T; la sinc² aggiunge gli zeri pari già inclusi in tale griglia."
+        "risposta": "$\\sin^{2}(\\frac{\\omega T}{2})$ si annulla per $\\omega=\\frac{2\\pi k}{T}$, ossia $f=\\frac{k}{T}$; la $\\operatorname{sinc}^{2}$ aggiunge gli zeri pari già inclusi in tale griglia."
       }
     ],
-    "spiega_con_parole_tue": "Spiega perché l’alternanza AMI annulla lo spettro a ogni multiplo di 1/T e perché la sinc aggiunge solo una parte di quei nulli."
+    "spiega_con_parole_tue": "Spiega perché l’alternanza AMI annulla lo spettro a ogni multiplo di $\\frac{1}{T}$ e perché la sinc aggiunge solo una parte di quei nulli."
   },
-  "riepilogo": "Momenti AMI → fattore 1/2−1/2 cos(ωT) → sin²(ωT/2) → moltiplica la sinc² dell’impulso T/2 → elenca tutti i nulli.",
+  "riepilogo": "Momenti AMI $\\to$ fattore $\\frac{1}{2}-\\frac{1}{2} \\cos(\\omega T) \\to  \\sin^{2}(\\frac{\\omega T}{2}) \\to$ moltiplica la $\\operatorname{sinc}^{2}$ dell’impulso $\\frac{T}{2} \\to$ elenca tutti i nulli.",
   "flashcard": [
     {
       "fronte": "Qual è il risultato centrale?",
       "retro": "La relazione di riferimento è $G_s(\\omega)=\\frac{T}{4\\pi}\\left[\\frac{\\sin(\\omega T/4)}{\\omega T/4}\\right]^2\\sin^2\\!\\left(\\frac{\\omega T}{2}\\right)$. Dichiara sempre le ipotesi e le unità."
     },
     {
-      "fronte": "Quali nulli AMI restano entro 4π/T?",
-      "retro": "Con T=2 ms si hanno 500 Hz e 1000 Hz; solo il nullo a 1000 Hz coincide anche con la sinc dell’impulso T/2."
+      "fronte": "Quali nulli AMI restano entro $\\frac{4\\pi}{T}$?",
+      "retro": "Con T=2 ms si hanno 500 Hz e 1000 Hz; solo il nullo a 1000 Hz coincide anche con la sinc dell’impulso $\\frac{T}{2}$."
     }
   ],
   "checklist": {
     "so_fare": [
-      "Semplifico la correlazione AMI in sin²(ωT/2) e moltiplico per la sinc² dell’impulso T/2.",
-      "Converto il limite angolare 4π/T in f=2/T=1000 Hz e includo solo i nulli entro tale soglia."
+      "Semplifico la correlazione AMI in $\\sin^{2}(\\frac{\\omega T}{2})$ e moltiplico per la $\\operatorname{sinc}^{2}$ dell’impulso $\\frac{T}{2}$.",
+      "Converto il limite angolare $\\frac{4\\pi}{T}$ in $f=\\frac{2}{T}=1000$ Hz e includo solo i nulli entro tale soglia."
     ],
     "so_dire": [
-      "Distinguo la griglia f=k/T dovuta al codice dagli zeri ulteriori della sinc dell’impulso."
+      "Distinguo la griglia $f=\\frac{k}{T}$ dovuta al codice dagli zeri ulteriori della sinc dell’impulso."
     ]
   },
   "figure": [
@@ -94,7 +94,7 @@
       "id": "pam-ami-spettro",
       "tipo": "grafico",
       "titolo": "Densità spettrale PAM AMI",
-      "descrizione": "Prodotto della sinc quadrata dell’impulso e del fattore sin² AMI, nullo in ogni k/T.",
+      "descrizione": "Prodotto della sinc quadrata dell’impulso e del fattore $\\sin^{2}$ AMI, nullo in ogni $\\frac{k}{T}$.",
       "asse_x": {
         "etichetta": "fT",
         "min": 0,

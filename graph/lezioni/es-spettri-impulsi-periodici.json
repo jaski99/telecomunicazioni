@@ -4,90 +4,90 @@
   "scenario": "Una trama periodica di impulsi rettangolari rappresenta un segnale deterministico a potenza. I coefficienti della serie complessa descrivono righe alle armoniche, non una curva continua. La durata governa l’inviluppo sinc, il periodo la distanza tra le righe. Immagina di dover controllare il segnale trasmesso su un collegamento: la soluzione deve essere riproducibile, dichiarare le unità e distinguere la forma d’onda dai parametri del modello.",
   "definizione_esame": {
     "definizione": "Area 1 — successione periodica di rettangoli: esercizio applicativo sul modello e sulle ipotesi indicate, svolto fino alla formula conclusiva e al controllo grafico.",
-    "scopo": "Calcolare c₀, c₁ e c₂ per A=2 e τ=T/3, poi indicare la fase delle righe e riconoscere il nullo alla terza armonica.",
-    "esempio": "Considera A=2, durata τ=T/3 e impulsi centrati in t=0 in ogni periodo. Calcola la componente continua e le prime armoniche, quindi indica le fasi."
+    "scopo": "Calcolare $c_{0}$, $c_{1}$ e $c_{2}$ per A=2 e $\\tau=\\frac{T}{3}$, poi indicare la fase delle righe e riconoscere il nullo alla terza armonica.",
+    "esempio": "Considera A=2, durata $\\tau=\\frac{T}{3}$ e impulsi centrati in t=0 in ogni periodo. Calcola la componente continua e le prime armoniche, quindi indica le fasi."
   },
-  "spiegazione": "### Dalla forma d’onda alle righe spettrali\nScegli un periodo e integra soltanto dove il segnale è diverso da zero. La periodicità impone che lo spettro sia discreto: ogni indice intero n individua una riga a nω₀. Qui sinc(u)=sin(u)/u. Per il rettangolo centrato la simmetria annulla la parte immaginaria dei coefficienti.\n\n### Fase: il controllo che evita la scorciatoia sbagliata\nPer il rettangolo centrato, cₙ è reale: un coefficiente positivo ha fase 0, uno negativo fase π, e uno nullo non ha fase definita. Se il rettangolo è centrato in t_c, compare e⁻ʲⁿω₀t_c e la regola robusta è φₙ=arg(cₙ), non la sola classificazione 0/π.\n\n### Ampiezza e zeri\nLa componente continua è Aτ/T. La sinc determina l’inviluppo e gli zeri quando nτ/T è intero non nullo. Distingui i coefficienti complessi cₙ dagli ampiezza-fase della serie trigonometrica: per n>0, l’ampiezza reale è 2|cₙ|. Il disegno è a righe, distanziate ω₀, con inviluppo sinc.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $c_n=\\frac{A\\tau}{T}\\,\\operatorname{sinc}\\!\\left(\\frac{n\\pi\\tau}{T}\\right)e^{-jn\\omega_0t_c}$.",
+  "spiegazione": "### Dalla forma d’onda alle righe spettrali\nScegli un periodo e integra soltanto dove il segnale è diverso da zero. La periodicità impone che lo spettro sia discreto: ogni indice intero n individua una riga a $n\\omega_{0}$. Qui sinc(u)=sin(u)/u. Per il rettangolo centrato la simmetria annulla la parte immaginaria dei coefficienti.\n\n### Fase: il controllo che evita la scorciatoia sbagliata\nPer il rettangolo centrato, $c_{n}$ è reale: un coefficiente positivo ha fase 0, uno negativo fase $\\pi$, e uno nullo non ha fase definita. Se il rettangolo è centrato in $t_{c}$, compare $e^{-j n\\omega_{0} t_{c}}$ e la regola robusta è $\\phi_{n}=\\operatorname{arg}(c_{n})$, non la sola classificazione $0/\\pi$.\n\n### Ampiezza e zeri\nLa componente continua è $\\frac{A\\tau}{T}$. La sinc determina l’inviluppo e gli zeri quando $\\frac{n\\tau}{T}$ è intero non nullo. Distingui i coefficienti complessi $c_{n}$ dagli ampiezza-fase della serie trigonometrica: per n>0, l’ampiezza reale è $2|c_{n}|$. Il disegno è a righe, distanziate $\\omega_{0}$, con inviluppo sinc.\n\n### Controllo di qualità della soluzione\nRileggi l’esercizio dal dato iniziale e verifica che ogni simbolo sia stato definito una sola volta, che la trasformazione scelta corrisponda al modello e che il risultato rispetti le unità. Se il grafico è uno spettro continuo, non rappresentarlo come righe; se è una serie periodica, indica le armoniche. Riporta in modo visibile le ipotesi e le convenzioni ancora da verificare, senza attribuire loro certezza. Un controllo indipendente sul caso limite aiuta a trovare errori di scala prima di memorizzare il risultato.\n\n\n### Formula di riferimento\nLa relazione da ricordare per questo esercizio è $c_n=\\frac{A\\tau}{T}\\,\\operatorname{sinc}\\!\\left(\\frac{n\\pi\\tau}{T}\\right)e^{-jn\\omega_0t_c}$.",
   "analogia": {
     "testo": "Una ruota con tacche ripetute produce colpi regolari: il passo fissa le armoniche, mentre la larghezza di ogni impulso ne modella l’inviluppo sinc.",
     "limite": "La simmetria del rettangolo centrato rende reali i coefficienti, ma un ritardo aggiunge una fase lineare che il disegno delle sole ampiezze non mostra."
   },
   "worked_example": {
     "titolo": "Esempio guidato E1",
-    "problema": "Considera A=2, durata τ=T/3 e impulsi centrati in t=0 in ogni periodo. Calcola la componente continua e le prime armoniche, quindi indica le fasi.",
+    "problema": "Considera A=2, durata $\\tau=\\frac{T}{3}$ e impulsi centrati in t=0 in ogni periodo. Calcola la componente continua e le prime armoniche, quindi indica le fasi.",
     "passi": [
-      "La pulsazione fondamentale è ω₀=2π/T; le righe sono in ω=nω₀.",
-      "Integra il rettangolo in un periodo: cₙ=(1/T)∫₋τ/2^τ/2 A e⁻ʲⁿω₀ᵗdt.",
-      "Per n=0, l’integrale vale Aτ, dunque c₀=Aτ/T=2/3.",
-      "Per n≠0, integra l’esponenziale simmetrico: cₙ=(Aτ/T)sinc(nω₀τ/2)=(2/3)sinc(nπ/3).",
-      "Per n=1: c₁=(2/3)(sin(π/3)/(π/3))=√3/π≈0,551; la fase è 0.",
-      "Per n=2: c₂=(2/3)(sin(2π/3)/(2π/3))=√3/(2π)≈0,276; fase 0.",
-      "Per n=3, il seno si annulla: c₃=0, quindi la fase non è definita su quella riga. Per un impulso traslato di t_c moltiplica per e⁻ʲⁿω₀t_c e usa sempre φₙ=arg(cₙ)."
+      "La pulsazione fondamentale è $\\omega_{0}=\\frac{2\\pi}{T}$; le righe sono in $\\omega=n\\omega_{0}$.",
+      "Integra il rettangolo in un periodo: $c_{n}=(\\frac{1}{T})\\int_{-\\frac{\\tau}{2}}^{\\frac{\\tau}{2}} A e^{-j n\\omega_{0} t}\\,dt$.",
+      "Per n=0, l’integrale vale $A\\tau$, dunque $c_{0}=\\frac{A\\tau}{T}=\\frac{2}{3}$.",
+      "Per $n\\ne 0$, integra l’esponenziale simmetrico: $c_{n}=(\\frac{A\\tau}{T})\\operatorname{sinc}(\\frac{n\\omega_{0}\\tau}{2})=(\\frac{2}{3})\\operatorname{sinc}(\\frac{n\\pi}{3})$.",
+      "Per n=1: $c_{1}=(\\frac{2}{3})(\\frac{\\sin(\\frac{\\pi}{3})}{\\frac{\\pi}{3}})=\\frac{\\sqrt{3}}{\\pi}\\approx 0,551$; la fase è 0.",
+      "Per n=2: $c_{2}=(\\frac{2}{3})(\\frac{\\sin(\\frac{2\\pi}{3})}{\\frac{2\\pi}{3}})=\\frac{\\sqrt{3}}{2\\pi}\\approx 0,276$; fase 0.",
+      "Per n=3, il seno si annulla: $c_{3}=0$, quindi la fase non è definita su quella riga. Per un impulso traslato di $t_{c}$ moltiplica per $e^{-j n\\omega_{0} t_{c}}$ e usa sempre $\\phi_{n}=\\operatorname{arg}(c_{n})$."
     ],
-    "soluzione": "Per il rettangolo centrato i coefficienti sono reali e la fase può essere 0 o π secondo il segno; per impulsi traslati la fase comprende il termine lineare in n. La frase “fase 0/π” non vale in generale senza dichiarare la centratura. A2 sulle densità unilaterali/bilaterali non riguarda questa serie a righe.",
+    "soluzione": "Per il rettangolo centrato i coefficienti sono reali e la fase può essere 0 o $\\pi$ secondo il segno; per impulsi traslati la fase comprende il termine lineare in n. La frase “fase $0/\\pi$” non vale in generale senza dichiarare la centratura. A2 sulle densità unilaterali/bilaterali non riguarda questa serie a righe.",
     "perche_funziona": "La serie è determinata dall’integrale del rettangolo in un periodo; la simmetria rende reali i coefficienti centrati e la traslazione introduce esattamente il fattore di fase mostrato."
   },
   "completion_problem": {
-    "titolo": "Ricostruisci c₀ e le prime armoniche per τ/T=1/4",
-    "testo": "Per A=1 e rettangolo centrato con τ=T/4, ricava c₀,c₁,c₂ e le fasi.",
+    "titolo": "Ricostruisci $c_{0}$ e le prime armoniche per $\\frac{\\tau}{T}=\\frac{1}{4}$",
+    "testo": "Per A=1 e rettangolo centrato con $\\tau=\\frac{T}{4}$, ricava $c_{0},c_{1},c_{2}$ e le fasi.",
     "passi_mancanti": [
-      "Sostituisci τ/T=1/4 nella formula dei coefficienti.",
-      "Valuta sinc(π/4) e sinc(π/2).",
+      "Sostituisci $\\frac{\\tau}{T}=\\frac{1}{4}$ nella formula dei coefficienti.",
+      "Valuta $\\operatorname{sinc}(\\frac{\\pi}{4})$ e $\\operatorname{sinc}(\\frac{\\pi}{2})$.",
       "Dichiara la fase perché i coefficienti sono reali positivi."
     ],
-    "soluzione": "c₀=τ/T=1/4. c₁=(1/4)sinc(π/4)=√2/(2π)≈0,2251; c₂=(1/4)sinc(π/2)=1/(2π)≈0,1592. Entrambi sono positivi e quindi φ₁=φ₂=0."
+    "soluzione": "$c_{0}=\\frac{\\tau}{T}=\\frac{1}{4}$. $c_{1}=(\\frac{1}{4})\\operatorname{sinc}(\\frac{\\pi}{4})=\\frac{\\sqrt{2}}{2\\pi}\\approx 0,2251$; $c_{2}=(\\frac{1}{4})\\operatorname{sinc}(\\frac{\\pi}{2})=\\frac{1}{2\\pi}\\approx 0,1592$. Entrambi sono positivi e quindi $\\phi_{1}=\\phi_{2}=0$."
   },
   "esercizio_autonomo": {
-    "titolo": "Verifica una successione con τ=T/4",
-    "testo": "Per A=1, τ=T/4 e impulsi centrati, calcola c₀,c₁,c₂, le fasi e il primo indice positivo con coefficiente nullo.",
-    "suggerimento": "Controllo che le righe siano distanziate di ω₀.",
-    "soluzione_attesa": "c₀=1/4. c₁=√2/(2π)≈0,2251 e c₂=1/(2π)≈0,1592, entrambi con fase 0. Per n=4, sinc(nπ/4)=sinc(π)=0: la quarta armonica è nulla e la fase non è definita."
+    "titolo": "Verifica una successione con $\\tau=\\frac{T}{4}$",
+    "testo": "Per A=1, $\\tau=\\frac{T}{4}$ e impulsi centrati, calcola $c_{0},c_{1},c_{2}$, le fasi e il primo indice positivo con coefficiente nullo.",
+    "suggerimento": "Controllo che le righe siano distanziate di $\\omega_{0}$.",
+    "soluzione_attesa": "$c_{0}=\\frac{1}{4}$. $c_{1}=\\frac{\\sqrt{2}}{2\\pi}\\approx 0,2251$ e $c_{2}=\\frac{1}{2\\pi}\\approx 0,1592$, entrambi con fase 0. Per n=4, $\\operatorname{sinc}(\\frac{n\\pi}{4})=\\operatorname{sinc}(\\pi)=0$: la quarta armonica è nulla e la fase non è definita."
   },
   "errori_trappole": [
     {
       "errore": "Attribuire sempre fase zero ai coefficienti.",
-      "perche_sbagliato": "Se il rettangolo è traslato compare una fase lineare; usare arg(cₙ)."
+      "perche_sbagliato": "Se il rettangolo è traslato compare una fase lineare; usare $\\operatorname{arg}(c_{n})$."
     },
     {
       "errore": "Disegnare uno spettro continuo per la serie periodica.",
-      "perche_sbagliato": "La periodicità produce righe alle armoniche nω₀."
+      "perche_sbagliato": "La periodicità produce righe alle armoniche $n\\omega_{0}$."
     }
   ],
   "richiamo_attivo": {
     "domande": [
       {
-        "domanda": "Con A=2 e τ/T=1/3, quali sono c₀ e i moduli delle prime due armoniche?",
-        "risposta": "c₀=2/3, |c₁|=√3/π≈0,551 e |c₂|=√3/(2π)≈0,276; entrambe le fasi sono zero."
+        "domanda": "Con A=2 e $\\frac{\\tau}{T}=\\frac{1}{3}$, quali sono $c_{0}$ e i moduli delle prime due armoniche?",
+        "risposta": "$c_{0}=\\frac{2}{3}$, $|c_{1}|=\\frac{\\sqrt{3}}{\\pi}\\approx 0,551$ e $|c_{2}|=\\frac{\\sqrt{3}}{2\\pi}\\approx 0,276$; entrambe le fasi sono zero."
       },
       {
         "domanda": "Qual è il passaggio chiave?",
-        "risposta": "Integra il rettangolo in un periodo: cₙ=(1/T)∫₋τ/2^τ/2 A e⁻ʲⁿω₀ᵗdt."
+        "risposta": "Integra il rettangolo in un periodo: $c_{n}=(\\frac{1}{T})\\int_{-\\frac{\\tau}{2}}^{\\frac{\\tau}{2}} A e^{-j n\\omega_{0} t}\\,dt$."
       },
       {
-        "domanda": "Perché la terza armonica non ha fase definita nel caso τ=T/3?",
-        "risposta": "Il coefficiente c₃ è zero perché sinc(π)=0; arg(0) non è definita, quindi non si assegna una fase alla riga nulla."
+        "domanda": "Perché la terza armonica non ha fase definita nel caso $\\tau=\\frac{T}{3}$?",
+        "risposta": "Il coefficiente $c_{3}$ è zero perché $\\operatorname{sinc}(\\pi)=0$; arg(0) non è definita, quindi non si assegna una fase alla riga nulla."
       }
     ],
-    "spiega_con_parole_tue": "Spiega perché τ/T=1/3 annulla c₃ e come lo spostamento temporale cambierebbe la fase senza alterare i moduli."
+    "spiega_con_parole_tue": "Spiega perché $\\frac{\\tau}{T}=\\frac{1}{3}$ annulla $c_{3}$ e come lo spostamento temporale cambierebbe la fase senza alterare i moduli."
   },
-  "riepilogo": "Impulsi periodici → serie di Fourier complessa → integrate sul solo rettangolo → sinc alle armoniche → fase arg(cₙ), inclusa la traslazione.",
+  "riepilogo": "Impulsi periodici $\\to$ serie di Fourier complessa $\\to$ integrate sul solo rettangolo $\\to  \\operatorname{sinc}$ alle armoniche $\\to$ fase $\\operatorname{arg}(c_{n})$, inclusa la traslazione.",
   "flashcard": [
     {
       "fronte": "Qual è il risultato centrale?",
       "retro": "La relazione di riferimento è $c_n=\\frac{A\\tau}{T}\\,\\mathrm{sinc}\\!\\left(\\frac{n\\pi\\tau}{T}\\right)e^{-jn\\omega_0t_c},\\quad \\omega_0=\\frac{2\\pi}{T}$. Dichiara sempre le ipotesi e le unità."
     },
     {
-      "fronte": "Quali coefficienti si ottengono per A=2 e τ=T/3?",
-      "retro": "c₀=2/3, c₁=√3/π≈0,551 e c₂=√3/(2π)≈0,276; la riga n=3 è nulla e non ha fase."
+      "fronte": "Quali coefficienti si ottengono per A=2 e $\\tau=\\frac{T}{3}$?",
+      "retro": "$c_{0}=\\frac{2}{3}$, $c_{1}=\\frac{\\sqrt{3}}{\\pi}\\approx 0,551$ e $c_{2}=\\frac{\\sqrt{3}}{2\\pi}\\approx 0,276$; la riga n=3 è nulla e non ha fase."
     }
   ],
   "checklist": {
     "so_fare": [
-      "Integro il rettangolo centrato su un periodo e sostituisco A=2 e τ/T=1/3 nella sinc dei coefficienti.",
-      "Confronto c₁ e c₂ con 0,551 e 0,276, poi controllo il nullo esatto a n=±3."
+      "Integro il rettangolo centrato su un periodo e sostituisco A=2 e $\\frac{\\tau}{T}=\\frac{1}{3}$ nella sinc dei coefficienti.",
+      "Confronto $c_{1}$ e $c_{2}$ con 0,551 e 0,276, poi controllo il nullo esatto a $n=\\pm3$."
     ],
     "so_dire": [
-      "Spiego perché la centratura dà fase zero per c₁ e c₂, mentre c₃=0 non possiede fase."
+      "Spiego perché la centratura dà fase zero per $c_{1}$ e $c_{2}$, mentre $c_{3}=0$ non possiede fase."
     ]
   },
   "figure": [
@@ -95,7 +95,7 @@
       "id": "spettro-a-righe",
       "tipo": "grafico",
       "titolo": "Righe armoniche con inviluppo sinc",
-      "descrizione": "Righe a multipli della pulsazione fondamentale; |cₙ|/c₀=|sinc(nπ/3)| e inviluppo sinc campionato fitto. La fase è arg(cₙ).",
+      "descrizione": "Righe a multipli della pulsazione fondamentale; $\\frac{|c_{n}|}{c_{0}}=|\\operatorname{sinc}(\\frac{n\\pi}{3})|$ e inviluppo sinc campionato fitto. La fase è $\\operatorname{arg}(c_{n})$.",
       "asse_x": {
         "etichetta": "ω/ω₀",
         "min": -5,
@@ -1780,7 +1780,7 @@
       "id": "fase-serie-impulsi",
       "tipo": "grafico",
       "titolo": "Fase delle righe della serie",
-      "descrizione": "Per impulsi centrati i coefficienti reali hanno fase zero se positivi e π se negativi; le righe nulle non hanno fase definita.",
+      "descrizione": "Per impulsi centrati i coefficienti reali hanno fase zero se positivi e $\\pi$ se negativi; le righe nulle non hanno fase definita.",
       "asse_x": {
         "etichetta": "n=ω/ω₀",
         "min": -5,

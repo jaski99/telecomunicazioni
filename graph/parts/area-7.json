@@ -122,7 +122,7 @@
     "worker": "W5",
     "sapere": "Applicare equilibrio, condizioni di stabilità e legge di Little a una coda M/M/1, distinguendo coda e sistema.",
     "saper_fare": [
-      "So verificare il requisito λ < μ.",
+      "So verificare il requisito $\\lambda < \\mu$.",
       "So calcolare numero medio e tempo medio nel sistema."
     ],
     "prerequisiti": [
@@ -149,7 +149,7 @@
     ],
     "risorse": [],
     "checklist_ripasso": [
-      "So verificare il requisito λ < μ.",
+      "So verificare il requisito $\\lambda < \\mu$.",
       "So calcolare numero medio e tempo medio nel sistema."
     ]
   }
