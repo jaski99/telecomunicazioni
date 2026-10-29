@@ -52,14 +52,16 @@ MODALITA = ["studio", "avocce", "compatta", "abuchi", "recall"]
 # Testi che non devono mai apparire come parole intere
 # (apostrofo/accento errato o placeholder). Usa matching a parola intera
 # per evitare falsi positivi (es. "null" dentro "annullare").
+# \be'(?=\s|$) invece di \be'\b perché ' e' non è un carattere di parola:
+# \b dopo ' non matcha prima di uno spazio.
 TESTI_VIETATI = [
     r"\[object Object\]",
     r"\bnull\b",
     r"\bundefined\b",
     r"\bNaN\b",
     r"\bperche\b",   # senza accento
-    r"\be'\b",       # apostrofo invece di accento
-    r"\bene'\b",     # apostrofo invece di accento
+    r"\be'(?=\s|$)", # apostrofo invece di accento
+    r"\bene'(?=\s|$)",  # apostrofo invece di accento
     r"\bpuo\b",      # senza accento
     r"\bmontara\b",  # senza accento
 ]
@@ -70,6 +72,31 @@ NODI_CON_FIGURE = set()
 for _n in GRAFO.get("nodi", []):
     if _n.get("figure") or (_n.get("lezione") and _n["lezione"].get("figure")):
         NODI_CON_FIGURE.add(_n.get("id"))
+
+
+def nodoHaLatex(nodo):
+    """Verifica se il nodo renderizza campi con delimitatori LaTeX $...$."""
+    if not nodo:
+        return False
+    lezione = nodo.get("lezione") or {}
+    campi_markdown = [
+        lezione.get("perche_ti_serve", ""),
+        lezione.get("scenario", ""),
+        lezione.get("spiegazione", ""),
+    ]
+    for campo in campi_markdown:
+        if isinstance(campo, str) and "$" in campo:
+            return True
+    dim = nodo.get("dimostrazione") or {}
+    if isinstance(dim.get("formula_finale"), str) and "$" in dim["formula_finale"]:
+        return True
+    return False
+
+
+def registra_listener_js(page, errori):
+    """Registra listener console/pageerror PRIMA di goto."""
+    page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
+    page.on("pageerror", lambda e: errori.append(str(e)))
 
 
 @pytest.fixture(scope="session")
@@ -98,11 +125,6 @@ def server():
 
 
 def controlla_pagina(page, errori):
-    # I listener vanno registrati PRIMA di goto, altrimenti gli errori
-    # JS caricati durante la navigazione non vengono catturati.
-    page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
-    page.on("pageerror", lambda e: errori.append(str(e)))
-
     scroll_ok = page.evaluate(
         "document.documentElement.scrollWidth <= document.documentElement.clientWidth"
     )
@@ -132,8 +154,9 @@ def controlla_pagina(page, errori):
     katex = page.locator(".katex").count()
     katex_error = page.locator(".katex-error").count()
     svg = page.locator("svg").count()
+    h1_count = page.locator("h1").count()
     errore_pagina = page.locator(".errore, h1:has-text('Errore di pagina')").count()
-    return scroll_ok, nessun_vietato, katex, katex_error, svg, errore_pagina
+    return scroll_ok, nessun_vietato, katex, katex_error, svg, errore_pagina, h1_count
 
 
 @pytest.mark.parametrize("width,height", VIEWPORTS)
@@ -147,6 +170,7 @@ def test_rota_senza_errori_né_scroll(server, width, height, route):
             )
             page = context.new_page()
             errori = []
+            registra_listener_js(page, errori)
             url = (
                 f"{BASE_URL}/index.html#/{route}"
                 if route
@@ -161,6 +185,7 @@ def test_rota_senza_errori_né_scroll(server, width, height, route):
                 katex_error,
                 svg,
                 errore_pagina,
+                h1_count,
             ) = controlla_pagina(page, errori)
         finally:
             browser.close()
@@ -170,9 +195,7 @@ def test_rota_senza_errori_né_scroll(server, width, height, route):
     assert nessun_vietato == [], f"[{route}] testo vietato visibile: {nessun_vietato}"
     assert errore_pagina == 0, "[" + route + "] pagina in errore"
     assert katex_error == 0, f"[{route}] errori KaTeX visibili"
-    # Ogni rotta deve mostrare almeno un h1 (contenuto reale, mai bianco)
-    h1 = page.locator("h1").count()
-    assert h1 > 0, f"[{route}] manca h1 (pagina bianca)"
+    assert h1_count > 0, f"[{route}] manca h1 (pagina bianca)"
 
 
 @pytest.mark.parametrize("width,height", VIEWPORTS)
@@ -186,8 +209,7 @@ def test_nodo_contenuto_reale(server, width, height, route):
             )
             page = context.new_page()
             errori = []
-            page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
-            page.on("pageerror", lambda e: errori.append(str(e)))
+            registra_listener_js(page, errori)
 
             nid = route.split("/", 1)[1]
             grafo = leggi_grafo()
@@ -221,7 +243,9 @@ def test_nodo_contenuto_reale(server, width, height, route):
     assert scroll_ok is True
     assert nessun_vietato == []
     assert errore_pagina == 0
-    assert katex > 0, f"[{route}] nessun .katex (matematica mancante)"
+    # katex > 0 solo se il nodo renderizza campi con LaTeX
+    if nodoHaLatex(nodo):
+        assert katex > 0, f"[{route}] nessun .katex (matematica mancante)"
     assert katex_error == 0, f"[{route}] errori KaTeX visibili"
     # SVG solo se il nodo ha figure dichiarate in graph.json
     if nid in NODI_CON_FIGURE:
@@ -239,8 +263,7 @@ def test_dim_contenuto_reale(server, width, height, route):
             )
             page = context.new_page()
             errori = []
-            page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
-            page.on("pageerror", lambda e: errori.append(str(e)))
+            registra_listener_js(page, errori)
 
             did = route.split("/", 1)[1]
             page.goto(f"{BASE_URL}/index.html#/dim/{did}", wait_until="load")
@@ -294,8 +317,7 @@ def test_dim_modalita_tutte(server, width, height, route):
             )
             page = context.new_page()
             errori = []
-            page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
-            page.on("pageerror", lambda e: errori.append(str(e)))
+            registra_listener_js(page, errori)
 
             did = route.split("/", 1)[1]
             page.goto(f"{BASE_URL}/index.html#/dim/{did}", wait_until="load")
@@ -335,8 +357,7 @@ def test_offline_nodo_dim(server, width, height, route):
             )
             page = context.new_page()
             errori = []
-            page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
-            page.on("pageerror", lambda e: errori.append(str(e)))
+            registra_listener_js(page, errori)
 
             page.goto(f"{BASE_URL}/index.html#/", wait_until="load")
             page.wait_for_timeout(800)
@@ -373,8 +394,7 @@ def test_offline_quiz(server, width, height):
             )
             page = context.new_page()
             errori = []
-            page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
-            page.on("pageerror", lambda e: errori.append(str(e)))
+            registra_listener_js(page, errori)
 
             page.goto(f"{BASE_URL}/index.html#/", wait_until="load")
             page.wait_for_timeout(800)

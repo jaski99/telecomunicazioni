@@ -33,7 +33,8 @@ export function render(ctx, params) {
   ${dim.formula_finale ? `<h2>Formula finale</h2><div class="formula">${escapeHtml('$' + dim.formula_finale + '$')}</div>` : ''}
   ${renderFigureLista(dim.figure)}
   ${dim.errori_frequenti ? `<h2>Errori frequenti</h2>${renderErroriFrequenti(dim.errori_frequenti)}` : ''}
-  ${dim.fonti ? `<h2>Fonti</h2>${elenco(dim.fonti)}` : ''}
+  ${dim.fonti ? `<h2>Fonti</h2>${renderFonti(dim.fonti)}` : ''}
+  ${dim.varianti_notazione ? `<h2>Varianti di notazione</h2>${renderVariantiNotazione(dim.varianti_notazione)}` : ''}
   ${dim.verifica ? `<h2>Verifica</h2><p>${escapeHtml(testoSicuro(dim.verifica.stato || ''))}</p>${dim.verifica.note ? `<p class="muted">${escapeHtml(testoSicuro(dim.verifica.note))}</p>` : ''}${renderPuntiAperti(dim.verifica.punti_aperti)}` : ''}
 </section>
 <div class="toolbar" role="radiogroup" aria-label="Modalita di studio">
@@ -192,6 +193,28 @@ function renderErroriFrequenti(arr) {
 function renderPuntiAperti(arr) {
   if (!Array.isArray(arr) || !arr.length) return '';
   return `<h3>Punti aperti</h3>${elenco(arr)}`;
+}
+
+function renderFonti(fonti) {
+  if (!Array.isArray(fonti) || fonti.length === 0) return '';
+  let html = '<ul>';
+  for (const f of fonti) {
+    if (!f || typeof f !== 'object') continue;
+    html += `<li><strong>${escapeHtml(testoSicuro(String(f.chiave || '')))}</strong>: ${escapeHtml(testoSicuro(String(f.rif || '')))}</li>`;
+  }
+  html += '</ul>';
+  return html;
+}
+
+function renderVariantiNotazione(arr) {
+  if (!Array.isArray(arr) || arr.length === 0) return '';
+  let html = '<ul>';
+  for (const v of arr) {
+    if (!v || typeof v !== 'object') continue;
+    html += `<li><strong>Canonica:</strong> ${escapeHtml(testoSicuro(String(v.canonica || '')))}<br><strong>Variante:</strong> ${escapeHtml(testoSicuro(String(v.variante || '')))}<br><strong>Fonte:</strong> ${escapeHtml(testoSicuro(String(v.fonte || '')))}</li>`;
+  }
+  html += '</ul>';
+  return html;
 }
 function verificaBadge(v) {
   if (!v || typeof v !== 'object') return '';
