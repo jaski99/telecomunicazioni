@@ -1,0 +1,14 @@
+# Generati (non versionare build web e PDF)
+web/graph.json
+web/quiz.json
+*.pdf
+
+# Dipendenze
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+.pytest_cache/
+
+# Altro
+.DS_Store

@@ -1,0 +1,36 @@
+{
+  "id": "segnali-deterministici",
+  "titolo": "Segnali deterministici",
+  "area": 1,
+  "tipo": "concetto",
+  "gruppo": "B",
+  "worker": "W3",
+  "sapere": "Cosa sono i segnali deterministici, la loro classificazione in energia e potenza e il ruolo nella rappresentazione dei segnali per l'esame.",
+  "saper_fare": [
+    "so distinguere segnali a energia finita e a potenza finita",
+    "so calcolare energia e potenza di un segnale elementare"
+  ],
+  "prerequisiti": [],
+  "tempo_studio_min": 45,
+  "priorita": {
+    "livello": "media",
+    "motivazione": "Prerequisito di base per Fourier e campionamento"
+  },
+  "fonti": [
+    {
+      "chiave": "LIBRO_CI",
+      "rif": "p. 2.13 (rif. in file1 p. 1)"
+    }
+  ],
+  "risorse": [
+    {
+      "titolo": "Libro di testo",
+      "url": "https://web.ing.unimo.it/wiki/index.php/Libro_di_Testo",
+      "verificato": true
+    }
+  ],
+  "checklist_ripasso": [
+    "Definizione di segnale deterministico",
+    "Energia e potenza"
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jaski99.github.io/telecomunicazioni/schema/node.schema.json",
+  "title": "Nodo",
+  "description": "Nodo del knowledge graph — CONTRACTS §3.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "titolo",
+    "area",
+    "tipo",
+    "gruppo",
+    "worker",
+    "sapere",
+    "saper_fare",
+    "prerequisiti",
+    "tempo_studio_min",
+    "priorita",
+    "fonti",
+    "risorse"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "maxLength": 64,
+      "description": "ID kebab-case, deve essere nella lista di CONTRACTS §4"
+    },
+    "titolo": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 120
+    },
+    "area": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 7
+    },
+    "tipo": {
+      "type": "string",
+      "enum": ["concetto", "dimostrazione", "tipo_esercizio"]
+    },
+    "gruppo": {
+      "type": "string",
+      "enum": ["A", "B", "C"]
+    },
+    "worker": {
+      "type": "string",
+      "enum": ["W1", "W2", "W3", "W4", "W5", "W6"]
+    },
+    "sapere": {
+      "type": "string",
+      "minLength": 40
+    },
+    "saper_fare": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "prerequisiti": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "forza", "motivo"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+          },
+          "forza": {
+            "type": "string",
+            "enum": ["hard", "soft"]
+          },
+          "motivo": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "tempo_studio_min": {
+      "type": "integer",
+      "minimum": 5,
+      "maximum": 600
+    },
+    "priorita": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["livello", "motivazione"],
+      "properties": {
+        "livello": {
+          "type": "string",
+          "enum": ["alta", "media", "bassa"]
+        },
+        "motivazione": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "fonti": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["chiave", "rif"],
+        "properties": {
+          "chiave": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rif": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "risorse": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["titolo", "url", "verificato"],
+        "properties": {
+          "titolo": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "verificato": {
+            "type": "boolean",
+            "const": true
+          }
+        }
+      }
+    },
+    "checklist_ripasso": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

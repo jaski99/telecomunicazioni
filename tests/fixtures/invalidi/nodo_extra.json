@@ -1,0 +1,24 @@
+{
+  "id": "segnali-deterministici",
+  "titolo": "Segnali deterministici",
+  "area": 1,
+  "tipo": "concetto",
+  "gruppo": "B",
+  "worker": "W3",
+  "sapere": "Sapere con lunghezza sufficiente per superare i quaranta caratteri richiesti dallo schema del nodo.",
+  "saper_fare": ["so fare qualcosa"],
+  "prerequisiti": [],
+  "tempo_studio_min": 10,
+  "priorita": {
+    "livello": "media",
+    "motivazione": "test"
+  },
+  "fonti": [
+    {
+      "chiave": "LIBRO_CI",
+      "rif": "p. 2.13"
+    }
+  ],
+  "risorse": [],
+  "campo_inventato": "questo campo non è nello schema e deve fallire"
+}
