@@ -1,7 +1,7 @@
 /* Stili temporanei per il markup delle pagine non ancora migrate. */
 .tabella { display: block; width: 100%; max-width: 100%; overflow-x: auto; border-collapse: collapse; }
 .tabella th, .tabella td { border: 1px solid var(--c-border); padding: var(--s-2); text-align: left; vertical-align: top; }
-.tabella td a { overflow-wrap: anywhere; }
+.tabella td a[href^="http"] { overflow-wrap: anywhere; }
 .tabella th { background: var(--c-surface-2); }
 .table-wrap, .katex-display { max-width: 100%; overflow-x: auto; }
 .muted, .note { color: var(--c-text-muted); }
@@ -26,4 +26,4 @@
 .errore { padding: var(--s-6); color: var(--c-danger); }
 
 /* Contenimento temporaneo, in attesa dei blocchi matematici D2. */
-main .katex { display: inline-block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding-block: var(--s-4); vertical-align: middle; }
+main .katex { display: inline-block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding-block: var(--s-2); vertical-align: middle; }

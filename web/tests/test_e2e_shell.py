@@ -108,19 +108,51 @@ def test_formule_senza_overflow_verticale(shell_server, width, height, route):
 
 
 @pytest.mark.parametrize('width,height', VIEWPORTS)
-@pytest.mark.parametrize('route', ['', 'fonti'])
+@pytest.mark.parametrize('route', ['', 'ripasso', 'fonti'])
 def test_tabelle_mantengono_parole_e_url_scrollabili(shell_server, width, height, route):
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={'width': width, 'height': height})
         page.goto(f'{shell_server}/#/{route}', wait_until='networkidle')
-        table = page.locator('table.tabella').first
-        assert table.evaluate("e => getComputedStyle(e).overflowX") == 'auto'
-        cells = table.locator('th, td')
-        assert cells.count() > 0
-        assert all(value == 'break-word' for value in cells.evaluate_all(
+        tables = page.locator('table.tabella')
+        assert tables.count() > 0
+        assert all(value == 'auto' for value in tables.evaluate_all(
+            "es => es.map(e => getComputedStyle(e).overflowX)"))
+        broken = tables.evaluate_all(r'''tables => {
+            const broken = [];
+            for (const table of tables) {
+                for (const cell of table.querySelectorAll('th, td')) {
+                    const walker = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT);
+                    while (walker.nextNode()) {
+                        const node = walker.currentNode;
+                        if (node.parentElement.closest('a[href^="http"]')) continue;
+                        for (const match of node.data.matchAll(/[^\s-]+/g)) {
+                            const range = document.createRange();
+                            range.setStart(node, match.index);
+                            range.setEnd(node, match.index + match[0].length);
+                            const lines = new Set([...range.getClientRects()]
+                                .filter(rect => rect.width && rect.height).map(rect => rect.top));
+                            if (lines.size > 1) broken.push({word: match[0], lines: lines.size});
+                        }
+                    }
+                }
+            }
+            return broken;
+        }''')
+        assert not broken, broken[:20]
+        links = tables.locator('td a[href^="http"]')
+        assert all(value == 'anywhere' for value in links.evaluate_all(
             "es => es.map(e => getComputedStyle(e).overflowWrap)"))
-        links = table.locator('td a')
+        browser.close()
+
+
+@pytest.mark.parametrize('width,height', VIEWPORTS)
+def test_link_url_fonti_vanno_a_capo(shell_server, width, height):
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={'width': width, 'height': height})
+        page.goto(f'{shell_server}/#/fonti', wait_until='networkidle')
+        links = page.locator('table.tabella td a[href^="http"]')
         assert links.count() > 0
         assert all(value == 'anywhere' for value in links.evaluate_all(
             "es => es.map(e => getComputedStyle(e).overflowWrap)"))
