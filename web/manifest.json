@@ -1,0 +1,15 @@
+{
+  "name": "Fondamenti di Telecomunicazioni — studio",
+  "short_name": "TLC Studio",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ffffff",
+  "theme_color": "#0f3d62",
+  "description": "Sito di studio statico, italiano e offline-first per Fondamenti di Telecomunicazioni (UNIMORE). Knowledge graph, dimostrazioni, grafici SVG, quiz, ripasso SM-2.",
+  "icons": [
+    { "src": "./icon-512.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any maskable" },
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

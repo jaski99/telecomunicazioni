@@ -1,0 +1,88 @@
+Biblioteche di terze parti vendute in web/vendor/ (sito web di TLC Studio, W2).
+Nessuna di queste biblioteche e' un CDN: tutte le copie sono locali (offline).
+
+------------------------------------------------------------
+1. KaTeX — 0.16.1
+   Percorso: web/vendor/katex/
+   Homepage: https://katex.org/
+   Repository: https://github.com/Khan/KaTeX
+   Licenza: MIT (Khan Academy e altri contributori)
+
+   Testo della licenza (MIT):
+   Copyright (c) 2013-2020 Khan Academy and other contributors
+
+   Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal
+   in the Software without restriction, including without limitation the rights
+   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   copies of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in all
+   copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+   THE SOFTWARE.
+   (Copia integrale: web/vendor/katex/LICENSE)
+
+------------------------------------------------------------
+2. marked — 12.0.2
+   Percorso: web/vendor/marked/
+   Homepage: https://marked.js.org/
+   Repository: https://github.com/markedjs/marked
+   Licenza: MIT (Christopher Jeffrey)
+
+   Testo della licenza (MIT):
+   Copyright (c) 2011-2024, Christopher Jeffrey (MIT License)
+
+   Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal
+   in the Software without restriction, including without limitation the rights
+   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   copies of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in all
+   copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+   THE SOFTWARE.
+   (Copia integrale: web/vendor/marked/LICENSE.md)
+
+------------------------------------------------------------
+3. DOMPurify — 3.1.6
+   Percorso: web/vendor/dompurify/
+   Homepage: https://github.com/cure53/DOMPurify
+   Licenza: doppia Apache License 2.0 / Mozilla Public License 2.0 (Cure53)
+
+   Avviso Mozilla Public License 2.0:
+   Questo prodotto include software sviluppato da Cure53 e altri contributori
+   (DOMPurify). Il codice e' reso disponibile sotto i termini della MPL 2.0;
+   una copia e' disponibile all'indirizzo:
+   https://opensource.org/licenses/MPL-2.0
+   (Copia integrale: web/vendor/dompurify/LICENSE)
+
+------------------------------------------------------------
+
+Fonti aperte citate dal sito (solo allowlist di CONTRACTS.md sez. 5):
+- https://web.ing.unimo.it/wiki/index.php/Maurizio_Casoni
+- https://web.ing.unimo.it/wiki/index.php/Materiale_Didattico
+- https://web.ing.unimo.it/wiki/index.php/Libro_di_Testo
+- https://www.dii.unimore.it/~mcasoni/tecnologie/LEZIONI_FONDAMENTI_TLC/
+- https://eng.libretexts.org/Bookshelves/Electrical_Engineering/Signal_Processing_and_Modeling/Signals_and_Systems_(Baraniuk_et_al.)
+- https://eng.libretexts.org/Bookshelves/Electrical_Engineering/Signal_Processing_and_Modeling/Signals_and_Systems_(Baraniuk_et_al.)/10%3A_Sampling_and_Reconstruction/10.02%3A_Sampling_Theorem
+- https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/video_galleries/video-lectures/
+- https://ocw.mit.edu/courses/6-003-signals-and-systems-fall-2011/video_galleries/lecture-videos/
+- https://ocw.mit.edu/courses/6-263j-data-communication-networks-fall-2002/pages/syllabus/
+- https://openstax.org/books/statistics/pages/5-3-the-exponential-distribution-optional
+- https://www3.diism.unisi.it/~giambene/fondamenti/dispense/dispense_tds.pdf
