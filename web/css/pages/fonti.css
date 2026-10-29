@@ -1,1 +1,84 @@
-/* Owner: D4. */
+/* web/css/pages/fonti.css — owner D4 */
+
+.fonti-sezione {
+  margin-bottom: var(--s-6);
+}
+
+.fonte-card {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.fonte-card p {
+  margin: 0;
+}
+
+.fonte-card__nota {
+  color: var(--c-text-muted);
+}
+
+.fonte-card__url {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.fonte-url {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  min-width: var(--tap);
+  padding: var(--s-2) 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.fonti-desktop .tabella {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.fonti-desktop .table th,
+.fonti-desktop .table td {
+  padding: var(--s-3);
+  vertical-align: top;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.fonti-desktop .table th {
+  background: var(--c-surface-2);
+}
+
+.fonti-desktop .table td a[href^="http"] {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.fonti-diritti {
+  margin-top: var(--s-6);
+}
+
+.fonti-diritti .callout__title {
+  margin-bottom: var(--s-2);
+}
+
+.fonti-diritti p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 767px) {
+  .fonti-desktop {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .fonti-mobile {
+    display: none;
+  }
+}

@@ -1,22 +1,19 @@
-"""E2E Playwright per la web app TLC Studio (W2).
+"""E2E Playwright per la web app TLC Studio.
 
-Eseguita in CI su due viewport: 390x844 (mobile) e 1440x900 (desktop).
-Verifica: nessun errore JS in console, nessuno scroll orizzontale, nessun
-'null'/'undefined'/'NaN' visibile, .katex e SVG presenti, rotte caricabili,
-contenuto reale, 5 modalita di dimostrazione, funzionamento offline.
-
-Richiede Playwright con browser Chromium installato (CI only).
+Verifica su 390x844 (mobile) e 1440x900 (desktop): nessun errore JS in console,
+nessuno scroll orizzontale, nessun 'null'/'undefined'/'NaN' o badge W1-W6 visibile,
+.katex e SVG presenti, rotte caricabili, contenuto reale, 5 modalità di dimostrazione,
+funzionamento offline incluso il modulo quiz completo.
 """
 
 import json
 import os
-import re
 import subprocess
 import sys
 import time
 
 import pytest
-from playwright.sync_api import sync_playwright  # richiesto: se manca, il test fallisce
+from playwright.sync_api import sync_playwright
 
 WEB_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
 PORT = 18199
@@ -49,24 +46,18 @@ def build_routes():
 ROUTES = build_routes()
 MODALITA = ["studio", "avocce", "compatta", "abuchi", "recall"]
 
-# Testi che non devono mai apparire come parole intere
-# (apostrofo/accento errato o placeholder). Usa matching a parola intera
-# per evitare falsi positivi (es. "null" dentro "annullare").
-# \be'(?=\s|$) invece di \be'\b perché ' e' non è un carattere di parola:
-# \b dopo ' non matcha prima di uno spazio.
 TESTI_VIETATI = [
     r"\[object Object\]",
     r"\bnull\b",
     r"\bundefined\b",
     r"\bNaN\b",
-    r"\bperche\b",   # senza accento
-    r"\be'(?=\s|$)", # apostrofo invece di accento
-    r"\bene'(?=\s|$)",  # apostrofo invece di accento
-    r"\bpuo\b",      # senza accento
-    r"\bmontara\b",  # senza accento
+    r"\bperche\b",
+    r"\be'(?=\s|$)",
+    r"\bene'(?=\s|$)",
+    r"\bpuo\b",
+    r"\bmontara\b",
 ]
 
-# Nodi che hanno figure SVG (per assert svg > 0 solo dove pertinente)
 GRAFO = leggi_grafo()
 NODI_CON_FIGURE = set()
 for _n in GRAFO.get("nodi", []):
@@ -99,7 +90,7 @@ def registra_listener_js(page, errori):
     page.on("pageerror", lambda e: errori.append(str(e)))
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def server():
     proc = subprocess.Popen(
         [sys.executable, "-m", "http.server", str(PORT)],
@@ -122,6 +113,16 @@ def server():
         proc.wait(timeout=5)
     except subprocess.TimeoutExpired:
         proc.kill()
+
+
+@pytest.fixture(scope="module")
+def browser():
+    with sync_playwright() as p:
+        b = p.chromium.launch()
+        try:
+            yield b
+        finally:
+            b.close()
 
 
 def controlla_pagina(page, errori):
@@ -152,7 +153,7 @@ def controlla_pagina(page, errori):
         "}"
     )
     katex = page.locator(".katex").count()
-    katex_error = page.locator(".katex-error").count()
+    katex_error = page.locator(".katex-error, .katex-err").count()
     svg = page.locator("svg").count()
     h1_count = page.locator("h1").count()
     errore_pagina = page.locator(".errore, h1:has-text('Errore di pagina')").count()
@@ -161,34 +162,32 @@ def controlla_pagina(page, errori):
 
 @pytest.mark.parametrize("width,height", VIEWPORTS)
 @pytest.mark.parametrize("route", ROUTES)
-def test_rota_senza_errori_né_scroll(server, width, height, route):
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        try:
-            context = browser.new_context(
-                viewport={"width": width, "height": height}, locale="it-IT"
-            )
-            page = context.new_page()
-            errori = []
-            registra_listener_js(page, errori)
-            url = (
-                f"{BASE_URL}/index.html#/{route}"
-                if route
-                else f"{BASE_URL}/index.html#/"
-            )
-            page.goto(url, wait_until="load")
-            page.wait_for_timeout(500)
-            (
-                scroll_ok,
-                nessun_vietato,
-                katex,
-                katex_error,
-                svg,
-                errore_pagina,
-                h1_count,
-            ) = controlla_pagina(page, errori)
-        finally:
-            browser.close()
+def test_rota_senza_errori_né_scroll(server, browser, width, height, route):
+    context = browser.new_context(
+        viewport={"width": width, "height": height}, locale="it-IT"
+    )
+    try:
+        page = context.new_page()
+        errori = []
+        registra_listener_js(page, errori)
+        url = (
+            f"{BASE_URL}/index.html#/{route}"
+            if route
+            else f"{BASE_URL}/index.html#/"
+        )
+        page.goto(url, wait_until="load")
+        page.wait_for_timeout(150)
+        (
+            scroll_ok,
+            nessun_vietato,
+            katex,
+            katex_error,
+            svg,
+            errore_pagina,
+            h1_count,
+        ) = controlla_pagina(page, errori)
+    finally:
+        context.close()
 
     assert errori == [], f"[{route}] errori JS in console: {errori}"
     assert scroll_ok is True, f"[{route}] scroll orizzontale su {width}x{height}"
@@ -200,92 +199,85 @@ def test_rota_senza_errori_né_scroll(server, width, height, route):
 
 @pytest.mark.parametrize("width,height", VIEWPORTS)
 @pytest.mark.parametrize("route", [r for r in ROUTES if r.startswith("nodo/")])
-def test_nodo_contenuto_reale(server, width, height, route):
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        try:
-            context = browser.new_context(
-                viewport={"width": width, "height": height}, locale="it-IT"
-            )
-            page = context.new_page()
-            errori = []
-            registra_listener_js(page, errori)
+def test_nodo_contenuto_reale(server, browser, width, height, route):
+    context = browser.new_context(
+        viewport={"width": width, "height": height}, locale="it-IT"
+    )
+    try:
+        page = context.new_page()
+        errori = []
+        registra_listener_js(page, errori)
 
-            nid = route.split("/", 1)[1]
-            grafo = leggi_grafo()
-            nodo = next((n for n in grafo.get("nodi", []) if n.get("id") == nid), None)
-            titolo_atteso = nodo.get("titolo", nid) if nodo else nid
+        nid = route.split("/", 1)[1]
+        nodo = next((n for n in GRAFO.get("nodi", []) if n.get("id") == nid), None)
+        titolo_atteso = nodo.get("titolo", nid) if nodo else nid
 
-            page.goto(f"{BASE_URL}/index.html#/nodo/{nid}", wait_until="load")
-            page.wait_for_timeout(500)
+        page.goto(f"{BASE_URL}/index.html#/nodo/{nid}", wait_until="load")
+        page.wait_for_timeout(150)
 
-            h1 = page.locator("h1").first
-            assert h1.count() > 0, f"[{route}] manca h1"
-            titolo = h1.text_content() or ""
-            assert titolo_atteso in titolo, (
-                f"[{route}] h1 senza titolo nodo: {titolo!r} (atteso {titolo_atteso!r})"
-            )
-            katex = page.locator(".katex").count()
-            katex_error = page.locator(".katex-error").count()
-            svg = page.locator("svg").count()
-            (
-                scroll_ok,
-                nessun_vietato,
-                _,
-                _,
-                _,
-                errore_pagina,
-                _h1_count,
-            ) = controlla_pagina(page, errori)
-        finally:
-            browser.close()
+        h1 = page.locator("h1").first
+        assert h1.count() > 0, f"[{route}] manca h1"
+        titolo = h1.text_content() or ""
+        assert titolo_atteso in titolo, (
+            f"[{route}] h1 senza titolo nodo: {titolo!r} (atteso {titolo_atteso!r})"
+        )
+        katex = page.locator(".katex").count()
+        katex_error = page.locator(".katex-error, .katex-err").count()
+        svg = page.locator("svg").count()
+        (
+            scroll_ok,
+            nessun_vietato,
+            _,
+            _,
+            _,
+            errore_pagina,
+            _h1_count,
+        ) = controlla_pagina(page, errori)
+    finally:
+        context.close()
 
     assert errori == [], f"[{route}] errori JS: {errori}"
     assert scroll_ok is True
     assert nessun_vietato == []
     assert errore_pagina == 0
-    # katex > 0 solo se il nodo renderizza campi con LaTeX
     if nodoHaLatex(nodo):
         assert katex > 0, f"[{route}] nessun .katex (matematica mancante)"
     assert katex_error == 0, f"[{route}] errori KaTeX visibili"
-    # SVG solo se il nodo ha figure dichiarate in graph.json
     if nid in NODI_CON_FIGURE:
         assert svg > 0, f"[{route}] nessun SVG (figure mancanti per nodo {nid})"
 
 
 @pytest.mark.parametrize("width,height", VIEWPORTS)
 @pytest.mark.parametrize("route", [r for r in ROUTES if r.startswith("dim/")])
-def test_dim_contenuto_reale(server, width, height, route):
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        try:
-            context = browser.new_context(
-                viewport={"width": width, "height": height}, locale="it-IT"
-            )
-            page = context.new_page()
-            errori = []
-            registra_listener_js(page, errori)
+def test_dim_contenuto_reale(server, browser, width, height, route):
+    context = browser.new_context(
+        viewport={"width": width, "height": height}, locale="it-IT"
+    )
+    try:
+        page = context.new_page()
+        errori = []
+        registra_listener_js(page, errori)
 
-            did = route.split("/", 1)[1]
-            page.goto(f"{BASE_URL}/index.html#/dim/{did}", wait_until="load")
-            page.wait_for_timeout(500)
+        did = route.split("/", 1)[1]
+        page.goto(f"{BASE_URL}/index.html#/dim/{did}", wait_until="load")
+        page.wait_for_timeout(150)
 
-            h1 = page.locator("h1").first
-            assert h1.count() > 0, f"[{route}] manca h1"
-            katex = page.locator(".katex").count()
-            katex_error = page.locator(".katex-error").count()
-            svg = page.locator("svg").count()
-            (
-                scroll_ok,
-                nessun_vietato,
-                _,
-                _,
-                _,
-                errore_pagina,
-                _h1_count,
-            ) = controlla_pagina(page, errori)
-        finally:
-            browser.close()
+        h1 = page.locator("h1").first
+        assert h1.count() > 0, f"[{route}] manca h1"
+        katex = page.locator(".katex").count()
+        katex_error = page.locator(".katex-error, .katex-err").count()
+        svg = page.locator("svg").count()
+        (
+            scroll_ok,
+            nessun_vietato,
+            _,
+            _,
+            _,
+            errore_pagina,
+            _h1_count,
+        ) = controlla_pagina(page, errori)
+    finally:
+        context.close()
 
     assert errori == [], f"[{route}] errori JS: {errori}"
     assert scroll_ok is True
@@ -293,10 +285,7 @@ def test_dim_contenuto_reale(server, width, height, route):
     assert errore_pagina == 0
     assert katex > 0, f"[{route}] nessun .katex (matematica mancante)"
     assert katex_error == 0, f"[{route}] errori KaTeX visibili"
-    # SVG solo se il nodo ha figure dichiarate in graph.json
-    nodo_id = did
-    grafo = leggi_grafo()
-    nodo = next((n for n in grafo.get("nodi", []) if n.get("id") == nodo_id), None)
+    nodo = next((n for n in GRAFO.get("nodi", []) if n.get("id") == did), None)
     ha_figura = bool(
         nodo
         and (
@@ -305,43 +294,43 @@ def test_dim_contenuto_reale(server, width, height, route):
         )
     )
     if ha_figura:
-        assert svg > 0, f"[{route}] nessun SVG (figure mancanti per nodo {nodo_id})"
+        assert svg > 0, f"[{route}] nessun SVG (figure mancanti per nodo {did})"
 
 
 @pytest.mark.parametrize("width,height", VIEWPORTS)
 @pytest.mark.parametrize("route", [r for r in ROUTES if r.startswith("dim/")])
-def test_dim_modalita_tutte(server, width, height, route):
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        try:
-            context = browser.new_context(
-                viewport={"width": width, "height": height}, locale="it-IT"
-            )
-            page = context.new_page()
-            errori = []
-            registra_listener_js(page, errori)
+def test_dim_modalita_tutte(server, browser, width, height, route):
+    context = browser.new_context(
+        viewport={"width": width, "height": height}, locale="it-IT"
+    )
+    try:
+        page = context.new_page()
+        errori = []
+        registra_listener_js(page, errori)
 
-            did = route.split("/", 1)[1]
-            page.goto(f"{BASE_URL}/index.html#/dim/{did}", wait_until="load")
-            page.wait_for_timeout(500)
-            for modo in MODALITA:
-                btn = page.locator(f'button[data-modo="{modo}"]')
-                assert btn.count() > 0, f"[{route}] bottone {modo} mancante"
-                btn.first.click()
-                page.wait_for_timeout(300)
-                attivo = page.locator(f'button[data-modo="{modo}"].attivo')
-                assert attivo.count() > 0, f"[{route}] modalita {modo} non attivata"
-            (
-                scroll_ok,
-                nessun_vietato,
-                _,
-                _,
-                _,
-                errore_pagina,
-                _h1_count,
-            ) = controlla_pagina(page, errori)
-        finally:
-            browser.close()
+        did = route.split("/", 1)[1]
+        page.goto(f"{BASE_URL}/index.html#/dim/{did}", wait_until="load")
+        page.wait_for_timeout(150)
+        for modo in MODALITA:
+            btn = page.locator(f'button[data-modo="{modo}"]')
+            assert btn.count() > 0, f"[{route}] bottone {modo} mancante"
+            btn.first.click()
+            page.wait_for_timeout(100)
+            attivo = page.locator(
+                f'button[data-modo="{modo}"].attivo, button[data-modo="{modo}"][aria-selected="true"]'
+            )
+            assert attivo.count() > 0, f"[{route}] modalita {modo} non attivata"
+        (
+            scroll_ok,
+            nessun_vietato,
+            _,
+            _,
+            _,
+            errore_pagina,
+            _h1_count,
+        ) = controlla_pagina(page, errori)
+    finally:
+        context.close()
 
     assert errori == [], f"[{route}] errori JS modalita: {errori}"
     assert scroll_ok is True
@@ -350,37 +339,37 @@ def test_dim_modalita_tutte(server, width, height, route):
 
 
 @pytest.mark.parametrize("width,height", VIEWPORTS)
-@pytest.mark.parametrize("route", ["nodo/dim-teorema-campionamento", "dim/dim-teorema-campionamento"])
-def test_offline_nodo_dim(server, width, height, route):
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        try:
-            context = browser.new_context(
-                viewport={"width": width, "height": height}, locale="it-IT"
-            )
-            page = context.new_page()
-            errori = []
-            registra_listener_js(page, errori)
+@pytest.mark.parametrize(
+    "route", ["nodo/dim-teorema-campionamento", "dim/dim-teorema-campionamento"]
+)
+def test_offline_nodo_dim(server, browser, width, height, route):
+    context = browser.new_context(
+        viewport={"width": width, "height": height}, locale="it-IT"
+    )
+    try:
+        page = context.new_page()
+        errori = []
+        registra_listener_js(page, errori)
 
-            page.goto(f"{BASE_URL}/index.html#/", wait_until="load")
-            page.wait_for_timeout(800)
-            context.set_offline(True)
-            page.goto(f"{BASE_URL}/index.html#/{route}", wait_until="load")
-            page.wait_for_timeout(500)
+        page.goto(f"{BASE_URL}/index.html#/", wait_until="networkidle")
+        page.wait_for_function("() => navigator.serviceWorker && navigator.serviceWorker.ready")
+        context.set_offline(True)
+        page.goto(f"{BASE_URL}/index.html#/{route}", wait_until="load")
+        page.wait_for_timeout(200)
 
-            h1 = page.locator("h1").first
-            assert h1.count() > 0, f"[{route}] offline: manca h1"
-            (
-                scroll_ok,
-                nessun_vietato,
-                _,
-                _,
-                _,
-                errore_pagina,
-                _h1_count,
-            ) = controlla_pagina(page, errori)
-        finally:
-            browser.close()
+        h1 = page.locator("h1").first
+        assert h1.count() > 0, f"[{route}] offline: manca h1"
+        (
+            scroll_ok,
+            nessun_vietato,
+            _,
+            _,
+            _,
+            errore_pagina,
+            _h1_count,
+        ) = controlla_pagina(page, errori)
+    finally:
+        context.close()
 
     assert errori == [], f"[{route}] offline errori JS: {errori}"
     assert scroll_ok is True
@@ -389,37 +378,41 @@ def test_offline_nodo_dim(server, width, height, route):
 
 
 @pytest.mark.parametrize("width,height", VIEWPORTS)
-def test_offline_quiz(server, width, height):
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        try:
-            context = browser.new_context(
-                viewport={"width": width, "height": height}, locale="it-IT"
-            )
-            page = context.new_page()
-            errori = []
-            registra_listener_js(page, errori)
+def test_offline_quiz(server, browser, width, height):
+    context = browser.new_context(
+        viewport={"width": width, "height": height}, locale="it-IT"
+    )
+    try:
+        page = context.new_page()
+        errori = []
+        registra_listener_js(page, errori)
 
-            page.goto(f"{BASE_URL}/index.html#/", wait_until="load")
-            page.wait_for_timeout(800)
-            context.set_offline(True)
-            page.goto(f"{BASE_URL}/index.html#/quiz", wait_until="load")
-            page.wait_for_timeout(500)
+        page.goto(f"{BASE_URL}/index.html#/quiz", wait_until="networkidle")
+        page.wait_for_function(
+            """async () => {
+              await navigator.serviceWorker.ready;
+              return !!(await caches.match('./modules/quiz/logica.js')) &&
+                     !!(await caches.match('./modules/quiz/vista.js'));
+            }"""
+        )
+        context.set_offline(True)
+        page.reload(wait_until="load")
+        page.wait_for_timeout(200)
 
-            # Non deve esserci Errore di pagina (SW serve il guscio offline)
-            errore_pagina = page.locator(".errore, h1:has-text('Errore di pagina')").count()
-            assert errore_pagina == 0, "[quiz] offline: pagina in errore"
-            (
-                scroll_ok,
-                nessun_vietato,
-                _,
-                _,
-                _,
-                _,
-                _h1_count,
-            ) = controlla_pagina(page, errori)
-        finally:
-            browser.close()
+        errore_pagina = page.locator(".errore, h1:has-text('Errore di pagina')").count()
+        assert errore_pagina == 0, "[quiz] offline: pagina in errore"
+        assert page.locator(".quiz-form").count() == 1, "[quiz] offline: form quiz non montato"
+        (
+            scroll_ok,
+            nessun_vietato,
+            _,
+            _,
+            _,
+            _,
+            _h1_count,
+        ) = controlla_pagina(page, errori)
+    finally:
+        context.close()
 
     assert errori == [], f"[quiz] offline errori JS: {errori}"
     assert scroll_ok is True

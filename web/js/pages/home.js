@@ -1,103 +1,140 @@
 /**
- * Pagina #/ - percorso d'esame (T1-T17, E1-E9, esercizi, quiz, priorita',
- * punti dichiarati). Renderizza tutto dal grafo: nessuna costante sul
- * numero di nodi o di aree.
+ * Pagina #/ — Percorso d'esame: intro .prose, card "Da dove partire"
+ * (T5, T11, Esercizi) e prove d'esame (.stack-list < 768 px, .table in .scroll-x >= 768 px).
  */
 
-import { elenco, linkNodo, chipStato } from '../ui.js';
 import { testoSicuro, escapeHtml } from '../core/math.js';
+import { chipNodoLink } from './grafo.js';
+
+const TIPI_PROVA = {
+  teoria: 'Teoria',
+  esercizio: 'Esercizio',
+  quiz: 'Quesito a scelta',
+  intro_reti: 'Introduzione alle reti',
+};
+
+function etichettaTipoProva(tipo) {
+  const t = testoSicuro(tipo).trim();
+  return TIPI_PROVA[t] || t.replace(/_/g, ' ') || 'Prova';
+}
+
+function renderPunti(punti) {
+  const p = testoSicuro(punti).trim();
+  if (p === '10') return '<span class="chip chip--warn">10 punti</span>';
+  return `<span class="chip">${escapeHtml(p || 'NON TROVATO')}</span>`;
+}
+
+function renderStatoProva(pr, mappa) {
+  const ok = Array.isArray(pr.nodi) && pr.nodi.length > 0 && pr.nodi.every((id) => mappa.has(String(id)));
+  return ok
+    ? '<span class="chip chip--ok">Disponibile</span>'
+    : '<span class="chip chip--warn">In arrivo</span>';
+}
+
+function cardPartenza({ badge, titolo, testo, href, labelBtn, ghost = false }) {
+  const clsBtn = ghost ? 'btn btn--ghost' : 'btn btn--primary';
+  return `<article class="card partenza-card">
+    <div class="chip-row"><span class="chip chip--warn">${escapeHtml(badge)}</span></div>
+    <h3 class="partenza-card__titolo">${escapeHtml(titolo)}</h3>
+    <p>${escapeHtml(testo)}</p>
+    <div class="partenza-card__azioni">
+      <a class="${clsBtn}" href="${escapeHtml(href)}">${escapeHtml(labelBtn)}</a>
+    </div>
+  </article>`;
+}
 
 export function render(ctx) {
-  const { graph } = ctx;
-  const nodi = Array.isArray(graph.nodi) ? graph.nodi : [];
-  const prove = Array.isArray(graph.esame) ? graph.esame : [];
-  const esistente = new Set(nodi.map((n) => n && n.id));
+  const graph = (ctx && ctx.graph) || {};
+  const nodi = (Array.isArray(graph.nodi) ? graph.nodi : []).filter(Boolean);
+  const prove = (Array.isArray(graph.esame) ? graph.esame : []).filter(Boolean);
+  const mappa = new Map(nodi.map((n) => [String(n.id), n]));
+  const nEsercizi = nodi.filter((n) => n.tipo === 'tipo_esercizio').length;
 
-  const esistenteCheck = (id) => esistente.has(String(id));
-  const puntiProva = (id) => {
-    const p = prove.find((pr) => pr && pr.id === id);
-    return p && p.punti !== undefined ? testoSicuro(p.punti) : 'NON TROVATO';
-  };
+  const t5Href = mappa.has('dim-pam-due-spettri') ? '#/dim/dim-pam-due-spettri' : '#/grafo';
+  const t11Href = mappa.has('dim-quadripoli-passa-basso-equivalente')
+    ? '#/dim/dim-quadripoli-passa-basso-equivalente'
+    : '#/grafo';
 
-  // Raggruppa per area (derivata dai dati, senza costanti).
-  const aree = [];
-  for (const n of nodi) {
-    if (!n || typeof n.area !== 'number') continue;
-    if (!aree.includes(n.area)) aree.push(n.area);
-  }
-  aree.sort((a, b) => a - b);
+  const partenzaHtml = [
+    cardPartenza({
+      badge: 'Prova T5 · 10 punti',
+      titolo: 'Segnali PAM e due spettri',
+      testo: 'Dimostrazione ad alta priorità con punteggio dichiarato nella raccolta: ricava la componente continua e discreta dello spettro.',
+      href: t5Href,
+      labelBtn: 'Studia T5',
+    }),
+    cardPartenza({
+      badge: 'Prova T11 · 10 punti',
+      titolo: 'Equivalente passa-basso dei quadripoli',
+      testo: 'Seconda dimostrazione da 10 punti documentati: collega il filtraggio passa-banda alla rappresentazione in inviluppo complesso.',
+      href: t11Href,
+      labelBtn: 'Studia T11',
+    }),
+    cardPartenza({
+      badge: nEsercizi > 0 ? `${nEsercizi} esercizi guidati` : 'Esercizi d’esame',
+      titolo: "Esercizi ricorrenti d'esame",
+      testo: 'Spettri rettangolari, reti RC e CR, condizione di Nyquist, processi gaussiani e codifiche di linea PAM.',
+      href: '#/esercizi',
+      labelBtn: 'Vai agli esercizi',
+      ghost: true,
+    }),
+  ].join('');
 
-  // Raggruppa per priorita (derivata dai dati).
-  const perPriorita = { alta: [], media: [], bassa: [] };
-  for (const n of nodi) {
-    if (!n) continue;
-    const livello = n.priorita && n.priorita.livello ? String(n.priorita.livello) : 'bassa';
-    if (perPriorita[livello]) perPriorita[livello].push(n);
-  }
-
-  let html = `<h1>Percorso d'esame</h1>
-<p>Ordine consigliato per lo studio: le dimostrazioni P0 prima (T5, T11),
-poi i blocchi segnali e sistemi, trasmissione numerica, modulazioni, reti.
-I punti sono indicati solo quando dichiarati dalla prova d'esame (T5 e
-T11: 10 punti); per tutte le altre domande il punteggio è <em>NON TROVATO</em>.</p>
-
-<section>
-  <h2>Prove d'esame</h2>
-  <table class="tabella">
-    <thead>
-      <tr><th>Prova</th><th>Titolo</th><th>Punti</th><th>Nodi collegati</th><th>Stato</th></tr>
-    </thead>
-    <tbody>`;
-  for (const pr of prove) {
-    if (!pr) continue;
-    const nodiHtml = Array.isArray(pr.nodi)
-      ? pr.nodi.map((id) => linkNodo(id, id, esistenteCheck(id))).join(' ')
-      : '';
-    html += `<tr>
-      <td><strong>${escapeHtml(testoSicuro(pr.id))}</strong></td>
-      <td>${escapeHtml(testoSicuro(pr.titolo || ''))}</td>
-      <td>${testoSicuro(puntiProva(pr.id)) === '10' ? '<span class="punti-dieci">10 punti</span>' : testoSicuro(puntiProva(pr.id))}</td>
-      <td>${nodiHtml}</td>
-      <td>${chiaveProvaStato(pr, esistenteCheck)}</td>
-    </tr>`;
-  }
-  html += `</tbody></table>
-  <p class="note">Prove M (quiz) e I (introduzione alle reti) sono gestite dal modulo quiz e dalla lezione di rete, quando disponibili.</p>
-</section>
-
-<section>
-  <h2>Priorita di studio</h2>
-  ${prioritaBlocco('alta', 'P0 / alta', perPriorita.alta)}
-  ${prioritaBlocco('media', 'P1 / media', perPriorita.media)}
-  ${prioritaBlocco('bassa', 'P3-P4 / bassa', perPriorita.bassa)}
-</section>
-
-<section>
-  <h2>Nodi per area</h2>
-  ${aree.map((a) => {
-    const nodiArea = nodi.filter((n) => n && n.area === a);
-    const elencoHtml = nodiArea.map((n) => {
-      const tipo = testoSicuro(n.tipo);
-      const prio = n.priorita && n.priorita.livello ? testoSicuro(n.priorita.livello) : '-';
-      return `<li><a href="#/nodo/${escapeHtml(String(n.id))}">${escapeHtml(testoSicuro(n.titolo || n.id))}</a> <span class="badge">${escapeHtml(tipo)}</span> <span class="badge">${escapeHtml(prio)}</span></li>`;
+  const cardsProve = prove.length === 0
+    ? `<li class="card"><p>Nessuna prova d'esame caricata nel grafo corrente.</p></li>`
+    : prove.map((pr) => {
+      const id = escapeHtml(testoSicuro(pr.id));
+      const titolo = escapeHtml(testoSicuro(pr.titolo || ''));
+      const nodiChips = Array.isArray(pr.nodi) && pr.nodi.length
+        ? pr.nodi.map((nid) => chipNodoLink(nid, mappa)).join('')
+        : '<span class="chip">Nessun nodo collegato</span>';
+      return `<li class="card prova-card">
+        <div class="chip-row">
+          <span class="chip chip--info">Prova ${id}</span>
+          <span class="chip">${escapeHtml(etichettaTipoProva(pr.tipo))}</span>
+          ${renderPunti(pr.punti)}
+          ${renderStatoProva(pr, mappa)}
+        </div>
+        <div class="card__title">${titolo}</div>
+        <div class="chip-row">${nodiChips}</div>
+      </li>`;
     }).join('');
-    return `<h3>Area ${a}</h3><ul>${elencoHtml}</ul>`;
-  }).join('')}
+
+  const righeProve = prove.length === 0
+    ? `<tr><td colspan="5">Nessuna prova d'esame caricata nel grafo corrente.</td></tr>`
+    : prove.map((pr) => {
+      const id = escapeHtml(testoSicuro(pr.id));
+      const titolo = escapeHtml(testoSicuro(pr.titolo || ''));
+      const nodiChips = Array.isArray(pr.nodi) && pr.nodi.length
+        ? `<div class="chip-row">${pr.nodi.map((nid) => chipNodoLink(nid, mappa)).join('')}</div>`
+        : '<span class="chip">Nessun nodo</span>';
+      return `<tr>
+        <td><strong>${id}</strong><div class="prova-tipo-cell">${escapeHtml(etichettaTipoProva(pr.tipo))}</div></td>
+        <td>${titolo}</td>
+        <td>${renderPunti(pr.punti)}</td>
+        <td>${nodiChips}</td>
+        <td>${renderStatoProva(pr, mappa)}</td>
+      </tr>`;
+    }).join('');
+
+  return `<h1>Percorso d'esame</h1>
+<div class="prose">
+  <p>Ordine consigliato per lo studio di Fondamenti di Telecomunicazioni: parti dalle dimostrazioni T5 e T11, prosegui con segnali, sistemi, trasmissione numerica, modulazioni e reti. I punti sono riportati solo dove documentati (T5 e T11: 10 punti); negli altri casi il punteggio resta <em>NON TROVATO</em>.</p>
+</div>
+<section class="home-sezione">
+  <h2>Da dove partire</h2>
+  <div class="partenza-grid">${partenzaHtml}</div>
+</section>
+<section class="home-sezione">
+  <h2>Prove d'esame</h2>
+  <ul class="stack-list prove-mobile">${cardsProve}</ul>
+  <div class="scroll-x prove-desktop" tabindex="0" role="region" aria-label="Tabella delle prove d'esame">
+    <table class="table tabella">
+      <thead>
+        <tr><th scope="col">Prova</th><th scope="col">Titolo</th><th scope="col">Punti</th><th scope="col">Nodi collegati</th><th scope="col">Stato</th></tr>
+      </thead>
+      <tbody>${righeProve}</tbody>
+    </table>
+  </div>
 </section>`;
-  return html;
-}
-
-function prioritaBlocco(chiave, etichetta, lista) {
-  const items = lista.map((n) => {
-    const punti = n.domande_esame && n.domande_esame.some((id) => ['T5', 'T11'].includes(String(id)))
-      ? ' (10 punti)' : '';
-    return `<li><a href="#/nodo/${escapeHtml(String(n.id))}">${escapeHtml(testoSicuro(n.titolo || n.id))}</a>${escapeHtml(punti)}</li>`;
-  }).join('');
-  return items ? `<h3>${etichetta}</h3><ul>${items}</ul>` : '';
-}
-
-function chiaveProvaStato(pr, esiste) {
-  const nodiOk = Array.isArray(pr.nodi) && pr.nodi.every((id) => esiste(id));
-  if (!nodiOk) return chipStato('in arrivo', 'in-arrivo');
-  return chipStato('disponibile', 'ok');
 }

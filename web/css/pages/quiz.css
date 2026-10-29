@@ -1,1 +1,230 @@
-/* Owner: D4. */
+/* web/css/pages/quiz.css — owner D4 */
+
+#quiz-root,
+#quiz {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+  margin-top: var(--s-4);
+}
+
+.quiz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-4);
+}
+
+.quiz-tabs {
+  padding-bottom: var(--s-1);
+}
+
+.quiz-tab {
+  min-width: var(--tap);
+  min-height: var(--tap);
+  font-weight: 600;
+}
+
+.quiz-tab--attiva,
+.quiz-tab[aria-selected="true"] {
+  background: var(--c-primary);
+  color: var(--c-bg);
+  border-color: var(--c-primary);
+}
+
+.quiz-durata {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-2);
+}
+
+.quiz-durata__label {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--c-text);
+}
+
+.quiz-durata__input {
+  min-height: var(--tap);
+  min-width: calc(var(--s-8) * 2);
+  padding: var(--s-2) var(--s-3);
+  margin: 0;
+  border: 1px solid var(--c-text-muted);
+  border-radius: var(--radius-sm);
+  background: var(--c-bg);
+  color: var(--c-text);
+}
+
+.quiz-avanzamento {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.quiz-avanzamento__testa {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+
+.quiz-status {
+  font-weight: 600;
+  color: var(--c-text);
+}
+
+.quiz-clock {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--c-text-muted);
+}
+
+.quiz-form {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.quiz-corpo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.quiz-domanda {
+  margin: 0;
+}
+
+.quiz-affermazione {
+  margin: 0;
+  padding: var(--s-3) var(--s-4);
+  background: var(--c-surface);
+  border-radius: var(--radius-sm);
+}
+
+.quiz-opzioni {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  width: 100%;
+}
+
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  width: 100%;
+  min-height: var(--s-7);
+  padding: var(--s-1) var(--s-4);
+  border: 1px solid var(--c-text-muted);
+  border-radius: var(--radius);
+  background: var(--c-bg);
+  color: var(--c-text);
+  cursor: pointer;
+}
+
+.quiz-option:hover {
+  background: var(--c-surface);
+}
+
+.quiz-option:has(input:checked) {
+  border-color: var(--c-primary);
+  background: var(--c-primary-weak);
+  font-weight: 600;
+}
+
+.quiz-option input[type="radio"] {
+  appearance: none;
+  flex-shrink: 0;
+  width: var(--tap);
+  height: var(--tap);
+  margin: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  cursor: pointer;
+}
+
+.quiz-option input[type="radio"]::before {
+  content: "";
+  width: calc(var(--s-4) + var(--s-1));
+  height: calc(var(--s-4) + var(--s-1));
+  border: calc(var(--s-1) / 2) solid var(--c-text-muted);
+  border-radius: 100%;
+  background: var(--c-bg);
+}
+
+.quiz-option input[type="radio"]:checked::before {
+  border-color: var(--c-primary);
+  background: radial-gradient(circle, var(--c-primary) 45%, var(--c-bg) 50%);
+}
+
+.quiz-option__testo {
+  flex: 1;
+  min-width: 0;
+}
+
+.quiz-completamento {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.quiz-buco {
+  min-height: var(--tap);
+  min-width: calc(var(--s-8) * 2);
+  max-width: 100%;
+  padding: var(--s-2) var(--s-3);
+  margin: 0;
+  border: 1px solid var(--c-text-muted);
+  border-radius: var(--radius-sm);
+  background: var(--c-bg);
+  color: var(--c-text);
+}
+
+.callout--ok {
+  border-color: var(--c-ok);
+  background: var(--c-ok-bg);
+}
+
+.quiz-feedback {
+  max-width: 100%;
+}
+
+.quiz-feedback .callout__title {
+  margin-bottom: var(--s-2);
+}
+
+.quiz-feedback p:last-child,
+.quiz-riepilogo {
+  margin-bottom: 0;
+}
+
+#quiz-root .formula-box,
+.quiz-shell .formula-box {
+  padding: var(--s-4);
+}
+
+.quiz-riepilogo {
+  padding-left: var(--s-5);
+  margin-top: var(--s-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.quiz-azioni {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+
+.quiz-azioni .btn {
+  min-width: var(--tap);
+}

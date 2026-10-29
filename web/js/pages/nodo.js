@@ -1,190 +1,143 @@
-/**
- * Pagina #/nodo/<id>: dettaglio di un nodo del knowledge graph con la sua
- * lezione, figure SVG, flashcard, checklist e richiamo attivo.
- */
-import { elenco, linkNodo, renderMarkdown, chipStato } from '../ui.js';
-import { testoSicuro, escapeHtml } from '../core/math.js';
+/** Pagina #/nodo/<id>: colonna .prose, checklist criteri, prerequisiti, dimostrazione e lezione. */
+import { renderMarkdown } from '../ui.js';
+import { testoSicuro, escapeHtml, tokenizzaMatematica, formulaBlock, formulaInline, devePromuovereInDisplay, formulaIsolata } from '../core/math.js';
 import { renderFigura } from '../figure/index.js';
+import { etichettaTipo, etichettaPriorita, nomeArea, chipNodoLink } from './grafo.js';
+import { etichettaFonte } from './fonti.js';
+
+function puliziaTesto(testo) {
+  return testoSicuro(testo).replace(/_{2,}/g, '[…]').replace(/(?:,\s*di competenza di|\s+da)\s+W[1-6]\b/g, '');
+}
+
+function blocchiFormule(testo, prefisso = '') {
+  const s = puliziaTesto(testo);
+  if (!s) return '';
+  const tokens = tokenizzaMatematica(s);
+  const isolata = !prefisso && formulaIsolata(tokens);
+  const out = [];
+  let buf = prefisso ? `<strong>${escapeHtml(prefisso)}</strong> ` : '';
+  let dopoBox = false;
+  const chiudi = () => { if (buf.trim()) out.push(`<p>${buf}</p>`); buf = ''; };
+  for (const t of tokens) {
+    if (t.type === 'text') {
+      const txt = dopoBox ? t.body.replace(/^[.,;:]+\s*/, (m) => (m.trim() === t.body.trim() ? '' : '')).replace(/^([a-zà-ÿ])/, (c) => c.toUpperCase()) : t.body;
+      if (txt) { buf += escapeHtml(txt); dopoBox = false; }
+    } else if (t.type === 'display' || isolata || t.body.length > 48 || devePromuovereInDisplay(t.body)) { chiudi(); out.push(formulaBlock(t.body)); dopoBox = true; }
+    else { buf += formulaInline(t.body); dopoBox = false; }
+  }
+  chiudi();
+  return out.join('');
+}
+
+function voceListaFormule(testo) {
+  const tokens = tokenizzaMatematica(puliziaTesto(testo));
+  return tokens.map((t) => (t.type === 'text' ? escapeHtml(t.body)
+    : (t.type === 'display' || t.body.length > 48 || devePromuovereInDisplay(t.body)) ? formulaBlock(t.body) : formulaInline(t.body))).join('');
+}
+
+function renderChecklist(voci) {
+  if (!Array.isArray(voci) || !voci.length) return '';
+  return `<ul class="nodo-checklist">${voci.map((v) => `<li>${voceListaFormule(v)}</li>`).join('')}</ul>`;
+}
+
+function bottoneRivelatore(id, etichettaMostra, contenutoHtml) {
+  if (!contenutoHtml) return '';
+  return `<div class="nodo-rivelatore">
+    <button class="btn btn--ghost js-rivelatore" type="button" aria-expanded="false" data-target="${id}" data-label="${escapeHtml(etichettaMostra)}">${escapeHtml(etichettaMostra)}</button>
+    <div id="${id}" class="nodo-rivelato prose" hidden>${contenutoHtml}</div>
+  </div>`;
+}
+
+function renderLezione(L) {
+  if (!L || typeof L !== 'object') return '';
+  const def = L.definizione_esame || {};
+  const ex = L.worked_example || {};
+  const cp = L.completion_problem || {};
+  const ea = L.esercizio_autonomo || {};
+  const an = L.analogia || {};
+  const errori = Array.isArray(L.errori_trappole) ? L.errori_trappole.filter(Boolean) : [];
+  const domande = Array.isArray(L.richiamo_attivo) ? L.richiamo_attivo : (L.richiamo_attivo && L.richiamo_attivo.domande) || [];
+  const spiegaTue = L.richiamo_attivo && L.richiamo_attivo.spiega_con_parole_tue;
+  const flash = Array.isArray(L.flashcard) ? L.flashcard.filter(Boolean) : [];
+  const cl = L.checklist || {};
+
+  return `<section class="nodo-sezione">
+    <div class="prose">
+      <h2>Contesto e obiettivo</h2>
+      ${L.perche_ti_serve ? renderMarkdown(puliziaTesto(L.perche_ti_serve)) : ''}
+      ${L.scenario ? `<h3>Scenario concreto</h3>${renderMarkdown(puliziaTesto(L.scenario))}` : ''}
+    </div>
+    ${def.definizione ? `<div class="card nodo-card-blocco"><div class="prose"><h3>Definizione per l'esame</h3>${blocchiFormule(def.definizione, 'Definizione:')}${blocchiFormule(def.scopo, 'Scopo:')}${blocchiFormule(def.esempio, 'Esempio:')}</div></div>` : ''}
+    ${L.spiegazione ? `<div class="prose nodo-spiegazione"><h2>Spiegazione</h2>${renderMarkdown(puliziaTesto(L.spiegazione))}</div>` : ''}
+    ${Array.isArray(L.figure) && L.figure.length ? `<div class="nodo-figure"><h2>Figure</h2>${L.figure.map((f) => renderFigura(f, L.figure)).join('')}</div>` : ''}
+    ${an.testo ? `<div class="callout"><div class="callout__title">Analogia</div>${blocchiFormule(an.testo)}${blocchiFormule(an.limite, 'Limite:')}</div>` : ''}
+    ${ex.problema ? `<div class="card nodo-card-blocco"><div class="prose"><h3>Esempio svolto: ${voceListaFormule(ex.titolo)}</h3>${blocchiFormule(ex.problema)}${Array.isArray(ex.passi) && ex.passi.length ? `<ol>${ex.passi.map((p) => `<li>${voceListaFormule(p)}</li>`).join('')}</ol>` : ''}${blocchiFormule(ex.soluzione, 'Soluzione:')}${blocchiFormule(ex.perche_funziona, 'Perché funziona:')}</div></div>` : ''}
+    ${cp.testo ? `<div class="card nodo-card-blocco"><div class="prose"><h3>Problema di completamento: ${voceListaFormule(cp.titolo)}</h3>${blocchiFormule(cp.testo)}${renderChecklist(cp.passi_mancanti)}</div>${bottoneRivelatore('nodo-cp-sol', 'Mostra soluzione', blocchiFormule(cp.soluzione))}</div>` : ''}
+    ${ea.testo ? `<div class="card nodo-card-blocco"><div class="prose"><h3>Esercizio autonomo: ${voceListaFormule(ea.titolo)}</h3>${blocchiFormule(ea.testo)}${blocchiFormule(ea.suggerimento, 'Suggerimento:')}</div>${bottoneRivelatore('nodo-ea-sol', 'Mostra soluzione attesa', blocchiFormule(ea.soluzione_attesa))}</div>` : ''}
+    ${errori.length ? `<div class="nodo-errori"><h2>Errori frequenti</h2>${errori.map((e) => `<div class="callout callout--error"><div class="callout__title">${voceListaFormule(e.errore)}</div>${blocchiFormule(e.perche_sbagliato)}</div>`).join('')}</div>` : ''}
+    ${domande.length ? `<div class="nodo-richiamo"><h2>Richiamo attivo</h2>${spiegaTue ? `<div class="prose">${blocchiFormule(spiegaTue)}</div>` : ''}${domande.map((r, i) => `<div class="card nodo-card-blocco"><div class="prose">${blocchiFormule(r.domanda, `Domanda ${i + 1}:`)}</div>${bottoneRivelatore(`nodo-rich-${i}`, 'Mostra risposta', blocchiFormule(r.risposta))}</div>`).join('')}</div>` : ''}
+    ${L.riepilogo ? `<div class="callout"><div class="callout__title">Riepilogo</div>${blocchiFormule(L.riepilogo)}</div>` : ''}
+    ${flash.length ? `<div class="nodo-flash"><h2>Flashcard</h2>${flash.map((f, i) => `<div class="card nodo-card-blocco"><div class="prose">${blocchiFormule(f.fronte)}</div>${bottoneRivelatore(`nodo-fc-${i}`, 'Mostra retro', blocchiFormule(f.retro))}</div>`).join('')}</div>` : ''}
+    ${(cl.so_fare || cl.so_dire) ? `<div class="prose"><h2>Checklist di autovalutazione</h2>${cl.so_fare ? `<h3>So fare</h3>${renderChecklist(cl.so_fare)}` : ''}${cl.so_dire ? `<h3>So dire</h3>${renderChecklist(cl.so_dire)}` : ''}</div>` : ''}
+  </section>`;
+}
+
 export function render(ctx, params) {
-  const { graph } = ctx;
-  const nodi = Array.isArray(graph.nodi) ? graph.nodi : [];
-  const nodo = nodi.find((n) => n && String(n.id) === String(params.id));
+  const graph = (ctx && ctx.graph) || {};
+  const nodi = (Array.isArray(graph.nodi) ? graph.nodi : []).filter(Boolean);
+  const mappa = new Map(nodi.map((n) => [String(n.id), n]));
+  const richiesto = testoSicuro(params && params.id);
+  const nodo = mappa.get(richiesto);
   if (!nodo) {
-    return `<h1>Nodo non trovato</h1>
-<p class="avviso">Il nodo <strong>${escapeHtml(testoSicuro(params.id))}</strong> non è ancora disponibile (in arrivo).</p>`;
+    return `<h1>Argomento non trovato</h1><div class="callout callout--warn"><p>Il nodo <strong>${escapeHtml(richiesto)}</strong> non è ancora disponibile (in arrivo).</p></div>`;
   }
-  const prereqHtml = Array.isArray(nodo.prerequisiti) && nodo.prerequisiti.length
-    ? nodo.prerequisiti.map((p) => linkNodo(testoSicuro(p && p.id), testoSicuro(p && p.id), vero(nodo, p && p.id))).join(' ')
-    : chipStato('nessun prerequisito dichiarato', 'ok');
-  const domandeHtml = Array.isArray(nodo.domande_esame) && nodo.domande_esame.length
-    ? nodo.domande_esame.map((d) => `<span class="badge">${escapeHtml(testoSicuro(d))}</span>`).join(' ')
-    : chipStato("nessuna prova d'esame diretta", "ok");
-  let lezioneHtml = '';
-  if (nodo.lezione) {
-    const L = nodo.lezione;
-    lezioneHtml = `
-      <section class="lezione">
-        <h2>Lezione</h2>
-        ${renderBlock('perche_ti_serve', L.perche_ti_serve)}
-        ${renderBlock('scenario', L.scenario)}
-        ${renderBlocchiDefinizione(L.definizione_esame)}
-        ${renderSpiegazione(L.spiegazione)}
-        ${renderBloccoL('analogia', L.analogia)}
-        ${renderWorkedExample(L.worked_example)}
-        ${renderCompletion(L.completion_problem)}
-        ${renderEsercizioAutonomo(L.esercizio_autonomo)}
-        ${renderErrori(L.errori_trappole)}
-        ${renderRichiamo(L.richiamo_attivo)}
-        ${renderRiepilogo(L.riepilogo)}
-        ${renderFlashcard(L.flashcard)}
-        ${renderChecklist(L.checklist)}
-      </section>`;
-    if (Array.isArray(L.figure) && L.figure.length) {
-      lezioneHtml += `<section class="figure-lezione">
-        <h2>Figure</h2>
-        ${L.figure.map((f) => renderFigura(f)).join('')}
-      </section>`;
-    }
-  }
-  return `<h1>${escapeHtml(testoSicuro(nodo.titolo || nodo.id))}</h1>
-<p class="meta">
-  <span class="badge">area ${escapeHtml(testoSicuro(String(nodo.area)))}</span>
-  <span class="badge">${escapeHtml(testoSicuro(nodo.tipo || ''))}</span>
-  <span class="badge">${escapeHtml(testoSicuro(nodo.gruppo || ''))}</span>
-  <span class="badge">${escapeHtml(testoSicuro(nodo.worker || ''))}</span>
-</p>
-<h3>Cosa si deve sapere</h3>
-<p>${escapeHtml(testoSicuro(nodo.sapere || ''))}</p>
-<h3>Criteri osservabili</h3>${elenco(nodo.saper_fare)}
-<h3>Prerequisiti</h3><div>${prereqHtml}</div>
-<h3>Prove d'esame collegate</h3><div>${domandeHtml}</div>
-${lezioneHtml}
-<h3>Fonti</h3>${elencoFonti(nodo.fonti)}`;
-}
-function vero(nodo, id) {
-  return Array.isArray(nodo.prerequisiti) && nodo.prerequisiti.some((p) => p && String(p.id) === String(id));
+  const titArea = nomeArea(graph, nodo.area);
+  const prereq = Array.isArray(nodo.prerequisiti) ? nodo.prerequisiti : [];
+  const domande = Array.isArray(nodo.domande_esame) ? nodo.domande_esame : [];
+  const fonti = Array.isArray(nodo.fonti) ? nodo.fonti.filter(Boolean) : [];
+  const risorse = Array.isArray(nodo.risorse) ? nodo.risorse.filter((r) => r && r.url) : [];
+  const ctaDim = nodo.dimostrazione
+    ? `<div class="nodo-azioni"><a class="btn btn--primary" href="#/dim/${escapeHtml(String(nodo.id))}">Studia la dimostrazione</a></div>`
+    : '';
+
+  return `<div class="nodo-testata">
+  <h1>${escapeHtml(testoSicuro(nodo.titolo || nodo.id))}</h1>
+  <div class="chip-row">
+    <span class="chip">Area ${escapeHtml(String(nodo.area || 1))}${titArea ? ' · ' + escapeHtml(titArea) : ''}</span>
+    <span class="chip chip--info">${escapeHtml(etichettaTipo(nodo.tipo))}</span>
+    <span class="chip">${escapeHtml(etichettaPriorita(nodo.priorita && nodo.priorita.livello))}</span>
+    ${nodo.tempo_studio_min ? `<span class="chip">${escapeHtml(String(nodo.tempo_studio_min))} min</span>` : ''}
+    ${domande.map((d) => `<span class="chip chip--warn">Prova ${escapeHtml(testoSicuro(d))}</span>`).join('')}
+  </div>
+  ${ctaDim}
+</div>
+<section class="nodo-sezione prose">
+  <h2>Cosa si deve sapere</h2>
+  ${blocchiFormule(nodo.sapere)}
+  <h2>Criteri osservabili</h2>
+  ${renderChecklist(nodo.saper_fare)}
+</section>
+<section class="nodo-sezione">
+  <h2>Prerequisiti</h2>
+  <div class="chip-row">${prereq.length ? prereq.map((p) => chipNodoLink(p && p.id, mappa)).join('') : '<span class="chip chip--ok">Nessun prerequisito richiesto</span>'}</div>
+</section>
+${renderLezione(nodo.lezione)}
+<section class="nodo-sezione prose">
+  <h2>Fonti</h2>
+  ${fonti.length ? `<ul>${fonti.map((f) => `<li><strong>${escapeHtml(etichettaFonte(f.chiave))}</strong>: ${escapeHtml(testoSicuro(f.rif))}</li>`).join('')}</ul>` : '<p>Nessuna fonte dichiarata.</p>'}
+  ${risorse.length ? `<h3>Risorse di approfondimento</h3><div class="chip-row">${risorse.map((r) => `<a class="btn btn--ghost" href="${escapeHtml(String(r.url))}" rel="noopener" target="_blank">${escapeHtml(testoSicuro(r.titolo || r.url))}</a>`).join('')}</div>` : ''}
+</section>`;
 }
 
-function renderBlock(chiave, valore) {
-  if (!valore) return '';
-  return `<h4>${etichettaBlock(chiave)}</h4><p>${renderMarkdown(valore)}</p>`;
-}
-
-function etichettaBlock(chiave) {
-  const map = {
-    perche_ti_serve: 'Perché ti serve',
-    scenario: 'Scenario ricorrente',
-    analogia: 'Analogia',
-  };
-  return map[chiave] || chiave;
-}
-
-function renderBlocchiDefinizione(def) {
-  if (!def || typeof def !== 'object') return '';
-  return `<h4>Definizione d'esame</h4>
-<p><strong>Definizione:</strong> ${escapeHtml(testoSicuro(def.definizione))}</p>
-<p><strong>Scopo:</strong> ${escapeHtml(testoSicuro(def.scopo))}</p>
-<p><strong>Esempio:</strong> ${escapeHtml(testoSicuro(def.esempio))}</p>`;
-}
-
-function renderSpiegazione(s) {
-  if (!s) return '';
-  return `<h4>Spiegazione</h4>${renderMarkdown(s)}`;
-}
-
-function renderBloccoL(chiave, obj) {
-  if (!obj || typeof obj !== 'object') return '';
-  const testo = testoSicuro(obj.testo);
-  const limite = testoSicuro(obj.limite);
-  return testo || limite ? `<h4>${etichettaBlock(chiave)}</h4>
-<p>${escapeHtml(testo)} ${limite ? `<em class="muted">Limite: ${escapeHtml(limite)}.</em>` : ''}</p>` : '';
-}
-
-function renderWorkedExample(ex) {
-  if (!ex || typeof ex !== 'object') return '';
-  let html = `<h4>Esempio svolto: ${escapeHtml(testoSicuro(ex.titolo || ''))}</h4>
-<p>${escapeHtml(testoSicuro(ex.problema || ''))}</p>
-<h5>Passi</h5>${elenco(ex.passi)}`;
-  if (ex.soluzione) html += `<p><strong>Soluzione:</strong> ${escapeHtml(testoSicuro(ex.soluzione))}</p>`;
-    if (ex.perche_funziona) html += `<p><strong>Perché funziona:</strong> ${escapeHtml(testoSicuro(ex.perche_funziona))}</p>`;
-  return html;
-}
-
-function renderCompletion(cp) {
-  if (!cp || typeof cp !== 'object') return '';
-  return `<h4>Problema di completamento: ${escapeHtml(testoSicuro(cp.titolo || ''))}</h4>
-<p>${escapeHtml(testoSicuro(cp.testo || ''))}</p>
-<p><strong>Soluzione:</strong> ${escapeHtml(testoSicuro(cp.soluzione || ''))}</p>`;
-}
-
-function renderEsercizioAutonomo(ea) {
-  if (!ea || typeof ea !== 'object') return '';
-  let html = `<h4>Esercizio autonomo: ${escapeHtml(testoSicuro(ea.titolo || ''))}</h4>
-<p>${escapeHtml(testoSicuro(ea.testo || ''))}</p>`;
-  if (ea.suggerimento) html += `<p><em>Suggerimento:</em> ${escapeHtml(testoSicuro(ea.suggerimento))}</p>`;
-  if (ea.soluzione_attesa) html += `<p><strong>Soluzione attesa:</strong> ${escapeHtml(testoSicuro(ea.soluzione_attesa))}</p>`;
-  return html;
-}
-
-function renderErrori(arr) {
-  if (!Array.isArray(arr) || arr.length === 0) return '';
-  let html = `<h4>Errori e trappole</h4><ul>`;
-  for (const e of arr) {
-    if (!e || typeof e !== 'object') continue;
-    html += `<li><strong>${escapeHtml(testoSicuro(e.errore || ''))}</strong> — ${escapeHtml(testoSicuro(e.perche_sbagliato || ''))}</li>`;
-  }
-  html += '</ul>';
-  return html;
-}
-
-function renderRichiamo(arr) {
-  if (!Array.isArray(arr) || arr.length === 0) return '';
-  let html = `<h4>Richiamo attivo</h4>`;
-  for (const r of arr) {
-    if (!r || typeof r !== 'object') continue;
-    const id = `rich-${Math.random().toString(36).slice(2)}`;
-    html += `<div class="richiamo">
-      <p>${escapeHtml(testoSicuro(r.domanda || ''))}</p>
-      <button class="btn" type="button" onclick="document.getElementById('${id}').style.display = document.getElementById('${id}').style.display === 'none' ? 'block' : 'none'">Mostra risposta</button>
-      <p id="${id}" style="display:none">${escapeHtml(testoSicuro(r.risposta || ''))}</p>
-    </div>`;
-  }
-  return html;
-}
-
-function renderRiepilogo(s) {
-  if (!s) return '';
-  return `<h4>Riepilogo</h4><p>${escapeHtml(testoSicuro(s))}</p>`;
-}
-
-function renderFlashcard(arr) {
-  if (!Array.isArray(arr) || arr.length === 0) return '';
-  let html = `<h4>Flashcard</h4>`;
-  for (const f of arr) {
-    if (!f || typeof f !== 'object') continue;
-    const id = `fc-${Math.random().toString(36).slice(2)}`;
-    html += `<div class="flashcard" tabindex="0" role="button" aria-label="Gira la flashcard">
-      <div class="fc-fronte">${escapeHtml(testoSicuro(f.fronte || ''))}</div>
-      <div class="fc-retro" id="${id}" style="display:none">${escapeHtml(testoSicuro(f.retro || ''))}</div>
-    </div>`;
-  }
-  return html;
-}
-
-function renderChecklist(cl) {
-  if (!cl || typeof cl !== 'object') return '';
-  return `<h4>Checklist</h4>
-<h5>So fare</h5>${elenco(cl.so_fare)}
-<h5>So dire</h5>${elenco(cl.so_dire)}`;
-}
-
-function elencoFonti(fonti) {
-  if (!Array.isArray(fonti) || fonti.length === 0) return chipStato('nessuna fonte dichiarata', 'ok');
-  let html = '<ul class="fonti">';
-  for (const f of fonti) {
-    if (!f || typeof f !== 'object') continue;
-    html += `<li><strong>${escapeHtml(testoSicuro(f.chiave || ''))}</strong>: ${escapeHtml(testoSicuro(f.rif || ''))}</li>`;
-  }
-  html += '</ul>';
-  return html;
+export function setup(container) {
+  container.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('.js-rivelatore');
+    if (!btn) return;
+    const target = container.querySelector(`#${btn.getAttribute('data-target')}`);
+    if (!target) return;
+    const apri = target.hidden;
+    target.hidden = !apri;
+    btn.setAttribute('aria-expanded', apri ? 'true' : 'false');
+    btn.textContent = apri ? 'Nascondi' : (btn.getAttribute('data-label') || 'Mostra');
+  });
 }

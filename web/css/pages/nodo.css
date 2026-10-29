@@ -1,1 +1,144 @@
-/* Owner: D4. */
+/* web/css/pages/nodo.css — owner D4 */
+
+.nodo-testata {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  margin-bottom: var(--s-6);
+}
+
+.nodo-testata h1 {
+  margin-bottom: 0;
+}
+
+.nodo-azioni {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+
+.nodo-azioni .btn {
+  min-width: var(--tap);
+}
+
+.nodo-sezione {
+  display: block;
+  margin-bottom: var(--s-6);
+}
+
+.nodo-sezione > * + * {
+  margin-top: var(--s-5);
+}
+
+.nodo-sezione > h2,
+.nodo-sezione > .prose > h2 {
+  margin-top: var(--s-5);
+  margin-bottom: var(--s-3);
+}
+
+.nodo-sezione h4,
+.nodo-sezione h5,
+.nodo-spiegazione h4,
+.nodo-spiegazione h5 {
+  margin: var(--s-5) 0 var(--s-2);
+  font-size: var(--fs-body);
+}
+
+.nodo-sezione blockquote,
+.nodo-sezione pre {
+  margin: 0 0 var(--s-4);
+  padding: var(--s-3) var(--s-4);
+  background: var(--c-surface);
+  border-radius: var(--radius-sm);
+}
+
+.nodo-sezione ul,
+.nodo-sezione ol {
+  padding-left: var(--s-5);
+}
+
+.nodo-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--s-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.nodo-checklist li {
+  position: relative;
+  padding: var(--s-3) var(--s-4) var(--s-3) var(--s-7);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface);
+}
+
+.nodo-checklist li::before {
+  content: "";
+  position: absolute;
+  left: var(--s-4);
+  top: var(--s-4);
+  width: var(--s-4);
+  height: var(--s-4);
+  border: calc(var(--s-1) / 2) solid var(--c-ok);
+  border-radius: calc(var(--radius-sm) / 3);
+  background: var(--c-ok-bg);
+}
+
+.nodo-card-blocco {
+  margin-bottom: 0;
+  display: block;
+}
+
+.nodo-card-blocco > * + * {
+  margin-top: var(--s-3);
+}
+
+.nodo-card-blocco h3 {
+  margin-top: 0;
+}
+
+.nodo-errori,
+.nodo-richiamo,
+.nodo-flash {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.nodo-figure {
+  display: block;
+}
+
+.nodo-rivelatore {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-3);
+}
+
+.nodo-rivelatore .btn {
+  min-width: var(--tap);
+}
+
+.nodo-rivelato {
+  width: 100%;
+  padding: var(--s-4);
+  background: var(--c-surface);
+  border-left: var(--s-1) solid var(--c-primary);
+  border-radius: var(--radius-sm);
+}
+
+.nodo-rivelato p:last-child {
+  margin-bottom: 0;
+}
+
+.nodo-sezione .callout p:last-child {
+  margin-bottom: 0;
+}
+
+.nodo-sezione .formula-box {
+  padding: var(--s-4);
+  margin-block: var(--s-3);
+}
