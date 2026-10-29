@@ -1,0 +1,23 @@
+.card { padding: var(--s-4); border: 1px solid var(--c-border); border-radius: var(--radius); margin-bottom: var(--s-4); background: var(--c-bg); }
+.card__title { font-weight: 700; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: var(--tap); padding: 0 var(--s-4); border: 1px solid var(--c-primary); border-radius: var(--radius-sm); background: var(--c-primary); color: var(--c-bg); text-decoration: none; cursor: pointer; }
+.btn--ghost { color: var(--c-primary); background: transparent; }
+.btn:disabled { opacity: .6; cursor: default; }
+.chip { display: inline-flex; align-items: center; padding: var(--s-1) var(--s-3); border-radius: var(--radius); font-size: var(--fs-small); background: var(--c-surface-2); }
+a.chip, button.chip { min-height: var(--tap); }
+.chip--ok, .chip-ok { color: var(--c-ok); background: var(--c-ok-bg); }
+.chip--warn, .chip-in-arrivo { color: var(--c-warn); background: var(--c-warn-bg); }
+.chip--danger, .chip-avviso { color: var(--c-danger); background: var(--c-danger-bg); }
+.chip--info { color: var(--c-primary); background: var(--c-primary-weak); }
+.callout { border-left: var(--s-1) solid var(--c-primary); padding: var(--s-4); background: var(--c-primary-weak); max-width: var(--measure); }
+.callout__title { font-weight: 700; }
+.callout--warn { border-color: var(--c-warn); background: var(--c-warn-bg); }
+.callout--error { border-color: var(--c-danger); background: var(--c-danger-bg); }
+.progress { height: var(--s-2); background: var(--c-surface-2); border-radius: var(--radius); }
+.progress__bar { height: 100%; background: var(--c-primary); border-radius: inherit; }
+.tabs { display: flex; gap: var(--s-2); width: max-content; }
+.scroll-x { max-width: 100%; overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { padding: var(--s-2); border: 1px solid var(--c-border); text-align: left; }
+.stack-list { display: grid; gap: var(--s-4); padding: 0; list-style: none; }
+@media (min-width: 768px) { .card { padding: var(--s-5); } }

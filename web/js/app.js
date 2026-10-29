@@ -5,7 +5,7 @@
 
 import { renderMath, testoSicuro, escapeHtml } from './core/math.js';
 import { creaRouter, parseHash } from './router.js';
-import { renderMarkdown } from './ui.js';
+import { shellHTML } from './layout/shell.js';
 
 import * as homePage from './pages/home.js';
 import * as grafoPage from './pages/grafo.js';
@@ -43,27 +43,6 @@ async function caricaJSON(url, fallback) {
   }
 }
 
-function navHTML() {
-  const attivo = parseHash();
-  const sezioni = [
-    { hash: '', label: "Percorso d'esame" },
-    { hash: 'grafo', label: 'Grafo' },
-    { hash: 'esercizi', label: 'Esercizi' },
-    { hash: 'quiz', label: 'Quiz' },
-    { hash: 'ripasso', label: 'Ripasso' },
-    { hash: 'fonti', label: 'Fonti' },
-  ];
-  let html = `<nav class="nav-principale" aria-label="Navigazione principale">
-    <a href="#" class="brand" aria-label="Home">TLC Studio</a>
-    <div class="nav-lista">`;
-  for (const s of sezioni) {
-    const attiva = attivo === s.hash || (s.hash !== '' && attivo.startsWith(s.hash + '/'));
-    html += `<a href="#/${s.hash}" class="${attiva ? 'attivo' : ''}">${escapeHtml(s.label)}</a>`;
-  }
-  html += `</div></nav>`;
-  return html;
-}
-
 function renderErrore(messaggio) {
   return `<section class="errore">
     <h1>Errore di pagina</h1>
@@ -81,7 +60,8 @@ async function mostraRoute(hash) {
     try { currentUnmount(); } catch (_err) { /* ignora */ }
     currentUnmount = null;
   }
-  main.innerHTML = navHTML();
+  document.getElementById('shell').innerHTML = shellHTML(hash);
+  main.innerHTML = '';
   const stato = router.eseguire(hash.replace(/^#/, ''));
   const route = stato.route;
   const params = stato.params || {};
@@ -118,13 +98,6 @@ async function mostraRoute(hash) {
     await renderMath(target);
   } catch (err) {
     console.error('renderMath fallito:', err);
-  }
-  // evidenzia il link attivo nel nav
-  const links = document.querySelectorAll('.nav-lista a');
-  for (const a of links) {
-    const href = a.getAttribute('href') || '';
-    const corrisponde = hash === href.slice(2) || (href !== '#/' && hash.startsWith(href.slice(2) + '/'));
-    a.classList.toggle('attivo', corrisponde);
   }
   window.scrollTo(0, 0);
 }

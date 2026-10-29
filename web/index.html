@@ -6,7 +6,25 @@
 <title>Fondamenti di Telecomunicazioni — studio</title>
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" href="./icon.svg">
-<link rel="stylesheet" href="./css/app.css">
+<link rel="stylesheet" href="./css/tokens.css">
+<link rel="stylesheet" href="./css/base.css">
+<link rel="stylesheet" href="./css/layout.css">
+<link rel="stylesheet" href="./css/components.css">
+<link rel="stylesheet" href="./css/legacy.css">
+<link rel="stylesheet" href="./css/math.css">
+<link rel="stylesheet" href="./css/figure.css">
+<link rel="stylesheet" href="./css/pages/dimostrazione.css">
+<link rel="stylesheet" href="./css/pages/home.css">
+<link rel="stylesheet" href="./css/pages/grafo.css">
+<link rel="stylesheet" href="./css/pages/nodo.css">
+<link rel="stylesheet" href="./css/pages/quiz.css">
+<link rel="stylesheet" href="./css/pages/esercizi.css">
+<link rel="stylesheet" href="./css/pages/ripasso.css">
+<link rel="stylesheet" href="./css/pages/fonti.css">
+<link rel="preload" href="./vendor/katex/fonts/KaTeX_Main-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="./vendor/katex/fonts/KaTeX_Math-Italic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="./vendor/katex/fonts/KaTeX_Size1-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="./vendor/katex/fonts/KaTeX_Size2-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <!-- Vendor locale (nessun CDN): KaTeX 0.16.x, marked, DOMPurify -->
 <link rel="stylesheet" href="./vendor/katex/katex.min.css">
 <script type="module">
@@ -20,13 +38,9 @@
 <script type="module" src="./js/app.js"></script>
 </head>
 <body>
-<header class="site-header">
-  <div class="container">
-    <a href="#" class="brand" aria-label="Home">TLC Studio</a>
-    <span class="tagline">Fondamenti di Telecomunicazioni — knowledge graph e percorso d'esame (UNIMORE)</span>
-  </div>
-</header>
-<main id="app" tabindex="-1"></main>
+<a class="skip-link" href="#app">Vai al contenuto</a>
+<header class="site-header" id="shell"></header>
+<main id="app" class="page" tabindex="-1"></main>
 <footer class="site-footer">
   <div class="container">
     <p>Sito di studio statico, offline-first (PWA). I contenuti riformulano a parole proprie i temi del corso; i PDF non sono mai pubblicati.

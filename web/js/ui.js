@@ -79,5 +79,5 @@ export function linkNodo(id, titolo, esistente) {
   if (esistente) {
     return `<a href="#/nodo/${escapeHtmlHtml(String(id))}" class="link-nodo">${escapeHtmlHtml(t)}</a>`;
   }
-  return `<span class="link-nodo in-arrivo" aria-label="${escapeHtmlHtml(t)} + ', in arrivo'">${escapeHtmlHtml(t)} <span class="badge">in arrivo</span></span>`;
+  return `<span class="link-nodo in-arrivo" aria-label="${escapeHtmlHtml(t)}, in arrivo">${escapeHtmlHtml(t)} <span class="badge">in arrivo</span></span>`;
 }
