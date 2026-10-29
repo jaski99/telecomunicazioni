@@ -1,0 +1,11 @@
+{
+  "name": "tlc-kg-web",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "Web app statica (moduli ES, senza bundler) per Fondamenti di Telecomunicazioni.",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "build": "sh build.sh"
+  }
+}

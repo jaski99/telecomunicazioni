@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fondamenti di Telecomunicazioni — studio</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icon.svg">
+<link rel="stylesheet" href="./css/app.css">
+<!-- Vendor locale (nessun CDN): KaTeX 0.16.x, marked, DOMPurify -->
+<link rel="stylesheet" href="./vendor/katex/katex.min.css">
+<script type="module">
+  import { marked } from './vendor/marked/marked.esm.js';
+  window.marked = marked;
+</script>
+<script type="module">
+  import DOMPurify from './vendor/dompurify/purify.es.mjs';
+  window.DOMPurify = DOMPurify;
+</script>
+<script type="module" src="./js/app.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="#" class="brand" aria-label="Home">TLC Studio</a>
+    <span class="tagline">Fondamenti di Telecomunicazioni — knowledge graph e percorso d'esame (UNIMORE)</span>
+  </div>
+</header>
+<main id="app" tabindex="-1"></main>
+<footer class="site-footer">
+  <div class="container">
+    <p>Sito di studio statico, offline-first (PWA). I contenuti riformulano a parole proprie i temi del corso; i PDF non sono mai pubblicati.
+    Vedi <a href="#/fonti">Fonti</a> per le dichiarazioni e i diritti.</p>
+  </div>
+</footer>
+</body>
+</html>
