@@ -4,6 +4,9 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderFigura } from '../js/figure/index.js';
+import { FS_BLOCCHI, INTERLINEA, testoARighe, misuraTesto, layoutBlocchi, layoutCollegamenti } from '../js/figure/blocchi-layout.js';
+import { disegnaTesto, disegnaBlocco, disegnaFreccia } from '../js/figure/blocchi-forme.js';
+import { bboxBlocchi, renderBlocchi } from '../js/figure/blocchi.js';
 
 const __dirname = join(fileURLToPath(import.meta.url), '..');
 
@@ -102,4 +105,45 @@ test('ogni passo.figura di web/graph.json risolta per ID contiene <svg', () => {
   const graph = leggiGraph(); let totale = 0;
   for (const nodo of graph.nodi) { if (!nodo || !nodo.dimostrazione) continue; const dim = nodo.dimostrazione; const figs = Array.isArray(dim.figure) ? dim.figure : []; for (const p of (Array.isArray(dim.passi) ? dim.passi : [])) { if (!p || !p.figura) continue; totale++; const html = renderFigura(p.figura, figs); assert.ok(html.includes('<svg'), `passo ${p.n} di ${nodo.id}: figura ${p.figura} non risolta per ID`); } }
   assert.ok(totale > 0, 'nessuna figura trovata nei passi di graph.json');
+});
+test('layout: va a capo sulle parole, divide le parole lunghe e misura ogni riga', () => {
+  assert.deepEqual(testoARighe('Campionatore ideale, periodo T', 12), ['Campionatore', 'ideale,', 'periodo T']); assert.deepEqual(testoARighe('abcdefghijk', 4), ['abcd', 'efgh', 'ijk']); assert.deepEqual(testoARighe('', 8), []);
+  assert.ok(misuraTesto(['WWW']).w > misuraTesto(['iii']).w); assert.ok(Math.abs(misuraTesto(['a', 'b']).h - misuraTesto(['a']).h - FS_BLOCCHI * INTERLINEA) < 1e-8);
+});
+test('forme: una sola etichetta SVG, tspan centrati, interlinea e testo escapato', () => {
+  const t = { originale: 'a < b', righe: ['a <', 'b'], x: 55, y: 40, ...misuraTesto(['a <', 'b']) };
+  const html = disegnaTesto(t, true); assert.equal((html.match(/<text\b/g) || []).length, 1);
+  assert.match(html, /<tspan x="55" dy="0">a &lt;<\/tspan><tspan x="55" dy="1\.2em">b<\/tspan>/); assert.doesNotMatch(html, /<text\b[^>]*>\s*<text\b/);
+});
+test('geometria: colonne cumulative, frecce ai bordi, bbox e input immutato', () => {
+  const input = structuredClone(specBlocchi), nodi = layoutBlocchi(input.blocchi), frecce = layoutCollegamenti(nodi, input.collegamenti);
+  assert.deepEqual(input, specBlocchi); assert.ok(nodi.every((n, i) => i === 0 || n.x > nodi[i - 1].x)); assert.equal(frecce.length, input.collegamenti.length);
+  assert.ok(frecce[0].inizio.x > nodi[0].x && frecce[0].fine.x < nodi[1].x); assert.match(disegnaBlocco(nodi[0]), /class="blocco ingresso"/); assert.match(disegnaFreccia(frecce[0]), /<path/);
+  const box = bboxBlocchi(nodi, frecce); for (const nodo of nodi) assert.ok(nodo.box.left >= box.left && nodo.box.right <= box.right && nodo.box.top >= box.top && nodo.box.bottom <= box.bottom);
+});
+test('tutte le 17 figure blocchi: testi in box, nessun annidamento, colonne crescenti e viewBox non tagliato', () => {
+  const figure = leggiGraph().nodi.flatMap(n => [n.lezione, n.dimostrazione].flatMap(s => (s?.figure || []).filter(f => f.tipo === 'blocchi')));
+  assert.equal(figure.length, 17); const decodifica = s => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&amp;/g, '&');
+  for (const f of figure) {
+    const r = renderBlocchi(f), [ , dx, dy ] = /translate\(([-\d.]+),([-\d.]+)\)/.exec(r.svgInner).map(Number);
+    assert.ok(r.viewBox.w <= 700 && r.fs === 14, f.id); assert.doesNotMatch(r.svgInner, /<text\b[^>]*>(?:(?!<\/text>)[\s\S])*<text\b/, f.id);
+    const nodi = layoutBlocchi(f.blocchi), colonne = [...new Set(f.blocchi.map(b => b.colonna))].sort((a, b) => a - b);
+    const xs = colonne.map(c => nodi.find(n => n.blocco.colonna === c).x); assert.ok(xs.every((x, i) => !i || x > xs[i - 1]), f.id);
+    const testi = [...r.svgInner.matchAll(/<text x="([\d.]+)" y="([\d.]+)"[^>]*>([\s\S]*?)<\/text>/g)]; assert.ok(testi.length, f.id);
+    for (const [, xx, yy, contenuto] of testi) {
+      const spans = [...contenuto.matchAll(/<tspan x="([\d.]+)" dy="([^"]+)">([^<]*)<\/tspan>/g)]; assert.ok(spans.every((s, i) => Number(s[1]) === Number(xx) && s[2] === (i ? '1.2em' : '0')), f.id);
+      const righe = spans.length ? spans.map(s => decodifica(s[3])) : [decodifica(contenuto)];
+      const { w, h } = misuraTesto(righe), x = Number(xx) + dx, y = Number(yy) + dy + (righe.length - 1) * FS_BLOCCHI * INTERLINEA / 2;
+      assert.ok(x - w / 2 >= -0.1 && x + w / 2 <= r.viewBox.w + 0.1 && y - h / 2 >= -0.1 && y + h / 2 <= r.viewBox.h + 0.1, `${f.id}: ${righe.join(' ')}`);
+    } }
+});
+test('layout fit: tredici colonne con etichette lunghe non vengono tagliate', () => {
+  const blocchi = Array.from({ length: 13 }, (_, i) => ({ id: `${i}`, forma: 'rettangolo', colonna: i, riga: 0, etichetta: `Modulo molto lungo ${i}` }));
+  const r = renderBlocchi({ blocchi, collegamenti: blocchi.slice(1).map((b, i) => ({ da: blocchi[i].id, a: b.id })) });
+  assert.ok(r.viewBox.w <= 700); assert.equal((r.svgInner.match(/class="blocco rettangolo"/g) || []).length, 13); assert.ok(r.viewBox.h > 36); assert.doesNotMatch(r.svgInner, /<text\b[^>]*>\s*<text\b/);
+});
+test('grafico e temporale conservano etichette e frecce dentro gli ingombri', () => {
+  const grafico = renderFigura({ ...specGrafico, asse_y: { ...specGrafico.asse_y, etichetta: 'Throughput ρ (trame riuscite per durata)' } });
+  assert.ok(estraiViewBox(grafico).h > 360); const temporale = renderFigura(specTemporale);
+  assert.match(temporale, /marker-end="url\(#freccia-temp\)"/); assert.match(temporale, />arrivo<\/text>/); assert.match(temporale, /width="720"/); assert.match(temporale, /font-size="20">t<\/text>/);
 });

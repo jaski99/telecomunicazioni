@@ -27,10 +27,10 @@
 .figure__caption-title { display: block; font-weight: 700; font-size: var(--fs-body, 1.0625rem); color: var(--c-text, #17202e); margin-bottom: var(--s-1, 4px); }
 .figure__caption-desc { display: block; font-size: var(--fs-small, 0.9375rem); color: var(--c-text-muted, #4a5568); line-height: var(--lh-body, 1.7); }
 
-/* SVG: mai sotto i 480 px di disegno (scrollo dentro .scroll-x). Testo leggibile (A10). */
-.figura-svg {
-  display: inline-block; min-width: var(--figure-min-width, 480px); width: auto; height: auto;
-  border: inherit; border-radius: var(--radius-sm, 6px); overflow: visible;
+/* La larghezza intrinseca conserva il font leggibile; lo scroll resta nella figura. */
+.figure .figura-svg {
+  display: block; min-width: 0; max-width: none; width: auto; height: auto;
+  margin-inline: 0; border: inherit; border-radius: var(--radius-sm, 6px); overflow: visible;
 }
 
 /* Legenda fuori dal disegno, in HTML sotto il grafico. */

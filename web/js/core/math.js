@@ -25,12 +25,14 @@ export function compilaLatex(s) {
   return katex.renderToString(s, { ...RUNTIME_OPTIONS, throwOnError: true });
 }
 
-/** Compila LaTeX puro senza mai sollevare eccezioni; errore in katex-err. */
-export function compilaLatexSicuro(s) {
+/** Compila senza eccezioni, mantenendo sorgente e modalità in caso di errore. */
+function renderLatexSicuro(s, displayMode = false) {
   if (typeof s !== 'string' || !s.length) return '';
-  try { return katex.renderToString(s, { ...RUNTIME_OPTIONS, throwOnError: false }); }
-  catch (_e) { return `<code class="katex katex-err">${escapeHtml(s)}</code>`; }
+  try { return katex.renderToString(s, { ...RUNTIME_OPTIONS, displayMode, throwOnError: true }); }
+  catch (_e) { return `<code class="katex-err">${escapeHtml(s)}</code>`; }
 }
+
+export function compilaLatexSicuro(s) { return renderLatexSicuro(s); }
 
 /** Vero se una inline lunga va promossa a display (ha comando display e >40 char). */
 export function devePromuovereInDisplay(corpo) {
@@ -50,7 +52,7 @@ export function formulaBlock(latex, opzioni = {}) {
   const chiave = opzioni && opzioni.variante === 'chiave';
   const etichetta = opzioni && opzioni.etichetta != null ? String(opzioni.etichetta) : '';
   const label = etichetta ? `<div class="formula-box__label">${escapeHtml(etichetta)}</div>` : '';
-  const corpo = typeof latex === 'string' && latex.length ? compilaLatexSicuro(latex) : '';
+  const corpo = renderLatexSicuro(latex, true);
   return `<div class="formula-box${chiave ? ' formula-box--key' : ''}">
 ${label}
 <div class="scroll-x" tabindex="0" role="region" aria-label="Formula">${corpo}</div>
@@ -68,6 +70,12 @@ export function testoSicuro(v) {
   return String(v);
 }
 
+/** Una sola formula, eventualmente circondata da spazi, occupa il proprio blocco. */
+export function formulaIsolata(tokens) {
+  const significativi = tokens.filter(t => t.type !== 'text' || t.body.trim());
+  return significativi.length === 1 && significativi[0].type === 'inline';
+}
+
 /** Renderizza matematica con promozione automatica inline->display. Mai eccezioni. */
 export async function renderMath(el) {
   if (typeof Element === 'undefined' || !(el instanceof Element)) return;
@@ -77,23 +85,19 @@ export async function renderMath(el) {
     nodes.push(node);
   }
   for (const textNode of nodes) {
-    const parent = textNode.parentNode; if (!parent) continue;
-    const tokens = tokenizzaMatematica(textNode.textContent); if (!tokens.length) continue;
+    const parent = textNode.parentElement; if (!parent) continue;
+    const tokens = tokenizzaMatematica(textNode.textContent);
+    if (!tokens.some(t => t.type !== 'text')) continue;
+    const inTitolo = !!parent.closest('h1, h2, h3, h4, h5, h6');
+    const blocco = /^(DIV|P|LI|SECTION|ARTICLE|BLOCKQUOTE)$/.test(parent.tagName);
+    const isolata = !inTitolo && blocco && parent.childNodes.length === 1 && formulaIsolata(tokens);
     const frag = document.createDocumentFragment();
     for (const t of tokens) {
       if (t.type === 'text') { frag.appendChild(document.createTextNode(t.body)); continue; }
-      const inDisplay = t.type === 'display' || devePromuovereInDisplay(t.body);
-      let html; try { html = katex.renderToString(t.body, { ...RUNTIME_OPTIONS, displayMode: inDisplay, throwOnError: false }); }
-      catch (_e) { html = `<code class="katex katex-err">${escapeHtml(t.body)}</code>`; }
-      let wrap = document.createElement(inDisplay ? 'div' : 'span');
-      wrap.className = inDisplay ? '' : 'formula-inline';
-      if (inDisplay) {
-        const box = document.createElement('div'); box.className = 'formula-box';
-        const sc = document.createElement('div'); sc.className = 'scroll-x';
-        sc.setAttribute('tabindex', '0'); sc.setAttribute('role', 'region'); sc.setAttribute('aria-label', 'Formula');
-        sc.innerHTML = html; box.appendChild(sc); wrap = box;
-      } else wrap.innerHTML = html;
-      frag.appendChild(wrap);
+      const inDisplay = t.type === 'display' || (!inTitolo && (isolata || devePromuovereInDisplay(t.body)));
+      const template = document.createElement('template');
+      template.innerHTML = inDisplay ? formulaBlock(t.body) : formulaInline(t.body);
+      frag.appendChild(template.content);
     }
     parent.replaceChild(frag, textNode);
   }

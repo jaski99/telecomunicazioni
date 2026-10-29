@@ -11,6 +11,12 @@
 /* Katex inline ovunque: niente padding-block, niente overflow nascosto, niente a capo.
    Specificita' sufficiente per battere legacy.css main .katex (carica dopo). */
 main .katex { display: inline; padding-block: 0; overflow: visible; }
+/* I simboli di Notazione sono compilati direttamente: niente a capo o tagli verticali. */
+main .sempre-visibile li > strong:has(> .katex) {
+  display: inline-block; max-width: 100%; overflow-x: auto; vertical-align: middle;
+  padding-block: var(--s-1, 4px);
+}
+main .sempre-visibile li > strong > .katex { white-space: nowrap; }
 /* Formule inline nel testo: mai a capo, scorrono dentro .formula-box o .scroll-x */
 .formula-inline .katex { padding-block: 0; white-space: nowrap; }
 /* Formule inline nei titoli h1: font più piccolo per non rompere la riga */

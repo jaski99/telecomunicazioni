@@ -29,27 +29,29 @@ export function renderGrafico(spec) {
   if (!spec || typeof spec !== 'object') throw new Error('spec mancante');
   const ax = spec.asse_x, ay = spec.asse_y;
   if (!ax || !ay || typeof ax.min !== 'number' || typeof ax.max !== 'number' || typeof ay.min !== 'number' || typeof ay.max !== 'number' || !Array.isArray(spec.serie) || !(ax.max > ax.min) || !(ay.max > ay.min)) throw new Error('assi o serie non valide');
+  const fs = fontSize(VIEW_W); const fst = Math.max(10, fs - 4);
+  // L'etichetta dell'asse verticale, ruotata, deve stare interamente nel viewBox.
+  const viewH = Math.max(VIEW_H, Math.ceil(stimaLarghezzaTesto(testoSicuro(ay.etichetta), fs) + 20));
   const d = estensione(spec);
   const xMin = d ? Math.min(ax.min, d.x[0]) : ax.min; const xMax = d ? Math.max(ax.max, d.x[1]) : ax.max;
   const yMin = d ? Math.min(ay.min, d.y[0]) : ay.min; const yMax = d ? Math.max(ay.max, d.y[1]) : ay.max;
   const px = x => scala(x, xMin, xMax, MARGIN.left, VIEW_W - MARGIN.right);
-  const py = y => scala(y, yMin, yMax, VIEW_H - MARGIN.bottom, MARGIN.top);
-  const fs = fontSize(VIEW_W); const fst = Math.max(10, fs - 4);
+  const py = y => scala(y, yMin, yMax, viewH - MARGIN.bottom, MARGIN.top);
   const toT = t => typeof t === 'number' ? { valore: t } : { valore: Number(t && t.valore), etichetta: t.etichetta };
   const tx = (Array.isArray(ax.tacche) ? ax.tacche : taccheDefault(xMin, xMax)).map(toT).filter(t => Number.isFinite(t.valore));
   const ty = (Array.isArray(ay.tacche) ? ay.tacche : taccheDefault(yMin, yMax)).map(toT).filter(t => Number.isFinite(t.valore));
-  let inner = `<rect x="${MARGIN.left}" y="${MARGIN.top}" width="${VIEW_W - MARGIN.left - MARGIN.right}" height="${VIEW_H - MARGIN.top - MARGIN.bottom}" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>`;
-  for (const t of tx) { const x = px(t.valore); inner += `<line x1="${x}" y1="${MARGIN.top}" x2="${x}" y2="${VIEW_H - MARGIN.bottom}" stroke="#f3f4f6" stroke-width="1"/>`; }
+  let inner = `<rect x="${MARGIN.left}" y="${MARGIN.top}" width="${VIEW_W - MARGIN.left - MARGIN.right}" height="${viewH - MARGIN.top - MARGIN.bottom}" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>`;
+  for (const t of tx) { const x = px(t.valore); inner += `<line x1="${x}" y1="${MARGIN.top}" x2="${x}" y2="${viewH - MARGIN.bottom}" stroke="#f3f4f6" stroke-width="1"/>`; }
   for (const t of ty) { const y = py(t.valore); inner += `<line x1="${MARGIN.left}" y1="${y}" x2="${VIEW_W - MARGIN.right}" y2="${y}" stroke="#f3f4f6" stroke-width="1"/>`; }
-  inner += `<line x1="${MARGIN.left}" y1="${VIEW_H - MARGIN.bottom}" x2="${VIEW_W - MARGIN.right}" y2="${VIEW_H - MARGIN.bottom}" stroke="#111827" stroke-width="2"/>`;
-  inner += `<line x1="${MARGIN.left}" y1="${MARGIN.top}" x2="${MARGIN.left}" y2="${VIEW_H - MARGIN.bottom}" stroke="#111827" stroke-width="2"/>`;
-  inner += `<text x="${(MARGIN.left + VIEW_W - MARGIN.right) / 2}" y="${VIEW_H - 8}" text-anchor="middle" fill="#111827" font-family="sans-serif" font-size="${fs}">${escapeHtml(testoSicuro(ax.etichetta))}</text>`;
-  inner += `<text x="26" y="${VIEW_H / 2}" text-anchor="middle" fill="#111827" font-family="sans-serif" font-size="${fs}" transform="rotate(-90 26,${VIEW_H / 2})">${escapeHtml(testoSicuro(ay.etichetta))}</text>`;
+  inner += `<line x1="${MARGIN.left}" y1="${viewH - MARGIN.bottom}" x2="${VIEW_W - MARGIN.right}" y2="${viewH - MARGIN.bottom}" stroke="#111827" stroke-width="2"/>`;
+  inner += `<line x1="${MARGIN.left}" y1="${MARGIN.top}" x2="${MARGIN.left}" y2="${viewH - MARGIN.bottom}" stroke="#111827" stroke-width="2"/>`;
+  inner += `<text x="${(MARGIN.left + VIEW_W - MARGIN.right) / 2}" y="${viewH - 8}" text-anchor="middle" fill="#111827" font-family="sans-serif" font-size="${fs}">${escapeHtml(testoSicuro(ax.etichetta))}</text>`;
+  inner += `<text x="26" y="${viewH / 2}" text-anchor="middle" fill="#111827" font-family="sans-serif" font-size="${fs}" transform="rotate(-90 26,${viewH / 2})">${escapeHtml(testoSicuro(ay.etichetta))}</text>`;
   for (const t of tx) { const x = px(t.valore); const lbl = testoSicuro(t.etichetta !== undefined ? t.etichetta : fmtAsse(t.valore));
-    inner += `<line x1="${x}" y1="${VIEW_H - MARGIN.bottom}" x2="${x}" y2="${VIEW_H - MARGIN.bottom + 4}" stroke="#111827" stroke-width="1"/><text x="${x}" y="${VIEW_H - MARGIN.bottom + 14}" text-anchor="middle" fill="#111827" font-family="sans-serif" font-size="${fst}">${escapeHtml(lbl)}</text>`; }
+    inner += `<line x1="${x}" y1="${viewH - MARGIN.bottom}" x2="${x}" y2="${viewH - MARGIN.bottom + 4}" stroke="#111827" stroke-width="1"/><text x="${x}" y="${viewH - MARGIN.bottom + 14}" text-anchor="middle" fill="#111827" font-family="sans-serif" font-size="${fst}">${escapeHtml(lbl)}</text>`; }
   for (const t of ty) { const y = py(t.valore); const lbl = testoSicuro(t.etichetta !== undefined ? t.etichetta : fmtAsse(t.valore));
     inner += `<line x1="${MARGIN.left - 4}" y1="${y}" x2="${MARGIN.left}" y2="${y}" stroke="#111827" stroke-width="1"/><text x="${MARGIN.left - 8}" y="${y + 4}" text-anchor="end" fill="#111827" font-family="sans-serif" font-size="${fst}">${escapeHtml(lbl)}</text>`; }
-  const yZero = py(0); const mostraZero = yZero >= MARGIN.top && yZero <= VIEW_H - MARGIN.bottom;
+  const yZero = py(0); const mostraZero = yZero >= MARGIN.top && yZero <= viewH - MARGIN.bottom;
   const serieOut = []; let si = 0;
   for (const s of spec.serie) {
     if (!Array.isArray(s.punti) || !s.punti.length) continue; const col = PALETTE[si % PALETTE.length]; const dash = STILE_DASH[s.stile] || 'solid';
@@ -69,5 +71,5 @@ export function renderGrafico(spec) {
     const cx = px(x), cy = py(y); inner += `<circle cx="${cx}" cy="${cy}" r="4" fill="#b00020"/>`;
     const etW = stimaLarghezzaTesto(testoSicuro(a.testo), fst); const tx2 = Math.min(Math.max(cx + 7, 6), VIEW_W - 6 - etW); inner += `<text x="${tx2}" y="${Math.max(cy - 7, 12)}" fill="#b00020" font-family="sans-serif" font-size="${fst}" font-weight="bold">${escapeHtml(testoSicuro(a.testo))}</text>`;
   }
-  return { svgInner: inner, viewBox: { w: VIEW_W, h: VIEW_H }, serie: serieOut, fs };
+  return { svgInner: inner, viewBox: { w: VIEW_W, h: viewH }, serie: serieOut, fs };
 }

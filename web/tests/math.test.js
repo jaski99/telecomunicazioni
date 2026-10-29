@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { compilaLatex, compilaLatexSicuro, renderMath, tokenizzaMatematica, testoSicuro, formulaBlock, formulaInline, devePromuovereInDisplay } from '../js/core/math.js';
+import { compilaLatex, compilaLatexSicuro, renderMath, tokenizzaMatematica, testoSicuro, formulaBlock, formulaInline, devePromuovereInDisplay, formulaIsolata } from '../js/core/math.js';
 
 test('tokenizzaMatematica separa testo, inline $...$ e display $$...$$', () => {
   const toks = tokenizzaMatematica('costo $x=1$ e $$y=2$$ finale');
@@ -98,4 +98,29 @@ test('devePromuovereInDisplay vero per frazione/somma/integrale/limite sopra la 
 test('devePromuovereInDisplay falso sotto la soglia o senza comandi display', () => {
   assert.ok(!devePromuovereInDisplay('\\omega')); assert.ok(!devePromuovereInDisplay('x = 1'));
   assert.ok(!devePromuovereInDisplay('\\frac{1}{2}')); assert.ok(!devePromuovereInDisplay(''));
+});
+
+test('formulaBlock compila in display reale, anche per formule brevi', () => {
+  for (const latex of ['x', 'x=1', '\\frac{1}{2}']) {
+    const html = formulaBlock(latex);
+    assert.match(html, /class="katex-display"/);
+    assert.match(html, /<math/);
+    assert.match(html, /class="scroll-x" tabindex="0" role="region" aria-label="Formula"/);
+  }
+  assert.doesNotMatch(formulaInline('x'), /katex-display/);
+});
+
+test('formula isolata riconosce spazi ma non testo o altre formule', () => {
+  assert.ok(formulaIsolata(tokenizzaMatematica('$x$')));
+  assert.ok(formulaIsolata(tokenizzaMatematica('  $x$  ')));
+  assert.ok(!formulaIsolata(tokenizzaMatematica('testo $x$')));
+  assert.ok(!formulaIsolata(tokenizzaMatematica('$x$ e $y$')));
+  assert.ok(!formulaIsolata(tokenizzaMatematica('$$x$$')));
+});
+
+test('formulaBlock segnala il sorgente invalido senza HTML eseguibile', () => {
+  const html = formulaBlock('\\comandoInesistente{<script>');
+  assert.match(html, /class="katex-err"/);
+  assert.match(html, /&lt;script&gt;/);
+  assert.doesNotMatch(html, /<script>/);
 });
