@@ -1,0 +1,74 @@
+[
+  {
+    "id": "dim-conversione-ad",
+    "titolo": "Descrivere i tre passi della conversione A/D e il segnale numerico ottenuto",
+    "area": 4,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W4",
+    "sapere": "Separare la discretizzazione del tempo da quantizzazione e codifica dei valori. Comprendere condizioni e limiti del procedimento.",
+    "saper_fare": [
+      "Campionare con ωs > 2ωm.",
+      "Quantizzare i campioni su L livelli."
+    ],
+    "prerequisiti": [
+      {
+        "id": "conversione-ad-quantizzazione-pcm",
+        "forza": "hard",
+        "motivo": "La conversione richiede il risultato indicato come prerequisito."
+      }
+    ],
+    "tempo_studio_min": 50,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "T7 richiede questo procedimento."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "pp. 7-9 del PDF"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "pp. 32-34 del PDF, riferimento p. 7.4 dello studente"
+      }
+    ],
+    "risorse": []
+  },
+  {
+    "id": "dim-conversione-da",
+    "titolo": "Descrivere la conversione D/A e la ricostruzione tramite filtro passa-basso",
+    "area": 4,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W4",
+    "sapere": "Decodificare i livelli, costruire il PAM e isolare la replica centrale con equalizzazione. Comprendere condizioni e limiti del procedimento.",
+    "saper_fare": [
+      "Decodificare le parole in livelli quantizzati.",
+      "Generare il PAM e isolare la replica centrale."
+    ],
+    "prerequisiti": [
+      {
+        "id": "dim-conversione-ad",
+        "forza": "hard",
+        "motivo": "La conversione richiede il risultato indicato come prerequisito."
+      }
+    ],
+    "tempo_studio_min": 50,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "T8 richiede questo procedimento."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "pp. 10-11 del PDF"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "pp. 35-36 del PDF, riferimento p. 7.8 dello studente"
+      }
+    ],
+    "risorse": []
+  }
+]

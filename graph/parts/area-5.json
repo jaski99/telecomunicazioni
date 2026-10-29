@@ -1,0 +1,184 @@
+[
+  {
+    "id": "dim-pm-fm-trasformazione",
+    "titolo": "Trasformazione tra PM e FM",
+    "area": 5,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W4",
+    "sapere": "Distinguere le leggi di fase PM e FM e le condizioni iniziali che consentono di trasformare un modulatore nell’altro.",
+    "saper_fare": [
+      "Ricavare le due trasformazioni usando integratore o derivatore e adeguando guadagni e fase iniziale."
+    ],
+    "prerequisiti": [
+      {
+        "id": "modulazioni-angolo-pm-fm",
+        "forza": "hard",
+        "motivo": "Servono le definizioni di fase e frequenza istantanea."
+      }
+    ],
+    "tempo_studio_min": 45,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "T9 richiede la trasformazione tra PM e FM."
+    },
+    "fonti": [
+      {
+        "chiave": "RICOSTRUZIONE",
+        "rif": "NON TROVATO"
+      }
+    ],
+    "risorse": []
+  },
+  {
+    "id": "dim-formula-carson",
+    "titolo": "Regola di Carson",
+    "area": 5,
+    "tipo": "dimostrazione",
+    "gruppo": "B",
+    "worker": "W4",
+    "sapere": "Conoscere la stima di Carson, le sue unità e il significato approssimato delle bande laterali significative.",
+    "saper_fare": [
+      "Calcolare la banda stimata con deviazione e pulsazione modulante nelle stesse unità."
+    ],
+    "prerequisiti": [
+      {
+        "id": "modulazioni-angolo-pm-fm",
+        "forza": "hard",
+        "motivo": "Servono le definizioni di fase e frequenza istantanea."
+      }
+    ],
+    "tempo_studio_min": 45,
+    "priorita": {
+      "livello": "media",
+      "motivazione": "M12–M14 riguardano la formula di Carson; la motivazione è un approfondimento."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "p. 28"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "p. 41 (riferimento p. 9.43 non verificato sul libro)"
+      },
+      {
+        "chiave": "RICOSTRUZIONE",
+        "rif": "NON TROVATO"
+      }
+    ],
+    "risorse": []
+  },
+  {
+    "id": "dim-quadripoli-passa-basso-equivalente",
+    "titolo": "Quadripoli lineari ed equivalente passa-basso",
+    "area": 5,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W4",
+    "sapere": "Ricavare la risposta del quadripolo sugli inviluppi complessi e riconoscere i limiti di realizzabilità dell’equivalente passa-basso.",
+    "saper_fare": [
+      "Ricavare la funzione equivalente e disegnare il legame tra i sistemi passa-banda e passa-basso."
+    ],
+    "prerequisiti": [
+      {
+        "id": "segnali-passa-banda-inviluppo-complesso",
+        "forza": "hard",
+        "motivo": "Occorre conoscere la rappresentazione mediante inviluppo complesso."
+      },
+      {
+        "id": "sistemi-lineari-funzione-trasferimento",
+        "forza": "hard",
+        "motivo": "Occorre il prodotto degli spettri per un sistema lineare tempo-invariante."
+      }
+    ],
+    "tempo_studio_min": 90,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "T11 richiede questa dimostrazione e vale 10 punti nella raccolta."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "pp. 50-51 del PDF"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "pp. 42-44; p. 10.9 è un riferimento dello studente, non verificato sul libro"
+      }
+    ],
+    "risorse": []
+  },
+  {
+    "id": "dim-spettri-modulazione-prodotto",
+    "titolo": "Ricavare gli spettri di ampiezza e fase di una modulazione a prodotto",
+    "area": 5,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W4",
+    "sapere": "Usare la proprietà di traslazione spettrale e la simmetria coniugata del segnale reale. Comprendere condizioni e limiti del procedimento.",
+    "saper_fare": [
+      "Scrivere il coseno come somma di esponenziali.",
+      "Traslare X a ±ω₀ con fattore 1/2."
+    ],
+    "prerequisiti": [
+      {
+        "id": "modulazione-prodotto-dsb-ssb",
+        "forza": "hard",
+        "motivo": "Il risultato richiede la conoscenza della modulazione indicata."
+      }
+    ],
+    "tempo_studio_min": 70,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "T6 richiede questa dimostrazione."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "pp. 18-19 del PDF"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "pp. 28-31 del PDF; p. 6.12 è un riferimento dello studente"
+      }
+    ],
+    "risorse": []
+  },
+  {
+    "id": "dim-modulazione-prodotto-qam-errore-fase",
+    "titolo": "Ricavare la demodulazione a prodotto e la QAM con errore di fase",
+    "area": 5,
+    "tipo": "dimostrazione",
+    "gruppo": "A",
+    "worker": "W4",
+    "sapere": "Moltiplicare per le portanti locali in quadratura e isolare i termini in banda base. Comprendere condizioni e limiti del procedimento.",
+    "saper_fare": [
+      "QAM: x₁ cos ω₀t − x₂ sin ω₀t.",
+      "Moltiplicare per 2 cos(ω₀t − Δ) e −2 sin(ω₀t − Δ)."
+    ],
+    "prerequisiti": [
+      {
+        "id": "demodulazione-coerente-non-coerente",
+        "forza": "hard",
+        "motivo": "Il risultato richiede la conoscenza della modulazione indicata."
+      }
+    ],
+    "tempo_studio_min": 70,
+    "priorita": {
+      "livello": "alta",
+      "motivazione": "T10 richiede questa dimostrazione."
+    },
+    "fonti": [
+      {
+        "chiave": "FILE3",
+        "rif": "pp. 23-27 del PDF"
+      },
+      {
+        "chiave": "FILE1",
+        "rif": "pp. 37-40 del PDF; pp. 9.34, 9.36 sono riferimenti dello studente"
+      }
+    ],
+    "risorse": []
+  }
+]

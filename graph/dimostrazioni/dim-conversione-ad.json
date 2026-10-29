@@ -1,0 +1,213 @@
+{
+  "id": "dim-conversione-ad",
+  "titolo": "Descrivere i tre passi della conversione A/D e il segnale numerico ottenuto",
+  "domande_esame": [
+    "T7"
+  ],
+  "enunciato": "Descrivere i tre passi della conversione A/D e il segnale numerico ottenuto. Punteggio: NON TROVATO.",
+  "ipotesi": [
+    "Segnale limitato in banda a ωm e campionamento ideale con ωs > 2ωm; l’uguaglianza richiede condizioni ulteriori.",
+    "Il quantizzatore ha L livelli e il segnale resta nell’intervallo di ingresso senza sovraccarico."
+  ],
+  "notazione": [
+    {
+      "simbolo": "x(t)",
+      "significato": "Segnale analogico."
+    },
+    {
+      "simbolo": "T",
+      "significato": "Periodo di campionamento."
+    },
+    {
+      "simbolo": "x_n",
+      "significato": "Campione x(nT)."
+    },
+    {
+      "simbolo": "q_n",
+      "significato": "Livello quantizzato associato al campione."
+    },
+    {
+      "simbolo": "L",
+      "significato": "Numero di livelli."
+    },
+    {
+      "simbolo": "b",
+      "significato": "Numero di bit per parola."
+    }
+  ],
+  "varianti_notazione": [
+    {
+      "canonica": "\\omega_s=2\\pi/T",
+      "variante": "f₀=1/T",
+      "fonte": "file3 pp. 7-11"
+    }
+  ],
+  "idea": "Separare la discretizzazione del tempo da quantizzazione e codifica dei valori.",
+  "passi": [
+    {
+      "n": 1,
+      "testo": "Limitare la banda e scegliere il campionamento.",
+      "formula": "\\omega_s=\\frac{2\\pi}{T}>2\\omega_m",
+      "perche": "La separazione delle repliche evita aliasing per un segnale limitato in banda."
+    },
+    {
+      "n": 2,
+      "testo": "Prelevare i campioni.",
+      "formula": "x_n=x(nT)",
+      "perche": "La lettura agli istanti nT discretizza il tempo senza ancora quantizzare le ampiezze."
+    },
+    {
+      "n": 3,
+      "testo": "Quantizzare ogni campione.",
+      "formula": "q_n=Q(x_n),\\quad q_n\\in\\{q_1,\\ldots,q_L\\}",
+      "perche": "Il quantizzatore associa a ciascun intervallo un livello rappresentativo."
+    },
+    {
+      "n": 4,
+      "testo": "Codificare ciascun livello.",
+      "formula": "b=\\lceil\\log_2 L\\rceil,\\quad 2^b\\ge L",
+      "perche": "Le parole binarie di lunghezza b sono 2 alla b e devono distinguere tutti i livelli."
+    },
+    {
+      "n": 5,
+      "testo": "Calcolare la velocità binaria senza bit aggiuntivi.",
+      "formula": "R_b=\\frac{b}{T}=b f_s",
+      "perche": "Ogni campione produce b bit e i campioni si ripetono alla frequenza fs."
+    }
+  ],
+  "formula_finale": "x(t)\\longrightarrow x_n\\longrightarrow q_n\\longrightarrow (b_n^{(1)},\\ldots,b_n^{(b)})",
+  "figure": [
+    {
+      "id": "catena",
+      "tipo": "blocchi",
+      "titolo": "Catena di conversione",
+      "descrizione": "Schema funzionale della conversione: i blocchi sono disposti nell’ordine in cui il segnale viene elaborato.",
+      "blocchi": [
+        {
+          "id": "b0",
+          "etichetta": "x(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 0
+        },
+        {
+          "id": "b1",
+          "etichetta": "Campionatore",
+          "forma": "rettangolo",
+          "colonna": 1,
+          "riga": 0
+        },
+        {
+          "id": "b2",
+          "etichetta": "Quantizzatore",
+          "forma": "rettangolo",
+          "colonna": 2,
+          "riga": 0
+        },
+        {
+          "id": "b3",
+          "etichetta": "Codificatore",
+          "forma": "rettangolo",
+          "colonna": 3,
+          "riga": 0
+        },
+        {
+          "id": "b4",
+          "etichetta": "Bit PCM",
+          "forma": "uscita",
+          "colonna": 4,
+          "riga": 0
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "b0",
+          "a": "b1"
+        },
+        {
+          "da": "b1",
+          "a": "b2"
+        },
+        {
+          "da": "b2",
+          "a": "b3"
+        },
+        {
+          "da": "b3",
+          "a": "b4"
+        }
+      ]
+    }
+  ],
+  "a_voce": "Si parte da un segnale analogico con banda limitata. Dopo il filtraggio antialias si preleva un campione ogni T secondi, scegliendo la frequenza di campionamento maggiore del doppio della massima frequenza del segnale. Il risultato è una sequenza discreta nel tempo, ma ancora continua nei valori. La quantizzazione sostituisce ogni campione con uno dei livelli disponibili: è il passo irreversibile, perché molti valori diversi diventano lo stesso livello. Infine il codificatore associa a ogni livello una parola binaria. Il numero di bit deve permettere di distinguere tutti i livelli; moltiplicando i bit per campione per i campioni al secondo si ottiene la velocità binaria PCM. La condizione sul campionamento elimina l’aliasing ideale, non l’errore di quantizzazione.",
+  "errori_frequenti": [
+    {
+      "errore": "Campionare appena sopra la frequenza massima.",
+      "perche_sbagliato": "Le repliche possono sovrapporsi; file3 p. 7 riporta un criterio insufficiente.",
+      "correzione": "Usare una frequenza maggiore del doppio della massima frequenza."
+    },
+    {
+      "errore": "Confondere campionamento e quantizzazione.",
+      "perche_sbagliato": "Il primo discretizza il tempo, la seconda i valori.",
+      "correzione": "Distinguere le due operazioni e la codifica."
+    }
+  ],
+  "versione_compatta": [
+    "Campionare con ωs > 2ωm.",
+    "Quantizzare i campioni su L livelli.",
+    "Codificare ogni livello con b = ceil(log₂ L) bit.",
+    "Senza overhead Rb = b/T."
+  ],
+  "a_buchi": {
+    "testo": "La sequenza campionata vale ___1___. Il quantizzatore associa ___2___ livelli; servono almeno ___3___ bit perché ___4___.",
+    "soluzioni": {
+      "1": [
+        "x(nT)"
+      ],
+      "2": [
+        "L"
+      ],
+      "3": [
+        "ceil(log2 L)",
+        "⌈log₂ L⌉"
+      ],
+      "4": [
+        "2^b ≥ L",
+        "2^b >= L"
+      ]
+    }
+  },
+  "richiamo_attivo": [
+    {
+      "domanda": "Che cosa discretizza il campionamento?",
+      "risposta": "Il tempo."
+    },
+    {
+      "domanda": "Quale operazione è irreversibile?",
+      "risposta": "La quantizzazione dei campioni."
+    },
+    {
+      "domanda": "Come si calcola il bit rate PCM senza overhead?",
+      "risposta": "Moltiplicando bit per campione per campioni al secondo."
+    }
+  ],
+  "fonti": [
+    {
+      "chiave": "FILE3",
+      "rif": "pp. 7-9 del PDF"
+    },
+    {
+      "chiave": "FILE1",
+      "rif": "pp. 32-34 del PDF, riferimento p. 7.4 dello studente"
+    }
+  ],
+  "verifica": {
+    "stato": "da_verificare",
+    "data": "2026-10-29",
+    "note": "Schema e ordine confrontati con file3 pp. 7-9. File3 p. 7 indica fₛ > fₘ, condizione insufficiente; file1 p. 32 indica il doppio. La condizione rigorosamente sufficiente qui usa >.",
+    "punti_aperti": [
+      "Confronto completo con il testo del docente: NON TROVATO.",
+      "Verifica puntuale dell’intero sviluppo su file1: NON TROVATO."
+    ]
+  }
+}

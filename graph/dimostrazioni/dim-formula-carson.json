@@ -1,0 +1,189 @@
+{
+  "id": "dim-formula-carson",
+  "titolo": "Regola di Carson",
+  "domande_esame": [
+    "M12",
+    "M13",
+    "M14"
+  ],
+  "enunciato": "La regola di Carson stima la banda occupata di una modulazione angolare come il doppio della somma tra la massima deviazione di pulsazione e la massima pulsazione modulante. Punteggio: NON TROVATO.",
+  "ipotesi": [
+    "Stima approssimata di banda occupata, non supporto spettrale esatto.",
+    "Per la motivazione si considera una modulante sinusoidale di pulsazione positiva e indice di modulazione β."
+  ],
+  "notazione": [
+    {
+      "simbolo": "\\Delta\\omega_{\\max}",
+      "significato": "Massima deviazione di pulsazione istantanea."
+    },
+    {
+      "simbolo": "\\omega_m",
+      "significato": "Massima pulsazione modulante."
+    },
+    {
+      "simbolo": "\\beta",
+      "significato": "Indice di modulazione per il caso sinusoidale."
+    }
+  ],
+  "idea": "Contare approssimativamente le coppie di bande laterali significative nel caso sinusoidale.",
+  "passi": [
+    {
+      "n": 1,
+      "testo": "Considerare una fase sinusoidale.",
+      "formula": "s(t)=A\\cos(\\omega_0 t+\\beta\\sin\\omega_m t)",
+      "perche": "È un modello di modulazione angolare sinusoidale."
+    },
+    {
+      "n": 2,
+      "testo": "Calcolare la massima deviazione di pulsazione.",
+      "formula": "\\Delta\\omega_{\\max}=\\beta\\omega_m",
+      "perche": "La derivata della fase eccedente è βωm coseno, il cui valore assoluto massimo è βωm."
+    },
+    {
+      "n": 3,
+      "testo": "Individuare le righe laterali.",
+      "formula": "\\omega=\\omega_0+n\\omega_m,\\quad n\\in\\mathbb{Z}",
+      "perche": "Lo sviluppo di Fourier della fase periodica produce righe spaziate della pulsazione modulante."
+    },
+    {
+      "n": 4,
+      "testo": "Applicare la stima empirica dell’ordine significativo.",
+      "formula": "n_{\\max}\\approx\\beta+1",
+      "perche": "È una regola pratica sulle ampiezze delle funzioni di Bessel, non un limite esatto."
+    },
+    {
+      "n": 5,
+      "testo": "Contare entrambi i lati della portante.",
+      "formula": "B_\\omega\\approx2(\\beta+1)\\omega_m",
+      "perche": "La distanza tra le due righe estreme stimate è due volte il loro scostamento dalla portante."
+    }
+  ],
+  "formula_finale": "B_\\omega\\approx 2(\\Delta\\omega_{\\max}+\\omega_m)",
+  "figure": [
+    {
+      "id": "righe-carson",
+      "tipo": "grafico",
+      "titolo": "Bande laterali: esempio schematico",
+      "descrizione": "Righe indicative intorno alla portante; le ampiezze sono schematiche e non rappresentano coefficienti di Bessel calcolati.",
+      "asse_x": {
+        "etichetta": "Scostamento dalla portante (unità di ωm)",
+        "min": -4,
+        "max": 4
+      },
+      "asse_y": {
+        "etichetta": "Ampiezza indicativa",
+        "min": 0,
+        "max": 1
+      },
+      "serie": [
+        {
+          "stile": "righe",
+          "punti": [
+            [
+              -3,
+              0.1
+            ],
+            [
+              -2,
+              0.3
+            ],
+            [
+              -1,
+              0.6
+            ],
+            [
+              0,
+              0.8
+            ],
+            [
+              1,
+              0.6
+            ],
+            [
+              2,
+              0.3
+            ],
+            [
+              3,
+              0.1
+            ]
+          ],
+          "etichetta": "Righe indicative"
+        }
+      ]
+    }
+  ],
+  "a_voce": "La regola di Carson fornisce una stima pratica della banda occupata da un segnale a modulazione angolare. La massima deviazione di pulsazione e la massima pulsazione del messaggio devono essere espresse nella stessa unità. Per capire il fattore due considero il caso di un messaggio sinusoidale: lo spettro presenta righe su entrambi i lati della portante, distanziate della pulsazione modulante. La regola approssima l’ordine delle bande laterali significative con l’indice di modulazione più uno. Moltiplicando per la spaziatura e contando entrambi i lati ottengo la formula. Non è un taglio spettrale rigoroso: le bande laterali possono continuare oltre la stima. La motivazione è una ricostruzione e non va attribuita al docente.",
+  "errori_frequenti": [
+    {
+      "errore": "Interpretare la formula come supporto esatto.",
+      "perche_sbagliato": "Le bande laterali possono proseguire oltre la banda stimata.",
+      "correzione": "Presentarla come regola approssimata."
+    },
+    {
+      "errore": "Mescolare hertz e radianti al secondo.",
+      "perche_sbagliato": "Le grandezze sommate devono avere la stessa unità.",
+      "correzione": "Usare tutte pulsazioni o tutte frequenze."
+    }
+  ],
+  "versione_compatta": [
+    "Per un tono: β = Δωmax/ωm.",
+    "Ordine significativo stimato: β + 1.",
+    "Bω ≈ 2(Δωmax + ωm)."
+  ],
+  "a_buchi": {
+    "testo": "La stima conta ___1___ lati della portante. Per un tono β = ___2___; l’ordine massimo è approssimato con β + 1 perché si usa una ___3___ sulle ampiezze laterali.",
+    "soluzioni": {
+      "1": [
+        "due",
+        "2"
+      ],
+      "2": [
+        "Δωmax/ωm"
+      ],
+      "3": [
+        "regola pratica",
+        "stima empirica"
+      ]
+    }
+  },
+  "richiamo_attivo": [
+    {
+      "domanda": "La banda è un supporto esatto?",
+      "risposta": "No, è una stima pratica."
+    },
+    {
+      "domanda": "Quali grandezze si sommano?",
+      "risposta": "Massima deviazione di pulsazione e massima pulsazione modulante."
+    },
+    {
+      "domanda": "Da dove viene il fattore due?",
+      "risposta": "Dalle bande laterali sui due lati della portante."
+    }
+  ],
+  "collegamenti": [
+    "modulazioni-angolo-pm-fm"
+  ],
+  "fonti": [
+    {
+      "chiave": "FILE3",
+      "rif": "p. 28"
+    },
+    {
+      "chiave": "FILE1",
+      "rif": "p. 41, riferimento p. 9.43 non verificato sul libro"
+    },
+    {
+      "chiave": "RICOSTRUZIONE",
+      "rif": "NON TROVATO"
+    }
+  ],
+  "verifica": {
+    "stato": "ricostruzione_non_del_prof",
+    "data": "2026-10-29",
+    "note": "File1 p. 41 e file3 p. 28 presentano la formula, non la derivazione; motivazione qui ricostruita per il caso sinusoidale.",
+    "punti_aperti": [
+      "Confronto della derivazione con il testo del docente: NON TROVATO."
+    ]
+  }
+}

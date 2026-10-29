@@ -1,0 +1,304 @@
+{
+  "id": "dim-conversione-da",
+  "titolo": "Descrivere la conversione D/A e la ricostruzione tramite filtro passa-basso",
+  "domande_esame": [
+    "T8"
+  ],
+  "enunciato": "Descrivere la conversione D/A e la ricostruzione tramite filtro passa-basso. Punteggio: NON TROVATO.",
+  "ipotesi": [
+    "Parole ricevute senza errori, codifica nota e campionamento senza aliasing nel caso ideale non quantizzato.",
+    "Impulso di ricostruzione g noto e G(ω) diverso da zero nella banda utile; si trascurano ritardi e rumore di canale.",
+    "La formula spettrale con X vale trascurando la quantizzazione: con campioni quantizzati il risultato differisce dal segnale originale."
+  ],
+  "notazione": [
+    {
+      "simbolo": "q_n",
+      "significato": "Valore quantizzato decodificato."
+    },
+    {
+      "simbolo": "g(t)",
+      "significato": "Impulso elementare del segnale PAM."
+    },
+    {
+      "simbolo": "G(\\omega)",
+      "significato": "Trasformata di g."
+    },
+    {
+      "simbolo": "\\omega_s",
+      "significato": "Pulsazione di campionamento."
+    },
+    {
+      "simbolo": "X(\\omega)",
+      "significato": "Trasformata del segnale originale."
+    }
+  ],
+  "varianti_notazione": [
+    {
+      "canonica": "\\omega_s=2\\pi/T",
+      "variante": "f₀=1/T",
+      "fonte": "file3 pp. 7-11"
+    }
+  ],
+  "idea": "Decodificare i livelli, costruire il PAM e isolare la replica centrale con equalizzazione.",
+  "passi": [
+    {
+      "n": 1,
+      "testo": "Decodificare ogni parola nel livello corrispondente.",
+      "formula": "\\operatorname{dec}(b_n^{(1)},\\ldots,b_n^{(b)})=q_n",
+      "perche": "La mappa di decodifica è l’inversa della codifica sui livelli ammessi."
+    },
+    {
+      "n": 2,
+      "testo": "Costruire il segnale PAM associato.",
+      "formula": "s_q(t)=\\sum_{n=-\\infty}^{\\infty}q_n g(t-nT)",
+      "perche": "Ogni livello comanda un impulso traslato all’istante del campione."
+    },
+    {
+      "n": 3,
+      "testo": "Trascurare per il calcolo ideale l’errore di quantizzazione.",
+      "formula": "s(t)=\\sum_{n=-\\infty}^{\\infty}x(nT)g(t-nT)",
+      "perche": "Ponendo qn uguale al campione ideale si può applicare la formula di campionamento."
+    },
+    {
+      "n": 4,
+      "testo": "Scrivere lo spettro del PAM ideale.",
+      "formula": "S(\\omega)=\\frac{G(\\omega)}{T}\\sum_{k=-\\infty}^{\\infty}X(\\omega-k\\omega_s)",
+      "perche": "Il treno di campioni genera repliche periodiche e la forma d’impulso moltiplica lo spettro."
+    },
+    {
+      "n": 5,
+      "testo": "Isolare la replica centrale e compensare la forma d’impulso.",
+      "formula": "X_r(\\omega)=\\frac{T}{G(\\omega)}\\frac{G(\\omega)}{T}X(\\omega)=X(\\omega),\\quad |\\omega|\\le\\omega_m",
+      "perche": "Le repliche non si sovrappongono e G è non nullo nella banda utile.",
+      "figura": "repliche"
+    },
+    {
+      "n": 6,
+      "testo": "Riconoscere l’effetto della quantizzazione.",
+      "formula": "e(t)=x_r(t)-x(t)",
+      "perche": "La decodifica ripristina i livelli quantizzati, non i valori originali perduti."
+    }
+  ],
+  "formula_finale": "S(\\omega)=\\frac{G(\\omega)}{T}\\sum_{k\\in\\mathbb{Z}}X(\\omega-k\\omega_s),\\quad X_r(\\omega)=X(\\omega)\\ \\text{nel caso ideale}",
+  "figure": [
+    {
+      "id": "catena",
+      "tipo": "blocchi",
+      "titolo": "Catena di conversione",
+      "descrizione": "Schema funzionale della conversione: i blocchi sono disposti nell’ordine in cui il segnale viene elaborato.",
+      "blocchi": [
+        {
+          "id": "b0",
+          "etichetta": "Bit PCM",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 0
+        },
+        {
+          "id": "b1",
+          "etichetta": "Decodificatore",
+          "forma": "rettangolo",
+          "colonna": 1,
+          "riga": 0
+        },
+        {
+          "id": "b2",
+          "etichetta": "PAM",
+          "forma": "rettangolo",
+          "colonna": 2,
+          "riga": 0
+        },
+        {
+          "id": "b3",
+          "etichetta": "Passa-basso",
+          "forma": "rettangolo",
+          "colonna": 3,
+          "riga": 0
+        },
+        {
+          "id": "b4",
+          "etichetta": "Equalizzatore",
+          "forma": "rettangolo",
+          "colonna": 4,
+          "riga": 0
+        },
+        {
+          "id": "b5",
+          "etichetta": "xᵣ(t)",
+          "forma": "uscita",
+          "colonna": 5,
+          "riga": 0
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "b0",
+          "a": "b1"
+        },
+        {
+          "da": "b1",
+          "a": "b2"
+        },
+        {
+          "da": "b2",
+          "a": "b3"
+        },
+        {
+          "da": "b3",
+          "a": "b4"
+        },
+        {
+          "da": "b4",
+          "a": "b5"
+        }
+      ]
+    },
+    {
+      "id": "repliche",
+      "tipo": "grafico",
+      "titolo": "Replica centrale e repliche laterali",
+      "descrizione": "Esempio schematico di replica centrale isolata e repliche laterali separate quando la pulsazione di campionamento supera il doppio della banda.",
+      "asse_x": {
+        "etichetta": "Pulsazione ω (unità arbitrarie)",
+        "min": -8,
+        "max": 8
+      },
+      "asse_y": {
+        "etichetta": "Modulo indicativo",
+        "min": 0,
+        "max": 1.2
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "Replica centrale",
+          "punti": [
+            [
+              -2,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              2,
+              0
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "Repliche laterali",
+          "punti": [
+            [
+              -7,
+              0
+            ],
+            [
+              -5,
+              1
+            ],
+            [
+              -3,
+              0
+            ],
+            [
+              -2.99,
+              0
+            ],
+            [
+              2.99,
+              0
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              7,
+              0
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "a_voce": "Il decodificatore trasforma ogni parola in un livello quantizzato. I livelli comandano impulsi traslati e producono un segnale PAM. Se considero il caso ideale senza errore di quantizzazione, il suo spettro è il prodotto della trasformata dell’impulso per le repliche periodiche dello spettro originale, con fattore uno su T. Se la frequenza di campionamento è sufficiente, le repliche sono separate e il filtro passa-basso isola quella centrale. Un equalizzatore con risposta T diviso G compensa la forma dell’impulso nella banda utile, a condizione che G non si annulli. In pratica la decodifica restituisce i livelli quantizzati, non i campioni esatti: il segnale ricostruito può quindi differire dall’originale anche con filtro ideale.",
+  "errori_frequenti": [
+    {
+      "errore": "Ritenere che la decodifica cancelli l’errore di quantizzazione.",
+      "perche_sbagliato": "La quantizzazione associa molti valori allo stesso livello.",
+      "correzione": "Distinguere ricostruzione ideale e segnale realmente quantizzato."
+    },
+    {
+      "errore": "Equalizzare dove G si annulla.",
+      "perche_sbagliato": "L’inverso T/G non è definito nei punti di zero.",
+      "correzione": "Verificare che G sia non nullo sulla banda da ricostruire."
+    }
+  ],
+  "versione_compatta": [
+    "Decodificare le parole in livelli quantizzati.",
+    "Generare il PAM e isolare la replica centrale.",
+    "Equalizzare con T/G dove G è non nullo.",
+    "La quantizzazione lascia un errore residuo."
+  ],
+  "a_buchi": {
+    "testo": "La decodifica restituisce i ___1___. Le repliche spettrali sono distanziate di ___2___. Il filtro isola la replica centrale perché non c’è ___3___; l’equalizzatore usa ___4___.",
+    "soluzioni": {
+      "1": [
+        "livelli quantizzati",
+        "livelli"
+      ],
+      "2": [
+        "ωs",
+        "ωₛ"
+      ],
+      "3": [
+        "aliasing",
+        "sovrapposizione"
+      ],
+      "4": [
+        "T/G",
+        "T/G(ω)"
+      ]
+    }
+  },
+  "richiamo_attivo": [
+    {
+      "domanda": "La decodifica ripristina i campioni esatti?",
+      "risposta": "Non in generale, perché la quantizzazione è irreversibile."
+    },
+    {
+      "domanda": "Che cosa isola il filtro passa-basso?",
+      "risposta": "La replica centrale dello spettro."
+    },
+    {
+      "domanda": "Quando T/G è utilizzabile?",
+      "risposta": "Quando G non è nullo nella banda utile."
+    }
+  ],
+  "fonti": [
+    {
+      "chiave": "FILE3",
+      "rif": "pp. 10-11 del PDF"
+    },
+    {
+      "chiave": "FILE1",
+      "rif": "pp. 35-36 del PDF, riferimento p. 7.8 dello studente"
+    }
+  ],
+  "verifica": {
+    "stato": "da_verificare",
+    "data": "2026-10-29",
+    "note": "Ordine e formule confrontati con file3 pp. 10-11 e file1 p. 35; la formula con X è dichiarata ideale per non confonderla con i campioni quantizzati.",
+    "punti_aperti": [
+      "Confronto completo con il testo del docente: NON TROVATO.",
+      "Verifica puntuale dell’intero sviluppo su file1: NON TROVATO."
+    ]
+  }
+}

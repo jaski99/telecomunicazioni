@@ -1,0 +1,274 @@
+{
+  "id": "dim-modulazione-prodotto-qam-errore-fase",
+  "titolo": "Ricavare la demodulazione a prodotto e la QAM con errore di fase",
+  "domande_esame": [
+    "T10"
+  ],
+  "enunciato": "Ricavare la demodulazione a prodotto e la QAM con errore di fase. Punteggio: NON TROVATO.",
+  "ipotesi": [
+    "I messaggi x₁ e x₂ sono reali e limitati in banda sotto ω₀; il filtro passa-basso elimina i termini attorno a 2ω₀.",
+    "Oscillatore locale di frequenza corretta e scarto di fase costante Δ; guadagno del demodulatore pari a 2."
+  ],
+  "notazione": [
+    {
+      "simbolo": "x_1(t)",
+      "significato": "Messaggio in fase."
+    },
+    {
+      "simbolo": "x_2(t)",
+      "significato": "Messaggio in quadratura."
+    },
+    {
+      "simbolo": "\\omega_0",
+      "significato": "Pulsazione della portante."
+    },
+    {
+      "simbolo": "\\Delta",
+      "significato": "Errore di fase locale nella convenzione cos(ω₀t−Δ)."
+    }
+  ],
+  "varianti_notazione": [
+    {
+      "canonica": "\\omega_0",
+      "variante": "m₀",
+      "fonte": "file3 pp. 23-24"
+    }
+  ],
+  "idea": "Moltiplicare per le portanti locali in quadratura e isolare i termini in banda base.",
+  "passi": [
+    {
+      "n": 1,
+      "testo": "Formare la QAM con portanti ortogonali.",
+      "formula": "s(t)=x_1(t)\\cos\\omega_0t-x_2(t)\\sin\\omega_0t",
+      "perche": "La somma di due prodotti trasporta i due messaggi in quadratura.",
+      "figura": "modulatore-qam"
+    },
+    {
+      "n": 2,
+      "testo": "Moltiplicare per le due portanti locali.",
+      "formula": "u_1=2s(t)\\cos(\\omega_0t-\\Delta),\\quad u_2=-2s(t)\\sin(\\omega_0t-\\Delta)",
+      "perche": "La stessa fase locale alimenta i due rami separati da un quarto di periodo."
+    },
+    {
+      "n": 3,
+      "testo": "Separare i termini costanti dal doppio della portante.",
+      "formula": "2\\cos A\\cos B=\\cos(A-B)+\\cos(A+B)",
+      "perche": "Le identità trigonometriche scompongono ciascun prodotto in differenza e somma."
+    },
+    {
+      "n": 4,
+      "testo": "Filtrare il primo ramo.",
+      "formula": "\\hat{x}_1=x_1\\cos\\Delta-x_2\\sin\\Delta",
+      "perche": "Il passa-basso elimina i termini centrati a 2ω₀ e conserva la componente in banda base."
+    },
+    {
+      "n": 5,
+      "testo": "Filtrare il secondo ramo.",
+      "formula": "\\hat{x}_2=x_2\\cos\\Delta+x_1\\sin\\Delta",
+      "perche": "Le identità prodotto-somma e il filtro lasciano la seconda combinazione lineare."
+    },
+    {
+      "n": 6,
+      "testo": "Considerare la demodulazione coerente ideale.",
+      "formula": "\\Delta=0\\ \\Longrightarrow\\ (\\hat{x}_1,\\hat{x}_2)=(x_1,x_2)",
+      "perche": "Per fase corretta cos Δ vale uno e sin Δ vale zero."
+    }
+  ],
+  "formula_finale": "\\begin{pmatrix}\\hat{x}_1\\\\\\hat{x}_2\\end{pmatrix}=\\begin{pmatrix}\\cos\\Delta&-\\sin\\Delta\\\\\\sin\\Delta&\\cos\\Delta\\end{pmatrix}\\begin{pmatrix}x_1\\\\x_2\\end{pmatrix}",
+  "figure": [
+    {
+      "id": "catena",
+      "tipo": "blocchi",
+      "titolo": "Catena di conversione",
+      "descrizione": "Schema funzionale della conversione: i blocchi sono disposti nell’ordine in cui il segnale viene elaborato.",
+      "blocchi": [
+        {
+          "id": "b0",
+          "etichetta": "s(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 0
+        },
+        {
+          "id": "b1",
+          "etichetta": "Demodulatore I/Q",
+          "forma": "rettangolo",
+          "colonna": 1,
+          "riga": 0
+        },
+        {
+          "id": "b2",
+          "etichetta": "Passa-basso",
+          "forma": "rettangolo",
+          "colonna": 2,
+          "riga": 0
+        },
+        {
+          "id": "b3",
+          "etichetta": "x̂₁, x̂₂",
+          "forma": "uscita",
+          "colonna": 3,
+          "riga": 0
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "b0",
+          "a": "b1"
+        },
+        {
+          "da": "b1",
+          "a": "b2"
+        },
+        {
+          "da": "b2",
+          "a": "b3"
+        }
+      ]
+    },
+    {
+      "id": "modulatore-qam",
+      "tipo": "blocchi",
+      "titolo": "Modulatore QAM",
+      "descrizione": "I due messaggi moltiplicano portanti in quadratura e le uscite vengono sommate per formare il segnale QAM.",
+      "blocchi": [
+        {
+          "id": "i",
+          "etichetta": "x₁(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 0
+        },
+        {
+          "id": "q",
+          "etichetta": "x₂(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 2
+        },
+        {
+          "id": "mi",
+          "etichetta": "× cos ω₀t",
+          "forma": "moltiplicatore",
+          "colonna": 1,
+          "riga": 0
+        },
+        {
+          "id": "mq",
+          "etichetta": "× −sin ω₀t",
+          "forma": "moltiplicatore",
+          "colonna": 1,
+          "riga": 2
+        },
+        {
+          "id": "somma",
+          "etichetta": "+",
+          "forma": "sommatore",
+          "colonna": 2,
+          "riga": 1
+        },
+        {
+          "id": "out",
+          "etichetta": "s(t)",
+          "forma": "uscita",
+          "colonna": 3,
+          "riga": 1
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "i",
+          "a": "mi"
+        },
+        {
+          "da": "q",
+          "a": "mq"
+        },
+        {
+          "da": "mi",
+          "a": "somma"
+        },
+        {
+          "da": "mq",
+          "a": "somma"
+        },
+        {
+          "da": "somma",
+          "a": "out"
+        }
+      ]
+    }
+  ],
+  "a_voce": "La QAM combina due messaggi moltiplicati per portanti in quadratura, coseno e meno seno, alla stessa pulsazione. Il ricevitore usa due moltiplicatori e due filtri passa-basso. Se l’oscillatore locale è in fase, i termini incrociati oscillano al doppio della portante e sono eliminati dai filtri; i due messaggi vengono ricostruiti separatamente. Se invece il riferimento ha uno scarto costante delta, lo sviluppo dei prodotti mostra che ciascuna uscita contiene una parte del messaggio desiderato e una parte dell’altro. Con la convenzione adottata la prima uscita contiene x uno coseno delta meno x due seno delta, la seconda x due coseno delta più x uno seno delta. Geometricamente la coppia è ruotata, non semplicemente attenuata.",
+  "errori_frequenti": [
+    {
+      "errore": "Usare lo stesso segno per entrambi i termini incrociati.",
+      "perche_sbagliato": "I due rami corrispondono a una rotazione e hanno segni opposti.",
+      "correzione": "Ricavare i segni dalle portanti locali dichiarate."
+    },
+    {
+      "errore": "Affermare che un errore di fase attenua soltanto.",
+      "perche_sbagliato": "In QAM i messaggi interferiscono reciprocamente.",
+      "correzione": "Usare la matrice di rotazione e valutare entrambi i rami."
+    }
+  ],
+  "versione_compatta": [
+    "QAM: x₁ cos ω₀t − x₂ sin ω₀t.",
+    "Moltiplicare per 2 cos(ω₀t − Δ) e −2 sin(ω₀t − Δ).",
+    "Filtrare i termini al doppio della portante.",
+    "Le uscite sono la coppia ruotata di Δ."
+  ],
+  "a_buchi": {
+    "testo": "Le portanti dei due rami sono in ___1___. Il filtro elimina i termini a ___2___ e conserva la banda base perché le bande sono ___3___. Se Δ = 0 si ottengono ___4___.",
+    "soluzioni": {
+      "1": [
+        "quadratura"
+      ],
+      "2": [
+        "2ω₀",
+        "2ω0"
+      ],
+      "3": [
+        "separate",
+        "disgiunte"
+      ],
+      "4": [
+        "x₁ e x₂",
+        "i messaggi originali"
+      ]
+    }
+  },
+  "richiamo_attivo": [
+    {
+      "domanda": "Qual è l’effetto dello scarto di fase in QAM?",
+      "risposta": "Una rotazione delle due componenti, con interferenza reciproca."
+    },
+    {
+      "domanda": "Che cosa elimina il filtro passa-basso?",
+      "risposta": "I termini centrati sul doppio della pulsazione portante."
+    },
+    {
+      "domanda": "Che cosa accade per Δ = 0?",
+      "risposta": "Le uscite ideali coincidono con i due messaggi."
+    }
+  ],
+  "fonti": [
+    {
+      "chiave": "FILE3",
+      "rif": "pp. 23-27 del PDF"
+    },
+    {
+      "chiave": "FILE1",
+      "rif": "pp. 37-40 del PDF; pp. 9.34, 9.36 sono riferimenti dello studente"
+    }
+  ],
+  "verifica": {
+    "stato": "da_verificare",
+    "data": "2026-10-29",
+    "note": "Convenzione dei segni confrontata con file3 pp. 23-24. Il confronto completo con file1 e file3 pp. 25-27 resta da completare.",
+    "punti_aperti": [
+      "Confronto completo con il testo del docente: NON TROVATO.",
+      "Verifica puntuale dell’intero sviluppo su file1: NON TROVATO."
+    ]
+  }
+}
