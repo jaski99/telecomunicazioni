@@ -235,6 +235,7 @@ def test_nodo_contenuto_reale(server, width, height, route):
                 _,
                 _,
                 errore_pagina,
+                _h1_count,
             ) = controlla_pagina(page, errori)
         finally:
             browser.close()
@@ -281,6 +282,7 @@ def test_dim_contenuto_reale(server, width, height, route):
                 _,
                 _,
                 errore_pagina,
+                _h1_count,
             ) = controlla_pagina(page, errori)
         finally:
             browser.close()
@@ -336,6 +338,7 @@ def test_dim_modalita_tutte(server, width, height, route):
                 _,
                 _,
                 errore_pagina,
+                _h1_count,
             ) = controlla_pagina(page, errori)
         finally:
             browser.close()
@@ -374,6 +377,7 @@ def test_offline_nodo_dim(server, width, height, route):
                 _,
                 _,
                 errore_pagina,
+                _h1_count,
             ) = controlla_pagina(page, errori)
         finally:
             browser.close()
@@ -412,6 +416,7 @@ def test_offline_quiz(server, width, height):
                 _,
                 _,
                 _,
+                _h1_count,
             ) = controlla_pagina(page, errori)
         finally:
             browser.close()
