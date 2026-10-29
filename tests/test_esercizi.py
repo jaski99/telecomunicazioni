@@ -22,6 +22,99 @@ def lesson(lesson_id):
     return load_json(LESSONS_DIR / f"{lesson_id}.json")
 
 
+def _gruppo_latex(testo, inizio):
+    """Legge un gruppo bilanciato {…} da una stringa LaTeX."""
+    assert testo[inizio] == "{"
+    profondita = 1
+    indice = inizio + 1
+    while indice < len(testo) and profondita:
+        if testo[indice] == "{":
+            profondita += 1
+        elif testo[indice] == "}":
+            profondita -= 1
+        indice += 1
+    assert profondita == 0, f"Gruppo LaTeX non bilanciato: {testo!r}"
+    return testo[inizio + 1 : indice - 1], indice
+
+
+def _frazioni_in_testo(testo):
+    """Riduce ricorsivamente frazioni e radici a una forma leggibile per i test."""
+    backslash = chr(92)
+    risultato = []
+    indice = 0
+    comandi = {backslash + "frac{": "frac", backslash + "sqrt{": "sqrt"}
+    while indice < len(testo):
+        comando = next((nome for nome in comandi if testo.startswith(nome, indice)), None)
+        if comando is None:
+            risultato.append(testo[indice])
+            indice += 1
+            continue
+        corpo, fine = _gruppo_latex(testo, indice + len(comando) - 1)
+        corpo = _frazioni_in_testo(corpo)
+        if comandi[comando] == "sqrt":
+            risultato.append("√" + corpo)
+            indice = fine
+            continue
+        if fine >= len(testo) or testo[fine] != "{":
+            risultato.append(testo[indice])
+            indice += 1
+            continue
+        denominatore, fine_den = _gruppo_latex(testo, fine)
+        denominatore = _frazioni_in_testo(denominatore)
+        numeratore = corpo
+        if any(operatore in numeratore for operatore in "+−-") and not numeratore.startswith(("-", "−")):
+            numeratore = f"({numeratore})"
+        if len(denominatore) > 1 and not denominatore.startswith("√"):
+            denominatore = f"({denominatore})"
+        risultato.append(f"{numeratore}/{denominatore}")
+        indice = fine_den
+    return "".join(risultato)
+
+
+def _normalizza_latex(testo):
+    """Normalizza solo la sintassi LaTeX per mantenere leggibili i test numerici."""
+    backslash = chr(92)
+    testo = _frazioni_in_testo(testo.replace("$", ""))
+    for funzione in ("sinc", "arg"):
+        testo = testo.replace(backslash + "operatorname{" + funzione + "}", funzione)
+    testo = testo.replace(backslash + "mathrm{k}", "k").replace(backslash + "mathrm{F}", "F")
+    macro = {
+        "omega": "ω", "tau": "τ", "sigma": "σ", "pi": "π", "lambda": "λ",
+        "mu": "μ", "phi": "φ", "Delta": "Δ", "Omega": "Ω", "alpha": "α",
+        "beta": "β", "gamma": "γ", "sin": "sin", "cos": "cos", "tan": "tan",
+        "exp": "exp", "arctan": "atan", "log": "log", "approx": "≈", "cdot": "·",
+        "to": "→", "pm": "±", "ne": "≠", "le": "≤", "ge": "≥", "infty": "∞",
+        "int": "∫", "sum": "Σ", "lceil": "ceil", "rceil": "ceil",
+    }
+    for comando, simbolo in sorted(macro.items(), key=lambda item: -len(item[0])):
+        testo = testo.replace(backslash + comando, simbolo)
+    for comando in ("qquad", "quad", ",", ";", ":"):
+        testo = testo.replace(backslash + comando, " ")
+    testo = testo.replace(backslash + "!", "").replace(backslash + "left", "").replace(backslash + "right", "")
+
+    pedici = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
+    apici = str.maketrans("0123456789+-", "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻")
+    lettere_pedice = {"n": "ₙ", "m": "ₘ", "y": "ᵧ", "r": "ᵣ", "c": "c"}
+    risultato = []
+    indice = 0
+    while indice < len(testo):
+        if testo.startswith("_{", indice) or testo.startswith("^{", indice):
+            apice = testo[indice] == "^"
+            corpo, fine = _gruppo_latex(testo, indice + 1)
+            if apice:
+                valore = corpo.translate(apici) if all(char in "0123456789+-" for char in corpo) else "^" + corpo
+            elif len(corpo) == 1 and not corpo.isdigit():
+                valore = lettere_pedice.get(corpo, "_" + corpo)
+            else:
+                valore = corpo.translate(pedici)
+            risultato.append(valore)
+            indice = fine
+        else:
+            risultato.append(testo[indice])
+            indice += 1
+    return "".join(risultato)
+
+
 def test_w6_nodes_have_specific_learning_outcomes_and_validate():
     validator = Draft202012Validator(load_json(SCHEMA_DIR / "node.schema.json"))
     nodes = []
@@ -57,9 +150,9 @@ def test_w6_lessons_validate_and_autonomous_solutions_are_answers():
 
 def test_periodic_rectangles_figure_matches_sinc_coefficients():
     data = lesson("es-spettri-impulsi-periodici")
-    solution = data["esercizio_autonomo"]["soluzione_attesa"]
+    solution = _normalizza_latex(data["esercizio_autonomo"]["soluzione_attesa"])
     assert "c₀=1/4" in solution
-    assert "c₁=√2/(2π)≈0,2251" in solution
+    assert re.search(r"c₁=√2/\(2π\)≈\s*0,2251", solution)
 
     figure = next(item for item in data["figure"] if item["id"] == "spettro-a-righe")
     Draft202012Validator(load_json(SCHEMA_DIR / "figura.schema.json")).validate(figure)
@@ -81,70 +174,80 @@ def test_periodic_rectangles_figure_matches_sinc_coefficients():
 def test_worked_example_results_are_recomputed_from_json_parameters():
     # E1: derive c1 and c2 from the A and duty-cycle values in the guided problem.
     periodic = lesson("es-spettri-impulsi-periodici")["worked_example"]
-    amplitude = float(re.search(r"A=(\d+(?:[.,]\d+)?)", periodic["problema"]).group(1).replace(",", "."))
-    divisor = int(re.search(r"τ=T/(\d+)", periodic["problema"]).group(1))
+    periodic_problem = _normalizza_latex(periodic["problema"])
+    periodic_passi = [_normalizza_latex(line) for line in periodic["passi"]]
+    amplitude = float(re.search(r"A=(\d+(?:[.,]\d+)?)", periodic_problem).group(1).replace(",", "."))
+    divisor = int(re.search(r"τ=T/(\d+)", periodic_problem).group(1))
     duty = 1 / divisor
     def sinc(value):
         return 1.0 if value == 0 else math.sin(value) / value
     for harmonic, expected in ((1, amplitude * duty * sinc(math.pi * duty)),
                                (2, amplitude * duty * sinc(2 * math.pi * duty))):
-        step = next(line for line in periodic["passi"] if line.startswith(f"Per n={harmonic}:"))
-        reported = float(re.search(r"≈([0-9]+,[0-9]+)", step).group(1).replace(",", "."))
+        step = next(line for line in periodic_passi if line.startswith(f"Per n={harmonic}:"))
+        reported = float(re.search(r"≈\s*([0-9]+,[0-9]+)", step).group(1).replace(",", "."))
         assert math.isclose(reported, expected, rel_tol=2e-3)
-    assert "c₀=Aτ/T=2/3" in periodic["passi"][2]
+    assert "c₀=Aτ/T=2/3" in periodic_passi[2]
 
     # E2: transform magnitude, first zero, and sample value all follow A and τ in JSON.
     pulse = lesson("es-spettri-impulso-rettangolare")["worked_example"]
-    amp = float(re.search(r"A=(\d+(?:[.,]\d+)?)", pulse["problema"]).group(1).replace(",", "."))
-    tau_ms = float(re.search(r"τ=(\d+(?:[.,]\d+)?) ms", pulse["problema"]).group(1).replace(",", "."))
+    pulse_problem = _normalizza_latex(pulse["problema"])
+    pulse_passi = [_normalizza_latex(line) for line in pulse["passi"]]
+    amp = float(re.search(r"A=(\d+(?:[.,]\d+)?)", pulse_problem).group(1).replace(",", "."))
+    tau_ms = float(re.search(r"τ=(\d+(?:[.,]\d+)?) ms", pulse_problem).group(1).replace(",", "."))
     tau = tau_ms / 1000
-    x0_step = next(line for line in pulse["passi"] if "X(0)=Aτ=" in line)
+    x0_step = next(line for line in pulse_passi if "X(0)=Aτ=" in line)
     x0_reported = float(re.search(r"X\(0\)=Aτ=([0-9]+,[0-9]+)", x0_step).group(1).replace(",", "."))
     assert math.isclose(x0_reported, amp * tau, rel_tol=1e-5)
-    zero_step = next(line for line in pulse["passi"] if "primo è ω=" in line)
-    zero_reported = float(re.search(r"≈([0-9]+,[0-9]+) rad/s", zero_step).group(1).replace(",", "."))
+    zero_step = next(line for line in pulse_passi if "primo è ω=" in line)
+    zero_reported = float(re.search(r"≈\s*([0-9]+,[0-9]+) rad/s", zero_step).group(1).replace(",", "."))
     assert math.isclose(zero_reported, 2 * math.pi / tau, rel_tol=1e-5)
-    sample_step = next(line for line in pulse["passi"] if "Aτ·2/π" in line)
-    sample_reported = float(re.search(r"≈([0-9]+,[0-9]+)", sample_step).group(1).replace(",", "."))
+    sample_step = next(line for line in pulse_passi if "0,00382" in line and "Aτ" in line)
+    sample_reported = float(re.search(r"≈\s*([0-9]+,[0-9]+)", sample_step).group(1).replace(",", "."))
     assert math.isclose(sample_reported, amp * tau * 2 / math.pi, rel_tol=1e-3)
 
     # E3: the finite value at the origin uses X0 and omega_m from the worked problem.
     inverse = lesson("es-antitrasformata-rettangolare")["worked_example"]
-    x0 = float(re.search(r"X₀=(\d+(?:[.,]\d+)?)", inverse["problema"]).group(1).replace(",", "."))
-    omega_m = float(re.search(r"ωm=(\d+(?:[.,]\d+)?)", inverse["problema"]).group(1).replace(",", "."))
-    limit_step = next(line for line in inverse["passi"] if "x(0)=X₀ωm/π" in line)
-    limit_reported = float(re.search(r"≈([0-9]+,[0-9]+)", limit_step).group(1).replace(",", "."))
+    inverse_problem = _normalizza_latex(inverse["problema"])
+    inverse_passi = [_normalizza_latex(line) for line in inverse["passi"]]
+    x0 = float(re.search(r"X₀=(\d+(?:[.,]\d+)?)", inverse_problem).group(1).replace(",", "."))
+    omega_m = float(re.search(r"ωₘ=(\d+(?:[.,]\d+)?)", inverse_problem).group(1).replace(",", "."))
+    limit_step = next(line for line in inverse_passi if "x(0)=" in line and "2,546" in line)
+    limit_reported = float(re.search(r"≈\s*([0-9]+,[0-9]+)", limit_step).group(1).replace(",", "."))
     assert math.isclose(limit_reported, x0 * omega_m / math.pi, rel_tol=2e-4)
-    assert "primi sono ±π/4 s" in next(line for line in inverse["passi"] if "primi sono" in line)
+    assert "primi sono ±π/4 s" in next(line for line in inverse_passi if "primi sono" in line)
 
     # E5/E6: read R and C from each problem before checking the reported cutoff.
     for lesson_id in ("es-rete-rc", "es-rete-cr"):
         worked = lesson(lesson_id)["worked_example"]
-        resistance_kohm = float(re.search(r"R=(\d+(?:[.,]\d+)?) kΩ", worked["problema"]).group(1).replace(",", "."))
-        capacitance_uf = float(re.search(r"C=(\d+(?:[.,]\d+)?) μF", worked["problema"]).group(1).replace(",", "."))
+        problem = _normalizza_latex(worked["problema"])
+        steps = [_normalizza_latex(line) for line in worked["passi"]]
+        resistance_kohm = float(re.search(r"R=(\d+(?:[.,]\d+)?) kΩ", problem).group(1).replace(",", "."))
+        capacitance_uf = float(re.search(r"C=(\d+(?:[.,]\d+)?) μF", problem).group(1).replace(",", "."))
         expected_cutoff = 1 / (resistance_kohm * 1000 * capacitance_uf * 1e-6)
-        cutoff_step = next(line for line in worked["passi"] if "pulsazione di taglio" in line)
+        cutoff_step = next(line for line in steps if "pulsazione di taglio" in line)
         cutoff_reported = float(re.search(r"=(\d+(?:[.,]\d+)?) rad/s", cutoff_step).group(1).replace(",", "."))
         assert math.isclose(cutoff_reported, expected_cutoff, rel_tol=1e-9)
 
     # E7: variance and Gaussian exponent use the parameters stated in the worked example.
     derivator = lesson("es-derivatore-processo-gaussiano")["worked_example"]
-    g0 = float(re.search(r"G₀=(\d+(?:[.,]\d+)?)", derivator["problema"]).group(1).replace(",", "."))
-    omega_m = float(re.search(r"ωm=(\d+(?:[.,]\d+)?)", derivator["problema"]).group(1).replace(",", "."))
+    problem = _normalizza_latex(derivator["problema"])
+    steps = [_normalizza_latex(line) for line in derivator["passi"]]
+    g0 = float(re.search(r"G₀=(\d+(?:[.,]\d+)?)", problem).group(1).replace(",", "."))
+    omega_m = float(re.search(r"ωₘ=(\d+(?:[.,]\d+)?)", problem).group(1).replace(",", "."))
     variance = g0 * omega_m**3 / 3
-    variance_step = next(line for line in derivator["passi"] if "σ²=G₀ωm³/3=" in line)
+    variance_step = next(line for line in steps if "σ²=" in line and "18" in line)
     variance_reported = float(re.search(r"=([0-9]+)\.$", variance_step).group(1))
     assert math.isclose(variance_reported, variance)
-    density_step = next(line for line in derivator["passi"] if "pᵧ(y)=" in line)
-    gaussian_denominator = float(re.search(r"exp\(−y²/([0-9]+)\)", density_step).group(1))
+    density_step = next(line for line in steps if "pᵧ(y)=" in line)
+    gaussian_denominator = float(re.search(r"exp\(-y²/\(?([0-9]+)\)?\)", density_step).group(1))
     assert math.isclose(gaussian_denominator, 2 * variance)
 
     # E8: calculate the autonomous zero-frequency level and first nulls from its own T.
     bipolar = lesson("es-pam-bipolare")
     t_ms = float(re.search(r"T=(\d+(?:[.,]\d+)?) ms", bipolar["esercizio_autonomo"]["titolo"]).group(1).replace(",", "."))
     t = t_ms / 1000
-    reported = bipolar["esercizio_autonomo"]["soluzione_attesa"]
-    scientific = re.search(r"≈([0-9]+,[0-9]+)·10⁻([⁰¹²³⁴⁵⁶⁷⁸⁹]+)", reported)
+    reported = _normalizza_latex(bipolar["esercizio_autonomo"]["soluzione_attesa"])
+    scientific = re.search(r"≈\s*([0-9]+,[0-9]+)·\s*10⁻([⁰¹²³⁴⁵⁶⁷⁸⁹]+)", reported)
     level = float(scientific.group(1).replace(",", "."))
     exponent = int(scientific.group(2).translate(str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹", "0123456789")))
     assert math.isclose(t / math.pi, level * 10**(-exponent), rel_tol=2e-4)
@@ -152,20 +255,25 @@ def test_worked_example_results_are_recomputed_from_json_parameters():
     assert zero_hz == [int(1 / t), int(2 / t)]
     bipolar_worked = bipolar["worked_example"]
     worked_t_ms = float(re.search(r"T=(\d+(?:[.,]\d+)?) ms", bipolar_worked["problema"]).group(1).replace(",", "."))
-    first_null_step = next(line for line in bipolar_worked["passi"] if "primo è" in line)
+    first_null_step = next(
+        line for line in map(_normalizza_latex, bipolar_worked["passi"]) if "primo è" in line
+    )
     first_null_pi = float(re.search(r"primo è (\d+)π rad/s", first_null_step).group(1))
     assert math.isclose(first_null_pi, 2 / (worked_t_ms / 1000), rel_tol=1e-9)
 
     # E9: test guided-example and autonomous nulls against their different T values.
     ami = lesson("es-pam-ami")
     worked = ami["worked_example"]
-    guided_t_ms = float(re.search(r"T=(\d+(?:[.,]\d+)?) ms", worked["problema"]).group(1).replace(",", "."))
-    last_step = next(line for line in worked["passi"] if "Fino a 4π/T" in line)
+    guided_problem = _normalizza_latex(worked["problema"])
+    guided_t_ms = float(re.search(r"T=(\d+(?:[.,]\d+)?) ms", guided_problem).group(1).replace(",", "."))
+    last_step = next(
+        line for line in map(_normalizza_latex, worked["passi"]) if "Fino a 4π/T" in line
+    )
     assert "0, 2π/T e 4π/T" in last_step
     assert math.isclose(1 / (guided_t_ms / 1000), 500)
-    autonomous_title = ami["esercizio_autonomo"]["titolo"]
+    autonomous_title = _normalizza_latex(ami["esercizio_autonomo"]["titolo"])
     autonomous_t_ms = float(re.search(r"T=(\d+(?:[.,]\d+)?) ms", autonomous_title).group(1).replace(",", "."))
-    autonomous = ami["esercizio_autonomo"]["soluzione_attesa"]
+    autonomous = _normalizza_latex(ami["esercizio_autonomo"]["soluzione_attesa"])
     k_values = [int(value) for value in re.search(r"per k=(\d+),(\d+),(\d+)", autonomous).groups()]
     reported_khz = [int(value) for value in re.search(r"a f=k/T: (\d+), (\d+) e (\d+) kHz", autonomous).groups()]
     expected_khz = [round(k / (autonomous_t_ms / 1000) / 1000) for k in k_values]
@@ -173,9 +281,11 @@ def test_worked_example_results_are_recomputed_from_json_parameters():
 
     # Little: parse the arrival rate and mean residence time from its exercise data.
     traffic = lesson("es-teoria-traffico-extra")["worked_example"]
-    rate = float(re.search(r"flusso medio di (\d+(?:[.,]\d+)?) pacchetti/s", traffic["problema"]).group(1).replace(",", "."))
-    residence = float(re.search(r"permanenza media di (\d+(?:[.,]\d+)?) s", traffic["problema"]).group(1).replace(",", "."))
-    little_step = next(line for line in traffic["passi"] if "N=(" in line)
+    traffic_problem = _normalizza_latex(traffic["problema"])
+    traffic_passi = [_normalizza_latex(line) for line in traffic["passi"]]
+    rate = float(re.search(r"flusso medio di (\d+(?:[.,]\d+)?) pacchetti/s", traffic_problem).group(1).replace(",", "."))
+    residence = float(re.search(r"permanenza media di (\d+(?:[.,]\d+)?) s", traffic_problem).group(1).replace(",", "."))
+    little_step = next(line for line in traffic_passi if "N=(" in line)
     population = float(re.search(r"=([0-9]+) pacchetti", little_step).group(1))
     assert math.isclose(population, rate * residence)
 
@@ -183,28 +293,28 @@ def test_worked_example_results_are_recomputed_from_json_parameters():
 def test_autonomous_results_include_correct_frequency_units():
     # The autonomo E7 uses G0=3 and omega_m=2 (distinct from the guided E7 example).
     derivator = lesson("es-derivatore-processo-gaussiano")
-    parameters = derivator["esercizio_autonomo"]["titolo"]
+    parameters = _normalizza_latex(derivator["esercizio_autonomo"]["titolo"])
     g0 = float(re.search(r"G₀=(\d+(?:[.,]\d+)?)", parameters).group(1).replace(",", "."))
     omega_m = float(re.search(r"ωₘ=(\d+(?:[.,]\d+)?)", parameters).group(1).replace(",", "."))
     variance = g0 * omega_m**3 / 3
-    autonomous_result = derivator["esercizio_autonomo"]["soluzione_attesa"]
+    autonomous_result = _normalizza_latex(derivator["esercizio_autonomo"]["soluzione_attesa"])
     reported_variance = float(re.search(r"σ²=.*?=([0-9]+)", autonomous_result).group(1))
     assert math.isclose(variance, reported_variance)
 
-    inverse = lesson("es-antitrasformata-rettangolare")["esercizio_autonomo"]["soluzione_attesa"]
+    inverse = _normalizza_latex(lesson("es-antitrasformata-rettangolare")["esercizio_autonomo"]["soluzione_attesa"])
     assert "x(t)=sin(2t)/t" in inverse and "x(0)=2" in inverse and "π/2 s" in inverse
 
-    nyquist = lesson("es-condizione-nyquist")["esercizio_autonomo"]["soluzione_attesa"]
+    nyquist = _normalizza_latex(lesson("es-condizione-nyquist")["esercizio_autonomo"]["soluzione_attesa"])
     assert "500π rad/s" in nyquist and "1000π rad/s" in nyquist and "0,006" in nyquist
 
-    rc = lesson("es-rete-rc")["esercizio_autonomo"]["soluzione_attesa"]
-    assert "ωc=1000 rad/s" in rc and "|H|=1/√2≈0,7071" in rc
-    cr = lesson("es-rete-cr")["esercizio_autonomo"]["soluzione_attesa"]
+    rc = _normalizza_latex(lesson("es-rete-rc")["esercizio_autonomo"]["soluzione_attesa"])
+    assert "ωc=1000 rad/s" in rc and re.search(r"\|H\|=1/√2≈\s*0,7071", rc)
+    cr = _normalizza_latex(lesson("es-rete-cr")["esercizio_autonomo"]["soluzione_attesa"])
     assert "ωc=1000 rad/s" in cr and "fase π/4" in cr
 
-    bipolar = lesson("es-pam-bipolare")["esercizio_autonomo"]["soluzione_attesa"]
-    assert "G_s(0)=0,002/π≈6,366·10⁻⁴" in bipolar
-    ami = lesson("es-pam-ami")["esercizio_autonomo"]["soluzione_attesa"]
+    bipolar = _normalizza_latex(lesson("es-pam-bipolare")["esercizio_autonomo"]["soluzione_attesa"])
+    assert re.search(r"G_s\(0\)=0,002/\(?π\)?≈\s*6,366·\s*10⁻⁴", bipolar)
+    ami = _normalizza_latex(lesson("es-pam-ami")["esercizio_autonomo"]["soluzione_attesa"])
     assert "1, 2 e 3 kHz" in ami
 
 
