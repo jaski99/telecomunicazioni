@@ -29,8 +29,16 @@ def overflow_report(page):
     return page.evaluate('''() => ({width: document.scrollingElement.scrollWidth, viewport: innerWidth,
       elements: [...document.querySelectorAll('body *')].filter(e => {
         const r=e.getBoundingClientRect(), s=getComputedStyle(e);
-        return r.width && r.height && s.visibility !== 'hidden' && !e.closest('.scroll-x') &&
-          (r.left < -1 || r.right > innerWidth + 1);
+        if (!r.width || !r.height || s.visibility === 'hidden' || e.closest('.scroll-x')) return false;
+        let left=r.left, right=r.right, top=r.top, bottom=r.bottom;
+        for (let a=e.parentElement; a; a=a.parentElement) {
+          const style=getComputedStyle(a), box=a.getBoundingClientRect();
+          if (style.display === 'none' || style.visibility === 'hidden') return false;
+          if (style.clip !== 'auto' && style.position === 'absolute') return false;
+          if (style.overflowX !== 'visible') { left=Math.max(left,box.left); right=Math.min(right,box.right); }
+          if (style.overflowY !== 'visible') { top=Math.max(top,box.top); bottom=Math.min(bottom,box.bottom); }
+        }
+        return right > left && bottom > top && (left < -1 || right > innerWidth + 1);
       }).map(e => e.outerHTML.slice(0, 160))})''')
 
 

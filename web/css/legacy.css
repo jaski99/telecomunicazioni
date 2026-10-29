@@ -1,9 +1,9 @@
 /* Stili temporanei per il markup delle pagine non ancora migrate. */
-.tabella { width: 100%; border-collapse: collapse; }
-.tabella th, .tabella td { border: 1px solid var(--c-border); padding: var(--s-2); text-align: left; vertical-align: top; }
+.tabella { display: block; width: 100%; max-width: 100%; overflow-x: auto; border-collapse: collapse; }
+.tabella th, .tabella td { border: 1px solid var(--c-border); padding: var(--s-2); text-align: left; vertical-align: top; overflow-wrap: anywhere; }
 .tabella th { background: var(--c-surface-2); }
 .table-wrap, .katex-display { max-width: 100%; overflow-x: auto; }
-.muted, .note { color: var(--c-text-muted); font-size: var(--fs-small); }
+.muted, .note { color: var(--c-text-muted); }
 .avviso, .punti-dieci { color: var(--c-danger); }
 .avviso-box, .passo, .flashcard, .richiamo, .figura-non-disponibile { border: 1px solid var(--c-border); border-radius: var(--radius-sm); padding: var(--s-4); margin-block: var(--s-4); background: var(--c-surface); }
 .avviso-box { background: var(--c-danger-bg); }
@@ -23,3 +23,6 @@
 .buco input.sbagliato { background: var(--c-danger-bg); }
 .figura-svg { max-width: 100%; height: auto; display: block; margin-inline: auto; }
 .errore { padding: var(--s-6); color: var(--c-danger); }
+
+/* Contenimento temporaneo, in attesa dei blocchi matematici D2. */
+main .katex { display: inline-block; max-width: 100%; overflow-x: auto; vertical-align: middle; }
