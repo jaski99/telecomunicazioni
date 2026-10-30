@@ -1,4 +1,5 @@
 /* web/css/pages/area.css — owner E1. Copertina di capitolo #/area/<n>. */
+.area-lead { font-size: var(--fs-lead); color: var(--c-text-muted); margin: 0 0 var(--s-5); }
 .area-elenchi { margin: 0 0 var(--s-6); padding-left: var(--s-5); list-style-type: disc; }
 .area-elenchi li { margin: 0 0 var(--s-2); }
 .area-node-card { margin-bottom: 0; display: flex; flex-direction: column; gap: var(--s-3); }

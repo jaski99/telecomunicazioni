@@ -6,10 +6,13 @@ export function indiceHTML(voci) {
   if (!Array.isArray(voci) || !voci.length) return '';
   const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const items = voci.map((v) => {
-    const livello = v.livello ? ` class="livello-${String(v.livello)}"` : '';
-    const attiva = v.attiva ? ' aria-current="page" class="attiva"' : '';
+    const classi = [];
+    if (v.livello) classi.push(`livello-${String(v.livello)}`);
+    if (v.attiva) classi.push('attiva');
+    const classeAttr = classi.length ? ` class="${classi.join(' ')}"` : '';
+    const attivaAttr = v.attiva ? ' aria-current="page"' : '';
     const href = v.href ? ` href="${esc(v.href)}"` : '';
-    return `<li${livello}${attiva}><a${href}>${esc(v.titolo)}</a></li>`;
+    return `<li${classeAttr}${attivaAttr}><a${href}>${esc(v.titolo)}</a></li>`;
   }).join('');
   return `<nav class="indice-pagina" aria-label="Indice della pagina"><ol>${items}</ol></nav>`;
 }

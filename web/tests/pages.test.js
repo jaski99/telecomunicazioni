@@ -175,4 +175,22 @@ test('tutte le pagine D4 e i 56 nodi non espongono mai null, undefined, NaN o ba
     const senzaTag = html.replace(/<math[\s\S]*?<\/math>/g, '').replace(/<[^>]+>/g, ' ');
     assert.doesNotMatch(senzaTag, /\b(?:null|undefined|NaN|W[1-6]|tipo_esercizio|LIBRO_CI|LUCIDI_CASONI|ESSE3_2016)\b/);
   }
+
+
+test('B10: precache contiene tutti i file serviti sotto js/ e css/', () => {
+  const manifestPath = path.join(__dirname, '..', 'precache-manifest.json');
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  const dir = path.join(__dirname, '..');
+  const attesi = [];
+  const cammina = (d) => {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const pp = path.join(d, e.name);
+      if (e.isDirectory()) cammina(pp);
+      else attesi.push(path.relative(dir, pp));
+    }
+  };
+  cammina(path.join(dir, 'js'));
+  cammina(path.join(dir, 'css'));
+  for (const f of attesi) assert.ok(manifest.includes(f), 'mancante in precache: ' + f);
+});
 });

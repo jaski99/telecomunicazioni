@@ -148,10 +148,9 @@ def test_b13_area_criteri_da_saper_fare(server, browser, width, height, narea):
 @pytest.mark.parametrize("width,height", [(390, 844), (1440, 900)])
 def test_b13_nodo_chiave_indice_figurenumerate(server, browser, width, height):
     """Su un nodo con lezione: .chiave, indice >= 2 voci, figure 'Figura n.m'."""
-    nid = "dim-teorema-campionamento"
+    nid = "serie-fourier"
     nodo = next((n for n in GRAFO.get("nodi", []) if n.get("id") == nid), None)
-    if not nodo or not nodo.get("lezione"):
-        pytest.skip(f"nodo {nid} senza lezione")
+    assert nodo and nodo.get("lezione"), f"nodo {nid} deve avere lezione"
     context = browser.new_context(viewport={"width": width, "height": height}, locale="it-IT")
     try:
         page = context.new_page()

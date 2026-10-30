@@ -18,37 +18,45 @@ const GRAFO = {
   ],
 };
 
-test('ordinePianoDiStudio: priorita alta prima, poi area, poi id', () => {
+test('ordinePianoDiStudio: topologico (prerequisiti prima), poi priorita/area/id', () => {
   const ordine = ordinePianoDiStudio(GRAFO);
-  assert.deepStrictEqual(ordine, ['b-beta', 'e-epsilon', 'a-alfa', 'd-delta', 'c-gamma']);
+  // a-alfa e d-delta senza pre: area 1 prima di 2. b-beta (alta, pre a-alfa) e e-epsilon (alta, pre d-delta soft): area 1 prima di 3. c-gamma (bassa) ultimo.
+  assert.deepStrictEqual(ordine, ['a-alfa', 'b-beta', 'd-delta', 'e-epsilon', 'c-gamma']);
+  // I prerequisiti precedono sempre i dipendenti.
+  const pos = (id) => ordine.indexOf(id);
+  assert.ok(pos('a-alfa') < pos('b-beta'));
+  assert.ok(pos('b-beta') < pos('c-gamma'));
+  assert.ok(pos('d-delta') < pos('e-epsilon'));
 });
 
 test('prossimoNodo: restituisce il successore nell ordine di studio', () => {
-  assert.strictEqual(prossimoNodo(GRAFO, 'b-beta'), 'e-epsilon');
-  assert.strictEqual(prossimoNodo(GRAFO, 'e-epsilon'), 'a-alfa');
+  assert.strictEqual(prossimoNodo(GRAFO, 'a-alfa'), 'b-beta');
+  assert.strictEqual(prossimoNodo(GRAFO, 'b-beta'), 'd-delta');
+  assert.strictEqual(prossimoNodo(GRAFO, 'd-delta'), 'e-epsilon');
   assert.strictEqual(prossimoNodo(GRAFO, 'c-gamma'), null);
   assert.strictEqual(prossimoNodo(GRAFO, 'inesistente'), null);
 });
 
 test('nodoPrecedente: restituisce il predecessore nell ordine di studio', () => {
-  assert.strictEqual(nodoPrecedente(GRAFO, 'e-epsilon'), 'b-beta');
-  assert.strictEqual(nodoPrecedente(GRAFO, 'a-alfa'), 'e-epsilon');
-  assert.strictEqual(nodoPrecedente(GRAFO, 'b-beta'), null);
+  assert.strictEqual(nodoPrecedente(GRAFO, 'b-beta'), 'a-alfa');
+  assert.strictEqual(nodoPrecedente(GRAFO, 'd-delta'), 'b-beta');
+  assert.strictEqual(nodoPrecedente(GRAFO, 'e-epsilon'), 'd-delta');
+  assert.strictEqual(nodoPrecedente(GRAFO, 'a-alfa'), null);
   assert.strictEqual(nodoPrecedente(GRAFO, 'inesistente'), null);
 });
 
 test('navSequenzaHTML: genera nav prev/succ con href e titoli', () => {
-  const html = navSequenzaHTML(GRAFO, 'e-epsilon');
+  const html = navSequenzaHTML(GRAFO, 'd-delta');
   assert.match(html, /href="#\/nodo\/b-beta"/);
-  assert.match(html, /href="#\/nodo\/a-alfa"/);
+  assert.match(html, /href="#\/nodo\/e-epsilon"/);
   assert.match(html, /b-beta/);
-  assert.match(html, /a-alfa/);
+  assert.match(html, /e-epsilon/);
   assert.match(html, /rel="prev"/);
   assert.match(html, /rel="next"/);
 });
 
 test('navSequenzaHTML: primo nodo ha solo next, ultimo solo prev', () => {
-  const primo = navSequenzaHTML(GRAFO, 'b-beta');
+  const primo = navSequenzaHTML(GRAFO, 'a-alfa');
   assert.doesNotMatch(primo, /rel="prev"/);
   assert.match(primo, /rel="next"/);
   const ultimo = navSequenzaHTML(GRAFO, 'c-gamma');

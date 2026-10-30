@@ -4,7 +4,7 @@
  */
 
 import { renderMath, testoSicuro, escapeHtml } from './core/math.js';
-import { creaRouter, parseHashConQuery } from './router.js';
+import { creaRouter, parseHash, parseHashConQuery } from './router.js';
 import { shellHTML } from './layout/shell.js';
 
 import * as homePage from './pages/home.js';
@@ -130,8 +130,16 @@ async function avvia() {
   graph = await caricaJSON('./graph.json', graph);
   quiz = await caricaJSON('./quiz.json', quiz);
 
-  window.addEventListener('hashchange', () => mostraRoute(parseHash()));
-  mostraRoute(parseHash());
+  window.addEventListener('hashchange', () => mostraRoute(parseHashConQuery().percorso));
+  mostraRoute(parseHashConQuery().percorso);
+
+  // Stampa: apri tutti i <details> prima di stampa, richiudi dopo.
+  window.addEventListener('beforeprint', () => {
+    for (const d of document.querySelectorAll('details')) d.open = true;
+  });
+  window.addEventListener('afterprint', () => {
+    for (const d of document.querySelectorAll('details')) d.open = false;
+  });
 }
 
 avvia();

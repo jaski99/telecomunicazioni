@@ -8,4 +8,4 @@ p, ul, ol { margin: 0 0 var(--s-4); }
 a { color: var(--c-primary); }
 :focus-visible { outline: var(--focus-width) solid var(--c-focus); outline-offset: var(--s-1); }
 button, input, select, textarea { font: inherit; }
-[hidden] { display: none !important; }
+[hidden] { display: none; }

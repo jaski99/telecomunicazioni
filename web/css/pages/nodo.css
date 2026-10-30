@@ -168,7 +168,6 @@
 .nav-sequenza { display: flex; gap: var(--s-3); margin: var(--s-7) 0 0; flex-wrap: wrap; }
 
 @media (min-width: 1200px) {
-  .nodo-corpo { display: grid; grid-template-columns: minmax(0, var(--measure)) var(--margin-col); gap: var(--gap-col, var(--s-6)); align-items: start; }
-  .nota-margine { grid-column: 2; margin-top: 0; border-top: none; border-left: var(--rule); padding-left: var(--s-4); padding-top: 0; }
+  .nota-margine { float: right; width: var(--margin-col); clear: right; margin: 0 0 var(--s-5) var(--s-6); border-top: none; border-left: var(--rule); padding-left: var(--s-4); padding-top: 0; }
   .nota-toggle { display: inline-block; }
 }
