@@ -10,7 +10,7 @@
     "Gli slot falliti, vuoti o con collisione, sono indipendenti e durano $2T_p$; lo slot che contiene l’avvio riuscito è incluso nel frame, non contato anche come attesa.",
     "Frame riusciti di durata costante $T_f$; traffico disponibile e nessun overhead aggiuntivo nel modello di ciclo.",
     "Definiamo $a=T_p/T_f$; per la rilevazione della collisione entro il frame consideriamo $0<a\\le1/2$, con $a=0$ solo come limite.",
-    "IPOTESI: l’interpretazione normalizzata di a è dedotta dal frame unitario e dallo slot di doppia propagazione negli appunti; slide originale NON TROVATO."
+    "Contesto confermato dal testo dei lucidi del docente, AccessoMultiplo.pdf: carrier sensing, multiple access e collision detection; quando rileva una collisione la stazione interrompe, invia jamming e ritrasmette dopo un back-off casuale."
   ],
   "notazione": [
     {
@@ -38,14 +38,20 @@
       "significato": "Frazione di tempo del ciclo dedicata al frame riuscito."
     }
   ],
-  "varianti_notazione": [],
+  "varianti_notazione": [
+    {
+      "canonica": "$a=T_p/T_f$",
+      "variante": "$a=\\frac{Rd}{VL}$",
+      "fonte": "lucidi del docente, AccessoMultiplo.pdf, Studio delle prestazioni: R è il bit rate, d la distanza, V la velocità di propagazione e L la lunghezza in bit del frame."
+    }
+  ],
   "idea": "Usa una distribuzione geometrica per gli slot falliti e dividi il tempo utile per il ciclo medio.",
   "passi": [
     {
       "n": 1,
       "testo": "Normalizza la durata dello slot e del frame.",
       "formula": "T_{\\mathrm{slot}}=2T_p=2aT_f,\\qquad \\frac{T_f}{T_{\\mathrm{slot}}}=\\frac1{2a}",
-      "perche": "La propagazione va e ritorna; $1/(2a)$ è una durata misurata in numero di slot.",
+      "perche": "La propagazione va e ritorna; $1/(2a)$ è una durata misurata in numero di slot. Come nei lucidei lucidi del docente, $1/(2a)$ slot è la durata del frame normalizzato: $T_f/T_{\\mathrm{slot}}=1/(2a)$ è un rapporto fra due durate, non il tempo di uno slot.",
       "figura": "csma-cd-contesa"
     },
     {
@@ -71,13 +77,14 @@
       "testo": "Dividi la durata di un frame riuscito per la durata media del ciclo.",
       "formula": "S=\\frac{T_f}{T_f+2T_pE[w]}=\\frac{1}{1+2a(1-A)/A}=\\frac{A}{A+2a(1-A)}",
       "perche": "Il ciclo include un frame e in media $E[w]$ slot falliti da $2T_p$ ciascuno.",
-      "figura": "csma-cd-throughput-grafico"
+      "figura": "csma-cd-throughput-due-stazioni"
     },
     {
       "n": 6,
       "testo": "Sostituisci il valore ottimo di A per disegnare le curve al variare di a.",
       "formula": "S_{\\max}(a,N)=\\frac{1}{1+2a(1-A_{\\max})/A_{\\max}}",
-      "perche": "Per $a>0$ la frazione cresce con A; la curva è riferita al modello ottimizzato, non a ogni carico."
+      "perche": "Per $a>0$ la frazione cresce con A; la curva è riferita al modello ottimizzato, non a ogni carico.",
+      "figura": "csma-cd-throughput-grafico"
     }
   ],
   "formula_finale": "S_{\\max}(a,N)=\\frac{1}{1+2a\\dfrac{1-A_{\\max}}{A_{\\max}}},\\qquad A_{\\max}=\\left(1-\\frac1N\\right)^{N-1},\\quad N\\ge2.",
@@ -190,7 +197,7 @@
       "id": "csma-cd-throughput-grafico",
       "tipo": "grafico",
       "titolo": "Massimo CSMA/CD al variare del rapporto a",
-      "descrizione": "Curve ideali ottimizzate per due e dieci stazioni, decrescenti con a tra zero e 0,5. Il limite a zero è indicato per continuità.",
+      "descrizione": "Aggiunge la curva con dieci stazioni a quella con due stazioni, conservata identica e in testa. Entrambe sono ricalcolate dalla formula ottimizzata, non lette dalle Figure 1 e 4 dei lucidi. L’asse resta da zero a mezzo, con zero come limite: oltre mezzo la collisione non è più rilevabile entro la trama.",
       "asse_x": {
         "etichetta": "a = Tp/Tf (adimensionale)",
         "min": 0,
@@ -635,9 +642,238 @@
           "testo": "N = 10: S ≈ 0,387"
         }
       ]
+    },
+    {
+      "id": "csma-cd-throughput-due-stazioni",
+      "tipo": "grafico",
+      "titolo": "Prima curva CSMA/CD: due stazioni",
+      "descrizione": "Primo stato: curva ricalcolata dalla formula del ciclo con due stazioni e probabilità di tentativo ottima. L’asse da zero a mezzo rappresenta il limite a zero e l’intervallo fisico scelto, non l’estensione delle Figure 1 e 4 dei lucidi; nessun loro valore numerico è stato usato.",
+      "asse_x": {
+        "etichetta": "a = Tp/Tf (adimensionale)",
+        "min": 0,
+        "max": 0.5
+      },
+      "asse_y": {
+        "etichetta": "Throughput S (frazione del tempo)",
+        "min": 0,
+        "max": 1.05
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "N = 2; p = 1/2",
+          "punti": [
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.01,
+              0.980392157
+            ],
+            [
+              0.02,
+              0.961538462
+            ],
+            [
+              0.03,
+              0.943396226
+            ],
+            [
+              0.04,
+              0.925925926
+            ],
+            [
+              0.05,
+              0.909090909
+            ],
+            [
+              0.06,
+              0.892857143
+            ],
+            [
+              0.07,
+              0.877192982
+            ],
+            [
+              0.08,
+              0.862068966
+            ],
+            [
+              0.09,
+              0.847457627
+            ],
+            [
+              0.1,
+              0.833333333
+            ],
+            [
+              0.11,
+              0.819672131
+            ],
+            [
+              0.12,
+              0.806451613
+            ],
+            [
+              0.13,
+              0.793650794
+            ],
+            [
+              0.14,
+              0.78125
+            ],
+            [
+              0.15,
+              0.769230769
+            ],
+            [
+              0.16,
+              0.757575758
+            ],
+            [
+              0.17,
+              0.746268657
+            ],
+            [
+              0.18,
+              0.735294118
+            ],
+            [
+              0.19,
+              0.724637681
+            ],
+            [
+              0.2,
+              0.714285714
+            ],
+            [
+              0.21,
+              0.704225352
+            ],
+            [
+              0.22,
+              0.694444444
+            ],
+            [
+              0.23,
+              0.684931507
+            ],
+            [
+              0.24,
+              0.675675676
+            ],
+            [
+              0.25,
+              0.666666667
+            ],
+            [
+              0.26,
+              0.657894737
+            ],
+            [
+              0.27,
+              0.649350649
+            ],
+            [
+              0.28,
+              0.641025641
+            ],
+            [
+              0.29,
+              0.632911392
+            ],
+            [
+              0.3,
+              0.625
+            ],
+            [
+              0.31,
+              0.617283951
+            ],
+            [
+              0.32,
+              0.609756098
+            ],
+            [
+              0.33,
+              0.602409639
+            ],
+            [
+              0.34,
+              0.595238095
+            ],
+            [
+              0.35,
+              0.588235294
+            ],
+            [
+              0.36,
+              0.581395349
+            ],
+            [
+              0.37,
+              0.574712644
+            ],
+            [
+              0.38,
+              0.568181818
+            ],
+            [
+              0.39,
+              0.561797753
+            ],
+            [
+              0.4,
+              0.555555556
+            ],
+            [
+              0.41,
+              0.549450549
+            ],
+            [
+              0.42,
+              0.543478261
+            ],
+            [
+              0.43,
+              0.537634409
+            ],
+            [
+              0.44,
+              0.531914894
+            ],
+            [
+              0.45,
+              0.526315789
+            ],
+            [
+              0.46,
+              0.520833333
+            ],
+            [
+              0.47,
+              0.515463918
+            ],
+            [
+              0.48,
+              0.510204082
+            ],
+            [
+              0.49,
+              0.505050505
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ]
+        }
+      ],
+      "annotazioni": []
     }
   ],
-  "a_voce": "Normalizzo il tempo di trasmissione del frame a uno. Il parametro a è il rapporto tra propagazione in una direzione e durata del frame, quindi lo slot di contesa è due a durate di frame e un frame equivale a uno su due a slot. Con N stazioni indipendenti che tentano con probabilità p, il successo in uno slot richiede una sola trasmissione: la probabilità è N p per uno meno p alla N meno uno. Il massimo si ha per p uguale uno su N. Prima di un successo il numero di slot falliti ha distribuzione geometrica e media uno meno A diviso A. Un ciclo comprende il frame riuscito più quegli slot; dividendo il tempo del frame per il ciclo ottengo uno diviso uno più due a per uno meno A su A. La curva dipende dal modello e non descrive automaticamente ogni Ethernet.",
+  "a_voce": "CSMA/CD ascolta il mezzo prima di trasmettere, ma la propagazione può ancora causare collisioni. Quando una stazione ne rileva una interrompe, invia jamming e ritenta dopo un back-off casuale. Nel modello a slot dei lucidi normalizzo il frame a uno: lo slot dura due volte la propagazione e un frame contiene uno su due a slot. È un rapporto fra durate, non la durata dello slot. Con N stazioni indipendenti il successo richiede un solo tentativo e ha probabilità N p per uno meno p alla N meno uno, massima per p uguale uno su N. Il numero di slot falliti prima del successo è geometrico e ha media uno meno A su A. Divido il tempo utile del frame per il ciclo, formato dal frame più gli slot falliti, e ottengo la formula dei lucidi. Disegno prima la curva calcolata per due stazioni, poi quella per dieci, sugli stessi assi da zero a mezzo. Zero è il limite ideale e mezzo il limite fisico scelto. Non attribuisco valori numerici alle Figure 1 e 4 dei lucidi, che sono immagini non verificate in questo confronto.",
   "errori_frequenti": [
     {
       "errore": "Scambiare $1/(2a)$ con la durata dello slot.",
@@ -661,25 +897,24 @@
     }
   ],
   "versione_compatta": [
-    "Slot $=2T_p=2aT_f$; frame $=1/(2a)$ slot.",
-    "$A=Np(1-p)^{N-1}$, massimo per $p=1/N$.",
-    "$E[w]=(1-A)/A$ slot falliti.",
-    "$S=1/[1+2a(1-A)/A]$.",
-    "La curva massima usa $A_{\\max}$ e il modello indicato."
+    "Il protocollo ascolta il mezzo, rileva le collisioni, invia jamming e ritenta dopo back-off.",
+    "$T_{\\mathrm{slot}}=2T_p=2aT_f$; $T_f/T_{\\mathrm{slot}}=1/(2a)$, rapporto fra durate.",
+    "$A=Np(1-p)^{N-1}$ è massima per $p=1/N$.",
+    "$E[w]=(1-A)/A$ conta i soli slot falliti.",
+    "$S=T_f/(T_f+2T_pE[w])=1/[1+2a(1-A)/A]$.",
+    "La curva ottimizzata usa $A_{\\max}$: i punti sono calcolati dalla formula, non ricavati dalle immagini dei lucidi."
   ],
   "a_buchi": {
-    "testo": "Lo slot dura ___1___ e il frame dura ___2___ slot. Il numero medio di slot falliti è ___3___ perché la legge è ___4___.",
+    "testo": "Lo slot dura ___1___ e un frame contiene ___2___ slot: si tratta di un rapporto fra durate. Il numero medio di slot falliti è ___3___ perché la legge è ___4___.",
     "soluzioni": {
       "1": [
-        "$2T_p$",
-        "2T_p"
+        "2 Tp",
+        "due tempi di propagazione"
       ],
       "2": [
-        "$1/(2a)$",
         "1/(2a)"
       ],
       "3": [
-        "$(1-A)/A$",
         "(1-A)/A"
       ],
       "4": [
@@ -722,20 +957,23 @@
     },
     {
       "chiave": "FILE1",
-      "rif": "file1 p. 47: slide 12 Accesso multiplo citata, non consultata"
+      "rif": "file1 p. 47: slide 12 Accesso multiplo citata; testo dei lucidi ora consultato"
     },
     {
       "chiave": "RICOSTRUZIONE",
       "rif": "Interpretazione normalizzata di a e ambito di validità fisica"
+    },
+    {
+      "chiave": "LUCIDI_CASONI",
+      "rif": "AccessoMultiplo.pdf, sezioni Studio delle prestazioni, CSMA/CD e CSMA/CD: throughput; sole formule leggibili nel testo; testo consultato, nessun riferimento al libro"
     }
   ],
   "verifica": {
-    "stato": "da_verificare",
-    "data": "2026-10-28",
-    "note": "A7: le immagini mostrano chiaramente $S=1/[1+2a(1-A)/A]$; $1/(2a)$ è frame in slot, non durata dello slot. La definizione normalizzata è dedotta dal contesto; lucidi non consultati.",
+    "stato": "verificata_file1_file3",
+    "data": "2026-10-30",
+    "note": "T16: file1 p. 47 e file3 p. 22, lette come immagini, e il testo dei lucidi del docente confermano slot di doppia propagazione, rapporto fra durate, A, E[w] e S. La formula coincide con quella dei lucidi. Le loro Figure 1 e 4 sono immagini non lette in questa verifica: valori numerici NON TROVATO. I punti dei grafici sono ricalcolati dalla formula; l’asse resta nell’intervallo fisico scelto, senza adottare l’IPOTESI di estenderlo.",
     "punti_aperti": [
-      "A7: confermare sulla slide 12 la definizione esatta di a, la contabilizzazione dello slot riuscito e le ipotesi del modello.",
-      "Confronto diretto con la slide del docente: NON TROVATO."
+      "Contenuto numerico delle Figure 1 e 4 di AccessoMultiplo.pdf: NON TROVATO; nessun valore del sito è attribuito a tali immagini."
     ]
   }
 }

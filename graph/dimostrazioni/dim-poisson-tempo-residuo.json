@@ -32,7 +32,18 @@
       "significato": "Probabilità condizionata che il residuo non superi r."
     }
   ],
-  "varianti_notazione": [],
+  "varianti_notazione": [
+    {
+      "canonica": "$\\lambda$",
+      "variante": "$\\lambda$",
+      "fonte": "file1 pp. 51–53 e file3 p. 47, immagini: usano lambda senza pedice; nessuna variante del tasso trovata in queste pagine."
+    },
+    {
+      "canonica": "r",
+      "variante": "$\\delta$",
+      "fonte": "file1 p. 53 e file3 p. 47, immagini: delta indica la durata residua."
+    }
+  ],
   "idea": "La sopravvivenza esponenziale si fattorizza: il tempo trascorso si elimina nel rapporto condizionato.",
   "passi": [
     {
@@ -40,7 +51,7 @@
       "testo": "Dalla probabilità di zero eventi in t ricava la sopravvivenza dell’interarrivo.",
       "formula": "P(X>t)=P(N(t)=0)=e^{-\\lambda t},\\qquad t\\ge0",
       "perche": "Nessun arrivo entro t equivale al primo arrivo successivo a t.",
-      "figura": "poisson-distribuzione-residuo"
+      "figura": "poisson-sopravvivenza-interarrivo"
     },
     {
       "n": 2,
@@ -58,33 +69,1034 @@
       "n": 4,
       "testo": "Sostituisci le due sopravvivenze e semplifica.",
       "formula": "P(R>r\\mid X>t_0)=\\frac{e^{-\\lambda(t_0+r)}}{e^{-\\lambda t_0}}=e^{-\\lambda r}",
-      "perche": "L’esponenziale del tempo totale si separa nel prodotto delle due durate."
+      "perche": "L’esponenziale del tempo totale si separa nel prodotto delle due durate.",
+      "figura": "poisson-densita-condizionata"
     },
     {
-      "n": 5,
-      "testo": "Passa alla funzione di ripartizione e alla media del residuo.",
-      "formula": "F_R(r)=1-e^{-\\lambda r},\\qquad E[R\\mid X>t_0]=\\int_0^\\infty e^{-\\lambda r}\\,dr=\\frac1\\lambda",
-      "perche": "Si usa il complementare e si integra la sopravvivenza di una variabile non negativa."
+      "testo": "La probabilità condizionata non dipende dal tempo già trascorso: è l’assenza di memoria della distribuzione esponenziale.",
+      "formula": "P(R>r\\mid X>t_0)=P(X>r)=e^{-\\lambda r}",
+      "perche": "Il fattore relativo a $t_0$ si è cancellato: il residuo ha la stessa legge di una nuova attesa, non una durata ridotta dal tempo già passato.",
+      "figura": "poisson-sopravvivenza-residuo",
+      "n": 5
+    },
+    {
+      "testo": "Prendi il complementare per ottenere la funzione di ripartizione del residuo.",
+      "formula": "F_R(r)=P(R\\le r\\mid X>t_0)=1-e^{-\\lambda r}",
+      "perche": "Entro una durata r o si verifica il prossimo arrivo oppure si sopravvive oltre r: i due eventi sono complementari, come in file1 p. 53.",
+      "figura": "poisson-distribuzione-residuo",
+      "n": 6
+    },
+    {
+      "n": 7,
+      "testo": "Integra la sopravvivenza per trovare il valore medio del residuo.",
+      "formula": "E[R\\mid X>t_0]=\\int_0^\\infty e^{-\\lambda r}\\,dr=\\frac1\\lambda",
+      "perche": "Per una variabile non negativa si integra la sopravvivenza. Il valore medio $1/\\lambda$ non dipende da $t_0$: chi ha già atteso non attende meno."
     }
   ],
   "formula_finale": "F_R(r)=P(R\\le r\\mid X>t_0)=1-e^{-\\lambda r},\\qquad E[R\\mid X>t_0]=\\frac1\\lambda\\quad(r\\ge0).",
   "figure": [
     {
-      "id": "poisson-distribuzione-residuo",
+      "id": "poisson-sopravvivenza-interarrivo",
       "tipo": "grafico",
-      "titolo": "Distribuzione del tempo residuo",
-      "descrizione": "Funzione di ripartizione del tempo residuo esponenziale per tasso 0,5 al secondo; non dipende dal tempo già atteso.",
+      "titolo": "Zero arrivi: sopravvivenza dell’interarrivo",
+      "descrizione": "Primo stato: mostra solo la probabilità di non avere ancora un arrivo, che parte da uno e decresce verso zero. Esempio calcolato con tasso di mezzo arrivo al secondo; la funzione di ripartizione non compare ancora.",
       "asse_x": {
-        "etichetta": "Residuo r (s)",
+        "etichetta": "Tempo t o residuo r (s)",
+        "min": 0,
+        "max": 8,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 2,
+            "etichetta": "2"
+          },
+          {
+            "valore": 4,
+            "etichetta": "4"
+          },
+          {
+            "valore": 6,
+            "etichetta": "6"
+          },
+          {
+            "valore": 8,
+            "etichetta": "8"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "Probabilità",
+        "min": 0,
+        "max": 1,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 0.5,
+            "etichetta": "0,5"
+          },
+          {
+            "valore": 1,
+            "etichetta": "1"
+          }
+        ]
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "P(X > t), λ = 0,5 s⁻¹",
+          "punti": [
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.2,
+              0.904837418
+            ],
+            [
+              0.4,
+              0.818730753
+            ],
+            [
+              0.6,
+              0.740818221
+            ],
+            [
+              0.8,
+              0.670320046
+            ],
+            [
+              1.0,
+              0.60653066
+            ],
+            [
+              1.2,
+              0.548811636
+            ],
+            [
+              1.4,
+              0.496585304
+            ],
+            [
+              1.6,
+              0.449328964
+            ],
+            [
+              1.8,
+              0.40656966
+            ],
+            [
+              2.0,
+              0.367879441
+            ],
+            [
+              2.2,
+              0.332871084
+            ],
+            [
+              2.4,
+              0.301194212
+            ],
+            [
+              2.6,
+              0.272531793
+            ],
+            [
+              2.8,
+              0.246596964
+            ],
+            [
+              3.0,
+              0.22313016
+            ],
+            [
+              3.2,
+              0.201896518
+            ],
+            [
+              3.4,
+              0.182683524
+            ],
+            [
+              3.6,
+              0.165298888
+            ],
+            [
+              3.8,
+              0.149568619
+            ],
+            [
+              4.0,
+              0.135335283
+            ],
+            [
+              4.2,
+              0.122456428
+            ],
+            [
+              4.4,
+              0.110803158
+            ],
+            [
+              4.6,
+              0.100258844
+            ],
+            [
+              4.8,
+              0.090717953
+            ],
+            [
+              5.0,
+              0.082084999
+            ],
+            [
+              5.2,
+              0.074273578
+            ],
+            [
+              5.4,
+              0.067205513
+            ],
+            [
+              5.6,
+              0.060810063
+            ],
+            [
+              5.8,
+              0.05502322
+            ],
+            [
+              6.0,
+              0.049787068
+            ],
+            [
+              6.2,
+              0.045049202
+            ],
+            [
+              6.4,
+              0.040762204
+            ],
+            [
+              6.6,
+              0.036883167
+            ],
+            [
+              6.8,
+              0.03337327
+            ],
+            [
+              7.0,
+              0.030197383
+            ],
+            [
+              7.2,
+              0.027323722
+            ],
+            [
+              7.4,
+              0.024723526
+            ],
+            [
+              7.6,
+              0.022370772
+            ],
+            [
+              7.8,
+              0.020241911
+            ],
+            [
+              8.0,
+              0.018315639
+            ]
+          ]
+        }
+      ],
+      "annotazioni": []
+    },
+    {
+      "id": "poisson-densita-condizionata",
+      "tipo": "grafico",
+      "titolo": "Densità iniziale e densità condizionata traslata",
+      "descrizione": "Nuovo confronto delle due densità: quella dell’interarrivo parte dall’origine, quella condizionata a nessun arrivo fino a t zero parte da t zero uguale a due secondi ed è tratteggiata. Il tasso e mezzo arrivo al secondo: dopo traslazione la coda è identica, non è la densità non condizionata lasciata senza normalizzazione.",
+      "asse_x": {
+        "etichetta": "Tempo assoluto t (s)",
         "min": 0,
         "max": 8
       },
       "asse_y": {
-        "etichetta": "Probabilità F(r)",
+        "etichetta": "Densità (s⁻¹)",
         "min": 0,
-        "max": 1
+        "max": 0.6
       },
       "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "fX(t), dall’origine",
+          "punti": [
+            [
+              0.0,
+              0.5
+            ],
+            [
+              0.2,
+              0.452418709
+            ],
+            [
+              0.4,
+              0.409365377
+            ],
+            [
+              0.6,
+              0.37040911
+            ],
+            [
+              0.8,
+              0.335160023
+            ],
+            [
+              1.0,
+              0.30326533
+            ],
+            [
+              1.2,
+              0.274405818
+            ],
+            [
+              1.4,
+              0.248292652
+            ],
+            [
+              1.6,
+              0.224664482
+            ],
+            [
+              1.8,
+              0.20328483
+            ],
+            [
+              2.0,
+              0.183939721
+            ],
+            [
+              2.2,
+              0.166435542
+            ],
+            [
+              2.4,
+              0.150597106
+            ],
+            [
+              2.6,
+              0.136265897
+            ],
+            [
+              2.8,
+              0.123298482
+            ],
+            [
+              3.0,
+              0.11156508
+            ],
+            [
+              3.2,
+              0.100948259
+            ],
+            [
+              3.4,
+              0.091341762
+            ],
+            [
+              3.6,
+              0.082649444
+            ],
+            [
+              3.8,
+              0.07478431
+            ],
+            [
+              4.0,
+              0.067667642
+            ],
+            [
+              4.2,
+              0.061228214
+            ],
+            [
+              4.4,
+              0.055401579
+            ],
+            [
+              4.6,
+              0.050129422
+            ],
+            [
+              4.8,
+              0.045358977
+            ],
+            [
+              5.0,
+              0.041042499
+            ],
+            [
+              5.2,
+              0.037136789
+            ],
+            [
+              5.4,
+              0.033602756
+            ],
+            [
+              5.6,
+              0.030405031
+            ],
+            [
+              5.8,
+              0.02751161
+            ],
+            [
+              6.0,
+              0.024893534
+            ],
+            [
+              6.2,
+              0.022524601
+            ],
+            [
+              6.4,
+              0.020381102
+            ],
+            [
+              6.6,
+              0.018441584
+            ],
+            [
+              6.8,
+              0.016686635
+            ],
+            [
+              7.0,
+              0.015098692
+            ],
+            [
+              7.2,
+              0.013661861
+            ],
+            [
+              7.4,
+              0.012361763
+            ],
+            [
+              7.6,
+              0.011185386
+            ],
+            [
+              7.8,
+              0.010120956
+            ],
+            [
+              8.0,
+              0.009157819
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "fX(t | X > t₀), t₀ = 2 s",
+          "punti": [
+            [
+              2.0,
+              0.5
+            ],
+            [
+              2.2,
+              0.452418709
+            ],
+            [
+              2.4,
+              0.409365377
+            ],
+            [
+              2.6,
+              0.37040911
+            ],
+            [
+              2.8,
+              0.335160023
+            ],
+            [
+              3.0,
+              0.30326533
+            ],
+            [
+              3.2,
+              0.274405818
+            ],
+            [
+              3.4,
+              0.248292652
+            ],
+            [
+              3.6,
+              0.224664482
+            ],
+            [
+              3.8,
+              0.20328483
+            ],
+            [
+              4.0,
+              0.183939721
+            ],
+            [
+              4.2,
+              0.166435542
+            ],
+            [
+              4.4,
+              0.150597106
+            ],
+            [
+              4.6,
+              0.136265897
+            ],
+            [
+              4.8,
+              0.123298482
+            ],
+            [
+              5.0,
+              0.11156508
+            ],
+            [
+              5.2,
+              0.100948259
+            ],
+            [
+              5.4,
+              0.091341762
+            ],
+            [
+              5.6,
+              0.082649444
+            ],
+            [
+              5.8,
+              0.07478431
+            ],
+            [
+              6.0,
+              0.067667642
+            ],
+            [
+              6.2,
+              0.061228214
+            ],
+            [
+              6.4,
+              0.055401579
+            ],
+            [
+              6.6,
+              0.050129422
+            ],
+            [
+              6.8,
+              0.045358977
+            ],
+            [
+              7.0,
+              0.041042499
+            ],
+            [
+              7.2,
+              0.037136789
+            ],
+            [
+              7.4,
+              0.033602756
+            ],
+            [
+              7.6,
+              0.030405031
+            ],
+            [
+              7.8,
+              0.02751161
+            ],
+            [
+              8.0,
+              0.024893534
+            ]
+          ]
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": 2,
+          "y": 0.5,
+          "testo": "t₀ = 2 s"
+        },
+        {
+          "x": 4,
+          "y": 0.2,
+          "testo": "La coda è identica"
+        }
+      ]
+    },
+    {
+      "id": "poisson-sopravvivenza-residuo",
+      "tipo": "grafico",
+      "titolo": "Assenza di memoria: sopravvivenza del residuo",
+      "descrizione": "Nuova lettura dopo il rapporto condizionato: la stessa esponenziale descrive il residuo, indipendentemente dal tempo già trascorso. Il tasso dell’esempio resta mezzo arrivo al secondo; non viene ancora disegnata la ripartizione del residuo.",
+      "asse_x": {
+        "etichetta": "Tempo t o residuo r (s)",
+        "min": 0,
+        "max": 8,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 2,
+            "etichetta": "2"
+          },
+          {
+            "valore": 4,
+            "etichetta": "4"
+          },
+          {
+            "valore": 6,
+            "etichetta": "6"
+          },
+          {
+            "valore": 8,
+            "etichetta": "8"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "Probabilità",
+        "min": 0,
+        "max": 1,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 0.5,
+            "etichetta": "0,5"
+          },
+          {
+            "valore": 1,
+            "etichetta": "1"
+          }
+        ]
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "P(R > r | X > t₀), λ = 0,5 s⁻¹",
+          "punti": [
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.2,
+              0.904837418
+            ],
+            [
+              0.4,
+              0.818730753
+            ],
+            [
+              0.6,
+              0.740818221
+            ],
+            [
+              0.8,
+              0.670320046
+            ],
+            [
+              1.0,
+              0.60653066
+            ],
+            [
+              1.2,
+              0.548811636
+            ],
+            [
+              1.4,
+              0.496585304
+            ],
+            [
+              1.6,
+              0.449328964
+            ],
+            [
+              1.8,
+              0.40656966
+            ],
+            [
+              2.0,
+              0.367879441
+            ],
+            [
+              2.2,
+              0.332871084
+            ],
+            [
+              2.4,
+              0.301194212
+            ],
+            [
+              2.6,
+              0.272531793
+            ],
+            [
+              2.8,
+              0.246596964
+            ],
+            [
+              3.0,
+              0.22313016
+            ],
+            [
+              3.2,
+              0.201896518
+            ],
+            [
+              3.4,
+              0.182683524
+            ],
+            [
+              3.6,
+              0.165298888
+            ],
+            [
+              3.8,
+              0.149568619
+            ],
+            [
+              4.0,
+              0.135335283
+            ],
+            [
+              4.2,
+              0.122456428
+            ],
+            [
+              4.4,
+              0.110803158
+            ],
+            [
+              4.6,
+              0.100258844
+            ],
+            [
+              4.8,
+              0.090717953
+            ],
+            [
+              5.0,
+              0.082084999
+            ],
+            [
+              5.2,
+              0.074273578
+            ],
+            [
+              5.4,
+              0.067205513
+            ],
+            [
+              5.6,
+              0.060810063
+            ],
+            [
+              5.8,
+              0.05502322
+            ],
+            [
+              6.0,
+              0.049787068
+            ],
+            [
+              6.2,
+              0.045049202
+            ],
+            [
+              6.4,
+              0.040762204
+            ],
+            [
+              6.6,
+              0.036883167
+            ],
+            [
+              6.8,
+              0.03337327
+            ],
+            [
+              7.0,
+              0.030197383
+            ],
+            [
+              7.2,
+              0.027323722
+            ],
+            [
+              7.4,
+              0.024723526
+            ],
+            [
+              7.6,
+              0.022370772
+            ],
+            [
+              7.8,
+              0.020241911
+            ],
+            [
+              8.0,
+              0.018315639
+            ]
+          ]
+        }
+      ],
+      "annotazioni": []
+    },
+    {
+      "id": "poisson-distribuzione-residuo",
+      "tipo": "grafico",
+      "titolo": "Distribuzione del tempo residuo",
+      "descrizione": "Aggiunge alla sopravvivenza condizionata la funzione di ripartizione del residuo, conservando assi e serie precedente. La nuova curva crescente è il complementare della curva decrescente, con tasso di mezzo arrivo al secondo; il tempo già trascorso non ne cambia la legge.",
+      "asse_x": {
+        "etichetta": "Tempo t o residuo r (s)",
+        "min": 0,
+        "max": 8,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 2,
+            "etichetta": "2"
+          },
+          {
+            "valore": 4,
+            "etichetta": "4"
+          },
+          {
+            "valore": 6,
+            "etichetta": "6"
+          },
+          {
+            "valore": 8,
+            "etichetta": "8"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "Probabilità",
+        "min": 0,
+        "max": 1,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 0.5,
+            "etichetta": "0,5"
+          },
+          {
+            "valore": 1,
+            "etichetta": "1"
+          }
+        ]
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "P(R > r | X > t₀), λ = 0,5 s⁻¹",
+          "punti": [
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.2,
+              0.904837418
+            ],
+            [
+              0.4,
+              0.818730753
+            ],
+            [
+              0.6,
+              0.740818221
+            ],
+            [
+              0.8,
+              0.670320046
+            ],
+            [
+              1.0,
+              0.60653066
+            ],
+            [
+              1.2,
+              0.548811636
+            ],
+            [
+              1.4,
+              0.496585304
+            ],
+            [
+              1.6,
+              0.449328964
+            ],
+            [
+              1.8,
+              0.40656966
+            ],
+            [
+              2.0,
+              0.367879441
+            ],
+            [
+              2.2,
+              0.332871084
+            ],
+            [
+              2.4,
+              0.301194212
+            ],
+            [
+              2.6,
+              0.272531793
+            ],
+            [
+              2.8,
+              0.246596964
+            ],
+            [
+              3.0,
+              0.22313016
+            ],
+            [
+              3.2,
+              0.201896518
+            ],
+            [
+              3.4,
+              0.182683524
+            ],
+            [
+              3.6,
+              0.165298888
+            ],
+            [
+              3.8,
+              0.149568619
+            ],
+            [
+              4.0,
+              0.135335283
+            ],
+            [
+              4.2,
+              0.122456428
+            ],
+            [
+              4.4,
+              0.110803158
+            ],
+            [
+              4.6,
+              0.100258844
+            ],
+            [
+              4.8,
+              0.090717953
+            ],
+            [
+              5.0,
+              0.082084999
+            ],
+            [
+              5.2,
+              0.074273578
+            ],
+            [
+              5.4,
+              0.067205513
+            ],
+            [
+              5.6,
+              0.060810063
+            ],
+            [
+              5.8,
+              0.05502322
+            ],
+            [
+              6.0,
+              0.049787068
+            ],
+            [
+              6.2,
+              0.045049202
+            ],
+            [
+              6.4,
+              0.040762204
+            ],
+            [
+              6.6,
+              0.036883167
+            ],
+            [
+              6.8,
+              0.03337327
+            ],
+            [
+              7.0,
+              0.030197383
+            ],
+            [
+              7.2,
+              0.027323722
+            ],
+            [
+              7.4,
+              0.024723526
+            ],
+            [
+              7.6,
+              0.022370772
+            ],
+            [
+              7.8,
+              0.020241911
+            ],
+            [
+              8.0,
+              0.018315639
+            ]
+          ]
+        },
         {
           "stile": "linea",
           "etichetta": "F(r), λ = 0,5 s⁻¹",
@@ -265,7 +1277,7 @@
       ]
     }
   ],
-  "a_voce": "Parto da un processo di Poisson omogeneo: nessun arrivo nei prossimi t secondi ha probabilità esponenziale negativa. Questa è la probabilità che l’interarrivo X superi t. Ora suppongo di avere già aspettato t zero senza arrivi e considero l’ulteriore attesa R. La probabilità che R superi r è la probabilità che X superi t zero più r, divisa per quella che superi t zero. Sostituisco le due esponenziali e il fattore del tempo già trascorso si semplifica. Ottengo una sopravvivenza e alla meno lambda r e una ripartizione uno meno questa quantità. Il residuo ha media uno su lambda: è la proprietà di assenza di memoria, non una proprietà di tutte le attese.",
+  "a_voce": "Parto dalla probabilità di zero eventi in un processo di Poisson omogeneo: è la sopravvivenza esponenziale dell’interarrivo X, non la sua funzione di ripartizione. Il complementare dà la ripartizione e la derivata dà la densità. Dopo aver già atteso t zero senza arrivi, R supera r se X supera t zero più r; divido quindi quella probabilità per la sopravvivenza fino a t zero. I fattori del tempo trascorso si cancellano e rimane e alla meno lambda r. È l’assenza di memoria: la coda condizionata, traslata, ha la stessa legge di una nuova attesa. Solo ora disegno la ripartizione del residuo, uno meno l’esponenziale, e integro la sopravvivenza per ricavare la media uno su lambda. Chi ha già atteso non attende meno, in media. Con 500 arrivi al secondo la media residua è due millisecondi e la probabilità di superare ancora un millisecondo è circa 0,6065. La proprietà dipende dal modello omogeneo, non vale per tutte le attese.",
   "errori_frequenti": [
     {
       "errore": "Scrivere $P(X>t_0+r)/P(X>r)$.",
@@ -284,29 +1296,29 @@
     }
   ],
   "versione_compatta": [
-    "$P(X>t)=e^{-\\lambda t}$.",
-    "$P(R>r\\mid X>t_0)=e^{-\\lambda(t_0+r)}/e^{-\\lambda t_0}$.",
-    "$F_R(r)=1-e^{-\\lambda r}$, $E[R]=1/\\lambda$.",
-    "Il risultato richiede il modello omogeneo."
+    "$P(X>t)=e^{-\\lambda t}$; il complementare dà $F_X$, la derivata dà la densità.",
+    "$P(R>r\\mid X>t_0)=P(X>t_0+r)/P(X>t_0)=e^{-\\lambda r}$.",
+    "È l’assenza di memoria: la legge del residuo non cambia con il tempo già atteso.",
+    "$F_R(r)=1-e^{-\\lambda r}$; $E[R\\mid X>t_0]=1/\\lambda$.",
+    "Controllo con $\\lambda=500\\ \\mathrm{s^{-1}}$: $P(R>1\\ \\mathrm{ms})=0{,}6065$ e media $2\\ \\mathrm{ms}$."
   ],
   "a_buchi": {
-    "testo": "Dopo $t_0$ senza arrivi, $P(R>r\\mid X>t_0)=$ ___1___, perché si divide per ___2___ e si semplifica il fattore ___3___. La media residua è ___4___.",
+    "testo": "Per il rapporto condizionato il denominatore è ___1___, perché si sa di non avere arrivi fino a $t_0$. La legge del residuo è ___2___: è l’assenza di ___3___. La media residua è ___4___, qualunque sia il tempo già atteso.",
     "soluzioni": {
       "1": [
-        "$e^{-\\lambda r}$",
-        "e^{-\\lambda r}"
+        "P(X>t0)",
+        "P(X > t0)"
       ],
       "2": [
-        "$P(X>t_0)$",
-        "P(X>t_0)"
+        "esponenziale",
+        "la stessa esponenziale"
       ],
       "3": [
-        "$e^{-\\lambda t_0}$",
-        "e^{-\\lambda t_0}"
+        "memoria"
       ],
       "4": [
-        "$1/\\lambda$",
-        "1/\\lambda"
+        "1/lambda",
+        "uno su lambda"
       ]
     }
   },
@@ -326,6 +1338,10 @@
     {
       "domanda": "La proprietà è universale?",
       "risposta": "No, dipende dalla distribuzione esponenziale e dalle ipotesi del processo."
+    },
+    {
+      "domanda": "Con 500 arrivi al secondo, quanto valgono la media residua e la probabilità di aspettare ancora più di un millisecondo?",
+      "risposta": "Esempio di controllo: $\\lambda=500\\ \\mathrm{s^{-1}}$, $E[R]=1/500\\ \\mathrm{s}=2\\ \\mathrm{ms}$ e $P(R>1\\ \\mathrm{ms})=e^{-0{,}5}\\approx0{,}6065$, anche dopo avere già atteso."
     }
   ],
   "collegamenti": [

@@ -1,7 +1,9 @@
 """Contratto autonomo dei contenuti W5, utilizzabile anche prima del merge di W1."""
 
 import datetime
+import hashlib
 import json
+from copy import deepcopy
 import math
 import re
 import unicodedata
@@ -524,7 +526,10 @@ def test_poisson_residuo_condizionato_e_grafico():
         assert conditional == pytest.approx(math.exp(-rate * r))
     assert 1 - math.exp(-rate * r) == pytest.approx(0.6321205588)
     graph = fig(proof, "poisson-distribuzione-residuo")
+    assert len(graph["serie"]) == 2  # C-3: la sopravvivenza resta in testa.
     for x, y in graph["serie"][0]["punti"]:
+        assert y == pytest.approx(math.exp(-0.5 * x), abs=1e-8)
+    for x, y in graph["serie"][1]["punti"]:
         assert y == pytest.approx(1 - math.exp(-0.5 * x), abs=1e-8)
     assert any(s["chiave"] == "FILE3" and "p. 47" in s["rif"] for s in proof["fonti"])
 
@@ -603,8 +608,12 @@ def test_csma_cd_slot_formula_e_curve():
     collisions = {i["corsia"]: i for i in timeline["intervalli"] if i["corsia"] in {"a", "b"} and i["stile"] == "collisione"}
     assert collisions["a"]["t1"] == arrows["Segnale B: Tp"]["a"]["t"]
     assert collisions["b"]["t1"] == arrows["Segnale A: Tp"]["a"]["t"]
-    assert proof["verifica"]["stato"] == "da_verificare"
-    assert any("A7" in point for point in proof["verifica"]["punti_aperti"])
+    assert proof["verifica"]["stato"] == "verificata_file1_file3"
+    assert "La formula coincide con quella dei lucidi" in proof["verifica"]["note"]
+    assert any("Figure 1 e 4" in point and "NON TROVATO" in point
+               for point in proof["verifica"]["punti_aperti"])
+    assert any(source["chiave"] == "LUCIDI_CASONI" for source in proof["fonti"])
+    assert graph["asse_x"]["min"] == 0 and graph["asse_x"]["max"] == 0.5
 
 
 def test_ritardi_tdma_fdma_e_temporale():
@@ -622,8 +631,11 @@ def test_ritardi_tdma_fdma_e_temporale():
     fdma_endings = [next(i["t1"] for i in diagram["intervalli"] if i["corsia"] == f"fd-{n}" and i["stile"] == "trasmissione") for n in range(1, 5)]
     assert sum(tdma_endings) / 4 == pytest.approx(2.5)
     assert sum(fdma_endings) / 4 == pytest.approx(4)
-    assert proof["verifica"]["stato"] == "da_verificare"
-    assert any("A9" in point for point in proof["verifica"]["punti_aperti"])
+    assert proof["verifica"]["stato"] == "verificata_file1_file3"
+    assert not proof["verifica"]["punti_aperti"]
+    assert "lucidi del docente" in proof["ipotesi"][1]
+    assert "ricostruzione" not in proof["ipotesi"][1]
+    assert any(source["chiave"] == "LUCIDI_CASONI" for source in proof["fonti"])
 
 
 def test_figure_temporali_e_stati_obbligatori():
@@ -647,8 +659,415 @@ def test_figure_temporali_e_stati_obbligatori():
 def test_provenienza_slide_e_ipotesi(node_id, slide):
     proof = content(node_id, "dimostrazioni")
     assert any(source["chiave"] == "FILE1" and f"slide {slide}" in source["rif"]
-               and "non consultata" in source["rif"] for source in proof["fonti"])
+               for source in proof["fonti"])
     assert proof["verifica"]["stato"] != "verificata_testo_prof"
     if any("IPOTESI" in hypothesis for hypothesis in proof["ipotesi"]):
         assert proof["verifica"]["stato"] == "da_verificare"
         assert proof["verifica"]["punti_aperti"]
+
+
+# Round E, E5: B1/B2 e S1-S8. Gli indici si riferiscono ai passi consecutivi,
+# non a un elenco filtrato che nasconderebbe interruzioni della progressione.
+CATENE_E5 = {
+    "dim-aloha-throughput": (5, 6, 7),
+    "dim-nascita-morte-equilibrio": (3, 4, 5),
+    "dim-ritardo-tdma-fdma": (1, 2, 3),
+    "dim-poisson-tempo-residuo": (5, 6),
+    "dim-csma-cd-throughput": (5, 6),
+    "dim-sliding-window-efficienza": (5, 6),
+}
+
+
+def assert_progressiva(prima, dopo):
+    """Regole dati del piano: identità profonda, inclusione e crescita reale."""
+    assert prima["tipo"] == dopo["tipo"], "S1: tipo"
+    check_figures([prima, dopo])  # S5, anche frecce, marcatori e annotazioni.
+    tipo = prima["tipo"]
+    if tipo == "grafico":
+        assert all(prima[a] == dopo[a] for a in ("asse_x", "asse_y")), "S2: assi"
+        assert dopo["serie"][:len(prima["serie"])] == prima["serie"], "S3: prefisso serie"
+        campi = ("annotazioni",)
+        crescita = len(dopo["serie"]) > len(prima["serie"])
+    elif tipo == "temporale":
+        assert prima["asse_t"] == dopo["asse_t"] and prima["corsie"] == dopo["corsie"], "S2: corsie"
+        campi = ("intervalli", "frecce", "marcatori")
+        crescita = False
+    else:
+        campi = ("blocchi", "collegamenti")  # L'identità dei blocchi implica S2.
+        crescita = False
+    for campo in campi:
+        vecchi, nuovi = prima.get(campo, []), dopo.get(campo, [])
+        assert all(x in nuovi for x in vecchi), f"S3: {campo}"
+        crescita |= any(x not in vecchi for x in nuovi)
+    assert crescita, "S4: nessun elemento nuovo"
+
+
+@pytest.mark.parametrize("node_id", PROOFS)
+def test_b1_b2_catene_e5_consecutive(node_id):
+    proof = content(node_id, "dimostrazioni")
+    indici = CATENE_E5[node_id]
+    assert list(indici) == list(range(indici[0], indici[-1] + 1))
+    minimo = 3 if node_id in {"dim-aloha-throughput", "dim-nascita-morte-equilibrio", "dim-ritardo-tdma-fdma"} else 2
+    assert len(indici) >= minimo
+    figure = [fig(proof, proof["passi"][n - 1]["figura"]) for n in indici]
+    for prima, dopo in zip(figure, figure[1:]):
+        assert_progressiva(prima, dopo)
+    for stato in figure:
+        assert len(stato["descrizione"]) >= 30
+        assert not any(
+            (ord(c) > 127 and unicodedata.category(c) == "Sm")
+            or any(nome in unicodedata.name(c, "") for nome in (
+                "GREEK", "SUBSCRIPT", "SUPERSCRIPT", "MATHEMATICAL", "VULGAR FRACTION", "DOUBLE-STRUCK"
+            ))
+            for c in stato["descrizione"]
+        ), "S7: descrizione in prosa senza Unicode matematico"
+    assert len(proof["collegamenti"]) >= 2
+
+
+@pytest.mark.parametrize("difetto", ["asse", "tacca", "ordine", "stile", "punto", "legenda", "annotazione", "crescita"])
+def test_rilevatore_progressione_rifiuta_regressioni_grafico(difetto):
+    d = content("dim-aloha-throughput", "dimostrazioni")
+    prima = deepcopy(fig(d, "aloha-throughput-puro-slotted"))
+    dopo = deepcopy(fig(d, "aloha-throughput-grafico"))
+    if difetto == "asse":
+        dopo["asse_x"]["max"] += 1
+    elif difetto == "tacca":
+        dopo["asse_x"]["tacche"] = [{"valore": 0, "etichetta": "origine"}]
+    elif difetto == "ordine":
+        dopo["serie"].reverse()
+    elif difetto == "stile":
+        dopo["serie"][0]["stile"] = "punti"
+    elif difetto == "punto":
+        dopo["serie"][0]["punti"][0][1] = -1
+    elif difetto == "legenda":
+        dopo["serie"][0]["etichetta"] = "Etichetta cambiata"
+    elif difetto == "annotazione":
+        prima["annotazioni"] = [{"x": 0, "y": 0, "testo": "Da conservare"}]
+    else:
+        dopo["annotazioni"] = []
+    with pytest.raises(AssertionError):
+        assert_progressiva(prima, dopo)
+
+
+@pytest.mark.parametrize("tipo", ["blocchi", "temporale"])
+def test_rilevatore_progressione_rifiuta_sostituzioni_e_spostamenti(tipo):
+    id, iniziale, finale = (("dim-nascita-morte-equilibrio", "nascita-morte-taglio-zero", "taglio-flussi")
+                             if tipo == "blocchi" else
+                             ("dim-ritardo-tdma-fdma", "tdma-fdma-primo-slot", "tdma-fdma-corsie-fdma"))
+    d = content(id, "dimostrazioni")
+    prima, dopo = deepcopy(fig(d, iniziale)), deepcopy(fig(d, finale))
+    if tipo == "blocchi":
+        dopo["blocchi"][0]["colonna"] += 1
+    else:
+        dopo["intervalli"][0]["t1"] += 0.1
+    with pytest.raises(AssertionError):
+        assert_progressiva(prima, dopo)
+
+
+def test_s6_s8_aloha_e_tdma_non_anticipano():
+    aloha = content("dim-aloha-throughput", "dimostrazioni")
+    puro, slot, massimi = [fig(aloha, aloha["passi"][n - 1]["figura"]) for n in (5, 6, 7)]
+    assert len(puro["serie"]) == 1 and len(slot["serie"]) == len(massimi["serie"]) == 2
+    assert not puro["annotazioni"] and not slot["annotazioni"]
+    assert len(massimi["annotazioni"]) == 2
+    assert "prime" in aloha["passi"][6]["formula"] and "0{,}3679" in aloha["passi"][6]["formula"]
+    assert aloha["passi"][1]["figura"] == "aloha-finestra-puro"
+    assert aloha["passi"][3]["figura"] == "aloha-finestra-slotted"
+    tdma = content("dim-ritardo-tdma-fdma", "dimostrazioni")
+    primo, fdma, tutti = [fig(tdma, tdma["passi"][n - 1]["figura"]) for n in (1, 2, 3)]
+    assert {i["corsia"] for i in primo["intervalli"]} == {"td-1"}
+    assert {i["corsia"] for i in fdma["intervalli"]} == {"td-1", "fd-1", "fd-2", "fd-3", "fd-4"}
+    assert {i["corsia"] for i in tutti["intervalli"]} == {c["id"] for c in tutti["corsie"]}
+    assert tutti["id"] == "tdma-fdma-confronto-temporale"
+
+
+def test_s6_nascita_morte_tagli_dopo_equilibrio():
+    d = content("dim-nascita-morte-equilibrio", "dimostrazioni")
+    stati = [fig(d, d["passi"][n - 1]["figura"]) for n in (3, 4, 5)]
+    tagli = [{b["id"] for b in s["blocchi"] if b["id"].startswith("taglio-")} for s in stati]
+    assert tagli == [set(), {"taglio-zero"}, {"taglio-zero", "taglio-k"}]
+    assert r"\frac{dp_k}{dt}=0" in d["passi"][2]["formula"]
+    assert "telescopica" in d["passi"][4]["perche"]
+    assert {"0", "1", "k", "k+1", "N"} <= {b["etichetta"] for b in stati[-1]["blocchi"]}
+    archi = {(a["da"], a["a"]) for a in stati[-1]["collegamenti"]}
+    assert {("k", "nascita-k"), ("nascita-k", "k-piu-uno"),
+            ("k-piu-uno", "morte-k-piu-uno"), ("morte-k-piu-uno", "k")} <= archi
+
+
+def test_c3_t13_sopravvivenza_cdf_e_densita_senza_scambio_di_unita():
+    d = content("dim-poisson-tempo-residuo", "dimostrazioni")
+    iniziale = fig(d, d["passi"][0]["figura"])
+    assert iniziale["id"] == "poisson-sopravvivenza-interarrivo"
+    assert len(iniziale["serie"]) == 1 and iniziale["serie"][0]["punti"][0] == [0, 1]
+    finale = fig(d, "poisson-distribuzione-residuo")
+    assert all(iniziale[asse] == finale[asse] for asse in ("asse_x", "asse_y")), "C-3: stessi assi fin dal passo 1"
+    for t, y in iniziale["serie"][0]["punti"]:
+        assert y == pytest.approx(math.exp(-0.5 * t), abs=1e-8)
+    cdf = next(p for p in d["passi"] if p.get("figura") == "poisson-distribuzione-residuo")
+    assert r"F_R(r)=P(R\le r\mid X>t_0)=1-e^{-\lambda r}" == cdf["formula"]
+    assert "assenza di memoria" in d["passi"][4]["testo"]
+    assert "non dipende da $t_0$" in d["passi"][-1]["perche"]
+    density = fig(d, "poisson-densita-condizionata")
+    assert d["passi"][3]["figura"] == density["id"] and len(density["serie"]) == 2
+    assert density["serie"][1]["stile"] == "tratteggio"
+    for serie, t0 in zip(density["serie"], (0, 2)):
+        for t, y in serie["punti"]:
+            assert t >= t0
+            assert y == pytest.approx(0.5 * math.exp(-0.5 * (t - t0)), abs=1e-8)
+    assert any("coda è identica" in a["testo"] for a in density["annotazioni"])
+    assert all(r"\lambda_t" not in v["variante"] for v in d["varianti_notazione"])
+    assert any(v["variante"] == r"$\delta$" and "p. 53" in v["fonte"] for v in d["varianti_notazione"])
+
+
+# B3: algoritmo di R6 §7.3 riportato nel test d'area, senza dipendenze dai PDF.
+NON_DIGITABILE = re.compile(r"[\\$^_]")
+
+
+def problemi_r6(d):
+    problemi = []
+    ids = {f["id"] for f in d["figure"]}
+    usate = [p["figura"] for p in d["passi"] if p.get("figura")]
+    if len(usate) != len(set(usate)):
+        problemi.append("figura ripetuta")
+    if ids - set(usate):
+        problemi.append("figura orfana")
+    if set(usate) - ids:
+        problemi.append("figura inesistente")
+    for p in d["passi"]:
+        if not p.get("formula") and not p.get("figura"):
+            problemi.append("passo senza formula né figura")
+        if len(p.get("perche", "")) < 40:
+            problemi.append("perche corto")
+    for varianti in d["a_buchi"]["soluzioni"].values():
+        if any(NON_DIGITABILE.search(v) for v in varianti):
+            problemi.append("buco non digitabile")
+    if not 300 <= len(d["a_voce"]) <= 1500:
+        problemi.append("a_voce fuori range")
+    if [p["n"] for p in d["passi"]] != list(range(1, len(d["passi"]) + 1)):
+        problemi.append("numerazione non consecutiva")
+    return problemi
+
+
+@pytest.mark.parametrize("node_id", PROOFS)
+def test_b3_struttura_r6_e_granularita(node_id):
+    d = content(node_id, "dimostrazioni")
+    assert not problemi_r6(d), (node_id, problemi_r6(d))
+    assert 4 <= len(d["passi"]) <= 12
+    assert len(d["collegamenti"]) >= 2
+    assert len(set(d["collegamenti"])) == len(d["collegamenti"])
+
+
+@pytest.mark.parametrize("difetto", ["orfana", "ripetuta", "vuoto", "perche", "buco", "voce", "numero"])
+def test_rilevatore_r6_individua_i_difetti(difetto):
+    d = deepcopy(content("dim-aloha-throughput", "dimostrazioni"))
+    if difetto == "orfana":
+        d["passi"][1].pop("figura")
+    elif difetto == "ripetuta":
+        d["passi"][0]["figura"] = d["passi"][1]["figura"]
+    elif difetto == "vuoto":
+        d["passi"][0].pop("formula")
+    elif difetto == "perche":
+        d["passi"][0]["perche"] = "Troppo breve"
+    elif difetto == "buco":
+        d["a_buchi"]["soluzioni"]["1"] = [r"$2\tau$"]
+    elif difetto == "voce":
+        d["a_voce"] = "Breve"
+    else:
+        d["passi"][0]["n"] = 99
+    assert problemi_r6(d)
+
+
+# B6: tutti i numeri delle schede T12-T17, calcolati e collegati al testo.
+def test_b6_t12_numeri_e_nuova_figura_insufficiente():
+    d = content("dim-sliding-window-efficienza", "dimostrazioni")
+    useful, header, ack, capacity, delay = 950, 50, 50, 10_000, 0.010
+    frame = useful + header
+    tf = frame / capacity
+    tt = tf + delay + ack / capacity + delay
+    assert (tf, tt, capacity * tt) == pytest.approx((0.1, 0.125, 1250))
+    assert capacity * tt / frame == pytest.approx(1.25)
+    for w, attesa in ((1, 0.76), (2, 0.95), (3, 0.95)):
+        assert useful / frame * min(1, w * frame / (capacity * tt)) == pytest.approx(attesa)
+    assert d["passi"][2]["figura"] == "finestra-insufficiente"
+    assert d["passi"][0]["figura"] == "finestra-con-attesa"
+    insufficiente = fig(d, "finestra-insufficiente")
+    assert any(i["stile"] == "attesa" and (i["t0"], i["t1"]) == (2, 3) for i in insufficiente["intervalli"])
+    assert {"I: andata", "I: ritorno"} <= {a["etichetta"] for a in insufficiente["frecce"]}
+    assert "due volte" in d["passi"][0]["perche"] and r"\eta\le1" in d["passi"][-1]["perche"]
+    assert "p. 29" in d["verifica"]["note"] and "p. 30" in d["verifica"]["note"]
+    assert "p. 50" in d["verifica"]["note"]  # Le formule dei due regimi sono qui, non a p. 49.
+    assert all(valore in d["richiamo_attivo"][-1]["risposta"] for valore in ("0{,}76", "0{,}95", "1250"))
+
+
+def test_b6_t13_t14_numeri():
+    poisson = content("dim-poisson-tempo-residuo", "dimostrazioni")
+    assert math.exp(-500 * 0.001) == pytest.approx(0.6065, abs=5e-5)
+    assert 1000 / 500 == 2  # millisecondi
+    assert all(v in poisson["richiamo_attivo"][-1]["risposta"] for v in ("500", "0{,}6065", r"2\ \mathrm{ms}"))
+    nascita = content("dim-nascita-morte-equilibrio", "dimostrazioni")
+    weights = [1, 2, 2 * 0.5]
+    p = [x / sum(weights) for x in weights]
+    assert p == pytest.approx([0.25, 0.5, 0.25])
+    assert sum(p) == 1 and p[1] / p[0] == 2 and p[2] / p[1] == 0.5
+    assert "(0{,}25;0{,}5;0{,}25)" in nascita["richiamo_attivo"][-1]["risposta"]
+    assert any(v["canonica"] == "$p_k$" and v["variante"] == "$P_k$" for v in nascita["varianti_notazione"])
+    assert r"\lambda_N=0" in nascita["passi"][-1]["perche"]
+
+
+def test_b6_t15_massimi_e_stesso_carico():
+    d = content("dim-aloha-throughput", "dimostrazioni")
+    assert 1 / (2 * math.e) == pytest.approx(0.1839, abs=5e-5)
+    assert 1 / math.e == pytest.approx(0.3679, abs=5e-5)
+    assert 0.5 * math.exp(-0.5) == pytest.approx(0.3033, abs=5e-5)
+    assert math.exp(-2) == pytest.approx(0.1353, abs=5e-5)
+    assert all(v in d["formula_finale"] for v in ("0{,}1839", "0{,}3679"))
+    assert any(n["simbolo"] == r"\lambda_r" and r"\lambda_t=\lambda+\lambda_r" in n["significato"]
+               and "lucidi del docente" in n["significato"] for n in d["notazione"])
+    assert all(v in d["richiamo_attivo"][-1]["risposta"] for v in ("0{,}1839", "0{,}3033", "0{,}1353", "0{,}3679"))
+
+
+def test_b6_t16_limite_monotonia_e_non_attribuzione():
+    d = content("dim-csma-cd-throughput", "dimostrazioni")
+    success = 2 * 0.5 * (1 - 0.5)
+    s = lambda a: 1 / (1 + 2 * a * (1 - success) / success)
+    assert s(0) == 1 and s(0.5) == 0.5
+    assert all(s(a / 100) > s((a + 1) / 100) for a in range(50))
+    assert "rapporto fra due durate" in d["passi"][0]["perche"]
+    assert r"T_f/T_{\mathrm{slot}}" in d["passi"][0]["perche"]
+    assert all(term in d["ipotesi"][4] for term in ("carrier sensing", "multiple access", "collision detection", "jamming", "back-off"))
+    assert any(v["variante"] == r"$a=\frac{Rd}{VL}$" for v in d["varianti_notazione"])
+    assert "valori numerici NON TROVATO" in d["verifica"]["note"]
+    graph = fig(d, "csma-cd-throughput-grafico")
+    assert "ricalcolate" in graph["descrizione"] and "non lette" in graph["descrizione"]
+    assert graph["asse_x"]["max"] == 0.5  # T16-3 non autorizza l'IPOTESI dell'asse esteso.
+
+
+def test_b6_t17_ritardi_e_simbolo_della_fonte():
+    d = content("dim-ritardo-tdma-fdma", "dimostrazioni")
+    m, bits, rate = 4, 1000, 4000
+    period = m * bits / rate
+    mean_wait = sum((n - 1) * period / m for n in range(1, m + 1)) / m
+    assert period == 1
+    assert mean_wait + period / m == 0.625
+    assert period - (mean_wait + period / m) == 0.375
+    assert r"\omega" not in json.dumps(d, ensure_ascii=False)
+    assert r"D=w+\tau" in d["passi"][0]["formula"]
+    assert r"D_{FD}-\frac{T}{2}" in d["passi"][4]["formula"]
+    assert r"D_{FD}-\frac{b}{2R}(M-1)" in d["passi"][4]["formula"]
+    assert "inizio del ciclo" in d["passi"][2]["perche"] and "ipotesi" in d["passi"][2]["perche"]
+    assert "strutturalmente superiore a FDMA" in d["passi"][5]["testo"]
+    assert "M>1" in d["passi"][5]["formula"] and "M=1" in d["passi"][5]["formula"]
+    assert all(v in d["richiamo_attivo"][-1]["risposta"] for v in (r"1\ \mathrm{s}", "0{,}625", "0{,}375"))
+
+
+@pytest.mark.parametrize("node_id", ["dim-aloha-throughput", "dim-csma-cd-throughput", "dim-ritardo-tdma-fdma"])
+def test_lucidi_consultati_solo_dove_previsto_da_r6(node_id):
+    d = content(node_id, "dimostrazioni")
+    assert any(s["chiave"] == "LUCIDI_CASONI" and "AccessoMultiplo.pdf" in s["rif"] for s in d["fonti"])
+    assert all("non consultata" not in s["rif"] for s in d["fonti"] if s["chiave"] == "FILE1")
+    assert d["verifica"]["stato"] == "verificata_file1_file3"
+    assert d["verifica"]["data"] == "2026-10-30"
+
+
+@pytest.mark.parametrize("node_id", ["dim-sliding-window-efficienza", "dim-poisson-tempo-residuo", "dim-nascita-morte-equilibrio"])
+def test_lucidi_reti_restano_non_consultati(node_id):
+    d = content(node_id, "dimostrazioni")
+    assert all(s["chiave"] != "LUCIDI_CASONI" for s in d["fonti"])
+    assert any("non consultata" in s["rif"] for s in d["fonti"] if s["chiave"] == "FILE1")
+
+
+# B7: snapshot generato UNA volta con git show da main 0ef8a4c, mai dai dati corretti.
+BASE_E5 = "0ef8a4c7e488853798f6410cc45aca5ec3f45c21"
+SNAPSHOT_E5 = ROOT / "tests/fixtures/invarianti_w5.json"
+SNAPSHOT_SHA256 = "3c6a614bf97f621c867df8626d46eb4605f12e30934dc30abc581dd8dacca92e"
+COMUNI_E5 = {"versione_compatta": "G-5", "a_voce": "G-5", "a_buchi": "G-1/G-5"}
+# Ogni eccezione è motivata dagli ID di §5, non da un generico via libera al file.
+ECCEZIONI_E5 = {
+    "dim-sliding-window-efficienza": {**COMUNI_E5, "passi": "T12-1/T12-2/T12-3/T12-5/S1-S8", "figure": "T12-1/S1-S8", "richiamo_attivo": "T12-4", "verifica.note": "T12-6 (rinvio rettificato sulle immagini)"},
+    "dim-poisson-tempo-residuo": {**COMUNI_E5, "passi": "T13-1/T13-2/T13-4/C-3/G-3", "figure": "T13-4/C-3/S1-S8", "richiamo_attivo": "T13-3", "varianti_notazione": "T13-5"},
+    "dim-nascita-morte-equilibrio": {**COMUNI_E5, "passi": "T14-1/T14-2/T14-3/T14-6", "figure": "T14-3/S1-S8", "richiamo_attivo": "T14-4", "varianti_notazione": "T14-5"},
+    "dim-aloha-throughput": {**COMUNI_E5, "passi": "T15-1/G-3/S1-S8", "figure": "S1-S8", "formula_finale": "T15-2", "notazione": "T15-3", "fonti": "T15-4", "verifica": "T15-5", "richiamo_attivo": "T15-6"},
+    "dim-csma-cd-throughput": {**COMUNI_E5, "passi": "T16-1/S1-S8", "figure": "S1-S8 (T16-3: asse NON esteso)", "ipotesi": "T16-2/T16-4", "fonti": "T16-4", "varianti_notazione": "T16-4", "verifica": "T16-5"},
+    "dim-ritardo-tdma-fdma": {**COMUNI_E5, "passi": "T17-1/T17-2/T17-3/T17-7/S1-S8", "figure": "S1-S8", "notazione": "T17-1", "varianti_notazione": "T17-1", "formula_finale": "T17-1/T17-2", "errori_frequenti": "T17-1 (solo simbolo)", "richiamo_attivo": "T17-4", "fonti": "T17-5", "ipotesi": "T17-5", "verifica": "T17-6"},
+}
+# Vecchio passo -> nuovo passo; fuori dai campi elencati il testo resta identico.
+# n e figura sono verificati separatamente (rinumerazione G-5 e agganci S1-S8).
+PASSI_ECCEZIONI_E5 = {
+    "dim-sliding-window-efficienza": [(1, 1, {"perche"}), (2, 2, set()), (3, 3, set()), (4, 4, set()), (5, 6, {"perche"})],
+    "dim-poisson-tempo-residuo": [(1, 1, set()), (2, 2, set()), (3, 3, set()), (4, 4, set()), (5, 7, {"testo", "formula", "perche"})],
+    "dim-nascita-morte-equilibrio": [(1, 1, set()), (2, 2, set()), (3, 4, set()), (4, 5, {"perche"}), (5, 6, {"perche"})],
+    "dim-aloha-throughput": [(1, 1, set()), (2, 2, set()), (3, 3, set()), (4, 5, set()), (5, 4, {"testo", "formula"}), (6, 7, {"formula"})],
+    "dim-csma-cd-throughput": [(1, 1, {"perche"}), (2, 2, set()), (3, 3, set()), (4, 4, set()), (5, 5, set()), (6, 6, set())],
+    "dim-ritardo-tdma-fdma": [(1, 1, {"formula"}), (2, 2, {"formula"}), (3, 3, {"formula", "perche"}), (4, 4, {"formula"}), (5, 5, {"formula"})],
+}
+FIGURE_ECCEZIONI_E5 = {
+    "aloha-throughput-grafico": {"descrizione"},  # S7: nuovo rispetto alle due curve.
+    "csma-cd-throughput-grafico": {"descrizione"},  # S7 e T16: nessun numero attribuito.
+    "tdma-fdma-confronto-temporale": {"descrizione"},  # S7: le corsie si riempiono.
+    "poisson-distribuzione-residuo": {"descrizione", "asse_x", "asse_y", "serie"},  # C-3.
+}
+
+
+def differenze(prima, dopo, path=()):
+    if type(prima) is not type(dopo):
+        yield path
+    elif isinstance(prima, dict):
+        for key in sorted(prima.keys() | dopo.keys()):
+            if key not in prima or key not in dopo:
+                yield (*path, key)
+            else:
+                yield from differenze(prima[key], dopo[key], (*path, key))
+    elif isinstance(prima, list):
+        if len(prima) != len(dopo):
+            yield path
+        for i, (a, b) in enumerate(zip(prima, dopo)):
+            yield from differenze(a, b, (*path, str(i)))
+    elif prima != dopo:
+        yield path
+
+
+def test_b7_snapshot_originale_e_graph_fuori_scope_invariato():
+    assert hashlib.sha256(SNAPSHOT_E5.read_bytes()).hexdigest() == SNAPSHOT_SHA256
+    snapshot = read(SNAPSHOT_E5)
+    assert snapshot["base_commit"] == BASE_E5
+    assert set(snapshot["dimostrazioni"]) == set(PROOFS) == set(ECCEZIONI_E5)
+    actual = {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
+              for p in GRAPH.rglob("*.json")
+              if p.parent != GRAPH / "dimostrazioni" and p.name not in {"graph.json", "quiz.json"}}
+    assert actual == snapshot["graph_invariato_sha256"]
+
+
+@pytest.mark.parametrize("node_id", PROOFS)
+def test_b7_invarianti_per_campo_e_id_di_correzione(node_id):
+    prima = read(SNAPSHOT_E5)["dimostrazioni"][node_id]
+    dopo = content(node_id, "dimostrazioni")
+    assert prima.keys() == dopo.keys(), "Nessun campo nuovo"
+    assert all(prima[k] == dopo[k] for k in ("id", "titolo", "enunciato", "domande_esame", "idea", "collegamenti"))
+    prefissi = [tuple(k.split(".")) for k in ECCEZIONI_E5[node_id]]
+    non_consentite = [p for p in differenze(prima, dopo) if not any(p[:len(k)] == k for k in prefissi)]
+    assert not non_consentite, (node_id, non_consentite)
+    for vecchio, nuovo, campi in PASSI_ECCEZIONI_E5[node_id]:
+        p, q = prima["passi"][vecchio - 1], dopo["passi"][nuovo - 1]
+        assert q["n"] == nuovo
+        for key in (p.keys() | q.keys()) - campi - {"n", "figura"}:
+            assert p.get(key) == q.get(key), (node_id, vecchio, nuovo, key)
+    assert len(prima["passi"]) == len(PASSI_ECCEZIONI_E5[node_id])
+    for originale in prima["figure"]:
+        attuale = fig(dopo, originale["id"])
+        assert originale.keys() == attuale.keys()
+        for key in originale.keys() - FIGURE_ECCEZIONI_E5.get(originale["id"], set()):
+            assert originale[key] == attuale[key], (node_id, originale["id"], key)
+    assert next(s for s in prima["fonti"] if s["chiave"] == "FILE2") == next(s for s in dopo["fonti"] if s["chiave"] == "FILE2")
+    assert dopo["verifica"]["stato"] != "verificata_testo_prof"
+
+
+def test_b7_eccezioni_di_notazione_non_autorizzano_altro():
+    baseline = read(SNAPSHOT_E5)["dimostrazioni"]
+    aloha = content("dim-aloha-throughput", "dimostrazioni")
+    assert aloha["notazione"][:-1] == baseline[aloha["id"]]["notazione"]
+    tdma = content("dim-ritardo-tdma-fdma", "dimostrazioni")
+    for campo in ("notazione", "errori_frequenti"):
+        atteso = json.loads(json.dumps(baseline[tdma["id"]][campo]).replace(r"\\omega", "w"))
+        assert tdma[campo] == atteso
+    poisson = content("dim-poisson-tempo-residuo", "dimostrazioni")
+    assert fig(poisson, "poisson-distribuzione-residuo")["serie"][-1] == baseline[poisson["id"]]["figure"][0]["serie"][0]

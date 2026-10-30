@@ -54,7 +54,7 @@
       "n": 1,
       "testo": "Definisci il tempo di serializzazione e l’intero ciclo di riscontro.",
       "formula": "F=D+H,\\qquad T_f=F/C,\\qquad TT=F/C+I+A/C+I",
-      "perche": "Il tempo di ciclo include l’intero frame, i due ritardi e la serializzazione dell’ACK.",
+      "perche": "Il tempo di ciclo include l’intero frame, i due ritardi e la serializzazione dell’ACK. Il ritardo I si paga due volte: andata del dato e ritorno dell’ACK; la finestra avanza solo quando l’ACK è arrivato.",
       "figura": "finestra-con-attesa"
     },
     {
@@ -68,7 +68,7 @@
       "testo": "Nel caso di finestra insufficiente, conta i bit utili inviati in un ciclo.",
       "formula": "WF\\le C\\,TT:\\qquad \\eta=\\frac{WD}{C\\,TT}=\\frac{WD}{D+H+A+2IC}",
       "perche": "Si inviano W trame per ciclo; all’uguaglianza il riscontro è appena in tempo.",
-      "figura": "finestra-con-attesa"
+      "figura": "finestra-insufficiente"
     },
     {
       "n": 4,
@@ -78,10 +78,18 @@
       "figura": "finestra-continua"
     },
     {
-      "n": 5,
+      "testo": "Esplicita la soglia oltre la quale la finestra satura il collegamento.",
+      "formula": "W^{*}=\\frac{C\\,TT}{F},\\qquad \\eta=\\frac{D}{F}\\quad\\text{per }W\\ge W^{*}",
+      "perche": "La soglia si ottiene dividendo il numero di bit del ciclo per i bit di una trama; W è intero, quindi basta il primo intero non inferiore alla soglia.",
+      "figura": "finestra-efficienza-soglia",
+      "n": 5
+    },
+    {
+      "n": 6,
       "testo": "Unisci i regimi e confronta il denominatore speciale degli appunti.",
       "formula": "\\eta=\\frac{D}{F}\\min\\!\\left(1,\\frac{WF}{C\\,TT}\\right),\\qquad A=H\\Rightarrow C\\,TT=D+2H+2IC",
-      "perche": "La saturazione impedisce di superare la frazione utile; la sostituzione A=H è un’ipotesi esplicita."
+      "perche": "La saturazione impedisce di superare la frazione utile; la sostituzione A=H è un’ipotesi esplicita. Il minimo garantisce $\\eta\\le1$: non si può consegnare più della frazione utile di una trama.",
+      "figura": "finestra-efficienza-due-regimi"
     }
   ],
   "formula_finale": "\\eta=\\begin{cases}\\dfrac{WD}{C\\,TT}=\\dfrac{WD}{D+H+A+2IC},&WF\\le C\\,TT,\\\\[4pt]\\dfrac{D}{D+H},&WF>C\\,TT.\\end{cases}",
@@ -328,9 +336,330 @@
           "etichetta": "Fine trama 3"
         }
       ]
+    },
+    {
+      "id": "finestra-insufficiente",
+      "tipo": "temporale",
+      "titolo": "Finestra insufficiente: due trame e pausa",
+      "descrizione": "Rispetto alla lettura del ciclo, evidenzia ora la finestra insufficiente di due trame: dopo due secondi il mittente si ferma fino al primo ACK completo a tre secondi. Sono distinti serializzazione, andata, ACK e ritorno; esempio calcolato, non misura dei lucidi.",
+      "asse_t": {
+        "etichetta": "Tempo (s)",
+        "min": 0,
+        "max": 4.5
+      },
+      "corsie": [
+        {
+          "id": "mittente",
+          "etichetta": "Mittente: trame"
+        },
+        {
+          "id": "ricezione",
+          "etichetta": "Destinatario: ricezione"
+        },
+        {
+          "id": "riscontro",
+          "etichetta": "Destinatario: ACK"
+        },
+        {
+          "id": "ack-ricevuto",
+          "etichetta": "Mittente: ricezione ACK"
+        }
+      ],
+      "intervalli": [
+        {
+          "corsia": "mittente",
+          "t0": 0,
+          "t1": 1,
+          "etichetta": "Trama 0",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "mittente",
+          "t0": 1,
+          "t1": 2,
+          "etichetta": "Trama 1",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "mittente",
+          "t0": 2,
+          "t1": 3,
+          "etichetta": "Attesa",
+          "stile": "attesa"
+        },
+        {
+          "corsia": "mittente",
+          "t0": 3,
+          "t1": 4,
+          "etichetta": "Trama 2",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "ricezione",
+          "t0": 0.5,
+          "t1": 1.5,
+          "etichetta": "Trama 0 ricevuta",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "ricezione",
+          "t0": 1.5,
+          "t1": 2.5,
+          "etichetta": "Trama 1 ricevuta",
+          "stile": "trasmissione"
+        },
+        {
+          "corsia": "riscontro",
+          "t0": 1.5,
+          "t1": 2.5,
+          "etichetta": "ACK 0 inviato",
+          "stile": "ack"
+        },
+        {
+          "corsia": "ack-ricevuto",
+          "t0": 2,
+          "t1": 3,
+          "etichetta": "ACK 0 ricevuto",
+          "stile": "ack"
+        }
+      ],
+      "frecce": [
+        {
+          "da": {
+            "corsia": "mittente",
+            "t": 0
+          },
+          "a": {
+            "corsia": "ricezione",
+            "t": 0.5
+          },
+          "etichetta": "I: andata"
+        },
+        {
+          "da": {
+            "corsia": "riscontro",
+            "t": 2.5
+          },
+          "a": {
+            "corsia": "ack-ricevuto",
+            "t": 3
+          },
+          "etichetta": "I: ritorno"
+        },
+        {
+          "da": {
+            "corsia": "mittente",
+            "t": 2
+          },
+          "a": {
+            "corsia": "mittente",
+            "t": 3
+          },
+          "etichetta": "Pausa: finestra esaurita"
+        }
+      ],
+      "marcatori": [
+        {
+          "t": 0,
+          "etichetta": "Inizio"
+        },
+        {
+          "t": 2,
+          "etichetta": "Finestra esaurita"
+        },
+        {
+          "t": 3,
+          "etichetta": "TT e ACK completo"
+        },
+        {
+          "t": 1,
+          "etichetta": "Tf = F/C"
+        },
+        {
+          "t": 1.5,
+          "etichetta": "Tf + I: inizio ACK"
+        },
+        {
+          "t": 2.5,
+          "etichetta": "Fine ACK: durata A/C"
+        }
+      ]
+    },
+    {
+      "id": "finestra-efficienza-soglia",
+      "tipo": "grafico",
+      "titolo": "La soglia del regime saturo",
+      "descrizione": "Nuovo rispetto alle corsie temporali: il ramo saturo in funzione della finestra, a partire dalla soglia di 1,25 trame. Esempio di controllo con 950 bit utili, 50 di intestazione, ACK di 50 bit, capacità di 10 kbit/s e ritardo di 10 ms per tratta; non sono valori dei lucidi.",
+      "asse_x": {
+        "etichetta": "Finestra W (trame)",
+        "min": 0,
+        "max": 4,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 1,
+            "etichetta": "1"
+          },
+          {
+            "valore": 2,
+            "etichetta": "2"
+          },
+          {
+            "valore": 3,
+            "etichetta": "3"
+          },
+          {
+            "valore": 4,
+            "etichetta": "4"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "Efficienza utile η",
+        "min": 0,
+        "max": 1,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 0.5,
+            "etichetta": "0,5"
+          },
+          {
+            "valore": 1,
+            "etichetta": "1"
+          }
+        ]
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "Regime saturo D/F",
+          "punti": [
+            [
+              1.25,
+              0.95
+            ],
+            [
+              4,
+              0.95
+            ]
+          ]
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": 1.25,
+          "y": 0.95,
+          "testo": "W* = 1,25"
+        }
+      ]
+    },
+    {
+      "id": "finestra-efficienza-due-regimi",
+      "tipo": "grafico",
+      "titolo": "La finestra limita il ramo crescente",
+      "descrizione": "Aggiunge al ramo saturo la retta del regime limitato dalla finestra, senza cambiare assi o serie precedente. Nello stesso esempio il minimo raccorda i due rami alla soglia di 1,25 trame: una trama rende 0,76, da due trame si raggiunge 0,95.",
+      "asse_x": {
+        "etichetta": "Finestra W (trame)",
+        "min": 0,
+        "max": 4,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 1,
+            "etichetta": "1"
+          },
+          {
+            "valore": 2,
+            "etichetta": "2"
+          },
+          {
+            "valore": 3,
+            "etichetta": "3"
+          },
+          {
+            "valore": 4,
+            "etichetta": "4"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "Efficienza utile η",
+        "min": 0,
+        "max": 1,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 0.5,
+            "etichetta": "0,5"
+          },
+          {
+            "valore": 1,
+            "etichetta": "1"
+          }
+        ]
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "Regime saturo D/F",
+          "punti": [
+            [
+              1.25,
+              0.95
+            ],
+            [
+              4,
+              0.95
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "Regime limitato WD/(C TT)",
+          "punti": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0.76
+            ],
+            [
+              1.25,
+              0.95
+            ]
+          ]
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": 1.25,
+          "y": 0.95,
+          "testo": "W* = 1,25"
+        },
+        {
+          "x": 1,
+          "y": 0.76,
+          "testo": "W = 1: 0,76"
+        }
+      ]
     }
   ],
-  "a_voce": "Definisco D come i bit utili, H come intestazione e F come dimensione della trama. La finestra W limita le trame ancora senza conferma. Il tempo TT parte dal primo bit inviato e termina quando arriva l’ultimo bit dell’ACK: include serializzazione, due ritardi e lunghezza del riscontro. Se WF è minore di CTT, la finestra si esaurisce e mando W volte D bit utili per ciclo; all’uguaglianza l’ACK arriva appena in tempo. Se invece la finestra copre il ciclo, trasmetto senza pause e resta solo l’overhead H. La formula con D più due H nel denominatore richiede l’ipotesi aggiuntiva ACK lungo H bit, da verificare sui lucidi.",
+  "a_voce": "Definisco D come bit utili, H come intestazione e F come lunghezza della trama. La finestra W limita le trame ancora senza conferma. Il ciclo TT va dal primo bit della trama all’ultimo bit del suo ACK: contiene le due serializzazioni e due volte il ritardo I, perché il dato va e l’ACK torna. Moltiplicando per C ottengo i bit che possono entrare nel ciclo. Se la finestra si esaurisce prima del riscontro, invio W volte D bit utili per ciclo. Quando invece la finestra copre il ciclo non ci sono pause e l’efficienza è D su F. La soglia W stella è C TT diviso F; essendo W intero, scelgo il primo intero che la raggiunge. Il minimo fra i due regimi impedisce di superare la frazione utile. Nell’esempio di controllo la soglia è 1,25: con una trama l’efficienza è 0,76, da due è 0,95. Il denominatore con due H resta subordinato all’ipotesi ACK lungo H bit, non confermata sui lucidi di Reti.",
   "errori_frequenti": [
     {
       "errore": "Sostituire TT con il solo doppio tempo di propagazione.",
@@ -349,29 +678,29 @@
     }
   ],
   "versione_compatta": [
-    "$F=D+H$, $TT=F/C+I+A/C+I$.",
-    "Per $WF\\le CTT$: $\\eta=WD/(CTT)$.",
-    "Per $WF>CTT$: $\\eta=D/F$.",
-    "Con $A=H$: $CTT=D+2H+2IC$; ipotesi da verificare."
+    "$F=D+H$, $TT=F/C+I+A/C+I$: I compare due volte per dato e ACK.",
+    "$C\\,TT=F+A+2IC$; sotto soglia $\\eta=WD/(C\\,TT)$.",
+    "$W^{*}=C\\,TT/F$: per $W\\ge W^{*}$ si raggiunge $\\eta=D/F$.",
+    "$\\eta=(D/F)\\min(1,WF/(C\\,TT))\\le1$.",
+    "Il denominatore $D+2H+2IC$ richiede l’ipotesi aggiuntiva $A=H$."
   ],
   "a_buchi": {
-    "testo": "La finestra contiene al massimo ___1___ trame non confermate. Per $WF\\le CTT$, $\\eta=$ ___2___ perché si consegnano ___3___ bit utili per ciclo. La formula $D+2H+2IC$ richiede ___4___.",
+    "testo": "Il ritardo I compare ___1___ volte perché il dato va e l’ACK torna. Se la finestra è insufficiente si consegnano ___2___ bit utili per ciclo. La soglia $W^{*}$ vale ___3___; per ottenere $D+2H+2IC$ serve ___4___.",
     "soluzioni": {
       "1": [
-        "W",
-        "$W$"
+        "due",
+        "2"
       ],
       "2": [
-        "WD/(CTT)",
-        "$WD/(CTT)$"
+        "WD",
+        "W D"
       ],
       "3": [
-        "WD",
-        "$WD$"
+        "C TT/F",
+        "CTT/F"
       ],
       "4": [
         "A=H",
-        "$A=H$",
         "ACK lungo H bit"
       ]
     }
@@ -392,6 +721,10 @@
     {
       "domanda": "Il rapporto include gli errori?",
       "risposta": "No: assume assenza di errori e di ritrasmissioni."
+    },
+    {
+      "domanda": "Verifica i due regimi con C = 10 kbit/s, D = 950 bit, H = A = 50 bit e I = 10 ms: quanta finestra serve?",
+      "risposta": "Esempio di controllo calcolato dalla formula: $F=1000\\ \\mathrm{bit}$, $T_f=0{,}1\\ \\mathrm{s}$, $TT=0{,}125\\ \\mathrm{s}$ e $C\\,TT=1250\\ \\mathrm{bit}$. La soglia è $W^{*}=1{,}25$: con $W=1$, $\\eta=0{,}76$; con $W\\ge2$, $\\eta=0{,}95$."
     }
   ],
   "collegamenti": [
@@ -419,7 +752,7 @@
   "verifica": {
     "stato": "da_verificare",
     "data": "2026-10-28",
-    "note": "Confronto visivo delle due fonti studentesche. A8: la formula è leggibile, ma $A=H$ non è dichiarato esplicitamente; i lucidi non sono stati consultati.",
+    "note": "Confronto visivo delle due fonti studentesche. A8: la formula è leggibile, ma $A=H$ non è dichiarato esplicitamente; i lucidi non sono stati consultati. T12-6, rettifica dopo lettura delle immagini: file3 p. 29 riporta il regime saturo e p. 30 quello limitato dalla finestra, non il solo regime saturo indicato nell’audit R6. File1 p. 49 definisce TT e p. 50 presenta entrambi i regimi. La nuova figura distingue i due ritardi I; gli esempi numerici sono calcoli di controllo.",
     "punti_aperti": [
       "A8: verificare sui lucidi se l’ACK è lungo H bit e se I include le stesse componenti in entrambe le direzioni.",
       "Corrispondenza esatta ai lucidi del docente: NON TROVATO."

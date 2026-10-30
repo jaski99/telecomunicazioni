@@ -1,0 +1,3054 @@
+{
+  "base_commit": "0ef8a4c7e488853798f6410cc45aca5ec3f45c21",
+  "dimostrazioni": {
+    "dim-aloha-throughput": {
+      "id": "dim-aloha-throughput",
+      "titolo": "Throughput normalizzato ALOHA",
+      "domande_esame": [
+        "T15",
+        "M2",
+        "M3"
+      ],
+      "enunciato": "Nel modello ALOHA ideale, con trame uguali e tentativi poissoniani, sia $G$ il carico totale normalizzato, incluse le ritrasmissioni: il throughput puro è $\\rho_{\\mathrm{puro}}=Ge^{-2G}$ e raggiunge il massimo $1/(2e)$ per $G=1/2$. Con slot sincronizzati è $\\rho_{\\mathrm{slot}}=Ge^{-G}$ e raggiunge il massimo $1/e$ per $G=1$.",
+      "ipotesi": [
+        "Trame tutte lunghe $b$ bit, capacità $R>0$ e durata $\\tau=b/R$ costante.",
+        "Nel modello ideale, gli altri tentativi complessivi, incluse le ritrasmissioni, sono poissoniani e indipendenti dal tentativo di riferimento.",
+        "Qualsiasi sovrapposizione provoca collisione distruttiva; niente cattura o errori indipendenti.",
+        "Nello slotted tutti iniziano sui confini di slot sincronizzati di durata $\\tau$; il modello non prova da solo la stabilità delle code."
+      ],
+      "notazione": [
+        {
+          "simbolo": "b,R,\\tau",
+          "significato": "Lunghezza in bit, capacità in bit/s e tempo di trama $\\tau=b/R$."
+        },
+        {
+          "simbolo": "\\lambda_t",
+          "significato": "Tasso totale di tentativi, incluse ritrasmissioni."
+        },
+        {
+          "simbolo": "\\lambda",
+          "significato": "Tasso di pacchetti trasmessi con successo."
+        },
+        {
+          "simbolo": "G",
+          "significato": "Traffico totale normalizzato $G=\\lambda_t\\tau$."
+        },
+        {
+          "simbolo": "\\rho",
+          "significato": "Throughput utile normalizzato $\\rho=\\lambda\\tau$."
+        },
+        {
+          "simbolo": "P_s",
+          "significato": "Probabilità di successo del tentativo di riferimento."
+        }
+      ],
+      "varianti_notazione": [],
+      "idea": "Calcola la probabilità di zero tentativi concorrenti nella finestra vulnerabile e moltiplica per il carico.",
+      "passi": [
+        {
+          "n": 1,
+          "testo": "Normalizza traffico totale e throughput rispetto alla durata di trama.",
+          "formula": "\\tau=b/R,\\qquad G=\\lambda_t\\tau,\\qquad \\rho=\\lambda\\tau",
+          "perche": "Tasso di trame moltiplicato per la durata di una trama è una quantità adimensionale."
+        },
+        {
+          "n": 2,
+          "testo": "Individua la finestra vulnerabile dell’ALOHA puro.",
+          "formula": "\\text{inizio concorrente}\\in(t-\\tau,t+\\tau),\\qquad |\\text{finestra}|=2\\tau",
+          "perche": "Una trama che inizi entro una durata prima o dopo si sovrappone a quella di riferimento.",
+          "figura": "aloha-finestra-puro"
+        },
+        {
+          "n": 3,
+          "testo": "Applica la probabilità poissoniana di zero tentativi concorrenti.",
+          "formula": "P_s=P(N(2\\tau)=0)=e^{-2\\lambda_t\\tau}=e^{-2G}",
+          "perche": "Nel modello Poisson un intervallo di lunghezza $2\\tau$ contiene in media $2\\lambda_t\\tau$ tentativi."
+        },
+        {
+          "n": 4,
+          "testo": "Ricava la frazione di tentativi con successo.",
+          "formula": "\\lambda=\\lambda_tP_s,\\qquad \\rho=Ge^{-2G}",
+          "perche": "Il tasso di successi è il tasso totale moltiplicato per la probabilità di successo."
+        },
+        {
+          "n": 5,
+          "testo": "Sincronizzando gli slot la finestra vulnerabile diventa uno slot.",
+          "formula": "P_{s,\\mathrm{slot}}=e^{-G},\\qquad \\rho_{\\mathrm{slot}}=Ge^{-G}",
+          "perche": "Solo gli altri tentativi nello stesso slot possono sovrapporsi alla trama di riferimento.",
+          "figura": "aloha-finestra-slotted"
+        },
+        {
+          "n": 6,
+          "testo": "Deriva le curve per individuare i massimi e confrontali.",
+          "formula": "\\rho_{\\mathrm{puro}}^{\\prime}=e^{-2G}(1-2G),\\qquad \\rho_{\\mathrm{slot}}^{\\prime}=e^{-G}(1-G)",
+          "perche": "Gli esponenziali sono positivi: i cambi di segno delle derivate avvengono a $G=1/2$ e $G=1$.",
+          "figura": "aloha-throughput-grafico"
+        }
+      ],
+      "formula_finale": "\\rho_{\\mathrm{puro}}=Ge^{-2G},\\quad \\rho_{\\mathrm{slot}}=Ge^{-G},\\quad \\rho_{\\max,\\mathrm{puro}}=\\frac1{2e},\\quad \\rho_{\\max,\\mathrm{slot}}=\\frac1e.",
+      "figure": [
+        {
+          "id": "aloha-finestra-puro",
+          "tipo": "temporale",
+          "titolo": "ALOHA puro: finestra vulnerabile",
+          "descrizione": "Una trama di riferimento va da 1 a 2 durate; un inizio concorrente tra 0 e 2 produce sovrapposizione. Sono illustrati due esempi di collisione.",
+          "asse_t": {
+            "etichetta": "Tempo (unità di τ)",
+            "min": 0,
+            "max": 3
+          },
+          "corsie": [
+            {
+              "id": "vulnerabile",
+              "etichetta": "Inizio concorrente pericoloso"
+            },
+            {
+              "id": "riferimento",
+              "etichetta": "Trama di riferimento"
+            },
+            {
+              "id": "precoce",
+              "etichetta": "Concorrente precoce"
+            },
+            {
+              "id": "tardivo",
+              "etichetta": "Concorrente tardivo"
+            }
+          ],
+          "intervalli": [
+            {
+              "corsia": "vulnerabile",
+              "t0": 0,
+              "t1": 2,
+              "etichetta": "Finestra 2τ",
+              "stile": "attesa"
+            },
+            {
+              "corsia": "riferimento",
+              "t0": 1,
+              "t1": 2,
+              "etichetta": "Trama di riferimento",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "precoce",
+              "t0": 0.5,
+              "t1": 1.5,
+              "etichetta": "Inizio prima: collisione",
+              "stile": "collisione"
+            },
+            {
+              "corsia": "tardivo",
+              "t0": 1.5,
+              "t1": 2.5,
+              "etichetta": "Inizio dopo: collisione",
+              "stile": "collisione"
+            }
+          ],
+          "frecce": [],
+          "marcatori": [
+            {
+              "t": 0,
+              "etichetta": "t − τ"
+            },
+            {
+              "t": 1,
+              "etichetta": "t"
+            },
+            {
+              "t": 2,
+              "etichetta": "t + τ"
+            }
+          ]
+        },
+        {
+          "id": "aloha-finestra-slotted",
+          "tipo": "temporale",
+          "titolo": "Slotted ALOHA: un solo slot",
+          "descrizione": "Gli inizi sono sincronizzati: un altro tentativo all’inizio dello stesso slot collide; tentativi negli slot adiacenti non si sovrappongono.",
+          "asse_t": {
+            "etichetta": "Tempo (unità di τ)",
+            "min": 0,
+            "max": 3
+          },
+          "corsie": [
+            {
+              "id": "slot",
+              "etichetta": "Slot sincronizzati"
+            },
+            {
+              "id": "riferimento",
+              "etichetta": "Trama di riferimento"
+            },
+            {
+              "id": "concorrente",
+              "etichetta": "Tentativo concorrente"
+            }
+          ],
+          "intervalli": [
+            {
+              "corsia": "slot",
+              "t0": 0,
+              "t1": 1,
+              "etichetta": "Slot precedente",
+              "stile": "attesa"
+            },
+            {
+              "corsia": "slot",
+              "t0": 1,
+              "t1": 2,
+              "etichetta": "Slot vulnerabile τ",
+              "stile": "attesa"
+            },
+            {
+              "corsia": "slot",
+              "t0": 2,
+              "t1": 3,
+              "etichetta": "Slot successivo",
+              "stile": "attesa"
+            },
+            {
+              "corsia": "riferimento",
+              "t0": 1,
+              "t1": 2,
+              "etichetta": "Trama",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "concorrente",
+              "t0": 1,
+              "t1": 2,
+              "etichetta": "Stesso slot: collisione",
+              "stile": "collisione"
+            }
+          ],
+          "frecce": [],
+          "marcatori": [
+            {
+              "t": 1,
+              "etichetta": "Inizio slot"
+            },
+            {
+              "t": 2,
+              "etichetta": "Fine slot"
+            }
+          ]
+        },
+        {
+          "id": "aloha-throughput-grafico",
+          "tipo": "grafico",
+          "titolo": "Throughput ALOHA rispetto al traffico",
+          "descrizione": "Due curve: ALOHA puro ha massimo circa 0,184 a G uguale a 0,5; slotted ha massimo circa 0,368 a G uguale a 1.",
+          "asse_x": {
+            "etichetta": "Traffico G (tentativi per durata di trama)",
+            "min": 0,
+            "max": 3
+          },
+          "asse_y": {
+            "etichetta": "Throughput ρ (trame riuscite per durata)",
+            "min": 0,
+            "max": 0.42
+          },
+          "serie": [
+            {
+              "stile": "linea",
+              "etichetta": "ALOHA puro",
+              "punti": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.05,
+                  0.045241871
+                ],
+                [
+                  0.1,
+                  0.081873075
+                ],
+                [
+                  0.15,
+                  0.111122733
+                ],
+                [
+                  0.2,
+                  0.134064009
+                ],
+                [
+                  0.25,
+                  0.151632665
+                ],
+                [
+                  0.3,
+                  0.164643491
+                ],
+                [
+                  0.35,
+                  0.173804856
+                ],
+                [
+                  0.4,
+                  0.179731586
+                ],
+                [
+                  0.45,
+                  0.182956347
+                ],
+                [
+                  0.5,
+                  0.183939721
+                ],
+                [
+                  0.55,
+                  0.183079096
+                ],
+                [
+                  0.6,
+                  0.180716527
+                ],
+                [
+                  0.65,
+                  0.177145665
+                ],
+                [
+                  0.7,
+                  0.172617875
+                ],
+                [
+                  0.75,
+                  0.16734762
+                ],
+                [
+                  0.8,
+                  0.161517214
+                ],
+                [
+                  0.85,
+                  0.155280995
+                ],
+                [
+                  0.9,
+                  0.148768999
+                ],
+                [
+                  0.95,
+                  0.142090188
+                ],
+                [
+                  1.0,
+                  0.135335283
+                ],
+                [
+                  1.05,
+                  0.12857925
+                ],
+                [
+                  1.1,
+                  0.121883474
+                ],
+                [
+                  1.15,
+                  0.11529767
+                ],
+                [
+                  1.2,
+                  0.108861544
+                ],
+                [
+                  1.25,
+                  0.102606248
+                ],
+                [
+                  1.3,
+                  0.096555652
+                ],
+                [
+                  1.35,
+                  0.090727442
+                ],
+                [
+                  1.4,
+                  0.085134088
+                ],
+                [
+                  1.45,
+                  0.079783669
+                ],
+                [
+                  1.5,
+                  0.074680603
+                ],
+                [
+                  1.55,
+                  0.069826264
+                ],
+                [
+                  1.6,
+                  0.065219526
+                ],
+                [
+                  1.65,
+                  0.060857226
+                ],
+                [
+                  1.7,
+                  0.056734559
+                ],
+                [
+                  1.75,
+                  0.052845421
+                ],
+                [
+                  1.8,
+                  0.0491827
+                ],
+                [
+                  1.85,
+                  0.045738524
+                ],
+                [
+                  1.9,
+                  0.042504467
+                ],
+                [
+                  1.95,
+                  0.039471727
+                ],
+                [
+                  2.0,
+                  0.036631278
+                ],
+                [
+                  2.05,
+                  0.033973985
+                ],
+                [
+                  2.1,
+                  0.031490711
+                ],
+                [
+                  2.15,
+                  0.029172402
+                ],
+                [
+                  2.2,
+                  0.027010148
+                ],
+                [
+                  2.25,
+                  0.024995242
+                ],
+                [
+                  2.3,
+                  0.023119222
+                ],
+                [
+                  2.35,
+                  0.021373901
+                ],
+                [
+                  2.4,
+                  0.019751393
+                ],
+                [
+                  2.45,
+                  0.018244129
+                ],
+                [
+                  2.5,
+                  0.016844867
+                ],
+                [
+                  2.55,
+                  0.015546704
+                ],
+                [
+                  2.6,
+                  0.014343067
+                ],
+                [
+                  2.65,
+                  0.013227724
+                ],
+                [
+                  2.7,
+                  0.012194769
+                ],
+                [
+                  2.75,
+                  0.011238621
+                ],
+                [
+                  2.8,
+                  0.010354018
+                ],
+                [
+                  2.85,
+                  0.009536002
+                ],
+                [
+                  2.9,
+                  0.008779909
+                ],
+                [
+                  2.95,
+                  0.008081362
+                ],
+                [
+                  3.0,
+                  0.007436257
+                ]
+              ]
+            },
+            {
+              "stile": "tratteggio",
+              "etichetta": "Slotted ALOHA",
+              "punti": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.05,
+                  0.047561471
+                ],
+                [
+                  0.1,
+                  0.090483742
+                ],
+                [
+                  0.15,
+                  0.129106196
+                ],
+                [
+                  0.2,
+                  0.163746151
+                ],
+                [
+                  0.25,
+                  0.194700196
+                ],
+                [
+                  0.3,
+                  0.222245466
+                ],
+                [
+                  0.35,
+                  0.246640831
+                ],
+                [
+                  0.4,
+                  0.268128018
+                ],
+                [
+                  0.45,
+                  0.286932668
+                ],
+                [
+                  0.5,
+                  0.30326533
+                ],
+                [
+                  0.55,
+                  0.317322396
+                ],
+                [
+                  0.6,
+                  0.329286982
+                ],
+                [
+                  0.65,
+                  0.339329755
+                ],
+                [
+                  0.7,
+                  0.347609713
+                ],
+                [
+                  0.75,
+                  0.354274915
+                ],
+                [
+                  0.8,
+                  0.359463171
+                ],
+                [
+                  0.85,
+                  0.363302692
+                ],
+                [
+                  0.9,
+                  0.365912694
+                ],
+                [
+                  0.95,
+                  0.367403972
+                ],
+                [
+                  1.0,
+                  0.367879441
+                ],
+                [
+                  1.05,
+                  0.367434637
+                ],
+                [
+                  1.1,
+                  0.366158192
+                ],
+                [
+                  1.15,
+                  0.364132285
+                ],
+                [
+                  1.2,
+                  0.361433054
+                ],
+                [
+                  1.25,
+                  0.358130996
+                ],
+                [
+                  1.3,
+                  0.354291331
+                ],
+                [
+                  1.35,
+                  0.349974352
+                ],
+                [
+                  1.4,
+                  0.34523575
+                ],
+                [
+                  1.45,
+                  0.340126918
+                ],
+                [
+                  1.5,
+                  0.33469524
+                ],
+                [
+                  1.55,
+                  0.328984359
+                ],
+                [
+                  1.6,
+                  0.323034429
+                ],
+                [
+                  1.65,
+                  0.316882349
+                ],
+                [
+                  1.7,
+                  0.310561991
+                ],
+                [
+                  1.75,
+                  0.304104401
+                ],
+                [
+                  1.8,
+                  0.297537999
+                ],
+                [
+                  1.85,
+                  0.290888758
+                ],
+                [
+                  1.9,
+                  0.284180377
+                ],
+                [
+                  1.95,
+                  0.27743444
+                ],
+                [
+                  2.0,
+                  0.270670566
+                ],
+                [
+                  2.05,
+                  0.263906552
+                ],
+                [
+                  2.1,
+                  0.257158499
+                ],
+                [
+                  2.15,
+                  0.250440939
+                ],
+                [
+                  2.2,
+                  0.243766948
+                ],
+                [
+                  2.25,
+                  0.237148255
+                ],
+                [
+                  2.3,
+                  0.230595341
+                ],
+                [
+                  2.35,
+                  0.224117531
+                ],
+                [
+                  2.4,
+                  0.217723088
+                ],
+                [
+                  2.45,
+                  0.211419287
+                ],
+                [
+                  2.5,
+                  0.205212497
+                ],
+                [
+                  2.55,
+                  0.199108248
+                ],
+                [
+                  2.6,
+                  0.193111303
+                ],
+                [
+                  2.65,
+                  0.187225715
+                ],
+                [
+                  2.7,
+                  0.181454884
+                ],
+                [
+                  2.75,
+                  0.175801618
+                ],
+                [
+                  2.8,
+                  0.170268175
+                ],
+                [
+                  2.85,
+                  0.164856314
+                ],
+                [
+                  2.9,
+                  0.159567338
+                ],
+                [
+                  2.95,
+                  0.154402133
+                ],
+                [
+                  3.0,
+                  0.149361205
+                ]
+              ]
+            }
+          ],
+          "annotazioni": [
+            {
+              "x": 0.5,
+              "y": 0.18393972058572117,
+              "testo": "Massimo puro: 1/(2e)"
+            },
+            {
+              "x": 1,
+              "y": 0.36787944117144233,
+              "testo": "Massimo slotted: 1/e"
+            }
+          ]
+        }
+      ],
+      "a_voce": "Chiamo tau il tempo di un pacchetto, lambda t il tasso totale di tentativi, comprese le ritrasmissioni, e G il prodotto tra i due. Nel puro ALOHA un altro pacchetto causa collisione se inizia entro una durata prima o una dopo l’inizio del riferimento: la finestra è due tau. Il numero di altri tentativi è modellato come Poisson, quindi la probabilità di zero è e alla meno due G. Moltiplico per il traffico e ottengo rho uguale G e alla meno due G. Derivando, il massimo si trova a G uguale mezzo ed è uno su due e. Con slot sincronizzati la finestra è una sola durata: la curva diventa G e alla meno G e il massimo uno su e si ottiene a G uguale uno. Sono doppi i massimi, non necessariamente i valori delle due curve allo stesso carico.",
+      "errori_frequenti": [
+        {
+          "errore": "Usare $e^{2G}$ per la probabilità di successo.",
+          "perche_sbagliato": "Per $G>0$ supera uno; file3 p. 20 ha questa riga testuale in contrasto con la formula successiva.",
+          "correzione": "Il refuso probabile si corregge in $e^{-2G}$, come in file1 p. 46."
+        },
+        {
+          "errore": "Definire G con il solo traffico nuovo.",
+          "perche_sbagliato": "Il modello conta anche i tentativi dovuti alle ritrasmissioni.",
+          "correzione": "Usa il tasso totale di tentativi $\\lambda_t$."
+        },
+        {
+          "errore": "Dire che slotted è esattamente doppio a ogni G.",
+          "perche_sbagliato": "Sono doppi i massimi, che si ottengono a carichi diversi; le curve hanno rapporto $e^G$ per $G>0$.",
+          "correzione": "Confronta i massimi oppure valuta le due curve al carico richiesto."
+        }
+      ],
+      "versione_compatta": [
+        "$G=\\lambda_t\\tau$ e $\\rho=\\lambda\\tau$.",
+        "Puro: finestra $2\\tau$, $P_s=e^{-2G}$, $\\rho=Ge^{-2G}$.",
+        "Slotted: finestra $\\tau$, $\\rho=Ge^{-G}$.",
+        "Massimi: $1/(2e)$ a $G=0{,}5$ e $1/e$ a $G=1$."
+      ],
+      "a_buchi": {
+        "testo": "Nel puro la finestra dura ___1___ e la probabilità di successo è ___2___ perché occorrono ___3___ tentativi concorrenti. Nello slotted il massimo è ___4___.",
+        "soluzioni": {
+          "1": [
+            "$2\\tau$",
+            "2\\tau",
+            "due durate"
+          ],
+          "2": [
+            "$e^{-2G}$",
+            "e^{-2G}"
+          ],
+          "3": [
+            "zero",
+            "0"
+          ],
+          "4": [
+            "$1/e$",
+            "1/e"
+          ]
+        }
+      },
+      "richiamo_attivo": [
+        {
+          "domanda": "Che cosa comprende $G$?",
+          "risposta": "Tutti i tentativi, compresi quelli ritrasmessi."
+        },
+        {
+          "domanda": "Perché la finestra pura dura due trame?",
+          "risposta": "Una sovrapposizione può iniziare fino a una durata prima o dopo l’inizio della trama di riferimento."
+        },
+        {
+          "domanda": "Il segno dell’esponente può essere positivo?",
+          "risposta": "No: la probabilità di zero tentativi è $e^{-2G}$."
+        },
+        {
+          "domanda": "A quali carichi si hanno i massimi?",
+          "risposta": "A $G=0{,}5$ per il puro e $G=1$ per lo slotted."
+        }
+      ],
+      "collegamenti": [
+        "accesso-multiplo-deterministico-casuale",
+        "processo-poisson",
+        "dim-csma-cd-throughput"
+      ],
+      "fonti": [
+        {
+          "chiave": "FILE2",
+          "rif": "file2 pp. 1 e 9: T15, M2, M3, temi riformulati; punteggio NON TROVATO"
+        },
+        {
+          "chiave": "FILE3",
+          "rif": "file3 pp. 20–21: riga del successo con probabile refuso a p. 20"
+        },
+        {
+          "chiave": "FILE1",
+          "rif": "file1 pp. 45–46: slide 5 Accesso multiplo citata, non consultata"
+        }
+      ],
+      "verifica": {
+        "stato": "verificata_file1_file3",
+        "data": "2026-10-28",
+        "note": "A10: la riga testuale in file3 p. 20 omette il meno, un probabile refuso; la formula successiva nello stesso file e file1 p. 46 hanno $e^{-2G}$. Non è un confronto diretto con i lucidi.",
+        "punti_aperti": [
+          "Confronto diretto con la slide del docente: NON TROVATO."
+        ]
+      }
+    },
+    "dim-csma-cd-throughput": {
+      "id": "dim-csma-cd-throughput",
+      "titolo": "Throughput CSMA/CD nel modello a slot",
+      "domande_esame": [
+        "T16"
+      ],
+      "enunciato": "Nel modello CSMA/CD a slot con $N\\ge2$ stazioni indipendenti, probabilità di tentativo $p$ e $A=Np(1-p)^{N-1}>0$, il throughput è $S=\\frac{1}{1+2a(1-A)/A}$. Il massimo della probabilità di successo si ottiene per $p=1/N$ ed è $A_{\\max}=\\left(1-\\frac{1}{N}\\right)^{N-1}$. Il rapporto $a=T_p/T_f$, con $T_p$ tempo di propagazione unidirezionale, $T_f$ durata del frame e $0<a\\le1/2$, è un’interpretazione da verificare sui lucidi.",
+      "ipotesi": [
+        "Bus condiviso, N stazioni uguali e indipendenti; in ciascuno slot di contesa ciascuna tenta con probabilità p costante.",
+        "Gli slot falliti, vuoti o con collisione, sono indipendenti e durano $2T_p$; lo slot che contiene l’avvio riuscito è incluso nel frame, non contato anche come attesa.",
+        "Frame riusciti di durata costante $T_f$; traffico disponibile e nessun overhead aggiuntivo nel modello di ciclo.",
+        "Definiamo $a=T_p/T_f$; per la rilevazione della collisione entro il frame consideriamo $0<a\\le1/2$, con $a=0$ solo come limite.",
+        "IPOTESI: l’interpretazione normalizzata di a è dedotta dal frame unitario e dallo slot di doppia propagazione negli appunti; slide originale NON TROVATO."
+      ],
+      "notazione": [
+        {
+          "simbolo": "N,p",
+          "significato": "Numero di stazioni e probabilità indipendente di tentare in uno slot."
+        },
+        {
+          "simbolo": "T_p,T_f",
+          "significato": "Propagazione unidirezionale e durata del frame riuscito."
+        },
+        {
+          "simbolo": "a",
+          "significato": "Rapporto adimensionale $T_p/T_f$."
+        },
+        {
+          "simbolo": "A",
+          "significato": "Probabilità che esattamente una stazione tenti nello slot."
+        },
+        {
+          "simbolo": "w",
+          "significato": "Numero di slot falliti prima del successo."
+        },
+        {
+          "simbolo": "S",
+          "significato": "Frazione di tempo del ciclo dedicata al frame riuscito."
+        }
+      ],
+      "varianti_notazione": [],
+      "idea": "Usa una distribuzione geometrica per gli slot falliti e dividi il tempo utile per il ciclo medio.",
+      "passi": [
+        {
+          "n": 1,
+          "testo": "Normalizza la durata dello slot e del frame.",
+          "formula": "T_{\\mathrm{slot}}=2T_p=2aT_f,\\qquad \\frac{T_f}{T_{\\mathrm{slot}}}=\\frac1{2a}",
+          "perche": "La propagazione va e ritorna; $1/(2a)$ è una durata misurata in numero di slot.",
+          "figura": "csma-cd-contesa"
+        },
+        {
+          "n": 2,
+          "testo": "Calcola la probabilità che una sola stazione tenti.",
+          "formula": "A=\\binom N1p(1-p)^{N-1}=Np(1-p)^{N-1}",
+          "perche": "Ci sono N possibili stazioni vincenti e le altre $N-1$ devono restare silenziose indipendentemente."
+        },
+        {
+          "n": 3,
+          "testo": "Massimizza A rispetto a p per $N\\ge2$.",
+          "formula": "p=1/N,\\qquad A_{\\max}=\\left(1-\\frac1N\\right)^{N-1}\\xrightarrow[N\\to\\infty]{}\\frac1e",
+          "perche": "Derivando $Np(1-p)^{N-1}$ il massimo interno si trova a $p=1/N$."
+        },
+        {
+          "n": 4,
+          "testo": "Conta solo gli slot falliti prima dell’avvio riuscito.",
+          "formula": "P(w=i)=(1-A)^iA,\\quad i=0,1,\\ldots,\\qquad E[w]=\\frac{1-A}{A}",
+          "perche": "La legge geometrica conta i fallimenti prima del primo successo; lo slot riuscito appartiene al frame."
+        },
+        {
+          "n": 5,
+          "testo": "Dividi la durata di un frame riuscito per la durata media del ciclo.",
+          "formula": "S=\\frac{T_f}{T_f+2T_pE[w]}=\\frac{1}{1+2a(1-A)/A}=\\frac{A}{A+2a(1-A)}",
+          "perche": "Il ciclo include un frame e in media $E[w]$ slot falliti da $2T_p$ ciascuno.",
+          "figura": "csma-cd-throughput-grafico"
+        },
+        {
+          "n": 6,
+          "testo": "Sostituisci il valore ottimo di A per disegnare le curve al variare di a.",
+          "formula": "S_{\\max}(a,N)=\\frac{1}{1+2a(1-A_{\\max})/A_{\\max}}",
+          "perche": "Per $a>0$ la frazione cresce con A; la curva è riferita al modello ottimizzato, non a ogni carico."
+        }
+      ],
+      "formula_finale": "S_{\\max}(a,N)=\\frac{1}{1+2a\\dfrac{1-A_{\\max}}{A_{\\max}}},\\qquad A_{\\max}=\\left(1-\\frac1N\\right)^{N-1},\\quad N\\ge2.",
+      "figure": [
+        {
+          "id": "csma-cd-contesa",
+          "tipo": "temporale",
+          "titolo": "CSMA/CD: collisione e trasmissione riuscita",
+          "descrizione": "Esempio con frame di 1 s e propagazione 0,25 s: A inizia, B tenta quasi una propagazione dopo; A rileva la collisione prima di 0,5 s. Segue una contesa e un frame riuscito.",
+          "asse_t": {
+            "etichetta": "Tempo (s)",
+            "min": 0,
+            "max": 2.1
+          },
+          "corsie": [
+            {
+              "id": "slot",
+              "etichetta": "Contesa"
+            },
+            {
+              "id": "a",
+              "etichetta": "Stazione A"
+            },
+            {
+              "id": "b",
+              "etichetta": "Stazione B"
+            }
+          ],
+          "intervalli": [
+            {
+              "corsia": "slot",
+              "t0": 0,
+              "t1": 0.5,
+              "etichetta": "Slot 2Tp: collisione",
+              "stile": "collisione"
+            },
+            {
+              "corsia": "slot",
+              "t0": 0.5,
+              "t1": 1,
+              "etichetta": "Slot senza tentativi",
+              "stile": "attesa"
+            },
+            {
+              "corsia": "a",
+              "t0": 0,
+              "t1": 0.45,
+              "etichetta": "Tentativo A interrotto",
+              "stile": "collisione"
+            },
+            {
+              "corsia": "b",
+              "t0": 0.2,
+              "t1": 0.25,
+              "etichetta": "Tentativo B interrotto",
+              "stile": "collisione"
+            },
+            {
+              "corsia": "a",
+              "t0": 1,
+              "t1": 2,
+              "etichetta": "Frame riuscito",
+              "stile": "trasmissione"
+            }
+          ],
+          "frecce": [
+            {
+              "da": {
+                "corsia": "a",
+                "t": 0
+              },
+              "a": {
+                "corsia": "b",
+                "t": 0.25
+              },
+              "etichetta": "Segnale A: Tp"
+            },
+            {
+              "da": {
+                "corsia": "b",
+                "t": 0.2
+              },
+              "a": {
+                "corsia": "a",
+                "t": 0.45
+              },
+              "etichetta": "Segnale B: Tp"
+            }
+          ],
+          "marcatori": [
+            {
+              "t": 0,
+              "etichetta": "Inizio"
+            },
+            {
+              "t": 0.5,
+              "etichetta": "Fine slot"
+            },
+            {
+              "t": 1,
+              "etichetta": "Successo"
+            },
+            {
+              "t": 2,
+              "etichetta": "Frame completo"
+            }
+          ]
+        },
+        {
+          "id": "csma-cd-throughput-grafico",
+          "tipo": "grafico",
+          "titolo": "Massimo CSMA/CD al variare del rapporto a",
+          "descrizione": "Curve ideali ottimizzate per due e dieci stazioni, decrescenti con a tra zero e 0,5. Il limite a zero è indicato per continuità.",
+          "asse_x": {
+            "etichetta": "a = Tp/Tf (adimensionale)",
+            "min": 0,
+            "max": 0.5
+          },
+          "asse_y": {
+            "etichetta": "Throughput S (frazione del tempo)",
+            "min": 0,
+            "max": 1.05
+          },
+          "serie": [
+            {
+              "stile": "linea",
+              "etichetta": "N = 2; p = 1/2",
+              "punti": [
+                [
+                  0.0,
+                  1.0
+                ],
+                [
+                  0.01,
+                  0.980392157
+                ],
+                [
+                  0.02,
+                  0.961538462
+                ],
+                [
+                  0.03,
+                  0.943396226
+                ],
+                [
+                  0.04,
+                  0.925925926
+                ],
+                [
+                  0.05,
+                  0.909090909
+                ],
+                [
+                  0.06,
+                  0.892857143
+                ],
+                [
+                  0.07,
+                  0.877192982
+                ],
+                [
+                  0.08,
+                  0.862068966
+                ],
+                [
+                  0.09,
+                  0.847457627
+                ],
+                [
+                  0.1,
+                  0.833333333
+                ],
+                [
+                  0.11,
+                  0.819672131
+                ],
+                [
+                  0.12,
+                  0.806451613
+                ],
+                [
+                  0.13,
+                  0.793650794
+                ],
+                [
+                  0.14,
+                  0.78125
+                ],
+                [
+                  0.15,
+                  0.769230769
+                ],
+                [
+                  0.16,
+                  0.757575758
+                ],
+                [
+                  0.17,
+                  0.746268657
+                ],
+                [
+                  0.18,
+                  0.735294118
+                ],
+                [
+                  0.19,
+                  0.724637681
+                ],
+                [
+                  0.2,
+                  0.714285714
+                ],
+                [
+                  0.21,
+                  0.704225352
+                ],
+                [
+                  0.22,
+                  0.694444444
+                ],
+                [
+                  0.23,
+                  0.684931507
+                ],
+                [
+                  0.24,
+                  0.675675676
+                ],
+                [
+                  0.25,
+                  0.666666667
+                ],
+                [
+                  0.26,
+                  0.657894737
+                ],
+                [
+                  0.27,
+                  0.649350649
+                ],
+                [
+                  0.28,
+                  0.641025641
+                ],
+                [
+                  0.29,
+                  0.632911392
+                ],
+                [
+                  0.3,
+                  0.625
+                ],
+                [
+                  0.31,
+                  0.617283951
+                ],
+                [
+                  0.32,
+                  0.609756098
+                ],
+                [
+                  0.33,
+                  0.602409639
+                ],
+                [
+                  0.34,
+                  0.595238095
+                ],
+                [
+                  0.35,
+                  0.588235294
+                ],
+                [
+                  0.36,
+                  0.581395349
+                ],
+                [
+                  0.37,
+                  0.574712644
+                ],
+                [
+                  0.38,
+                  0.568181818
+                ],
+                [
+                  0.39,
+                  0.561797753
+                ],
+                [
+                  0.4,
+                  0.555555556
+                ],
+                [
+                  0.41,
+                  0.549450549
+                ],
+                [
+                  0.42,
+                  0.543478261
+                ],
+                [
+                  0.43,
+                  0.537634409
+                ],
+                [
+                  0.44,
+                  0.531914894
+                ],
+                [
+                  0.45,
+                  0.526315789
+                ],
+                [
+                  0.46,
+                  0.520833333
+                ],
+                [
+                  0.47,
+                  0.515463918
+                ],
+                [
+                  0.48,
+                  0.510204082
+                ],
+                [
+                  0.49,
+                  0.505050505
+                ],
+                [
+                  0.5,
+                  0.5
+                ]
+              ]
+            },
+            {
+              "stile": "tratteggio",
+              "etichetta": "N = 10; p = 1/10",
+              "punti": [
+                [
+                  0.0,
+                  1.0
+                ],
+                [
+                  0.01,
+                  0.969345894
+                ],
+                [
+                  0.02,
+                  0.94051524
+                ],
+                [
+                  0.03,
+                  0.913350037
+                ],
+                [
+                  0.04,
+                  0.887710023
+                ],
+                [
+                  0.05,
+                  0.863470259
+                ],
+                [
+                  0.06,
+                  0.840519089
+                ],
+                [
+                  0.07,
+                  0.818756419
+                ],
+                [
+                  0.08,
+                  0.798092262
+                ],
+                [
+                  0.09,
+                  0.77844549
+                ],
+                [
+                  0.1,
+                  0.759742775
+                ],
+                [
+                  0.11,
+                  0.741917667
+                ],
+                [
+                  0.12,
+                  0.724909811
+                ],
+                [
+                  0.13,
+                  0.708664262
+                ],
+                [
+                  0.14,
+                  0.693130893
+                ],
+                [
+                  0.15,
+                  0.678263877
+                ],
+                [
+                  0.16,
+                  0.664021236
+                ],
+                [
+                  0.17,
+                  0.650364445
+                ],
+                [
+                  0.18,
+                  0.637258087
+                ],
+                [
+                  0.19,
+                  0.624669542
+                ],
+                [
+                  0.2,
+                  0.612568716
+                ],
+                [
+                  0.21,
+                  0.600927804
+                ],
+                [
+                  0.22,
+                  0.589721076
+                ],
+                [
+                  0.23,
+                  0.578924685
+                ],
+                [
+                  0.24,
+                  0.5685165
+                ],
+                [
+                  0.25,
+                  0.558475952
+                ],
+                [
+                  0.26,
+                  0.5487839
+                ],
+                [
+                  0.27,
+                  0.539422511
+                ],
+                [
+                  0.28,
+                  0.530375146
+                ],
+                [
+                  0.29,
+                  0.521626265
+                ],
+                [
+                  0.3,
+                  0.513161337
+                ],
+                [
+                  0.31,
+                  0.504966759
+                ],
+                [
+                  0.32,
+                  0.497029783
+                ],
+                [
+                  0.33,
+                  0.48933845
+                ],
+                [
+                  0.34,
+                  0.48188153
+                ],
+                [
+                  0.35,
+                  0.474648467
+                ],
+                [
+                  0.36,
+                  0.46762933
+                ],
+                [
+                  0.37,
+                  0.460814767
+                ],
+                [
+                  0.38,
+                  0.454195963
+                ],
+                [
+                  0.39,
+                  0.447764602
+                ],
+                [
+                  0.4,
+                  0.441512832
+                ],
+                [
+                  0.41,
+                  0.435433235
+                ],
+                [
+                  0.42,
+                  0.429518795
+                ],
+                [
+                  0.43,
+                  0.423762872
+                ],
+                [
+                  0.44,
+                  0.418159178
+                ],
+                [
+                  0.45,
+                  0.412701753
+                ],
+                [
+                  0.46,
+                  0.407384943
+                ],
+                [
+                  0.47,
+                  0.402203382
+                ],
+                [
+                  0.48,
+                  0.397151976
+                ],
+                [
+                  0.49,
+                  0.39222588
+                ],
+                [
+                  0.5,
+                  0.387420489
+                ]
+              ]
+            }
+          ],
+          "annotazioni": [
+            {
+              "x": 0.5,
+              "y": 0.5,
+              "testo": "N = 2: S = 0,5"
+            },
+            {
+              "x": 0.5,
+              "y": 0.3874204890000001,
+              "testo": "N = 10: S ≈ 0,387"
+            }
+          ]
+        }
+      ],
+      "a_voce": "Normalizzo il tempo di trasmissione del frame a uno. Il parametro a è il rapporto tra propagazione in una direzione e durata del frame, quindi lo slot di contesa è due a durate di frame e un frame equivale a uno su due a slot. Con N stazioni indipendenti che tentano con probabilità p, il successo in uno slot richiede una sola trasmissione: la probabilità è N p per uno meno p alla N meno uno. Il massimo si ha per p uguale uno su N. Prima di un successo il numero di slot falliti ha distribuzione geometrica e media uno meno A diviso A. Un ciclo comprende il frame riuscito più quegli slot; dividendo il tempo del frame per il ciclo ottengo uno diviso uno più due a per uno meno A su A. La curva dipende dal modello e non descrive automaticamente ogni Ethernet.",
+      "errori_frequenti": [
+        {
+          "errore": "Scambiare $1/(2a)$ con la durata dello slot.",
+          "perche_sbagliato": "È il numero di slot contenuti in un frame normalizzato; lo slot dura $2T_p$.",
+          "correzione": "Parti dalle unità: $T_f/(2T_p)=1/(2a)$."
+        },
+        {
+          "errore": "Usare $A/(1-A+2a)$ come formula letta negli appunti.",
+          "perche_sbagliato": "Non coincide con la frazione della durata del frame sul ciclo medio.",
+          "correzione": "La formula leggibile è $A/[A+2a(1-A)]$."
+        },
+        {
+          "errore": "Contare lo slot di successo sia in w sia nel frame.",
+          "perche_sbagliato": "Si aggiungerebbe due volte lo stesso intervallo.",
+          "correzione": "Definisci w come numero di soli slot falliti."
+        },
+        {
+          "errore": "Presentare $S_{\\max}$ come throughput valido a qualsiasi carico.",
+          "perche_sbagliato": "Il risultato dipende da p, indipendenza, durata degli slot e traffico sempre disponibile.",
+          "correzione": "Dichiara modello e ottimizzazione."
+        }
+      ],
+      "versione_compatta": [
+        "Slot $=2T_p=2aT_f$; frame $=1/(2a)$ slot.",
+        "$A=Np(1-p)^{N-1}$, massimo per $p=1/N$.",
+        "$E[w]=(1-A)/A$ slot falliti.",
+        "$S=1/[1+2a(1-A)/A]$.",
+        "La curva massima usa $A_{\\max}$ e il modello indicato."
+      ],
+      "a_buchi": {
+        "testo": "Lo slot dura ___1___ e il frame dura ___2___ slot. Il numero medio di slot falliti è ___3___ perché la legge è ___4___.",
+        "soluzioni": {
+          "1": [
+            "$2T_p$",
+            "2T_p"
+          ],
+          "2": [
+            "$1/(2a)$",
+            "1/(2a)"
+          ],
+          "3": [
+            "$(1-A)/A$",
+            "(1-A)/A"
+          ],
+          "4": [
+            "geometrica",
+            "una distribuzione geometrica"
+          ]
+        }
+      },
+      "richiamo_attivo": [
+        {
+          "domanda": "Che cosa rappresenta a?",
+          "risposta": "Il rapporto tra propagazione unidirezionale e tempo di trasmissione di un frame."
+        },
+        {
+          "domanda": "A quale p è massima A?",
+          "risposta": "A $p=1/N$ per $N\\ge2$."
+        },
+        {
+          "domanda": "Perché la durata di un frame è $1/(2a)$ slot?",
+          "risposta": "Il frame è $T_f$ e ogni slot dura $2T_p=2aT_f$."
+        },
+        {
+          "domanda": "La formula è universale?",
+          "risposta": "No: vale per il modello di contesa e le ipotesi dichiarate."
+        }
+      ],
+      "collegamenti": [
+        "dim-aloha-throughput",
+        "parametro-a-propagazione-trasmissione",
+        "lan-ieee802-ethernet"
+      ],
+      "fonti": [
+        {
+          "chiave": "FILE2",
+          "rif": "file2 p. 1: T16, titolo riformulato; punteggio NON TROVATO"
+        },
+        {
+          "chiave": "FILE3",
+          "rif": "file3 p. 22: slot, contesa e formula finale"
+        },
+        {
+          "chiave": "FILE1",
+          "rif": "file1 p. 47: slide 12 Accesso multiplo citata, non consultata"
+        },
+        {
+          "chiave": "RICOSTRUZIONE",
+          "rif": "Interpretazione normalizzata di a e ambito di validità fisica"
+        }
+      ],
+      "verifica": {
+        "stato": "da_verificare",
+        "data": "2026-10-28",
+        "note": "A7: le immagini mostrano chiaramente $S=1/[1+2a(1-A)/A]$; $1/(2a)$ è frame in slot, non durata dello slot. La definizione normalizzata è dedotta dal contesto; lucidi non consultati.",
+        "punti_aperti": [
+          "A7: confermare sulla slide 12 la definizione esatta di a, la contabilizzazione dello slot riuscito e le ipotesi del modello.",
+          "Confronto diretto con la slide del docente: NON TROVATO."
+        ]
+      }
+    },
+    "dim-ritardo-tdma-fdma": {
+      "id": "dim-ritardo-tdma-fdma",
+      "titolo": "Ritardo medio TDMA e FDMA",
+      "domande_esame": [
+        "T17"
+      ],
+      "enunciato": "Per $M\\ge1$ utenti con uguali risorse, un pacchetto per utente generato all’inizio del ciclo e nessuna coda o overhead, i ritardi medi dalla generazione alla fine della trasmissione sono $D_{FD}=T$ e $D_{TD}=\\frac{T(M+1)}{2M}$, dove $T$ è la durata del ciclo. Quindi $D_{TD}\\le D_{FD}$, con uguaglianza solo per $M=1$; l’ipotesi sugli istanti di generazione resta da verificare.",
+      "ipotesi": [
+        "M utenti con pacchetti di $b$ bit, capacità aggregata $R$ e nessun tempo di guardia o overhead.",
+        "IPOTESI di ricostruzione della media degli appunti: ogni utente genera un pacchetto all’inizio del ciclo e ciascuna delle M posizioni TDMA è rappresentata una volta.",
+        "Trama di durata $T=Mb/R$; TDMA usa M slot consecutivi a velocità R; FDMA assegna a ogni utente la capacità $R/M$ per tutto il ciclo.",
+        "Nessuna coda aggiuntiva, propagazione o elaborazione; il ritardo è misurato dalla generazione alla fine della trasmissione."
+      ],
+      "notazione": [
+        {
+          "simbolo": "M",
+          "significato": "Numero di utenti e di slot di una trama, intero positivo."
+        },
+        {
+          "simbolo": "b,R",
+          "significato": "Bit di un pacchetto e capacità aggregata del canale in bit/s."
+        },
+        {
+          "simbolo": "T",
+          "significato": "Durata del ciclo comune, $T=Mb/R$."
+        },
+        {
+          "simbolo": "\\omega",
+          "significato": "Tempo di attesa prima della trasmissione."
+        },
+        {
+          "simbolo": "\\tau",
+          "significato": "Tempo di trasmissione del pacchetto."
+        },
+        {
+          "simbolo": "D_{TD},D_{FD}",
+          "significato": "Ritardi medi dalla generazione alla fine della trasmissione nei due modelli."
+        }
+      ],
+      "varianti_notazione": [],
+      "idea": "Somma la durata di trasmissione alla media delle attese delle M posizioni e confronta a parità di risorse.",
+      "passi": [
+        {
+          "n": 1,
+          "testo": "Definisci ciclo, slot e scomposizione del ritardo.",
+          "formula": "T=\\frac{Mb}{R},\\qquad D=\\omega+\\tau,\\qquad \\tau_{TD}=\\frac{T}{M}=\\frac{b}{R}",
+          "perche": "Il ciclo contiene M pacchetti trasmessi consecutivamente alla capacità R.",
+          "figura": "tdma-fdma-confronto-temporale"
+        },
+        {
+          "n": 2,
+          "testo": "Per FDMA calcola la durata sulla sottobanda di ciascun utente.",
+          "formula": "\\omega_{FD}=0,\\qquad \\tau_{FD}=\\frac{b}{R/M}=T,\\qquad D_{FD}=T",
+          "perche": "La sottobanda è disponibile subito e trasmette il pacchetto a velocità R/M."
+        },
+        {
+          "n": 3,
+          "testo": "Per TDMA esprimi l’attesa della posizione m nel ciclo.",
+          "formula": "\\omega_m=(m-1)\\frac{T}{M},\\qquad m=1,\\ldots,M",
+          "perche": "Tutti i pacchetti sono generati all’inizio del ciclo; prima della posizione m passano $m-1$ slot."
+        },
+        {
+          "n": 4,
+          "testo": "Calcola la media uniforme delle M attese.",
+          "formula": "\\omega_{TD}=\\frac1M\\sum_{m=1}^{M}(m-1)\\frac{T}{M}=\\frac{T}{2}\\left(1-\\frac1M\\right)",
+          "perche": "Le posizioni sono rappresentate una volta e la somma degli interi da 0 a $M-1$ vale $M(M-1)/2$."
+        },
+        {
+          "n": 5,
+          "testo": "Aggiungi la trasmissione e confronta con FDMA.",
+          "formula": "D_{TD}=\\frac{T}{2}\\left(1-\\frac1M\\right)+\\frac{T}{M}=\\frac{T(M+1)}{2M}=D_{FD}-\\frac{b}{2R}(M-1)",
+          "perche": "Si sommano attesa e servizio; la differenza è positiva se $M>1$ e zero se $M=1$."
+        }
+      ],
+      "formula_finale": "D_{FD}=T,\\qquad D_{TD}=\\frac{T}{2}\\left(1-\\frac1M\\right)+\\frac{T}{M}=\\frac{T(M+1)}{2M}\\le D_{FD}.",
+      "figure": [
+        {
+          "id": "tdma-fdma-confronto-temporale",
+          "tipo": "temporale",
+          "titolo": "TDMA e FDMA: quattro utenti",
+          "descrizione": "Quattro pacchetti generati a inizio trama di 4 s: TDMA usa quattro slot consecutivi da 1 s; FDMA trasmette tutti in parallelo in 4 s.",
+          "asse_t": {
+            "etichetta": "Tempo (s)",
+            "min": 0,
+            "max": 4.1
+          },
+          "corsie": [
+            {
+              "id": "td-1",
+              "etichetta": "TDMA utente 1"
+            },
+            {
+              "id": "td-2",
+              "etichetta": "TDMA utente 2"
+            },
+            {
+              "id": "td-3",
+              "etichetta": "TDMA utente 3"
+            },
+            {
+              "id": "td-4",
+              "etichetta": "TDMA utente 4"
+            },
+            {
+              "id": "fd-1",
+              "etichetta": "FDMA utente 1"
+            },
+            {
+              "id": "fd-2",
+              "etichetta": "FDMA utente 2"
+            },
+            {
+              "id": "fd-3",
+              "etichetta": "FDMA utente 3"
+            },
+            {
+              "id": "fd-4",
+              "etichetta": "FDMA utente 4"
+            }
+          ],
+          "intervalli": [
+            {
+              "corsia": "td-1",
+              "t0": 0,
+              "t1": 1,
+              "etichetta": "Pacchetto TDMA",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "fd-1",
+              "t0": 0,
+              "t1": 4,
+              "etichetta": "Pacchetto FDMA",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "td-2",
+              "t0": 0,
+              "t1": 1,
+              "etichetta": "Attesa",
+              "stile": "attesa"
+            },
+            {
+              "corsia": "td-2",
+              "t0": 1,
+              "t1": 2,
+              "etichetta": "Pacchetto TDMA",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "fd-2",
+              "t0": 0,
+              "t1": 4,
+              "etichetta": "Pacchetto FDMA",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "td-3",
+              "t0": 0,
+              "t1": 2,
+              "etichetta": "Attesa",
+              "stile": "attesa"
+            },
+            {
+              "corsia": "td-3",
+              "t0": 2,
+              "t1": 3,
+              "etichetta": "Pacchetto TDMA",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "fd-3",
+              "t0": 0,
+              "t1": 4,
+              "etichetta": "Pacchetto FDMA",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "td-4",
+              "t0": 0,
+              "t1": 3,
+              "etichetta": "Attesa",
+              "stile": "attesa"
+            },
+            {
+              "corsia": "td-4",
+              "t0": 3,
+              "t1": 4,
+              "etichetta": "Pacchetto TDMA",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "fd-4",
+              "t0": 0,
+              "t1": 4,
+              "etichetta": "Pacchetto FDMA",
+              "stile": "trasmissione"
+            }
+          ],
+          "frecce": [],
+          "marcatori": [
+            {
+              "t": 0,
+              "etichetta": "Generazione"
+            },
+            {
+              "t": 1,
+              "etichetta": "Fine slot 1"
+            },
+            {
+              "t": 2,
+              "etichetta": "Fine slot 2"
+            },
+            {
+              "t": 3,
+              "etichetta": "Fine slot 3"
+            },
+            {
+              "t": 4,
+              "etichetta": "Fine trama"
+            }
+          ]
+        }
+      ],
+      "a_voce": "Considero M utenti, ognuno con un pacchetto di b bit, e la stessa capacità totale R. Nel modello scelto ogni pacchetto nasce all’inizio della trama, senza code pregresse. In FDMA ciascuno dispone subito di R su M e impiega T uguale M b su R. In TDMA l’utente nella posizione m aspetta m meno uno slot e trasmette in uno slot, cioè T su M. La media sulle M posizioni è T mezzi per uno meno uno su M; aggiungo il tempo di trasmissione T su M. Ottengo T per M più uno diviso due M. È minore di T se M è maggiore di uno e coincide per un solo utente. Questo confronto non è universale: un arrivo asincrono, code, propagazione e overhead possono cambiare il risultato.",
+      "errori_frequenti": [
+        {
+          "errore": "Scrivere $D_{TD}=\\omega_{TD}$ dimenticando la trasmissione.",
+          "perche_sbagliato": "La consegna si completa solo dopo lo slot di durata $T/M$.",
+          "correzione": "Somma $T/M$ alla media delle attese."
+        },
+        {
+          "errore": "Usare sempre $T/2$ come attesa TDMA.",
+          "perche_sbagliato": "Qui si media una sequenza discreta di M posizioni da zero a $(M-1)T/M$.",
+          "correzione": "Usa $T(M-1)/(2M)$ nelle ipotesi dichiarate."
+        },
+        {
+          "errore": "Affermare che TDMA è sempre migliore di FDMA.",
+          "perche_sbagliato": "La disuguaglianza dipende da sincronizzazione, code, capacità e assenza di overhead.",
+          "correzione": "Presenta il confronto come risultato del modello specificato."
+        },
+        {
+          "errore": "Dire che il confronto è stretto anche per $M=1$.",
+          "perche_sbagliato": "Con un solo utente i due ritardi sono entrambi T.",
+          "correzione": "Specifica $M>1$ per la disuguaglianza stretta."
+        }
+      ],
+      "versione_compatta": [
+        "$T=Mb/R$; in FDMA $D_{FD}=T$.",
+        "In TDMA $\\tau_{TD}=T/M$ e $\\omega_m=(m-1)T/M$.",
+        "$\\omega_{TD}=T(M-1)/(2M)$.",
+        "$D_{TD}=T(M+1)/(2M)\\le T$, con uguaglianza a $M=1$.",
+        "Confronto limitato a generazione sincrona e assenza di code."
+      ],
+      "a_buchi": {
+        "testo": "La posizione m aspetta ___1___. La media è ___2___ perché si sommano ___3___ posizioni equiprobabili. Sommando il servizio si ottiene ___4___.",
+        "soluzioni": {
+          "1": [
+            "$(m-1)T/M$",
+            "(m-1)T/M"
+          ],
+          "2": [
+            "$T(M-1)/(2M)$",
+            "T(M-1)/(2M)"
+          ],
+          "3": [
+            "M",
+            "$M$"
+          ],
+          "4": [
+            "$T(M+1)/(2M)$",
+            "T(M+1)/(2M)"
+          ]
+        }
+      },
+      "richiamo_attivo": [
+        {
+          "domanda": "Quanto dura la trasmissione TDMA?",
+          "risposta": "$T/M=b/R$."
+        },
+        {
+          "domanda": "Perché l’attesa media non è semplicemente $T/2$?",
+          "risposta": "Si media su M posizioni discrete da zero a $(M-1)T/M$."
+        },
+        {
+          "domanda": "Quando vale l’uguaglianza tra i ritardi?",
+          "risposta": "Per $M=1$, nel modello indicato."
+        },
+        {
+          "domanda": "La conclusione vale per qualunque arrivo?",
+          "risposta": "No: qui le generazioni sono sincronizzate e non ci sono code aggiuntive."
+        }
+      ],
+      "collegamenti": [
+        "accesso-multiplo-deterministico-casuale",
+        "dim-aloha-throughput"
+      ],
+      "fonti": [
+        {
+          "chiave": "FILE2",
+          "rif": "file2 p. 1: T17, titolo riformulato; punteggio NON TROVATO"
+        },
+        {
+          "chiave": "FILE3",
+          "rif": "file3 p. 31: media discreta e confronto"
+        },
+        {
+          "chiave": "FILE1",
+          "rif": "file1 p. 48: slide 25 Accesso multiplo citata, non consultata"
+        },
+        {
+          "chiave": "RICOSTRUZIONE",
+          "rif": "Ipotesi esplicita di generazione a inizio ciclo e assenza di code"
+        }
+      ],
+      "verifica": {
+        "stato": "da_verificare",
+        "data": "2026-10-28",
+        "note": "A9: le immagini riportano la formula completa e il confronto. La sincronizzazione della generazione è l’IPOTESI che rende esplicita la media discreta; lucidi non consultati.",
+        "punti_aperti": [
+          "A9: confermare sulla slide 25 la convenzione sugli istanti di generazione e le condizioni del confronto.",
+          "Confronto diretto con la slide del docente: NON TROVATO."
+        ]
+      }
+    },
+    "dim-sliding-window-efficienza": {
+      "id": "dim-sliding-window-efficienza",
+      "titolo": "Efficienza sliding window senza errori",
+      "domande_esame": [
+        "T12"
+      ],
+      "enunciato": "Per una finestra scorrevole di $W$ trame senza errori, con trama $F=D+H$ bit, ACK di $A$ bit, capacità $C$, ritardo $I$ per tratta e tempo al primo riscontro $TT=F/C+I+A/C+I$, l’efficienza utile è $\\eta=\\dfrac{WD}{C\\,TT}$ se $WF\\le C\\,TT$ e $\\eta=\\dfrac{D}{F}$ se $WF>C\\,TT$. Nel primo regime la finestra non supera il ciclo di riscontro; nel secondo il canale può restare continuamente occupato.",
+      "ipotesi": [
+        "Trame di $F=D+H$ bit, $D>0$, $H\\ge0$; capacità costante $C>0$ e finestra intera $W\\ge1$.",
+        "Trasmettitore sempre alimentato, assenza di errori, perdite e ritrasmissioni; ACK su ritorno indipendente e senza contesa.",
+        "Il primo ACK è disponibile dopo $TT=F/C+I+A/C+I$ dall’inizio della trama; stesso $C$ e stesso ritardo $I$ in entrambe le direzioni nel modello degli appunti.",
+        "IPOTESI per il solo denominatore abbreviato degli appunti: la lunghezza dell’ACK è $A=H$; il dato non è dichiarato esplicitamente."
+      ],
+      "notazione": [
+        {
+          "simbolo": "W",
+          "significato": "Numero massimo di trame trasmesse e ancora senza conferma."
+        },
+        {
+          "simbolo": "D,H,F",
+          "significato": "Bit utili, intestazione e lunghezza totale: $F=D+H$."
+        },
+        {
+          "simbolo": "C",
+          "significato": "Capacità di trasmissione in bit/s."
+        },
+        {
+          "simbolo": "A",
+          "significato": "Lunghezza della conferma ACK in bit."
+        },
+        {
+          "simbolo": "I",
+          "significato": "Ritardo per tratta assunto negli appunti, somma di propagazione e quota di elaborazione."
+        },
+        {
+          "simbolo": "TT",
+          "significato": "Dall’inizio del primo frame al completamento del suo ACK presso il mittente."
+        },
+        {
+          "simbolo": "\\eta",
+          "significato": "Bit utili consegnati per unità di tempo divisi per $C$."
+        }
+      ],
+      "varianti_notazione": [
+        {
+          "canonica": "A",
+          "variante": "ACK",
+          "fonte": "file3 pp. 29–30; file1 p. 49"
+        }
+      ],
+      "idea": "Confronta il tempo necessario a consumare la finestra con il tempo di ritorno dell’ACK.",
+      "passi": [
+        {
+          "n": 1,
+          "testo": "Definisci il tempo di serializzazione e l’intero ciclo di riscontro.",
+          "formula": "F=D+H,\\qquad T_f=F/C,\\qquad TT=F/C+I+A/C+I",
+          "perche": "Il tempo di ciclo include l’intero frame, i due ritardi e la serializzazione dell’ACK.",
+          "figura": "finestra-con-attesa"
+        },
+        {
+          "n": 2,
+          "testo": "Calcola quanti bit totali il canale può immettere durante un ciclo.",
+          "formula": "C\\,TT=F+A+2IC",
+          "perche": "Moltiplicare un tempo in secondi per la capacità in bit/s dà un numero di bit."
+        },
+        {
+          "n": 3,
+          "testo": "Nel caso di finestra insufficiente, conta i bit utili inviati in un ciclo.",
+          "formula": "WF\\le C\\,TT:\\qquad \\eta=\\frac{WD}{C\\,TT}=\\frac{WD}{D+H+A+2IC}",
+          "perche": "Si inviano W trame per ciclo; all’uguaglianza il riscontro è appena in tempo.",
+          "figura": "finestra-con-attesa"
+        },
+        {
+          "n": 4,
+          "testo": "Se la finestra copre il ciclo, il trasmettitore può restare occupato.",
+          "formula": "WF>C\\,TT:\\qquad \\eta=\\frac{D}{F}=\\frac{D}{D+H}",
+          "perche": "Dopo il riempimento della pipeline si trasmettono trame consecutive; solo D bit per trama sono utili.",
+          "figura": "finestra-continua"
+        },
+        {
+          "n": 5,
+          "testo": "Unisci i regimi e confronta il denominatore speciale degli appunti.",
+          "formula": "\\eta=\\frac{D}{F}\\min\\!\\left(1,\\frac{WF}{C\\,TT}\\right),\\qquad A=H\\Rightarrow C\\,TT=D+2H+2IC",
+          "perche": "La saturazione impedisce di superare la frazione utile; la sostituzione A=H è un’ipotesi esplicita."
+        }
+      ],
+      "formula_finale": "\\eta=\\begin{cases}\\dfrac{WD}{C\\,TT}=\\dfrac{WD}{D+H+A+2IC},&WF\\le C\\,TT,\\\\[4pt]\\dfrac{D}{D+H},&WF>C\\,TT.\\end{cases}",
+      "figure": [
+        {
+          "id": "finestra-con-attesa",
+          "tipo": "temporale",
+          "titolo": "Finestra W = 2: attesa del riscontro",
+          "descrizione": "Con trame da 1 s, ACK da 1 s e propagazione di 0,5 s per tratta, il primo ACK termina a 3 s: il mittente attende da 2 a 3 s.",
+          "asse_t": {
+            "etichetta": "Tempo (s)",
+            "min": 0,
+            "max": 4.5
+          },
+          "corsie": [
+            {
+              "id": "mittente",
+              "etichetta": "Mittente: trame"
+            },
+            {
+              "id": "ricezione",
+              "etichetta": "Destinatario: ricezione"
+            },
+            {
+              "id": "riscontro",
+              "etichetta": "Destinatario: ACK"
+            },
+            {
+              "id": "ack-ricevuto",
+              "etichetta": "Mittente: ricezione ACK"
+            }
+          ],
+          "intervalli": [
+            {
+              "corsia": "mittente",
+              "t0": 0,
+              "t1": 1,
+              "etichetta": "Trama 0",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "mittente",
+              "t0": 1,
+              "t1": 2,
+              "etichetta": "Trama 1",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "mittente",
+              "t0": 2,
+              "t1": 3,
+              "etichetta": "Attesa",
+              "stile": "attesa"
+            },
+            {
+              "corsia": "mittente",
+              "t0": 3,
+              "t1": 4,
+              "etichetta": "Trama 2",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "ricezione",
+              "t0": 0.5,
+              "t1": 1.5,
+              "etichetta": "Trama 0 ricevuta",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "ricezione",
+              "t0": 1.5,
+              "t1": 2.5,
+              "etichetta": "Trama 1 ricevuta",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "riscontro",
+              "t0": 1.5,
+              "t1": 2.5,
+              "etichetta": "ACK 0 inviato",
+              "stile": "ack"
+            },
+            {
+              "corsia": "ack-ricevuto",
+              "t0": 2,
+              "t1": 3,
+              "etichetta": "ACK 0 ricevuto",
+              "stile": "ack"
+            }
+          ],
+          "frecce": [
+            {
+              "da": {
+                "corsia": "mittente",
+                "t": 0
+              },
+              "a": {
+                "corsia": "ricezione",
+                "t": 0.5
+              },
+              "etichetta": "Propagazione"
+            },
+            {
+              "da": {
+                "corsia": "riscontro",
+                "t": 2.5
+              },
+              "a": {
+                "corsia": "ack-ricevuto",
+                "t": 3
+              },
+              "etichetta": "Ultimo bit ACK"
+            }
+          ],
+          "marcatori": [
+            {
+              "t": 0,
+              "etichetta": "Inizio"
+            },
+            {
+              "t": 2,
+              "etichetta": "Finestra esaurita"
+            },
+            {
+              "t": 3,
+              "etichetta": "TT e ACK completo"
+            }
+          ]
+        },
+        {
+          "id": "finestra-continua",
+          "tipo": "temporale",
+          "titolo": "Finestra W = 4: invio continuo",
+          "descrizione": "Con lo stesso ciclo di 3 s, quattro posti nella finestra consentono di trasmettere senza pausa; la prima conferma termina a 3 s.",
+          "asse_t": {
+            "etichetta": "Tempo (s)",
+            "min": 0,
+            "max": 4.5
+          },
+          "corsie": [
+            {
+              "id": "mittente",
+              "etichetta": "Mittente: trame"
+            },
+            {
+              "id": "ricezione",
+              "etichetta": "Destinatario: ricezione"
+            },
+            {
+              "id": "riscontro",
+              "etichetta": "Destinatario: ACK"
+            },
+            {
+              "id": "ack-ricevuto",
+              "etichetta": "Mittente: ricezione ACK"
+            }
+          ],
+          "intervalli": [
+            {
+              "corsia": "mittente",
+              "t0": 0,
+              "t1": 1,
+              "etichetta": "Trama 0",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "mittente",
+              "t0": 1,
+              "t1": 2,
+              "etichetta": "Trama 1",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "mittente",
+              "t0": 2,
+              "t1": 3,
+              "etichetta": "Trama 2",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "mittente",
+              "t0": 3,
+              "t1": 4,
+              "etichetta": "Trama 3",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "ricezione",
+              "t0": 0.5,
+              "t1": 1.5,
+              "etichetta": "Trama 0 ricevuta",
+              "stile": "trasmissione"
+            },
+            {
+              "corsia": "riscontro",
+              "t0": 1.5,
+              "t1": 2.5,
+              "etichetta": "ACK 0 inviato",
+              "stile": "ack"
+            },
+            {
+              "corsia": "ack-ricevuto",
+              "t0": 2,
+              "t1": 3,
+              "etichetta": "ACK 0 ricevuto",
+              "stile": "ack"
+            }
+          ],
+          "frecce": [
+            {
+              "da": {
+                "corsia": "mittente",
+                "t": 0
+              },
+              "a": {
+                "corsia": "ricezione",
+                "t": 0.5
+              },
+              "etichetta": "Propagazione"
+            },
+            {
+              "da": {
+                "corsia": "riscontro",
+                "t": 2.5
+              },
+              "a": {
+                "corsia": "ack-ricevuto",
+                "t": 3
+              },
+              "etichetta": "Ultimo bit ACK"
+            }
+          ],
+          "marcatori": [
+            {
+              "t": 0,
+              "etichetta": "Inizio"
+            },
+            {
+              "t": 3,
+              "etichetta": "TT e ACK completo"
+            },
+            {
+              "t": 4,
+              "etichetta": "Fine trama 3"
+            }
+          ]
+        }
+      ],
+      "a_voce": "Definisco D come i bit utili, H come intestazione e F come dimensione della trama. La finestra W limita le trame ancora senza conferma. Il tempo TT parte dal primo bit inviato e termina quando arriva l’ultimo bit dell’ACK: include serializzazione, due ritardi e lunghezza del riscontro. Se WF è minore di CTT, la finestra si esaurisce e mando W volte D bit utili per ciclo; all’uguaglianza l’ACK arriva appena in tempo. Se invece la finestra copre il ciclo, trasmetto senza pause e resta solo l’overhead H. La formula con D più due H nel denominatore richiede l’ipotesi aggiuntiva ACK lungo H bit, da verificare sui lucidi.",
+      "errori_frequenti": [
+        {
+          "errore": "Sostituire TT con il solo doppio tempo di propagazione.",
+          "perche_sbagliato": "Si perdono la serializzazione del frame e dell’ACK e gli eventuali ritardi di elaborazione.",
+          "correzione": "Usa la definizione di TT completa."
+        },
+        {
+          "errore": "Usare WD/(CTT) anche con finestra molto grande.",
+          "perche_sbagliato": "Il risultato può superare la frazione utile massima D/F.",
+          "correzione": "Satura con il minimo oppure usa i due casi."
+        },
+        {
+          "errore": "Attribuire automaticamente A=H agli appunti.",
+          "perche_sbagliato": "La formula stampata lo suggerisce ma la definizione di A è separata.",
+          "correzione": "Indica A=H come IPOTESI e verifica i lucidi."
+        }
+      ],
+      "versione_compatta": [
+        "$F=D+H$, $TT=F/C+I+A/C+I$.",
+        "Per $WF\\le CTT$: $\\eta=WD/(CTT)$.",
+        "Per $WF>CTT$: $\\eta=D/F$.",
+        "Con $A=H$: $CTT=D+2H+2IC$; ipotesi da verificare."
+      ],
+      "a_buchi": {
+        "testo": "La finestra contiene al massimo ___1___ trame non confermate. Per $WF\\le CTT$, $\\eta=$ ___2___ perché si consegnano ___3___ bit utili per ciclo. La formula $D+2H+2IC$ richiede ___4___.",
+        "soluzioni": {
+          "1": [
+            "W",
+            "$W$"
+          ],
+          "2": [
+            "WD/(CTT)",
+            "$WD/(CTT)$"
+          ],
+          "3": [
+            "WD",
+            "$WD$"
+          ],
+          "4": [
+            "A=H",
+            "$A=H$",
+            "ACK lungo H bit"
+          ]
+        }
+      },
+      "richiamo_attivo": [
+        {
+          "domanda": "Quando non c’è pausa tra le trame?",
+          "risposta": "Quando $WF\\ge CTT$, con traffico disponibile e le altre ipotesi ideali."
+        },
+        {
+          "domanda": "Che cosa comprende TT?",
+          "risposta": "Frame, due ritardi per tratta e serializzazione dell’ACK."
+        },
+        {
+          "domanda": "Perché il denominatore stampato contiene due H?",
+          "risposta": "È coerente con l’ipotesi aggiuntiva $A=H$, da confermare."
+        },
+        {
+          "domanda": "Il rapporto include gli errori?",
+          "risposta": "No: assume assenza di errori e di ritrasmissioni."
+        }
+      ],
+      "collegamenti": [
+        "protocolli-linea-hdlc-sliding-window",
+        "parametro-a-propagazione-trasmissione"
+      ],
+      "fonti": [
+        {
+          "chiave": "FILE2",
+          "rif": "file2 p. 1: T12, titolo riformulato; punteggio NON TROVATO"
+        },
+        {
+          "chiave": "FILE3",
+          "rif": "file3 pp. 29–30: diagrammi e formula"
+        },
+        {
+          "chiave": "FILE1",
+          "rif": "file1 pp. 49–50: slide 75 Reti citata, non consultata"
+        },
+        {
+          "chiave": "RICOSTRUZIONE",
+          "rif": "Interpretazione esplicita di ACK e uguaglianza, derivata dal modello"
+        }
+      ],
+      "verifica": {
+        "stato": "da_verificare",
+        "data": "2026-10-28",
+        "note": "Confronto visivo delle due fonti studentesche. A8: la formula è leggibile, ma $A=H$ non è dichiarato esplicitamente; i lucidi non sono stati consultati.",
+        "punti_aperti": [
+          "A8: verificare sui lucidi se l’ACK è lungo H bit e se I include le stesse componenti in entrambe le direzioni.",
+          "Corrispondenza esatta ai lucidi del docente: NON TROVATO."
+        ]
+      }
+    },
+    "dim-poisson-tempo-residuo": {
+      "id": "dim-poisson-tempo-residuo",
+      "titolo": "Distribuzione del tempo residuo poissoniano",
+      "domande_esame": [
+        "T13"
+      ],
+      "enunciato": "Per un processo di Poisson omogeneo di tasso $\\lambda>0$, sia $X$ l’interarrivo e sia $R=X-t_0$ il tempo residuo sapendo che $X>t_0$, con $t_0\\ge0$. Per ogni $r\\ge0$ vale $P(R>r\\mid X>t_0)=e^{-\\lambda r}$: il residuo è esponenziale con lo stesso tasso e non dipende dal tempo già atteso.",
+      "ipotesi": [
+        "Arrivi di Poisson omogenei con tasso costante $\\lambda>0$; intervalli disgiunti hanno incrementi indipendenti.",
+        "$X$ è il tempo interarrivo dopo un evento; si osserva $X>t_0$ per un tempo fissato $t_0\\ge0$.",
+        "Si considera $r\\ge0$ e il residuo $R=X-t_0$ condizionatamente a $X>t_0$."
+      ],
+      "notazione": [
+        {
+          "simbolo": "\\lambda",
+          "significato": "Tasso di arrivi, in eventi per secondo."
+        },
+        {
+          "simbolo": "X",
+          "significato": "Tempo tra due arrivi successivi."
+        },
+        {
+          "simbolo": "t_0",
+          "significato": "Tempo già atteso senza nuovi arrivi."
+        },
+        {
+          "simbolo": "R,r",
+          "significato": "Tempo residuo e valore non negativo a cui se ne valuta la distribuzione."
+        },
+        {
+          "simbolo": "F_R(r)",
+          "significato": "Probabilità condizionata che il residuo non superi r."
+        }
+      ],
+      "varianti_notazione": [],
+      "idea": "La sopravvivenza esponenziale si fattorizza: il tempo trascorso si elimina nel rapporto condizionato.",
+      "passi": [
+        {
+          "n": 1,
+          "testo": "Dalla probabilità di zero eventi in t ricava la sopravvivenza dell’interarrivo.",
+          "formula": "P(X>t)=P(N(t)=0)=e^{-\\lambda t},\\qquad t\\ge0",
+          "perche": "Nessun arrivo entro t equivale al primo arrivo successivo a t.",
+          "figura": "poisson-distribuzione-residuo"
+        },
+        {
+          "n": 2,
+          "testo": "Scrivi la distribuzione e la densità dell’interarrivo.",
+          "formula": "F_X(t)=1-e^{-\\lambda t},\\qquad f_X(t)=\\lambda e^{-\\lambda t}",
+          "perche": "Si prende il complementare della sopravvivenza e si deriva la distribuzione per t positivo."
+        },
+        {
+          "n": 3,
+          "testo": "Esprimi l’evento residuo mediante la probabilità condizionata.",
+          "formula": "P(R>r\\mid X>t_0)=\\frac{P(X>t_0+r)}{P(X>t_0)}",
+          "perche": "Per r non negativo, $X>t_0+r$ implica $X>t_0$, e il denominatore è positivo."
+        },
+        {
+          "n": 4,
+          "testo": "Sostituisci le due sopravvivenze e semplifica.",
+          "formula": "P(R>r\\mid X>t_0)=\\frac{e^{-\\lambda(t_0+r)}}{e^{-\\lambda t_0}}=e^{-\\lambda r}",
+          "perche": "L’esponenziale del tempo totale si separa nel prodotto delle due durate."
+        },
+        {
+          "n": 5,
+          "testo": "Passa alla funzione di ripartizione e alla media del residuo.",
+          "formula": "F_R(r)=1-e^{-\\lambda r},\\qquad E[R\\mid X>t_0]=\\int_0^\\infty e^{-\\lambda r}\\,dr=\\frac1\\lambda",
+          "perche": "Si usa il complementare e si integra la sopravvivenza di una variabile non negativa."
+        }
+      ],
+      "formula_finale": "F_R(r)=P(R\\le r\\mid X>t_0)=1-e^{-\\lambda r},\\qquad E[R\\mid X>t_0]=\\frac1\\lambda\\quad(r\\ge0).",
+      "figure": [
+        {
+          "id": "poisson-distribuzione-residuo",
+          "tipo": "grafico",
+          "titolo": "Distribuzione del tempo residuo",
+          "descrizione": "Funzione di ripartizione del tempo residuo esponenziale per tasso 0,5 al secondo; non dipende dal tempo già atteso.",
+          "asse_x": {
+            "etichetta": "Residuo r (s)",
+            "min": 0,
+            "max": 8
+          },
+          "asse_y": {
+            "etichetta": "Probabilità F(r)",
+            "min": 0,
+            "max": 1
+          },
+          "serie": [
+            {
+              "stile": "linea",
+              "etichetta": "F(r), λ = 0,5 s⁻¹",
+              "punti": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.2,
+                  0.095162582
+                ],
+                [
+                  0.4,
+                  0.181269247
+                ],
+                [
+                  0.6,
+                  0.259181779
+                ],
+                [
+                  0.8,
+                  0.329679954
+                ],
+                [
+                  1.0,
+                  0.39346934
+                ],
+                [
+                  1.2,
+                  0.451188364
+                ],
+                [
+                  1.4,
+                  0.503414696
+                ],
+                [
+                  1.6,
+                  0.550671036
+                ],
+                [
+                  1.8,
+                  0.59343034
+                ],
+                [
+                  2.0,
+                  0.632120559
+                ],
+                [
+                  2.2,
+                  0.667128916
+                ],
+                [
+                  2.4,
+                  0.698805788
+                ],
+                [
+                  2.6,
+                  0.727468207
+                ],
+                [
+                  2.8,
+                  0.753403036
+                ],
+                [
+                  3.0,
+                  0.77686984
+                ],
+                [
+                  3.2,
+                  0.798103482
+                ],
+                [
+                  3.4,
+                  0.817316476
+                ],
+                [
+                  3.6,
+                  0.834701112
+                ],
+                [
+                  3.8,
+                  0.850431381
+                ],
+                [
+                  4.0,
+                  0.864664717
+                ],
+                [
+                  4.2,
+                  0.877543572
+                ],
+                [
+                  4.4,
+                  0.889196842
+                ],
+                [
+                  4.6,
+                  0.899741156
+                ],
+                [
+                  4.8,
+                  0.909282047
+                ],
+                [
+                  5.0,
+                  0.917915001
+                ],
+                [
+                  5.2,
+                  0.925726422
+                ],
+                [
+                  5.4,
+                  0.932794487
+                ],
+                [
+                  5.6,
+                  0.939189937
+                ],
+                [
+                  5.8,
+                  0.94497678
+                ],
+                [
+                  6.0,
+                  0.950212932
+                ],
+                [
+                  6.2,
+                  0.954950798
+                ],
+                [
+                  6.4,
+                  0.959237796
+                ],
+                [
+                  6.6,
+                  0.963116833
+                ],
+                [
+                  6.8,
+                  0.96662673
+                ],
+                [
+                  7.0,
+                  0.969802617
+                ],
+                [
+                  7.2,
+                  0.972676278
+                ],
+                [
+                  7.4,
+                  0.975276474
+                ],
+                [
+                  7.6,
+                  0.977629228
+                ],
+                [
+                  7.8,
+                  0.979758089
+                ],
+                [
+                  8.0,
+                  0.981684361
+                ]
+              ]
+            }
+          ],
+          "annotazioni": [
+            {
+              "x": 2,
+              "y": 0.6321205588285577,
+              "testo": "F(2 s) ≈ 0,632"
+            }
+          ]
+        }
+      ],
+      "a_voce": "Parto da un processo di Poisson omogeneo: nessun arrivo nei prossimi t secondi ha probabilità esponenziale negativa. Questa è la probabilità che l’interarrivo X superi t. Ora suppongo di avere già aspettato t zero senza arrivi e considero l’ulteriore attesa R. La probabilità che R superi r è la probabilità che X superi t zero più r, divisa per quella che superi t zero. Sostituisco le due esponenziali e il fattore del tempo già trascorso si semplifica. Ottengo una sopravvivenza e alla meno lambda r e una ripartizione uno meno questa quantità. Il residuo ha media uno su lambda: è la proprietà di assenza di memoria, non una proprietà di tutte le attese.",
+      "errori_frequenti": [
+        {
+          "errore": "Scrivere $P(X>t_0+r)/P(X>r)$.",
+          "perche_sbagliato": "Il condizionamento osservato è $X>t_0$, non $X>r$.",
+          "correzione": "Metti $P(X>t_0)$ al denominatore."
+        },
+        {
+          "errore": "Sostenere che il prossimo arrivo è immediato dopo una lunga attesa.",
+          "perche_sbagliato": "Nel modello omogeneo il residuo mantiene la stessa distribuzione.",
+          "correzione": "Calcola la probabilità condizionata."
+        },
+        {
+          "errore": "Usare la formula con un tasso variabile senza cambiare ipotesi.",
+          "perche_sbagliato": "Una legge con intensità dipendente dal tempo non ha in generale la stessa memoria assente.",
+          "correzione": "Specifica l’intensità e integra il tasso nel periodo rilevante."
+        }
+      ],
+      "versione_compatta": [
+        "$P(X>t)=e^{-\\lambda t}$.",
+        "$P(R>r\\mid X>t_0)=e^{-\\lambda(t_0+r)}/e^{-\\lambda t_0}$.",
+        "$F_R(r)=1-e^{-\\lambda r}$, $E[R]=1/\\lambda$.",
+        "Il risultato richiede il modello omogeneo."
+      ],
+      "a_buchi": {
+        "testo": "Dopo $t_0$ senza arrivi, $P(R>r\\mid X>t_0)=$ ___1___, perché si divide per ___2___ e si semplifica il fattore ___3___. La media residua è ___4___.",
+        "soluzioni": {
+          "1": [
+            "$e^{-\\lambda r}$",
+            "e^{-\\lambda r}"
+          ],
+          "2": [
+            "$P(X>t_0)$",
+            "P(X>t_0)"
+          ],
+          "3": [
+            "$e^{-\\lambda t_0}$",
+            "e^{-\\lambda t_0}"
+          ],
+          "4": [
+            "$1/\\lambda$",
+            "1/\\lambda"
+          ]
+        }
+      },
+      "richiamo_attivo": [
+        {
+          "domanda": "Quale evento dà la sopravvivenza dell’interarrivo?",
+          "risposta": "L’assenza di arrivi durante l’intervallo considerato."
+        },
+        {
+          "domanda": "Perché il tempo trascorso scompare?",
+          "risposta": "I fattori esponenziali relativi a $t_0$ si cancellano nel rapporto condizionato."
+        },
+        {
+          "domanda": "Quanto vale la media residua?",
+          "risposta": "$1/\\lambda$, nelle stesse unità di tempo associate al tasso."
+        },
+        {
+          "domanda": "La proprietà è universale?",
+          "risposta": "No, dipende dalla distribuzione esponenziale e dalle ipotesi del processo."
+        }
+      ],
+      "collegamenti": [
+        "processo-poisson",
+        "dim-aloha-throughput"
+      ],
+      "fonti": [
+        {
+          "chiave": "FILE2",
+          "rif": "file2 p. 1: T13, titolo riformulato; punteggio NON TROVATO"
+        },
+        {
+          "chiave": "FILE3",
+          "rif": "file3 p. 47: Poisson e residuo; numerazione interna stampata 40"
+        },
+        {
+          "chiave": "FILE1",
+          "rif": "file1 pp. 51–53: slide 106 Reti citata, non consultata"
+        }
+      ],
+      "verifica": {
+        "stato": "verificata_file1_file3",
+        "data": "2026-10-28",
+        "note": "A15: il tempo residuo è a p. 47 del PDF file3, p. 40 nella numerazione stampata. La prova condizionata estesa segue file1. Libro e lucidi non consultati.",
+        "punti_aperti": [
+          "Confronto diretto con la slide del docente: NON TROVATO."
+        ]
+      }
+    },
+    "dim-nascita-morte-equilibrio": {
+      "id": "dim-nascita-morte-equilibrio",
+      "titolo": "Equilibrio di un processo nascita–morte",
+      "domande_esame": [
+        "T14"
+      ],
+      "enunciato": "In un processo nascita–morte irriducibile con stati finiti $0,\\ldots,N$ e tassi positivi $\\lambda_i$ di nascita e $\\mu_{i+1}$ di morte, le probabilità stazionarie soddisfano $p_k=p_0\\prod_{i=0}^{k-1}\\frac{\\lambda_i}{\\mu_{i+1}}$ per $1\\le k\\le N$, con normalizzazione $p_0=\\left(1+\\sum_{k=1}^{N}\\prod_{i=0}^{k-1}\\frac{\\lambda_i}{\\mu_{i+1}}\\right)^{-1}$. Per infiniti stati occorrono non esplosività e convergenza della serie di normalizzazione.",
+      "ipotesi": [
+        "Catena di Markov a tempo continuo sugli stati finiti $0,1,\\ldots,N$ con sole transizioni tra vicini.",
+        "$\\lambda_k>0$ per $0\\le k<N$, $\\mu_k>0$ per $1\\le k\\le N$, $\\mu_0=0$ e $\\lambda_N=0$.",
+        "All’equilibrio $p_k$ non dipende dal tempo; per estendere agli infiniti stati servono non esplosività e serie di normalizzazione finita."
+      ],
+      "notazione": [
+        {
+          "simbolo": "\\lambda_k",
+          "significato": "Tasso di nascita dallo stato k allo stato k+1."
+        },
+        {
+          "simbolo": "\\mu_k",
+          "significato": "Tasso di morte dallo stato k allo stato $k-1$."
+        },
+        {
+          "simbolo": "p_k(t),p_k",
+          "significato": "Probabilità transitoria e probabilità stazionaria dello stato k."
+        },
+        {
+          "simbolo": "N",
+          "significato": "Ultimo stato nella versione finita."
+        },
+        {
+          "simbolo": "\\Delta t",
+          "significato": "Piccolo intervallo di osservazione."
+        }
+      ],
+      "varianti_notazione": [],
+      "idea": "Scrivi entrate e uscite, imponi equilibrio ai confini e normalizza il prodotto dei rapporti tra tassi.",
+      "passi": [
+        {
+          "n": 1,
+          "testo": "Costruisci i tassi infinitesimi degli spostamenti adiacenti.",
+          "formula": "P_{k,k+1}(\\Delta t)=\\lambda_k\\Delta t+o(\\Delta t),\\quad P_{k,k-1}(\\Delta t)=\\mu_k\\Delta t+o(\\Delta t)",
+          "perche": "Per una catena a tassi finiti le transizioni multiple contribuiscono termini di ordine inferiore a $\\Delta t$.",
+          "figura": "catena-nascita-morte"
+        },
+        {
+          "n": 2,
+          "testo": "Somma gli ingressi in k e sottrai le uscite, poi passa al limite.",
+          "formula": "\\frac{dp_k(t)}{dt}=\\lambda_{k-1}p_{k-1}(t)+\\mu_{k+1}p_{k+1}(t)-(\\lambda_k+\\mu_k)p_k(t)",
+          "perche": "In un intervallo piccolo si può entrare solo dai due stati adiacenti oppure restare nello stato."
+        },
+        {
+          "n": 3,
+          "testo": "Allo stato zero e in equilibrio ottieni la prima uguaglianza dei flussi.",
+          "formula": "0=-\\lambda_0p_0+\\mu_1p_1,\\qquad \\lambda_0p_0=\\mu_1p_1",
+          "perche": "Nello stato zero non esiste una transizione di morte verso uno stato negativo."
+        },
+        {
+          "n": 4,
+          "testo": "Usa il bilancio degli stati successivi per ricavare la relazione tra vicini.",
+          "formula": "\\lambda_kp_k=\\mu_{k+1}p_{k+1},\\qquad p_{k+1}=p_k\\frac{\\lambda_k}{\\mu_{k+1}}",
+          "perche": "Il flusso netto è costante tra frontiere e quello a sinistra dello zero è zero."
+        },
+        {
+          "n": 5,
+          "testo": "Itera e imponi che le probabilità sommino a uno.",
+          "formula": "p_k=p_0\\prod_{i=0}^{k-1}\\frac{\\lambda_i}{\\mu_{i+1}},\\qquad p_0=\\left(1+\\sum_{k=1}^{N}\\prod_{i=0}^{k-1}\\frac{\\lambda_i}{\\mu_{i+1}}\\right)^{-1}",
+          "perche": "L’induzione dà il prodotto; la somma finita delle probabilità determina univocamente $p_0$."
+        }
+      ],
+      "formula_finale": "p_k=p_0\\prod_{i=0}^{k-1}\\frac{\\lambda_i}{\\mu_{i+1}},\\qquad p_0=\\left(1+\\sum_{k=1}^{N}\\prod_{i=0}^{k-1}\\frac{\\lambda_i}{\\mu_{i+1}}\\right)^{-1}\\quad(1\\le k\\le N).",
+      "figure": [
+        {
+          "id": "catena-nascita-morte",
+          "tipo": "blocchi",
+          "titolo": "Stati e transizioni nascita–morte",
+          "descrizione": "Gli stati 0, 1, 2 e 3 sono collegati da percorsi distinti: i rami superiori sono nascite λ₀, λ₁, λ₂; quelli inferiori morti μ₁, μ₂, μ₃. La catena può proseguire.",
+          "blocchi": [
+            {
+              "id": "stato-0",
+              "etichetta": "0",
+              "forma": "nodo",
+              "colonna": 0,
+              "riga": 1
+            },
+            {
+              "id": "stato-1",
+              "etichetta": "1",
+              "forma": "nodo",
+              "colonna": 4,
+              "riga": 1
+            },
+            {
+              "id": "stato-2",
+              "etichetta": "2",
+              "forma": "nodo",
+              "colonna": 8,
+              "riga": 1
+            },
+            {
+              "id": "stato-3",
+              "etichetta": "3",
+              "forma": "nodo",
+              "colonna": 12,
+              "riga": 1
+            },
+            {
+              "id": "nascita-0",
+              "etichetta": "λ₀",
+              "forma": "rettangolo",
+              "colonna": 2,
+              "riga": 0
+            },
+            {
+              "id": "morte-1",
+              "etichetta": "μ₁",
+              "forma": "rettangolo",
+              "colonna": 2,
+              "riga": 2
+            },
+            {
+              "id": "nascita-1",
+              "etichetta": "λ₁",
+              "forma": "rettangolo",
+              "colonna": 6,
+              "riga": 0
+            },
+            {
+              "id": "morte-2",
+              "etichetta": "μ₂",
+              "forma": "rettangolo",
+              "colonna": 6,
+              "riga": 2
+            },
+            {
+              "id": "nascita-2",
+              "etichetta": "λ₂",
+              "forma": "rettangolo",
+              "colonna": 10,
+              "riga": 0
+            },
+            {
+              "id": "morte-3",
+              "etichetta": "μ₃",
+              "forma": "rettangolo",
+              "colonna": 10,
+              "riga": 2
+            }
+          ],
+          "collegamenti": [
+            {
+              "da": "stato-0",
+              "a": "nascita-0"
+            },
+            {
+              "da": "nascita-0",
+              "a": "stato-1"
+            },
+            {
+              "da": "stato-1",
+              "a": "morte-1"
+            },
+            {
+              "da": "morte-1",
+              "a": "stato-0"
+            },
+            {
+              "da": "stato-1",
+              "a": "nascita-1"
+            },
+            {
+              "da": "nascita-1",
+              "a": "stato-2"
+            },
+            {
+              "da": "stato-2",
+              "a": "morte-2"
+            },
+            {
+              "da": "morte-2",
+              "a": "stato-1"
+            },
+            {
+              "da": "stato-2",
+              "a": "nascita-2"
+            },
+            {
+              "da": "nascita-2",
+              "a": "stato-3"
+            },
+            {
+              "da": "stato-3",
+              "a": "morte-3"
+            },
+            {
+              "da": "morte-3",
+              "a": "stato-2"
+            }
+          ]
+        }
+      ],
+      "a_voce": "Rappresento gli stati come nodi consecutivi: da k una nascita porta a k più uno e una morte porta a k meno uno. Nel piccolo intervallo di tempo scrivo la probabilità di entrare dai vicini e quella di uscire, trascurando solo i termini di ordine superiore. Dividendo per la durata e passando al limite ottengo le equazioni differenziali. All’equilibrio le derivate sono zero; alla frontiera zero il flusso di nascita verso uno uguaglia quello di morte in senso inverso. Ripetendo la relazione tra stati vicini ricavo ciascuna probabilità come p zero moltiplicato per un prodotto di rapporti tra tassi. Infine determino p zero imponendo che la somma sia uno. Per infiniti stati devo verificare convergenza e non esplosività.",
+      "errori_frequenti": [
+        {
+          "errore": "Dividere per $\\mu_k$ invece di $\\mu_{k+1}$.",
+          "perche_sbagliato": "La morte che bilancia la nascita da k parte dallo stato k+1.",
+          "correzione": "Usa $\\lambda_k p_k=\\mu_{k+1}p_{k+1}$."
+        },
+        {
+          "errore": "Usare il prodotto stazionario come probabilità transitoria.",
+          "perche_sbagliato": "Il bilancio locale è stato imposto solo dopo avere annullato le derivate.",
+          "correzione": "Distingui $p_k(t)$ da $p_k$."
+        },
+        {
+          "errore": "Normalizzare comunque una serie infinita divergente.",
+          "perche_sbagliato": "Non esiste una distribuzione stazionaria di probabilità con tale normalizzazione.",
+          "correzione": "Verifica convergenza e non esplosività prima di usare il limite infinito."
+        }
+      ],
+      "versione_compatta": [
+        "$\\dot p_k=\\lambda_{k-1}p_{k-1}+\\mu_{k+1}p_{k+1}-(\\lambda_k+\\mu_k)p_k$.",
+        "All’equilibrio: $\\lambda_kp_k=\\mu_{k+1}p_{k+1}$.",
+        "$p_k=p_0\\prod_{i=0}^{k-1}\\lambda_i/\\mu_{i+1}$.",
+        "$p_0$ si trova da $\\sum p_k=1$."
+      ],
+      "a_buchi": {
+        "testo": "Il flusso $k\\to k+1$ è ___1___ e quello inverso è ___2___. Sono uguali perché ___3___. Iterando si ottiene ___4___.",
+        "soluzioni": {
+          "1": [
+            "$\\lambda_k p_k$",
+            "\\lambda_k p_k"
+          ],
+          "2": [
+            "$\\mu_{k+1}p_{k+1}$",
+            "\\mu_{k+1}p_{k+1}"
+          ],
+          "3": [
+            "il flusso netto alle frontiere è zero",
+            "bilancio all’equilibrio"
+          ],
+          "4": [
+            "$p_k=p_0\\prod_{i=0}^{k-1}\\lambda_i/\\mu_{i+1}$"
+          ]
+        }
+      },
+      "richiamo_attivo": [
+        {
+          "domanda": "Che cosa garantisce il bilancio locale?",
+          "risposta": "Gli stati sono adiacenti e, all’equilibrio, il flusso netto attraverso ogni frontiera è zero."
+        },
+        {
+          "domanda": "Qual è la condizione al bordo zero?",
+          "risposta": "$\\mu_0=0$ e $\\lambda_0p_0=\\mu_1p_1$."
+        },
+        {
+          "domanda": "Come si determina $p_0$?",
+          "risposta": "Con la normalizzazione della somma delle probabilità."
+        },
+        {
+          "domanda": "Che cosa cambia con infiniti stati?",
+          "risposta": "Occorrono una serie normalizzabile e ipotesi di non esplosività."
+        }
+      ],
+      "collegamenti": [
+        "processo-poisson",
+        "code-mm1-little"
+      ],
+      "fonti": [
+        {
+          "chiave": "FILE2",
+          "rif": "file2 p. 1: T14, titolo riformulato; punteggio NON TROVATO"
+        },
+        {
+          "chiave": "FILE3",
+          "rif": "file3 pp. 48–49: nascita–morte; numerazione interna stampata 41–42"
+        },
+        {
+          "chiave": "FILE1",
+          "rif": "file1 pp. 54–55: slide 110 Reti citata, non consultata"
+        }
+      ],
+      "verifica": {
+        "stato": "verificata_file1_file3",
+        "data": "2026-10-28",
+        "note": "A15: individuate le pagine fisiche 48–49 di file3. I bilanci sono rielaborati e resi espliciti; libro e lucidi non consultati.",
+        "punti_aperti": [
+          "Confronto diretto con la slide del docente: NON TROVATO."
+        ]
+      }
+    }
+  },
+  "graph_invariato_sha256": {
+    "graph/esame.json": "c660f5f89145c9e59aff931bb21b01ceb7559becf27db8528505e5c42ed15a4a",
+    "graph/lezioni/accesso-multiplo-deterministico-casuale.json": "f73803d30873e8b4cccd30137391d15204c863c20b2637a9603662aeef5761c2",
+    "graph/lezioni/architetture-iso-osi-tcpip.json": "77a84eb80ca875c2a8396be6b769422c1e9696ef7848d2d143ffc1c11b876a35",
+    "graph/lezioni/code-mm1-little.json": "2dd8376735bfd9d61b0ff3ee0f09f17bd9a3723bd59f030be16efa6284fb7e5f",
+    "graph/lezioni/codici-rivelazione-errore.json": "b9be3563e4f92dd39a095c660cca92f80762bf11c1c1809657560e887ccf4d79",
+    "graph/lezioni/collegamento-numerico-tdm-pcm.json": "26df22303dc1a6835150b25903baf18adbff36db298d97b3b390421672e8fba8",
+    "graph/lezioni/commutazione-circuito-pacchetto.json": "59854b304962341cc8b1f75d42653d84c9725398efe91ac734dea2b10486b310",
+    "graph/lezioni/conversione-ad-quantizzazione-pcm.json": "48980f4fcbfa07d183e90ccad3405c22fafd277d3e555a4b23293bd8604c0aa8",
+    "graph/lezioni/criterio-nyquist-isi.json": "d1d87b519c6a8fdadfc05063acd78f101f7f162598238835e4db639fc680dc78",
+    "graph/lezioni/demodulazione-coerente-non-coerente.json": "2eb9a77d89b6e1cbe1cefd75599d1ae58b48992f824dc4693ec992d87bc65ac9",
+    "graph/lezioni/energia-potenza-spettri.json": "adc686b646ce95c9727363e24294cd09d729bd7f637a8f34f5e5534668c647fc",
+    "graph/lezioni/es-antitrasformata-rettangolare.json": "565a4fbb97613c4f5090d1a1213794f366229f8ad7af3374257d63a6a85c3e1e",
+    "graph/lezioni/es-condizione-nyquist.json": "7aac2835362c1903fef4ddd5843994236f53194f80ea780b0636518a3d328068",
+    "graph/lezioni/es-derivatore-processo-gaussiano.json": "5a0d783bbb0f47e33bd590f456a86b997b56f598468cbc63a20d34ca817d51ac",
+    "graph/lezioni/es-pam-ami.json": "0d0c204bd624a21394629793eb28e03ee17bb5553ea9a6767f42c44f45f39e42",
+    "graph/lezioni/es-pam-bipolare.json": "fea93da93647bdbee30d6904961738c72e81ef97e3aa79bace9b1d0f7c7f33e8",
+    "graph/lezioni/es-rete-cr.json": "f3e62dff68b1af151f9a81a78d2589d5378c7464f10990a3fb393d3ef1c91678",
+    "graph/lezioni/es-rete-rc.json": "0bb9a86729ef2c074843b423ec682e377e577211bc17f596f29d9f0d394a5511",
+    "graph/lezioni/es-spettri-impulsi-periodici.json": "d645a6b57a1cf1709bb57b80a57b120a00bd4bf489069e9258d1c1409b8d5da6",
+    "graph/lezioni/es-spettri-impulso-rettangolare.json": "18bd486f9a883f6004be6254673c23b1f1c2b33d0b93b9f1d1753ee558ea5485",
+    "graph/lezioni/es-teoria-traffico-extra.json": "fdb44e10ec603078a5cc67dca015fe3cf631aefb7d4b73b3ee1f0a1b5223aafe",
+    "graph/lezioni/filtri-ricorrenti-trasversali.json": "658dad4248d4c830f75492566acc59a35db10303ff3ef44b5fb7cdf1bcfe3a57",
+    "graph/lezioni/lan-ieee802-ethernet.json": "cf40ab8348eb098df956e45af2b8684c09bd66c863e5fbb769d90b16029ba62e",
+    "graph/lezioni/modulazione-prodotto-dsb-ssb.json": "7935d962e7f38ea5b6168832302c9d5f68a72f04e5ba02deb98d19dcb515fad5",
+    "graph/lezioni/modulazioni-angolo-pm-fm.json": "d7b2a1d4e0eb7047f8e763b7ce29de0b9c42c04b6bd4be701ad8e6610fab0bd2",
+    "graph/lezioni/modulazioni-numeriche.json": "62af20d48f360a164a17b62d83764af45bdd19b7d3a48b64262435cf290e0e9c",
+    "graph/lezioni/parametro-a-propagazione-trasmissione.json": "c0b962e86846b578a0cfcad7e1bad58f78400ff126b1d256a9b239a1aae93b47",
+    "graph/lezioni/processi-aleatori-stazionarieta-ergodicita.json": "8ac283942a28b04ebe86e240af312e3ab33cf2c230dc335eebe86196c94beb59",
+    "graph/lezioni/processi-gaussiani-funzione-errore.json": "e7b1230cbfc80174e9df181b61b27a2bc9aff09adf7ce0326aabfa9b6ad2f510",
+    "graph/lezioni/processo-poisson.json": "85f25c876e93bc684195ab01854c6ce8c05fbcd1237a0b12cdd16e3433c1abeb",
+    "graph/lezioni/protocolli-linea-hdlc-sliding-window.json": "84bfd6c804394a05b16c488d5b4b0f9a36640100c6ef92e2272082df0f99ddbe",
+    "graph/lezioni/reti-concetti-introduttivi.json": "d269dedba71a6102f329c5cec0d8fd9363686b22926fb02f4c58eb13a53a0a16",
+    "graph/lezioni/segnali-deterministici.json": "00cc743cb149f4a17016c2456f108bf84211756b6b63fcae959da55a6133f620",
+    "graph/lezioni/segnali-pam.json": "3b9e9f5e0b595cf69cefbd4acf9e603639034a3635102a8f866293cffc10d9a2",
+    "graph/lezioni/segnali-passa-banda-inviluppo-complesso.json": "ad7178ea9c6895e81334334df30e493500b90d94cf7a594e9a6de4b5f40f4af0",
+    "graph/lezioni/serie-fourier.json": "7968442cdc0260d8c869305806d13a0e9981b0e61efa670f157a4df4e527952e",
+    "graph/lezioni/serie-temporali-trasformata.json": "547e683d0bdd8a3807e206c41ef1d8fdddaa5daf361bac6d638b7f0b6bfb49a6",
+    "graph/lezioni/sistemi-lineari-funzione-trasferimento.json": "2208198c1887c8f8070fd41a36889fed180939f4b6b4d9152a96168dfa99a23d",
+    "graph/lezioni/trasformata-fourier.json": "c2aea1dc556240803779bbc6b3dfbbe2285b71f13734e7d3adc19b59bf0736c9",
+    "graph/meta.json": "9e992a9219fd96356800d0832687360d43ad8c5b8427d20a8a22b8524a2f7b96",
+    "graph/parts/area-1-esercizi.json": "f05ae7ddfb18984a7cdfa46c5fcbfb87c56038e9484bc96c43621e5048e313f8",
+    "graph/parts/area-1.json": "35b996bf27f813bf92a538c3696099da59aede26c2a28cb368072e34c0f7661b",
+    "graph/parts/area-2-esercizi.json": "068f7f40c13dc1693a998ea5d7b4161f7d05e556e118fa7803bb0e0e6e91c2a3",
+    "graph/parts/area-2.json": "6669d50f632787f9b22ae9b642bd2e3dd1f214bb5e0af48abc32484c9ad9e1e8",
+    "graph/parts/area-3-esercizi.json": "7db6f97ba91277f05ce02dbb5a17eb68af4b82f2a7dc44fdadd35592c0d0b821",
+    "graph/parts/area-3.json": "2002b43ad212dd20b1b263f68aa0008224ab7ea7bf87d2b5bbf94f6dafb58868",
+    "graph/parts/area-4.json": "37bc797cc5b00e462ad80d1fc39ba15a82b9825ed22110365a4e2ff558f6ac50",
+    "graph/parts/area-5.json": "1cb3a16f88ee636b7b7673664647478a5eb5900fde8d79b00708f54a34ffd859",
+    "graph/parts/area-6.json": "94cb968b30b7de217188fce8301891e6946b687d5b9bb71290f4f2018e490190",
+    "graph/parts/area-7-esercizi.json": "8d978944156608e269500fc99b1a4f00891fed459c7bf0d1026737571309fb72",
+    "graph/parts/area-7.json": "9656dcf913f99f4c10ff1911561dfcfe2587ca9717b25ce60b19e276a1a22c36"
+  }
+}
