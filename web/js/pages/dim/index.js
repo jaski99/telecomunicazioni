@@ -9,6 +9,7 @@ import { renderStudio, setupStudio } from './studio.js';
 import { renderABuchi, setupABuchi } from './abuchi.js';
 import { renderRecall, setupRecall } from './recall.js';
 import { renderIdea } from './sezioni.js';
+import './cache.js';
 import { leggiRivelati, parsePasso } from './stato.js';
 
 function richiestaPasso(totale) {

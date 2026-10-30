@@ -48,24 +48,28 @@ function riorganizza(blocchi, colonnePerRiga) {
 
 export function renderBlocchi(spec, opzioni = {}) {
   if (!spec || typeof spec !== 'object') throw new Error('spec mancante');
-  const blocchi = Array.isArray(spec.blocchi) ? spec.blocchi.filter(b => b && typeof b === 'object') : [];
+  const blocchi = Array.isArray(spec.blocchi) ? spec.blocchi
+    .map((b, indice) => b && typeof b === 'object' ? { ...b, __figuraIndice: indice } : null).filter(Boolean) : [];
   if (blocchi.length < 2) throw new Error('servono almeno due blocchi');
   const collegamenti = Array.isArray(spec.collegamenti) ? spec.collegamenti : [];
+  const cssWidth = Number(opzioni.larghezzaMassima);
+  const larghezzaMassima = Number.isFinite(cssWidth) && cssWidth > 0
+    ? Math.max(80, Math.floor(cssWidth * FS_BLOCCHI / 15)) : LARGHEZZA_MASSIMA;
   let disegno;
-  // Se necessario, si va a capo e si riducono gli spazi, mai il viewBox.
-  for (let limite = 16; limite >= 1; limite--) {
-    const spazio = Math.max(0, 24 - (16 - limite) * 2);
-    disegno = costruisci(blocchi, collegamenti, limite, spazio);
-    if (disegno.w <= LARGHEZZA_MASSIMA) break;
-  }
-  if (disegno.w > LARGHEZZA_MASSIMA) {
-    for (let maxColonne = 6; maxColonne >= 1; maxColonne--) {
-      disegno = costruisci(riorganizza(blocchi, maxColonne), collegamenti, 16, 12);
-      if (disegno.w <= LARGHEZZA_MASSIMA) break;
+  // Prima si compatta il layout; se non basta, i blocchi rifluiscono in righe.
+  for (let colonne = Infinity; colonne >= 1;) {
+    const layout = Number.isFinite(colonne) ? riorganizza(blocchi, colonne) : blocchi;
+    for (let limite = 16; limite >= 1; limite--) {
+      const spazio = Math.max(0, 24 - (16 - limite) * 2);
+      disegno = costruisci(layout, collegamenti, limite, spazio);
+      if (disegno.w <= larghezzaMassima) break;
     }
+    if (disegno.w <= larghezzaMassima || colonne === 1) break;
+    colonne = colonne === Infinity ? 6 : colonne - 1;
   }
+
   const frecce = disegno.frecce.map(c => `<g ${attributiProgressivi(opzioni.progressione, 'collegamento', c.indice)}>${disegnaFreccia(c)}${disegnaTesto(c.testo, true)}</g>`).join('');
-  const forme = disegno.nodi.map((n, i) => disegnaBlocco(n, opzioni, i)).join('');
+  const forme = disegno.nodi.map(n => disegnaBlocco(n, opzioni, n.blocco.__figuraIndice)).join('');
   return { svgInner: `<g transform="translate(${-disegno.left},${-disegno.top})">${frecce}${forme}</g>`,
     viewBox: { w: disegno.w, h: disegno.h }, serie: [], fs: FS_BLOCCHI };
 }

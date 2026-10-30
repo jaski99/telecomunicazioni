@@ -65,7 +65,7 @@ JS_MISURE = """
   const r = { katexError: 0, displayCount: 0, displayAtteso: atteso, svgTooWide: 0, textOutside: 0,
               textTooSmall: 0, textTooBig: 0, inlineTooTall: 0, inlineOverlap: 0 };
   r.katexError = document.querySelectorAll('.katex-error, .katex-err').length;
-  if (typeof atteso === 'number') { r.displayCount = document.querySelectorAll('.formula-box .katex-display').length; }
+  if (typeof atteso === 'number') { r.displayCount = document.querySelectorAll('.formula-box__original .katex-display').length; }
   const svgs = document.querySelectorAll('svg');
   const bodyFont = parseFloat(getComputedStyle(document.body).fontSize) || 16;
   for (const svg of svgs) {
@@ -217,11 +217,11 @@ def test_formula_isolata_e_titoli(server):
               const {renderMath} = await import('./js/core/math.js'); await renderMath(el);
               return {titoli: [...el.querySelectorAll('h1,h2,h3,h4,h5,h6')].map(h =>
                 ({inline: h.querySelectorAll('.formula-inline .katex').length, box: h.querySelectorAll('.formula-box').length})),
-                isolata: el.querySelectorAll('.isolata .formula-box .katex-display').length,
+                isolata: el.querySelectorAll('.isolata .formula-box__original .katex-display').length,
                 prosa: el.querySelectorAll('.prosa .formula-inline .katex').length,
                 boxProsa: el.querySelectorAll('.prosa .formula-box').length,
-                promossa: el.querySelectorAll('.promossa .formula-box .katex-display').length,
-                esplicita: el.querySelectorAll('.esplicita .formula-box .katex-display').length};
+                promossa: el.querySelectorAll('.promossa .formula-box__original .katex-display').length,
+                esplicita: el.querySelectorAll('.esplicita .formula-box__original .katex-display').length};
             }''', html)
             assert all(t == {"inline": 1, "box": 0} for t in misure["titoli"])
             assert misure["isolata"] == misure["prosa"] == misure["promossa"] == misure["esplicita"] == 1
@@ -242,7 +242,8 @@ def test_nuovi_moduli_figura_disponibili_dopo_ricarica_offline(server):
             page.wait_for_function('''async () => {
               await navigator.serviceWorker.ready;
               return !!(await caches.match('./js/figure/blocchi-layout.js')) &&
-                     !!(await caches.match('./js/figure/blocchi-forme.js'));
+                     !!(await caches.match('./js/figure/blocchi-forme.js')) &&
+                     !!(await caches.match('./js/figure/progressione.js'));
             }''')
             context.set_offline(True)
             page.goto(f"{server}/#/dim/dim-conversione-ad", wait_until="load")
@@ -323,16 +324,17 @@ def test_formule_pure_display_e_scorrimento_completo(server, width, height):
             for dim in dimostrazioni:
                 page.goto(f'{server}/#/dim/{dim["id"]}', wait_until="networkidle")
                 attese = sum(bool(passo.get("formula")) for passo in dim["passi"])
-                assert page.locator('.passo-formula .formula-box .katex-display').count() == attese, dim["id"]
-                assert page.locator('.sempre-visibile > .formula .formula-box .katex-display').count() == 1, dim["id"]
+                assert page.locator('.passo-formula .formula-box__original .katex-display').count() == attese, dim["id"]
+                assert page.locator('.sempre-visibile > .formula .formula-box__original .katex-display').count() == 1, dim["id"]
                 problemi = page.evaluate('''() => {
                   const bad = [], body = parseFloat(getComputedStyle(document.body).fontSize);
                   for (const sc of document.querySelectorAll('.formula-box .scroll-x')) {
-                    const display = sc.querySelector('.katex-display'), k = display?.querySelector(':scope > .katex');
+                    const display = [...sc.querySelectorAll('.katex-display')].find(x => x.getClientRects().length),
+                      k = display?.querySelector(':scope > .katex');
                     if (!k || !sc.getBoundingClientRect().height) continue;
                     const r = sc.getBoundingClientRect(), font = parseFloat(getComputedStyle(k).fontSize);
                     if (font + .1 < body * (innerWidth < 600 ? 1.15 : 1.2)) bad.push(['font', font, body]);
-                    const bases = [...sc.querySelectorAll('.katex-html > .base')];
+                    const bases = [...display.querySelectorAll('.katex-html > .base')];
                     if (!bases.length) continue;
                     sc.scrollLeft = 0;
                     if (bases[0].getBoundingClientRect().left < r.left - 1) bad.push(['inizio tagliato']);

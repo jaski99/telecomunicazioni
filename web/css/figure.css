@@ -43,7 +43,7 @@
 .figure__legend-item { display: inline-flex; align-items: center; gap: var(--s-2, 8px); font-size: var(--fs-small, 0.9375rem); color: var(--c-text, #17202e); margin: 0; }
 .figure__legend-sample { display: block; }
 
-/* Stati progressivi: il tratto eredito resta distinguibile senza dipendere dal colore. */
+/* Stati progressivi: il tratto ereditato resta distinguibile senza dipendere dal colore. */
 .figure [data-ereditato="true"] { opacity: var(--figure-inherited-opacity, 0.38); }
 .figure [data-progressivo] { transition: opacity 250ms ease; }
 .figura-confronta { display: block; min-height: var(--tap, 44px); margin: var(--s-2, 8px) 0; }
@@ -52,6 +52,7 @@
 .figura-confronto > div { min-width: 0; }
 .figura-confronto h4 { margin: 0 0 var(--s-2, 8px); font-size: var(--fs-body, 1.0625rem); }
 .figura-confronto .figure { max-width: 100%; margin: 0; }
+.figura-confronto .figure .figura-svg { max-width: 100%; }
 @media (min-width: 768px) { .figura-confronto { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (prefers-reduced-motion: reduce) { .figure [data-progressivo] { transition-duration: 0s; } }
 

@@ -134,7 +134,14 @@
 /* Le motivazioni diventano note marginali su schermi ampi, inline su mobile. */
 .nota-margine { margin: 0; }
 @media (min-width: 1200px) {
-  .step__corpo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(12ch, var(--margin-col, 220px)); align-items: start; }
-  .step__testo, .step__corpo > .passo-formula, .step__figura { grid-column: 1; }
-  .step__corpo > .nota-margine { grid-column: 2; grid-row: 1 / span 3; min-width: 0; }
+  .step__corpo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(12ch, var(--margin-col, 220px));
+    grid-template-areas: "testo nota" "formula formula" "figura figura";
+    align-items: start; column-gap: var(--s-4);
+  }
+  .step__testo { grid-area: testo; min-width: 0; }
+  .step__corpo > .nota-margine { grid-area: nota; min-width: 0; }
+  .step__corpo > .passo-formula { grid-area: formula; min-width: 0; }
+  .step__figura { grid-area: figura; min-width: 0; }
 }

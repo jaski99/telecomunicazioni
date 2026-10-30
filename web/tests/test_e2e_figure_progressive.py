@@ -55,10 +55,22 @@ def test_catena_fixture_nuovi_confronto_e_movimento(server, width, height):
             assert pulsante.get_attribute('aria-expanded') == 'true'
             allineamento = page.locator('.figura-confronto').evaluate('(e) => { const r = [...e.children].map(x => x.getBoundingClientRect()); return r[1].top <= r[0].bottom - 1; }')
             assert allineamento is (width >= 768)
+            misura_confronto = page.locator('.figura-confronto').evaluate('''e => ({
+              overflow: e.scrollWidth > e.clientWidth + 1,
+              regions: [...e.querySelectorAll('.scroll-x')].map(x => ({
+                overflow: x.scrollWidth > x.clientWidth + 1,
+                svg: x.querySelector('svg')?.getBoundingClientRect().width,
+                width: x.clientWidth
+              }))
+            })''')
+            assert not misura_confronto['overflow'], (width, misura_confronto)
+            assert all(not r['overflow'] and r['svg'] <= r['width'] + 1 for r in misura_confronto['regions']), (width, misura_confronto)
             durata = page.locator('[data-progressivo]').first.evaluate('(e) => getComputedStyle(e).transitionDuration')
             assert all(float(x.rstrip('s')) == 0 for x in durata.split(',')), durata
             Path('/tmp/tlc-shots').mkdir(parents=True, exist_ok=True)
             page.screenshot(path=f'/tmp/tlc-shots/figure-progressive-{width}.png', full_page=True)
+            if width == 1440:
+                page.screenshot(path='/tmp/confronto-1440.png', full_page=True)
             assert not errori, errori
         finally:
             browser.close()

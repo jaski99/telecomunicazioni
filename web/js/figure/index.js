@@ -12,7 +12,7 @@ const RENDERER = { grafico: renderGrafico, blocchi: renderBlocchi, temporale: re
    moduli aggiunti, così anche una ricarica offline può importare le figure. */
 function completaCacheFigure() {
   if (typeof navigator === 'undefined' || !navigator.serviceWorker || typeof caches === 'undefined') return;
-  const urls = ['blocchi-layout.js', 'blocchi-forme.js'].map(f => new URL(f, import.meta.url).href);
+  const urls = ['blocchi-layout.js', 'blocchi-forme.js', 'progressione.js'].map(f => new URL(f, import.meta.url).href);
   const aggiorna = async () => {
     if (navigator.onLine === false) return;
     await navigator.serviceWorker.ready;
@@ -30,6 +30,14 @@ function completaCacheFigure() {
 }
 completaCacheFigure();
 
+function opzioniBlocchiResponsive(opzioni) {
+  if (opzioni.larghezzaMassima != null || typeof window === 'undefined') return opzioni;
+  const viewport = window.innerWidth;
+  const larghezzaMassima = viewport < 600 ? viewport - 72 : viewport < 1024 ? viewport - 96
+    : viewport < 1200 ? viewport - 404 : 750;
+  return { ...opzioni, larghezzaMassima: Math.max(80, larghezzaMassima) };
+}
+
 export function renderFigura(specOId, figureDisponibili = [], opzioni = {}) {
   try {
     let spec = specOId;
@@ -39,9 +47,10 @@ export function renderFigura(specOId, figureDisponibili = [], opzioni = {}) {
     }
     if (!spec || typeof spec !== 'object') return figuraSoloTesto(spec);
     const tipo = spec.tipo; if (!tipo || !RENDERER[tipo]) return figuraSoloTesto({ titolo: spec.titolo, descrizione: spec.descrizione });
-    const r = RENDERER[tipo](spec, opzioni);
+    const rendering = tipo === 'blocchi' ? opzioniBlocchiResponsive(opzioni) : opzioni;
+    const r = RENDERER[tipo](spec, rendering);
     const fs = r.fs || fontSize(r.viewBox.w);
-    const svg = svgBase(spec, r.viewBox.w, r.viewBox.h, r.svgInner, fs, opzioni);
-    return figuraSVG(spec, svg, r.serie, opzioni);
+    const svg = svgBase(spec, r.viewBox.w, r.viewBox.h, r.svgInner, fs, rendering);
+    return figuraSVG(spec, svg, r.serie, rendering);
   } catch (_e) { return figuraSoloTesto(specOId); }
 }

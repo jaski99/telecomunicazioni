@@ -143,7 +143,7 @@ test('layout fit: tredici colonne con etichette lunghe non vengono tagliate', ()
   const r = renderBlocchi({ blocchi, collegamenti: blocchi.slice(1).map((b, i) => ({ da: blocchi[i].id, a: b.id })) });
   assert.ok(r.viewBox.w <= 700); assert.equal((r.svgInner.match(/class="blocco rettangolo"/g) || []).length, 13); assert.ok(r.viewBox.h > 36); assert.doesNotMatch(r.svgInner, /<text\b[^>]*>\s*<text\b/);
 });
-test('B12: gli span delle etichette a blocchi contengono parole intere anche oltre il limite di riga', () => {
+test('B12 fixture: gli span delle etichette a blocchi contengono parole intere anche oltre il limite di riga', () => {
   const etichetta = 'TrasformazioneFourier con parole intere';
   const r = renderBlocchi({ blocchi: [
     { id: 'a', forma: 'rettangolo', colonna: 0, riga: 0, etichetta },
@@ -152,6 +152,25 @@ test('B12: gli span delle etichette a blocchi contengono parole intere anche olt
   const righe = [...r.svgInner.matchAll(/<tspan[^>]*>([^<]*)<\/tspan>/g)].map(m => m[1].replace(/&amp;/g, '&'));
   assert.ok(righe.includes('TrasformazioneFourier'));
   assert.deepEqual(righe.join(' ').split(/\s+/u), etichetta.split(/\s+/u));
+});
+
+test('B12: tutte le figure a blocchi del grafo mantengono intere le parole nelle etichette', () => {
+  const figure = leggiGraph().nodi.flatMap(n => [n.lezione, n.dimostrazione]
+    .flatMap(s => (s?.figure || []).filter(f => f.tipo === 'blocchi')));
+  const decodifica = s => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'").replace(/&amp;/g, '&');
+  for (const f of figure) {
+    const html = renderBlocchi(f).svgInner;
+    const testi = [...html.matchAll(/<text\b[^>]*aria-label="([^"]*)"[^>]*>([\s\S]*?)<\/text>/g)];
+    for (const blocco of f.blocchi) {
+      const etichetta = String(blocco.etichetta || '').trim();
+      if (!etichetta || (blocco.forma === 'sommatore' && etichetta === '+')) continue;
+      const trovato = testi.find(m => decodifica(m[1]).trim().replace(/\s+/gu, ' ') === etichetta.replace(/\s+/gu, ' '));
+      assert.ok(trovato, `${f.id}/${blocco.id}: etichetta SVG assente`);
+      const testoReso = decodifica(trovato[2].replace(/<[^>]+>/gu, ' ')).trim().replace(/\s+/gu, ' ');
+      assert.deepEqual(testoReso.split(' '), etichetta.replace(/\s+/gu, ' ').split(' '), `${f.id}/${blocco.id}`);
+    }
+  }
 });
 
 test('grafico e temporale conservano etichette e frecce dentro gli ingombri', () => {

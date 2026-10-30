@@ -262,3 +262,51 @@ def test_b8_passo_permalink_e_overflow(browser, server, dim_id, width, height):
     assert misura['body'] <= misura['client'], (dim_id, width, misura)
     assert not errori, (dim_id, width, errori)
     page.close()
+
+
+def test_note_marginale_non_restringe_formula_e_figura_a_1440(browser, server):
+    page, errori = apri(browser, server, 'dim-pam-due-spettri', 1440, 900, '?passo=4')
+    misure = page.evaluate('''() => {
+      const corpo = document.querySelector('#passo-4 .step__corpo');
+      const testo = corpo.querySelector('.step__testo').getBoundingClientRect();
+      const nota = corpo.querySelector('.nota-margine').getBoundingClientRect();
+      const formula = corpo.querySelector('.passo-formula').getBoundingClientRect();
+      const figura = corpo.querySelector('.step__figura').getBoundingClientRect();
+      const area = e => getComputedStyle(e).gridArea;
+      return {larghezza: corpo.clientWidth, testo: testo.toJSON(), nota: nota.toJSON(),
+        formula: formula.toJSON(), figura: figura.toJSON(), aree: [area(corpo.querySelector('.step__testo')),
+          area(corpo.querySelector('.nota-margine')), area(corpo.querySelector('.passo-formula')),
+          area(corpo.querySelector('.step__figura'))]};
+    }''')
+    assert misure['aree'] == ['testo', 'nota', 'formula', 'figura'], misure
+    assert misure['testo']['right'] <= misure['nota']['left'], misure
+    assert misure['formula']['width'] >= misure['larghezza'] - 1, misure
+    assert misure['figura']['width'] >= misure['larghezza'] - 1, misure
+    assert not errori
+    page.close()
+
+
+@pytest.mark.parametrize('width,height', [(360, 780), (390, 844)])
+def test_pam_schema_e_formula_senza_scroll_interno(browser, server, width, height):
+    page, errori = apri(browser, server, 'dim-pam-due-spettri', width, height, '?passo=4')
+    misura = page.evaluate('''() => {
+      const selettori = ['#passo-2 .step__figura .scroll-x', '#passo-2 .passo-formula .scroll-x',
+        '#passo-2 .passo-formula .formula-box', '#passo-4 .passo-formula .scroll-x', '#passo-4 .passo-formula .formula-box'];
+      const elementi = [...new Set(selettori.flatMap(s => [...document.querySelectorAll(s)]))]
+        .filter(e => e.getClientRects().length);
+      const overflow = elementi.map(e => ({classe: e.className, scroll: e.scrollWidth, client: e.clientWidth}))
+        .filter(x => x.scroll > x.client + 1);
+      const figura = document.querySelector('#passo-2 .step__figura svg');
+      const svg = figura?.getBoundingClientRect(), vb = figura?.viewBox.baseVal;
+      const dimensioni = figura ? [...figura.querySelectorAll('text')].map(t =>
+        parseFloat(getComputedStyle(t).fontSize) * svg.width / vb.width) : [];
+      return {overflow, dimensioni, schema: Boolean(figura), passi: [...document.querySelectorAll('#passo-2.step--rivelato, #passo-4.step--rivelato')].length};
+    }''')
+    assert misura['passi'] == 2, (width, misura)
+    assert misura['schema'], (width, misura)
+    assert misura['overflow'] == [], (width, misura)
+    assert all(size >= 11 for size in misura['dimensioni']), (width, misura['dimensioni'])
+    assert not errori, (width, errori)
+    if width == 390:
+        page.screenshot(path='/tmp/pam-390.png', full_page=True)
+    page.close()

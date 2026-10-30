@@ -116,6 +116,19 @@ test('formulaBlock compila in display reale, anche per formule brevi', () => {
   assert.doesNotMatch(formulaInline('x'), /katex-display/);
 });
 
+test('formulaBlock crea un riflusso responsivo ai soli separatori LaTeX di primo livello', () => {
+  const formula = 's_m(t) = \\sum_n c_n e^{jnt} \\qquad c_n = \\frac{a_n}{T} G(n)';
+  const html = formulaBlock(formula);
+  assert.match(html, /formula-box--reflow/);
+  assert.match(html, /class="formula-box__reflow"/);
+  assert.equal((html.match(/class="katex-display"/g) || []).length, 2);
+  assert.equal(formula, 's_m(t) = \\sum_n c_n e^{jnt} \\qquad c_n = \\frac{a_n}{T} G(n)');
+  const annidata = formulaBlock('\\operatorname{f(a,b)} + \\left(\\frac{a+b}{c+d}\\right) + \\sum_{n=1}^{N} x_n');
+  assert.doesNotMatch(annidata, /formula-box--reflow/);
+  const parentesiQuadre = formulaBlock('P_y = \\int_0^2 3\\omega^2 d\\omega = [\\omega^3]_0^2 = 8');
+  assert.doesNotMatch(parentesiQuadre, /katex-err/);
+});
+
 test('formula isolata riconosce spazi ma non testo o altre formule', () => {
   assert.ok(formulaIsolata(tokenizzaMatematica('$x$')));
   assert.ok(formulaIsolata(tokenizzaMatematica('  $x$  ')));
