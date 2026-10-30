@@ -10,8 +10,35 @@ export function parseHash() {
   return hash || '';
 }
 
+/** Restituisce { percorso, query } separando la query string dall'hash. */
+export function parseHashConQuery() {
+  const hash = parseHash();
+  const [percorso, qs = ''] = hash.split('?');
+  const query = {};
+  for (const coppia of qs.split('&')) {
+    const [k, v] = coppia.split('=');
+    if (k !== undefined && k.length > 0) query[decodeURIComponent(k)] = v !== undefined ? decodeURIComponent(v) : '';
+  }
+  return { percorso: percorso || '', query };
+}
+
+/** Estrae l'oggetto dei parametri di query da una stringa hash. */
+export function estraiQuery(hash) {
+  const qs = hash.split('?')[1] || '';
+  const query = {};
+  for (const coppia of qs.split('&')) {
+    const idx = coppia.indexOf('=');
+    if (idx <= 0) continue;
+    const k = coppia.slice(0, idx);
+    const v = coppia.slice(idx + 1);
+    query[decodeURIComponent(k)] = decodeURIComponent(v);
+  }
+  return query;
+}
+
 export function corrispondenzaPercorso(percorso, pattern) {
-  const partiP = percorso.split('/').filter(s => s.length > 0);
+  const percorsoPuro = percorso.split('?')[0];
+  const partiP = percorsoPuro.split('/').filter(s => s.length > 0);
   const partiPat = pattern.split('/').filter(s => s.length > 0);
   if (partiP.length !== partiPat.length) return null;
   const params = {};

@@ -143,10 +143,32 @@
   margin-block: var(--s-3);
 }
 
-.formula-gruppo {
-  white-space: nowrap;
+.sezione__num {
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text-muted);
+  font-weight: 700;
+  margin-right: var(--s-2);
 }
 
-.formula-gruppo > .formula-inline {
-  margin-right: 0;
+.figura-numerata { margin: 0 0 var(--s-5); page-break-inside: avoid; }
+.figura-numerata .figure__numero { font-size: var(--fs-num); color: var(--c-text-muted); margin-bottom: var(--s-1); }
+.figura-numerata figcaption { font-size: var(--fs-caption); color: var(--c-text-muted); margin-top: var(--s-2); }
+
+.nota-toggle { display: none; border: 0; background: none; padding: 0; font: inherit; cursor: pointer; }
+.nota-margine { font-size: var(--fs-caption); color: var(--c-text-muted); border-top: var(--rule); padding-top: var(--s-2); margin: var(--s-3) 0 var(--s-5); page-break-inside: avoid; }
+.nota-margine__titolo { font-weight: 700; font-size: var(--fs-num); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 var(--s-1); }
+
+.indice-in-testa { margin: 0 0 var(--s-6); }
+.indice-in-testa .indice-pagina ol { margin: 0; padding-left: var(--s-5); list-style-type: none; }
+.indice-in-testa .indice-pagina li { margin: 0 0 var(--s-1); }
+.indice-in-testa .indice-pagina li a { text-decoration: none; color: var(--c-text); }
+.indice-in-testa .indice-pagina li a:hover { color: var(--c-primary); }
+.indice-in-testa .indice-pagina li.attiva a { color: var(--c-primary); font-weight: 700; }
+
+.nav-sequenza { display: flex; gap: var(--s-3); margin: var(--s-7) 0 0; flex-wrap: wrap; }
+
+@media (min-width: 1200px) {
+  .nodo-corpo { display: grid; grid-template-columns: minmax(0, var(--measure)) var(--margin-col); gap: var(--gap-col, var(--s-6)); align-items: start; }
+  .nota-margine { grid-column: 2; margin-top: 0; border-top: none; border-left: var(--rule); padding-left: var(--s-4); padding-top: 0; }
+  .nota-toggle { display: inline-block; }
 }

@@ -4,7 +4,8 @@
  */
 
 import { testoSicuro, escapeHtml } from '../core/math.js';
-import { chipNodoLink, formattaParoleIntere } from './grafo.js';
+import { chipNodoLink, formattaParoleIntere, nomeArea } from './grafo.js';
+import { leggiStatoNodo, leggiChiave, KEY_STATO } from '../core/store.js';
 
 const TIPI_PROVA = {
   teoria: 'Teoria',
@@ -43,8 +44,9 @@ function cardPartenza({ badge, titolo, testo, href, labelBtn, ghost = false }) {
   </article>`;
 }
 
-export function render(ctx) {
+export function render(ctx, params) {
   const graph = (ctx && ctx.graph) || {};
+  const storage = ctx && ctx.storage;
   const nodi = (Array.isArray(graph.nodi) ? graph.nodi : []).filter(Boolean);
   const prove = (Array.isArray(graph.esame) ? graph.esame : []).filter(Boolean);
   const mappa = new Map(nodi.map((n) => [String(n.id), n]));
@@ -117,24 +119,68 @@ export function render(ctx) {
       </tr>`;
     }).join('');
 
+  const aree = (Array.isArray(graph.aree) ? graph.aree : (graph.meta && graph.meta.aree) || []).filter(Boolean);
+  const capitoliHtml = aree.length
+    ? aree.map((a) => {
+      const nodiArea = nodi.filter((n) => Number(n.area || 0) === Number(a.id));
+      const nDim = nodiArea.filter((n) => n.tipo === 'dimostrazione').length;
+      const stati = leggiStatoNodo(storage, '');
+      let completati = 0;
+      for (const n of nodiArea) {
+        const s = leggiStatoNodo(storage, String(n.id));
+        if (s && s.rivelati) completati += 1;
+      }
+      return `<article class="card capitolo-card">
+        <h3 class="capitolo-card__titolo">Capitolo ${escapeHtml(String(a.id))} — ${escapeHtml(testoSicuro(a.titolo || ''))}</h3>
+        <p class="capitolo-card__conteggio">${nodiArea.length} argomenti · ${nDim} dimostrazione${nDim !== 1 ? 'i' : ''}</p>
+        <a class="btn btn--primary" href="#/area/${escapeHtml(String(a.id))}">Apri capitolo</a>
+      </article>`;
+    }).join('')
+    : '<p>Nessun capitolo disponibile.</p>';
+
+  // "Riprendi da qui" dallo store: ultimo nodo studiato.
+  let riprendiHtml = '<p>Nessuno studio in corso. Inizia dal primo capitolo.</p>';
+  const statoStore = leggiChiave(storage, KEY_STATO, {});
+  if (statoStore && typeof statoStore === 'object') {
+    const ultime = Object.entries(statoStore).filter(([, v]) => v && typeof v === 'object' && (v.rivelati || 0) > 0);
+    if (ultime.length) {
+      ultime.sort((a, b) => (b[1].ts || 0) - (a[1].ts || 0));
+      const [idUltimo] = ultime[0];
+      const nodoUltimo = mappa.get(idUltimo);
+      if (nodoUltimo) {
+        riprendiHtml = `<p>Ultimo argomento aperto: <strong>${escapeHtml(testoSicuro(nodoUltimo.titolo || idUltimo))}</strong>.</p><a class="btn btn--primary" href="#/nodo/${escapeHtml(idUltimo)}">Riprendi</a>`;
+      }
+    }
+  }
+
   return `<h1>Percorso d'esame</h1>
 <div class="prose">
   <p>Ordine consigliato per lo studio di Fondamenti di Telecomunicazioni: parti dalle dimostrazioni T5 e T11, prosegui con segnali, sistemi, trasmissione numerica, modulazioni e reti. I punti sono riportati solo dove documentati (T5 e T11: 10 punti); negli altri casi il punteggio resta <em>NON TROVATO</em>.</p>
 </div>
 <section class="home-sezione">
+  <h2>Mappa dei capitoli</h2>
+  <div class="partenza-grid capitoli-grid">${capitoliHtml}</div>
+</section>
+<section class="home-sezione">
   <h2>Da dove partire</h2>
   <div class="partenza-grid">${partenzaHtml}</div>
 </section>
 <section class="home-sezione">
-  <h2>Prove d'esame</h2>
-  <ul class="stack-list prove-mobile">${cardsProve}</ul>
-  <div class="scroll-x prove-desktop" tabindex="0" role="region" aria-label="Tabella delle prove d'esame">
-    <table class="table tabella">
-      <thead>
-        <tr><th scope="col">Prova</th><th scope="col">Titolo</th><th scope="col">Punti</th><th scope="col">Nodi collegati</th><th scope="col">Stato</th></tr>
-      </thead>
-      <tbody>${righeProve}</tbody>
-    </table>
-  </div>
+  <h2>Riprendi da qui</h2>
+  <div class="partenza-grid">${riprendiHtml}</div>
+</section>
+<section class="home-sezione">
+  <details>
+    <summary>Prove d'esame (${prove.length})</summary>
+    <ul class="stack-list prove-mobile">${cardsProve}</ul>
+    <div class="scroll-x prove-desktop" tabindex="0" role="region" aria-label="Tabella delle prove d'esame">
+      <table class="table tabella">
+        <thead>
+          <tr><th scope="col">Prova</th><th scope="col">Titolo</th><th scope="col">Punti</th><th scope="col">Nodi collegati</th><th scope="col">Stato</th></tr>
+        </thead>
+        <tbody>${righeProve}</tbody>
+      </table>
+    </div>
+  </details>
 </section>`;
 }

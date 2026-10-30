@@ -1,0 +1,10 @@
+/* web/css/pages/area.css — owner E1. Copertina di capitolo #/area/<n>. */
+.area-elenchi { margin: 0 0 var(--s-6); padding-left: var(--s-5); list-style-type: disc; }
+.area-elenchi li { margin: 0 0 var(--s-2); }
+.area-node-card { margin-bottom: 0; display: flex; flex-direction: column; gap: var(--s-3); }
+.area-node__titolo { font-weight: 700; color: var(--c-primary); text-decoration: none; min-height: var(--tap); }
+.area-node__titolo:hover { text-decoration: underline; }
+.area-criteri { margin: 0; padding-left: var(--s-5); list-style-type: disc; }
+.area-criteri li { margin: 0 0 var(--s-2); }
+.area-inizio { display: flex; flex-direction: column; gap: var(--s-3); }
+.area-nav { display: flex; gap: var(--s-3); margin-top: var(--s-6); flex-wrap: wrap; }

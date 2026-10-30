@@ -4,7 +4,7 @@
  */
 
 import { renderMath, testoSicuro, escapeHtml } from './core/math.js';
-import { creaRouter, parseHash } from './router.js';
+import { creaRouter, parseHashConQuery } from './router.js';
 import { shellHTML } from './layout/shell.js';
 
 import * as homePage from './pages/home.js';
@@ -15,9 +15,11 @@ import * as eserciziPage from './pages/esercizi.js';
 import * as quizPage from './pages/quiz.js';
 import * as ripassoPage from './pages/ripasso.js';
 import * as fontiPage from './pages/fonti.js';
+import * as areaPage from './pages/area.js';
 
 const ROUTES = [
   { path: '', page: homePage },
+  { path: 'area/:n', page: areaPage },
   { path: 'grafo', page: grafoPage },
   { path: 'nodo/:id', page: nodoPage },
   { path: 'dim/:id', page: dimPage },
@@ -62,9 +64,10 @@ async function mostraRoute(hash) {
   }
   document.getElementById('shell').innerHTML = shellHTML(hash);
   main.innerHTML = '';
-  const stato = router.eseguire(hash.replace(/^#/, ''));
+  const { percorso, query } = parseHashConQuery(hash);
+  const stato = router.eseguire(percorso);
   const route = stato.route;
-  const params = stato.params || {};
+  const params = { ...(stato.params || {}), ...query };
   if (!route) {
     main.innerHTML += renderErrore('Route non riconosciuta.');
     return;

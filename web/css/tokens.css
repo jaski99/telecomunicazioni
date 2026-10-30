@@ -17,6 +17,23 @@
   --c-focus: #2563eb; --radius: 10px; --radius-sm: 6px;
   --shadow-1: 0 1px 2px rgb(16 24 40 / .06), 0 1px 3px rgb(16 24 40 / .1);
   --tap: 44px; --header-height: 56px; --focus-width: 3px;
+
+  /* Nuovi token registro da manuale (§2.1 E1) */
+  --margin-col: 220px;
+  --measure-wide: 82ch;
+  --fs-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
+  --fs-caption: 0.9375rem;
+  --fs-num: 0.8125rem;
+  --figure-max: 720px;
+  --rule: 1px solid var(--c-border);
+
+  /* Colori semantici tassonomia blocchi (§2.2) */
+  --c-idea: #0f766e; --c-idea-bg: #ecfdf5;
+  --c-def: #6d28d9; --c-def-bg: #f5f3ff;
+  --c-example: #1d4ed8; --c-example-bg: #eef2ff;
+  --c-attenzione: #92400e; --c-attenzione-bg: #fff8e6;
+  --c-errore: #b42318; --c-errore-bg: #fef3f2;
+  --c-verifica: #334155; --c-verifica-bg: #f1f5f9;
 }
 @media (min-width: 600px) { :root { --gutter: 24px; } }
 @media (min-width: 1024px) { :root { --gutter: 32px; } }
