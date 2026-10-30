@@ -32,10 +32,10 @@ def browser():
         br.close()
 
 
-def apri(browser, base, dim_id, width, height):
+def apri(browser, base, dim_id, width, height, query=''):
     page = browser.new_page(viewport={'width': width, 'height': height})
     errori = console_errors(page)
-    page.goto(f'{base}/#/dim/{dim_id}', wait_until='networkidle')
+    page.goto(f'{base}/#/dim/{dim_id}{query}', wait_until='networkidle')
     page.wait_for_selector('#modo-studio .step')
     return page, errori
 
@@ -223,4 +223,42 @@ def test_progress_visibile_e_notazione_raggiungibile(browser, server, dim_id, wi
         assert not x['eccede'] or x['scorre'] in ('auto', 'scroll'), (dim_id, x)
         assert x['fineRaggiunta'] and x['inizioRaggiunto'], (dim_id, x)
     assert not errori
+    page.close()
+
+
+@pytest.mark.parametrize('width,height', VIEWPORTS)
+@pytest.mark.parametrize('dim_id', DIMS)
+def test_b13_chiave_e_numerazione_figure(browser, server, dim_id, width, height):
+    page, errori = apri(browser, server, dim_id, width, height)
+    mostra_tutti(page)
+    dati = page.evaluate('''() => ({
+      chiave: document.querySelectorAll('main .chiave').length,
+      didascalie: [...document.querySelectorAll('#modo-studio .figure__caption-title')]
+        .filter(e => !e.closest('.figura-confronto')).map(e => e.textContent.trim()),
+      idDuplicati: [...document.querySelectorAll('[id]')].map(e => e.id)
+        .filter((id, i, ids) => ids.indexOf(id) !== i),
+    })''')
+    assert dati['chiave'] == 1, (dim_id, dati['chiave'])
+    numeri = []
+    for didascalia in dati['didascalie']:
+        match = re.match(r'^Figura (\d+)\.(\d+) — ', didascalia)
+        assert match, (dim_id, didascalia)
+        numeri.append(int(match.group(2)))
+    assert numeri == list(range(1, len(numeri) + 1)), (dim_id, numeri)
+    assert not dati['idDuplicati'], (dim_id, dati['idDuplicati'])
+    assert not errori, (dim_id, errori)
+    page.close()
+
+
+@pytest.mark.parametrize('width,height', VIEWPORTS)
+@pytest.mark.parametrize('dim_id', DIMS)
+def test_b8_passo_permalink_e_overflow(browser, server, dim_id, width, height):
+    page, errori = apri(browser, server, dim_id, width, height, '?passo=2')
+    assert page.locator('.progress[role="progressbar"]').get_attribute('aria-valuenow') == '2', dim_id
+    assert page.locator('#passo-2.step--rivelato').count() == 1, dim_id
+    misura = page.evaluate('''() => ({scroll: document.scrollingElement.scrollWidth, client: document.scrollingElement.clientWidth,
+      viewport: innerWidth, body: document.body.scrollWidth})''')
+    assert misura['scroll'] <= misura['client'], (dim_id, width, misura)
+    assert misura['body'] <= misura['client'], (dim_id, width, misura)
+    assert not errori, (dim_id, width, errori)
     page.close()

@@ -1,5 +1,5 @@
 /* Diagrammi temporali: corsie, intervalli, frecce e marcatori leggibili. */
-import { testoSicuro, escapeHtml, scala, stimaLarghezzaTesto } from './helpers.js';
+import { testoSicuro, escapeHtml, scala, stimaLarghezzaTesto, attributiProgressivi } from './helpers.js';
 
 const VIEW_W = 960, FS = 20, FS_TESTO = 18, PASSO = 24, BARRA = 34;
 const STILE_COLOR = { trasmissione: '#1f6feb', attesa: '#e5e7eb', collisione: '#b00020', ack: '#2e8b57' };
@@ -28,7 +28,7 @@ function testo(x, y, label, opzioni = '', fs = FS_TESTO) {
   return `<text ${attr('x', x)} ${attr('y', y)} ${opzioni} font-family="sans-serif" font-size="${fs}">${escapeHtml(label)}</text>`;
 }
 
-export function renderTemporale(spec) {
+export function renderTemporale(spec, opzioni = {}) {
   if (!spec || typeof spec !== 'object') throw new Error('spec mancante');
   const at = spec.asse_t;
   if (!at || typeof at.min !== 'number' || typeof at.max !== 'number' || !(at.max > at.min)) throw new Error('asse_t non valido');
@@ -36,7 +36,8 @@ export function renderTemporale(spec) {
   if (!corsie.length) throw new Error('servono almeno una corsia');
   const intervalli = Array.isArray(spec.intervalli) ? spec.intervalli : [];
   const marcatori = Array.isArray(spec.marcatori) ? spec.marcatori : [];
-  const frecce = (Array.isArray(spec.frecce) ? spec.frecce : []).map(f => ({
+  const frecce = (Array.isArray(spec.frecce) ? spec.frecce : []).map((f, indice) => ({
+    indice,
     ...f, daIdx: corsie.findIndex(c => c && c.id === (f.da && f.da.corsia)),
     aIdx: corsie.findIndex(c => c && c.id === (f.a && f.a.corsia)),
   })).filter(f => f.daIdx >= 0 && f.aIdx >= 0 && Number.isFinite(Number(f.da.t)) && Number.isFinite(Number(f.a.t)));
@@ -61,20 +62,20 @@ export function renderTemporale(spec) {
   });
   const markerRows = disponiEtichette(markerLabels);
   const viewBoxH = Math.max(320, asseY + 84 + markerRows * PASSO);
-  let inner = '<defs><marker id="freccia-temp" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M 0 0 L 7 3.5 L 0 7 Z" fill="#111827"/></marker></defs>';
-  for (const m of marcatori) {
+  const markerId = opzioni.istanza ? `freccia-temp-${String(opzioni.istanza).replace(/[^a-zA-Z0-9_-]/g, '-')}` : 'freccia-temp';
+  let inner = `<defs><marker id="${markerId}" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M 0 0 L 7 3.5 L 0 7 Z" fill="#111827"/></marker></defs>`;
+  for (const [indice, m] of marcatori.entries()) {
     if (!m || !Number.isFinite(Number(m.t))) continue;
     const x = tx(Number(m.t));
-    inner += `<line x1="${x}" y1="45" x2="${x}" y2="${lanes[lanes.length - 1].bottom}" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4,3"/>`;
-    inner += testo(posizione(x, fmt(Number(m.t)), true), 30, fmt(Number(m.t)), 'text-anchor="middle" fill="#374151"');
+    inner += `<g ${attributiProgressivi(opzioni.progressione, 'marcatore', indice)}><line x1="${x}" y1="45" x2="${x}" y2="${lanes[lanes.length - 1].bottom}" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4,3"/>${testo(posizione(x, fmt(Number(m.t)), true), 30, fmt(Number(m.t)), 'text-anchor="middle" fill="#374151"')}</g>`;
   }
   for (const [i, lane] of lanes.entries()) {
     inner += `<rect x="${areaX}" y="${lane.barY}" width="${VIEW_W - areaX - 50}" height="${BARRA}" fill="${i % 2 ? '#f9fafb' : '#fff'}"/>`;
     const label = testoSicuro(lane.c && lane.c.etichetta || `corsia ${i + 1}`);
     inner += testo(areaX - 8, lane.barY + BARRA / 2 + 6, label, 'text-anchor="end" fill="#374151"', FS);
     for (const iv of lane.ivs) {
-      const x0 = tx(Number(iv.t0)), x1 = tx(Number(iv.t1));
-      inner += `<rect x="${x0}" y="${lane.barY}" width="${Math.max(1, x1 - x0)}" height="${BARRA}" fill="${STILE_COLOR[iv.stile] || '#6b7280'}" stroke="#111827" stroke-width="1.2" stroke-dasharray="${STILE_DASH[iv.stile] || 'solid'}" rx="4"/>`;
+      const x0 = tx(Number(iv.t0)), x1 = tx(Number(iv.t1)), indice = intervalli.indexOf(iv);
+      inner += `<g ${attributiProgressivi(opzioni.progressione, 'intervallo', indice)}><rect x="${x0}" y="${lane.barY}" width="${Math.max(1, x1 - x0)}" height="${BARRA}" fill="${STILE_COLOR[iv.stile] || '#6b7280'}" stroke="#111827" stroke-width="1.2" stroke-dasharray="${STILE_DASH[iv.stile] || 'solid'}" rx="4"/></g>`;
     }
     for (const e of lane.labels) inner += testo(e.x, lane.top + 18 + e.riga * PASSO, e.label, 'fill="#374151"');
   }
@@ -83,14 +84,14 @@ export function renderTemporale(spec) {
     const da = lanes[f.daIdx], a = lanes[f.aIdx], versoGiu = f.daIdx < f.aIdx;
     const x1 = tx(Number(f.da.t)), x2 = tx(Number(f.a.t));
     const y1 = versoGiu ? da.bottom : da.barY, y2 = versoGiu ? a.barY : a.bottom;
-    inner += `<path d="M ${x1} ${y1} L ${x2} ${y2}" fill="none" stroke="#111827" stroke-width="1.8" marker-end="url(#freccia-temp)"/>`;
+    let frecciaSvg = `<path d="M ${x1} ${y1} L ${x2} ${y2}" fill="none" stroke="#111827" stroke-width="1.8" marker-end="url(#${markerId})"/>`;
     if (f.etichetta) {
       const label = testoSicuro(f.etichetta), gap = Math.min(f.daIdx, f.aIdx);
       const x = posizione((x1 + x2) / 2, label, true), y = lanes[gap].bottom + 18 + occupate[gap]++ * PASSO;
       const w = larghezza(label);
-      inner += `<rect x="${x - w / 2}" y="${y - 18}" width="${w}" height="22" fill="#fff"/>`;
-      inner += testo(x, y, label, 'text-anchor="middle" fill="#9b1c2b" font-weight="600"');
+      frecciaSvg += `<rect x="${x - w / 2}" y="${y - 18}" width="${w}" height="22" fill="#fff"/>${testo(x, y, label, 'text-anchor="middle" fill="#9b1c2b" font-weight="600"')}`;
     }
+    inner += `<g ${attributiProgressivi(opzioni.progressione, 'freccia', f.indice)}>${frecciaSvg}</g>`;
   }
   inner += `<line x1="${areaX}" y1="${asseY}" x2="${VIEW_W - 50}" y2="${asseY}" stroke="#111827" stroke-width="2"/>`;
   const tacche = Math.min(10, Math.max(2, Math.floor((VIEW_W - areaX - 50) / 90)));

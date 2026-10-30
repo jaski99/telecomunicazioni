@@ -44,5 +44,5 @@ main h1 .formula-inline .katex { font-size: 0.9em; }
 .katex-err { color: var(--c-danger, #b42318); background: var(--c-danger-bg, #fef3f2); border: 1px solid var(--c-danger, #b42318); border-radius: var(--radius-sm, 6px); padding: 0 var(--s-1, 4px); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.95em; padding-block: 0; }
 
 /* Formula inline nella prosa: padding-block azzerato, niente aria-hidden. */
-.formula-inline { display: inline-block; margin: 0 var(--s-1, 4px); vertical-align: middle; padding-block: 0; }
+.formula-inline { display: inline-block; margin: 0 var(--s-1, 4px); vertical-align: middle; padding-block: 0; white-space: nowrap; }
 .formula-inline .katex { font-size: 1.1em; }

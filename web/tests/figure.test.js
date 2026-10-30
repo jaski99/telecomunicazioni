@@ -20,7 +20,8 @@ function estraiViewBox(html) { const m = /viewBox="0 0 (\d+) (\d+)"/.exec(html);
 
 test('renderFigura grafico valido: SVG con viewBox stretto, title, desc, role img', () => {
   const html = renderFigura(specGrafico);
-  assert.ok(html.includes('<figure')); assert.ok(html.includes('role="img"')); assert.ok(html.includes('<svg'));
+  assert.ok(html.includes('<figure id="g1"')); assert.ok(html.includes('role="img"')); assert.ok(html.includes('<svg'));
+  assert.ok(html.includes('aria-label="Spettro a righe del segnale PAM, asse omega."'));
   const vb = estraiViewBox(html); assert.ok(vb); assert.ok(vb.w <= 720); assert.ok(vb.h <= 480);
   assert.ok(/<title[^>]*>Spettro PAM<\/title>/.test(html)); assert.ok(nessunTestoVietato(html));
 });
@@ -106,8 +107,8 @@ test('ogni passo.figura di web/graph.json risolta per ID contiene <svg', () => {
   for (const nodo of graph.nodi) { if (!nodo || !nodo.dimostrazione) continue; const dim = nodo.dimostrazione; const figs = Array.isArray(dim.figure) ? dim.figure : []; for (const p of (Array.isArray(dim.passi) ? dim.passi : [])) { if (!p || !p.figura) continue; totale++; const html = renderFigura(p.figura, figs); assert.ok(html.includes('<svg'), `passo ${p.n} di ${nodo.id}: figura ${p.figura} non risolta per ID`); } }
   assert.ok(totale > 0, 'nessuna figura trovata nei passi di graph.json');
 });
-test('layout: va a capo sulle parole, divide le parole lunghe e misura ogni riga', () => {
-  assert.deepEqual(testoARighe('Campionatore ideale, periodo T', 12), ['Campionatore', 'ideale,', 'periodo T']); assert.deepEqual(testoARighe('abcdefghijk', 4), ['abcd', 'efgh', 'ijk']); assert.deepEqual(testoARighe('', 8), []);
+test('layout: va a capo solo fra parole, mantiene intere quelle lunghe e misura ogni riga', () => {
+  assert.deepEqual(testoARighe('Campionatore ideale, periodo T', 12), ['Campionatore', 'ideale,', 'periodo T']); assert.deepEqual(testoARighe('abcdefghijk', 4), ['abcdefghijk']); assert.deepEqual(testoARighe('', 8), []);
   assert.ok(misuraTesto(['WWW']).w > misuraTesto(['iii']).w); assert.ok(Math.abs(misuraTesto(['a', 'b']).h - misuraTesto(['a']).h - FS_BLOCCHI * INTERLINEA) < 1e-8);
 });
 test('forme: una sola etichetta SVG, tspan centrati, interlinea e testo escapato', () => {
@@ -142,6 +143,17 @@ test('layout fit: tredici colonne con etichette lunghe non vengono tagliate', ()
   const r = renderBlocchi({ blocchi, collegamenti: blocchi.slice(1).map((b, i) => ({ da: blocchi[i].id, a: b.id })) });
   assert.ok(r.viewBox.w <= 700); assert.equal((r.svgInner.match(/class="blocco rettangolo"/g) || []).length, 13); assert.ok(r.viewBox.h > 36); assert.doesNotMatch(r.svgInner, /<text\b[^>]*>\s*<text\b/);
 });
+test('B12: gli span delle etichette a blocchi contengono parole intere anche oltre il limite di riga', () => {
+  const etichetta = 'TrasformazioneFourier con parole intere';
+  const r = renderBlocchi({ blocchi: [
+    { id: 'a', forma: 'rettangolo', colonna: 0, riga: 0, etichetta },
+    { id: 'b', forma: 'nodo', colonna: 1, riga: 0, etichetta: '' },
+  ], collegamenti: [] });
+  const righe = [...r.svgInner.matchAll(/<tspan[^>]*>([^<]*)<\/tspan>/g)].map(m => m[1].replace(/&amp;/g, '&'));
+  assert.ok(righe.includes('TrasformazioneFourier'));
+  assert.deepEqual(righe.join(' ').split(/\s+/u), etichetta.split(/\s+/u));
+});
+
 test('grafico e temporale conservano etichette e frecce dentro gli ingombri', () => {
   const grafico = renderFigura({ ...specGrafico, asse_y: { ...specGrafico.asse_y, etichetta: 'Throughput ρ (trame riuscite per durata)' } });
   assert.ok(estraiViewBox(grafico).h > 360); const temporale = renderFigura(specTemporale);

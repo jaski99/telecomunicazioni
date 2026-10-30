@@ -1,6 +1,6 @@
 /** Modalità Studio: contenuto (sezioni, passi, chiusura) e comportamento dei controlli. */
 import { passi } from './dati.js';
-import { renderEnunciato, renderIdea, renderIpotesi, renderNotazione } from './sezioni.js';
+import { renderEnunciato, renderIpotesi, renderNotazione } from './sezioni.js';
 import { aggiornaPassi, portaPassoInVista, renderPassi } from './passi.js';
 import { aggiornaControlli } from './controlli.js';
 import { aggiornaFinale, renderErrori, renderFigureGenerali, renderFormulaFinale } from './finale.js';
@@ -10,17 +10,16 @@ import { azioneTasto, descriviBersaglio } from './tastiera.js';
 
 /** HTML del pannello Studio, nell'ordine: enunciato, ipotesi, notazione, idea, passi, formula finale,
  *  errori, figure generali, fonti chiuse. */
-export function renderStudio(dim, rivelati, meta) {
+export function renderStudio(dim, rivelati, meta, area = 1) {
   const totale = passi(dim).length;
   const sezioni = [
     renderEnunciato(dim),
     renderIpotesi(dim),
     renderNotazione(dim),
-    renderIdea(dim),
-    `<h2>Passi</h2>${renderPassi(dim, rivelati)}`,
+    `<h2>Passi</h2>${renderPassi(dim, rivelati, area)}`,
     renderFormulaFinale(dim, rivelati >= totale),
     renderErrori(dim),
-    renderFigureGenerali(dim),
+    renderFigureGenerali(dim, area),
     renderFonti(dim, meta),
   ];
   return sezioni.filter(Boolean).join('');
@@ -31,17 +30,17 @@ function modificatori(ev) {
 }
 
 /** Collega barra, indice e tastiera. Restituisce la funzione che rimuove i listener. */
-export function setupStudio(container, dim, storage) {
+export function setupStudio(container, dim, storage, area = 1, passoRichiesto = null) {
   const pannello = container.querySelector('#modo-studio');
   const controlli = container.querySelector('.dim-controlli');
   if (!pannello || !controlli) return () => {};
   const totale = passi(dim).length;
-  let rivelati = leggiRivelati(storage, dim.id, totale);
+  let rivelati = passoRichiesto == null ? leggiRivelati(storage, dim.id, totale) : clampRivelati(passoRichiesto, totale);
 
-  const imposta = (nuovo) => {
+  const imposta = (nuovo, persisti = true) => {
     rivelati = clampRivelati(nuovo, totale);
-    scriviRivelati(storage, dim.id, rivelati);
-    aggiornaPassi(pannello, dim, rivelati);
+    if (persisti) scriviRivelati(storage, dim.id, rivelati);
+    aggiornaPassi(pannello, dim, rivelati, area);
     aggiornaFinale(pannello, rivelati >= totale);
     aggiornaControlli(controlli, rivelati, totale);
   };
@@ -56,6 +55,15 @@ export function setupStudio(container, dim, storage) {
     ricomincia: () => imposta(0),
   };
 
+  const confrontoClick = ev => {
+    const bottone = ev.target.closest('.figura-confronta[aria-controls]');
+    if (!bottone) return;
+    const target = [...pannello.querySelectorAll('[id]')].find(e => e.id === bottone.getAttribute('aria-controls'));
+    if (!target) return;
+    target.hidden = !target.hidden;
+    bottone.setAttribute('aria-expanded', String(!target.hidden));
+  };
+  pannello.addEventListener('click', confrontoClick);
   controlli.addEventListener('click', (ev) => {
     const bottone = ev.target.closest('[data-azione]');
     if (bottone && azioni[bottone.dataset.azione]) {
@@ -79,7 +87,9 @@ export function setupStudio(container, dim, storage) {
   const allineaMenu = () => { if (menu && desktop) menu.open = desktop.matches; };
   allineaMenu();
   if (desktop) desktop.addEventListener('change', allineaMenu);
+  if (passoRichiesto != null && rivelati > 0) portaPassoInVista(pannello, rivelati);
   return () => {
+    pannello.removeEventListener('click', confrontoClick);
     document.removeEventListener('keydown', alTasto);
     if (desktop) desktop.removeEventListener('change', allineaMenu);
   };

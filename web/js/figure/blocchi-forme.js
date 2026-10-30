@@ -1,5 +1,5 @@
 /* Disegno SVG: riceve geometria già calcolata, senza decidere il layout. */
-import { escapeHtml } from './helpers.js';
+import { escapeHtml, attributiProgressivi } from './helpers.js';
 import { FS_BLOCCHI, INTERLINEA } from './blocchi-layout.js';
 
 const SCURO = '#111827';
@@ -31,11 +31,13 @@ function figura(nodo) {
   return `<rect x="${n(x - w / 2)}" y="${n(y - h / 2)}" width="${n(w)}" height="${n(h)}" fill="#fff" stroke="${SCURO}" stroke-width="2" rx="5"/>`;
 }
 
-export function disegnaBlocco(nodo) {
-  const id = nodo.blocco.id ? ` id="blocco-${escapeHtml(String(nodo.blocco.id))}"` : '';
+export function disegnaBlocco(nodo, opzioni = {}, indice = 0) {
+  const suffisso = opzioni.istanza ? `-${String(opzioni.istanza).replace(/[^a-zA-Z0-9_-]/g, '-')}` : '';
+  const id = nodo.blocco.id ? ` id="blocco-${escapeHtml(String(nodo.blocco.id))}${suffisso}"` : '';
+  const progressivo = attributiProgressivi(opzioni.progressione, 'blocco', indice, nodo.blocco.id || '');
   const esterno = !['rettangolo', 'ritardo'].includes(nodo.forma);
   const testi = nodo.testi.map((t, i) => disegnaTesto(t, esterno || (nodo.forma === 'ritardo' && i > 0))).join('');
-  return `<g${id} class="blocco ${escapeHtml(nodo.forma)}">${figura(nodo)}${testi}</g>`;
+  return `<g${id} class="blocco ${escapeHtml(nodo.forma)}" ${progressivo}>${figura(nodo)}${testi}</g>`;
 }
 
 export function disegnaFreccia(c) {

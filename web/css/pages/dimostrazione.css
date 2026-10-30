@@ -125,3 +125,16 @@
   .dim-menu__corpo { position: static; margin: 0; padding: 0; border: 0; box-shadow: none; background: transparent; }
   .dim-indice { display: block; }
 }
+
+/* Idea in apertura, derivata dal campo dimostrazione.idea. */
+.dim-chiave { margin: 0 0 var(--s-4); padding: var(--s-4); border-left: 2px solid var(--c-primary); border-radius: var(--radius); background: var(--c-primary-weak); }
+.dim-chiave p { margin: 0; }
+.dim-chiave .callout__title { margin-bottom: var(--s-2); font-size: var(--fs-body); font-weight: 700; }
+
+/* Le motivazioni diventano note marginali su schermi ampi, inline su mobile. */
+.nota-margine { margin: 0; }
+@media (min-width: 1200px) {
+  .step__corpo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(12ch, var(--margin-col, 220px)); align-items: start; }
+  .step__testo, .step__corpo > .passo-formula, .step__figura { grid-column: 1; }
+  .step__corpo > .nota-margine { grid-column: 2; grid-row: 1 / span 3; min-width: 0; }
+}

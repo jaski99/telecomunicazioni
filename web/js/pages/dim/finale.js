@@ -26,8 +26,20 @@ export function renderErrori(dim) {
   return `<section class="card" aria-labelledby="titolo-errori"><h2 class="card__title" id="titolo-errori">Errori frequenti</h2><div class="dim-errori">${items}</div></section>`;
 }
 
-export function renderFigureGenerali(dim) {
+export function renderFigureGenerali(dim, area = 1) {
   const figure = figureGenerali(dim);
   if (!figure.length) return '';
-  return `<section class="card" aria-labelledby="titolo-figure"><h2 class="card__title" id="titolo-figure">Figure generali</h2>${figure.map((f) => renderFigura(f)).join('')}</section>`;
+  let numero = passiContati(dim);
+  const ancorate = new Set((dim.passi || []).map(p => p && p.figura).filter(Boolean).map(String));
+  const contenuto = figure.map(f => {
+    numero += 1;
+    const id = String(f.id || ''), senzaId = ancorate.has(id);
+    if (id) ancorate.add(id);
+    return renderFigura(f, [], { senzaId, istanza: `generale-${numero}`, didascalia: `Figura ${Number(area) || 1}.${numero} — ${testoSicuro(f.titolo)}` });
+  }).join('');
+  return `<section class="card" aria-labelledby="titolo-figure"><h2 class="card__title" id="titolo-figure">Figure generali</h2>${contenuto}</section>`;
+}
+
+function passiContati(dim) {
+  return Array.isArray(dim && dim.passi) ? dim.passi.filter(p => p && p.figura).length : 0;
 }

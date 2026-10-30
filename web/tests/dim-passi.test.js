@@ -11,7 +11,26 @@ test('un passo rivelato mostra testo, formula, figura e il perché', () => {
   assert.match(html, /<div class="step__corpo">/);
   assert.match(html, /<div class="passo-formula"><div class="formula-box">/);
   assert.match(html, /data-figura="fig-a"><figure/);
-  assert.match(html, /callout--tip"><p class="callout__title">Perché si può fare<\/p><p>Per definizione\.<\/p>/);
+  assert.match(html, /callout--tip nota-margine" role="note"><p class="callout__title">Perché si può fare<\/p><p>Per definizione\.<\/p>/);
+});
+
+test('stato compatibile attenua gli ereditati, marca i nuovi e offre il confronto numerato', () => {
+  const f1 = { id: 'stato-1', tipo: 'grafico', titolo: 'Spettro centrale', descrizione: 'Solo componente centrale', asse_x: { etichetta: 'ω', min: -2, max: 2, tacche: [-2, 0, 2] }, asse_y: { etichetta: 'X', min: 0, max: 1, tacche: [0, 1] }, serie: [{ stile: 'linea', etichetta: 'centrale', punti: [[-1, 0], [0, 1], [1, 0]] }] };
+  const f2 = { ...f1, id: 'stato-2', titolo: 'Repliche', descrizione: 'Si aggiungono le repliche laterali', serie: [...f1.serie, { stile: 'linea', etichetta: 'replica', punti: [[-2, 0], [-1, 1], [0, 0]] }] };
+  const dati = dimostrazioneEsempio({ passi: [{ n: 1, testo: 'Uno.', formula: '', perche: 'Motivo uno.', figura: f1.id }, { n: 2, testo: 'Due.', formula: '', perche: 'Motivo due.', figura: f2.id }], figure: [f1, f2] });
+  const html = renderPasso(dati.passi[1], dati, true, 3);
+  assert.match(html, /Figura 3\.2 — nuovo in questo passo: replica/);
+  assert.match(html, /data-nuovo="true"/);
+  assert.match(html, /data-ereditato="true"/);
+  assert.match(html, /Confronta con il passo precedente/);
+  assert.match(html, /aria-expanded="false"/);
+});
+
+test('un passo incompatibile non offre il pulsante di confronto', () => {
+  const f1 = { id: 'a', tipo: 'grafico', asse_x: { min: 0, max: 1 }, asse_y: { min: 0, max: 1 }, serie: [{ stile: 'linea', etichetta: 'a', punti: [[0, 0], [1, 1]] }] };
+  const f2 = { ...f1, id: 'b', asse_x: { min: 0, max: 2 }, serie: [...f1.serie, { stile: 'linea', etichetta: 'b', punti: [[0, 1], [1, 0]] }] };
+  const dati = dimostrazioneEsempio({ passi: [{ n: 1, testo: 'Uno.', perche: 'Motivo uno.', figura: 'a' }, { n: 2, testo: 'Due.', perche: 'Motivo due.', figura: 'b' }], figure: [f1, f2] });
+  assert.doesNotMatch(renderPasso(dati.passi[1], dati, true), /figura-confronta/);
 });
 
 test('un passo non rivelato ha il corpo nascosto, nessuna figura e il segnaposto «nascosto»', () => {

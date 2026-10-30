@@ -6,19 +6,14 @@ export const INTERLINEA = 1.2;
 const PASSO_TESTO = FS_BLOCCHI * INTERLINEA;
 const SPAZIO_RIGHE = 48;
 
-/** Va a capo sulle parole, dividendo solo quelle più lunghe del limite. */
+/** Va a capo solo fra parole: le parole lunghe occupano una riga e allargano il blocco. */
 export function testoARighe(testo, limite = 16) {
   const parole = testoSicuro(testo).trim().split(/\s+/u).filter(Boolean);
   const righe = []; let riga = '';
   for (const parola of parole) {
-    const caratteri = Array.from(parola);
-    while (caratteri.length) {
-      const parte = caratteri.splice(0, Math.max(1, limite)).join('');
-      const candidata = riga ? `${riga} ${parte}` : parte;
-      if (Array.from(candidata).length > limite && riga) { righe.push(riga); riga = parte; }
-      else riga = candidata;
-      if (caratteri.length) { righe.push(riga); riga = ''; }
-    }
+    const candidata = riga ? `${riga} ${parola}` : parola;
+    if (riga && Array.from(candidata).length > limite) { righe.push(riga); riga = parola; }
+    else riga = candidata;
   }
   if (riga) righe.push(riga);
   return righe;
@@ -98,7 +93,7 @@ function bordo(da, a) {
 export function layoutCollegamenti(nodi, collegamenti, limite = 16) {
   const perId = new Map(nodi.map(n => [String(n.blocco.id), n]));
   const risultato = [];
-  for (const c of collegamenti) {
+  for (const [indice, c] of collegamenti.entries()) {
     if (!c) continue;
     const da = perId.get(String(c.da)), a = perId.get(String(c.a));
     if (!da || !a || da === a) continue;
@@ -113,7 +108,7 @@ export function layoutCollegamenti(nodi, collegamenti, limite = 16) {
       if (Math.abs(dy) > Math.abs(dx)) et.x += et.w / 2 + 8;
       else et.y -= et.h / 2 + 8;
     }
-    risultato.push({ inizio, fine, base, ali, testo: et.righe.length ? et : null });
+    risultato.push({ inizio, fine, base, ali, testo: et.righe.length ? et : null, indice });
   }
   return risultato;
 }

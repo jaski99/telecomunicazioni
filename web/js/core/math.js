@@ -42,9 +42,9 @@ export function devePromuovereInDisplay(corpo) {
 }
 
 /** Formula inline (nessuna aria-hidden: il MathML resta accessibile). */
-export function formulaInline(latex) {
+export function formulaInline(latex, punteggiatura = '') {
   if (typeof latex !== 'string' || !latex.length) return '';
-  return `<span class="formula-inline">${compilaLatexSicuro(latex)}</span>`;
+  return `<span class="formula-inline">${compilaLatexSicuro(latex)}${escapeHtml(punteggiatura)}</span>`;
 }
 
 /** Formula in display: .formula-box[--key] > .scroll-x con KaTeX displayMode. */
@@ -92,11 +92,18 @@ export async function renderMath(el) {
     const blocco = /^(DIV|P|LI|SECTION|ARTICLE|BLOCKQUOTE)$/.test(parent.tagName);
     const isolata = !inTitolo && blocco && parent.childNodes.length === 1 && formulaIsolata(tokens);
     const frag = document.createDocumentFragment();
-    for (const t of tokens) {
+    for (let i = 0; i < tokens.length; i++) {
+      const t = tokens[i];
       if (t.type === 'text') { frag.appendChild(document.createTextNode(t.body)); continue; }
       const inDisplay = t.type === 'display' || (!inTitolo && (isolata || devePromuovereInDisplay(t.body)));
+      let punteggiatura = '';
+      const prossimo = tokens[i + 1];
+      if (!inDisplay && t.type === 'inline' && prossimo && prossimo.type === 'text') {
+        const match = /^(\s*[,.;:)]+)/u.exec(prossimo.body);
+        if (match) { punteggiatura = match[1]; prossimo.body = prossimo.body.slice(match[1].length); }
+      }
       const template = document.createElement('template');
-      template.innerHTML = inDisplay ? formulaBlock(t.body) : formulaInline(t.body);
+      template.innerHTML = inDisplay ? formulaBlock(t.body) : formulaInline(t.body, punteggiatura);
       frag.appendChild(template.content);
     }
     parent.replaceChild(frag, textNode);

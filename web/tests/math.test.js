@@ -54,6 +54,12 @@ test('formulaInline restituisce HTML inline con classe formula-inline (senza ari
   assert.ok(html.includes('class="katex"'));
 });
 
+test('formulaInline contiene la punteggiatura adiacente nello stesso wrapper nowrap', () => {
+  const html = formulaInline('x=1', ',');
+  assert.ok(html.startsWith('<span class="formula-inline">'));
+  assert.ok(html.endsWith(',</span>'));
+});
+
 test('formulaInline stringa vuota restituisce stringa vuota', () => { assert.strictEqual(formulaInline(''), ''); assert.strictEqual(formulaInline(null), ''); });
 
 test('formulaInline mai eccezione su LaTeX invalido', () => {

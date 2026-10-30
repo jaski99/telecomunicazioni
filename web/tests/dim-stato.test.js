@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { chiaveStato, clampRivelati, leggiRivelati, scriviRivelati } from '../js/pages/dim/stato.js';
+import { chiaveStato, clampRivelati, parsePasso, leggiRivelati, scriviRivelati } from '../js/pages/dim/stato.js';
 import { memoria } from './dim-fake-dom.js';
 
 test('chiaveStato usa il prefisso di KEY_DIMOSTRAZIONI con l\'ID', () => {
@@ -13,6 +13,14 @@ test('clampRivelati porta il valore nell\'intervallo [0, totale]', () => {
   assert.equal(clampRivelati(2.9, 4), 2);
   assert.equal(clampRivelati('abc', 4), 0);
   assert.equal(clampRivelati(1, undefined), 0);
+});
+
+test('parsePasso legge il permalink, clamp-a i limiti e lascia null quando manca', () => {
+  assert.equal(parsePasso('?passo=0', 4), 0);
+  assert.equal(parsePasso('passo=1', 4), 1);
+  assert.equal(parsePasso('passo=9', 4), 4);
+  assert.equal(parsePasso('passo=abc', 4), 0);
+  assert.equal(parsePasso('', 4), null);
 });
 
 test('leggiRivelati ripristina il valore salvato con il formato esistente', () => {

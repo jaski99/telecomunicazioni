@@ -35,14 +35,21 @@ export function testoSuColore(c) {
   const scuri = ['#b00020', '#1f6feb', '#6a4c93', '#c44d58']; return scuri.includes(String(c).toLowerCase()) ? '#ffffff' : '#111827';
 }
 
-export function figuraSVG(spec, svg, serie) {
+export function attributiProgressivi(progressione, tipo, indice, id = '') {
+  if (!progressione || !progressione.compatibile) return '';
+  const nuovo = (progressione.nuovi || []).some(x => x.tipo === tipo && (id ? String(x.id) === String(id) : x.indice === indice));
+  return `data-progressivo="${escapeHtml(tipo)}" data-nuovo="${nuovo}" data-ereditato="${!nuovo}"`;
+}
+
+export function figuraSVG(spec, svg, serie, opzioni = {}) {
   const titolo = testoSicuro(spec && spec.titolo ? spec.titolo : 'Figura');
   const descrizione = testoSicuro(spec && spec.descrizione ? spec.descrizione : '');
-  const idAttr = spec && spec.id ? ` id="${escapeHtml(String(spec.id))}"` : '';
+  const idAttr = spec && spec.id && !opzioni.senzaId ? ` id="${escapeHtml(String(spec.id))}"` : '';
   const legenda = renderLegenda(serie);
+  const didascalia = opzioni.didascalia || titolo;
   return `<figure${idAttr} role="img" aria-label="${escapeHtml(titolo)}" class="figure">
 <div class="scroll-x" tabindex="0" role="region" aria-label="Figura">${svg}${legenda}</div>
-<figcaption class="figure__caption"><span class="figure__caption-title">${escapeHtml(titolo)}</span>${descrizione ? `<span class="figure__caption-desc">${escapeHtml(descrizione)}</span>` : ''}</figcaption>
+<figcaption class="figure__caption"><span class="figure__caption-title">${escapeHtml(didascalia)}</span>${descrizione ? `<span class="figure__caption-desc">${escapeHtml(descrizione)}</span>` : ''}</figcaption>
 </figure>`;
 }
 
@@ -60,11 +67,11 @@ export function figuraSoloTesto(spec) {
   return `<figure role="img" aria-label="${escapeHtml(titolo)}" class="figure figura-non-disponibile"><p>${escapeHtml(descrizione)}</p></figure>`;
 }
 
-export function svgBase(spec, width, height, inner, fs = 14) {
+export function svgBase(spec, width, height, inner, fs = 14, opzioni = {}) {
   const titolo = testoSicuro(spec && spec.titolo ? spec.titolo : 'Figura');
   const descrizione = testoSicuro(spec && spec.descrizione ? spec.descrizione : '');
-  const id = spec && spec.id ? String(spec.id) : 'figura';
-  // width in px così il font si rende a 15 px (fs unità viewBox * 15/fs = 15 px reso)
+  const base = String(spec && spec.id || 'figura').replace(/[^a-zA-Z0-9_-]/g, '-');
+  const id = `${base}${opzioni.istanza ? `-${String(opzioni.istanza).replace(/[^a-zA-Z0-9_-]/g, '-')}` : ''}`;
   const renderWidth = Math.round(width * 15 / fs);
-  return `<svg role="img" viewBox="0 0 ${width} ${height}" width="${renderWidth}" xmlns="http://www.w3.org/2000/svg" class="figura-svg" aria-labelledby="tit-${id} desc-${id}"><title id="tit-${id}">${escapeHtml(titolo)}</title><desc id="desc-${id}">${escapeHtml(descrizione)}</desc>${inner}</svg>`;
+  return `<svg role="img" viewBox="0 0 ${width} ${height}" width="${renderWidth}" xmlns="http://www.w3.org/2000/svg" class="figura-svg" aria-label="${escapeHtml(descrizione || titolo)}" aria-describedby="desc-${id}"><title id="tit-${id}">${escapeHtml(titolo)}</title><desc id="desc-${id}">${escapeHtml(descrizione)}</desc>${inner}</svg>`;
 }

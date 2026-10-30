@@ -1,5 +1,6 @@
 /* Renderer degli schemi a blocchi: layout, ingombri e viewBox senza tagli. */
 import { FS_BLOCCHI, layoutBlocchi, layoutCollegamenti } from './blocchi-layout.js';
+import { attributiProgressivi } from './helpers.js';
 import { disegnaBlocco, disegnaFreccia, disegnaTesto } from './blocchi-forme.js';
 
 const PADDING = 10;
@@ -34,7 +35,18 @@ function costruisci(blocchi, collegamenti, limite, spazio) {
   return { nodi, frecce, left, top, w: right - left, h: bottom - top };
 }
 
-export function renderBlocchi(spec) {
+function riorganizza(blocchi, colonnePerRiga) {
+  const colonne = [...new Set(blocchi.map(b => Number(b.colonna) || 0))].sort((a, b) => a - b);
+  const righe = [...new Set(blocchi.map(b => Number(b.riga) || 0))].sort((a, b) => a - b);
+  const righeBase = new Map(righe.map((r, i) => [r, i]));
+  return blocchi.map(b => {
+    const indice = colonne.indexOf(Number(b.colonna) || 0), fascia = Math.floor(indice / colonnePerRiga), pos = indice % colonnePerRiga;
+    const fisica = fascia % 2 ? colonnePerRiga - 1 - pos : pos;
+    return { ...b, colonna: fisica, riga: (righeBase.get(Number(b.riga) || 0) || 0) + fascia * righe.length };
+  });
+}
+
+export function renderBlocchi(spec, opzioni = {}) {
   if (!spec || typeof spec !== 'object') throw new Error('spec mancante');
   const blocchi = Array.isArray(spec.blocchi) ? spec.blocchi.filter(b => b && typeof b === 'object') : [];
   if (blocchi.length < 2) throw new Error('servono almeno due blocchi');
@@ -46,9 +58,14 @@ export function renderBlocchi(spec) {
     disegno = costruisci(blocchi, collegamenti, limite, spazio);
     if (disegno.w <= LARGHEZZA_MASSIMA) break;
   }
-  const frecce = disegno.frecce.map(disegnaFreccia).join('');
-  const forme = disegno.nodi.map(disegnaBlocco).join('');
-  const etichette = disegno.frecce.map(c => disegnaTesto(c.testo, true)).join('');
-  return { svgInner: `<g transform="translate(${-disegno.left},${-disegno.top})">${frecce}${forme}${etichette}</g>`,
+  if (disegno.w > LARGHEZZA_MASSIMA) {
+    for (let maxColonne = 6; maxColonne >= 1; maxColonne--) {
+      disegno = costruisci(riorganizza(blocchi, maxColonne), collegamenti, 16, 12);
+      if (disegno.w <= LARGHEZZA_MASSIMA) break;
+    }
+  }
+  const frecce = disegno.frecce.map(c => `<g ${attributiProgressivi(opzioni.progressione, 'collegamento', c.indice)}>${disegnaFreccia(c)}${disegnaTesto(c.testo, true)}</g>`).join('');
+  const forme = disegno.nodi.map((n, i) => disegnaBlocco(n, opzioni, i)).join('');
+  return { svgInner: `<g transform="translate(${-disegno.left},${-disegno.top})">${frecce}${forme}</g>`,
     viewBox: { w: disegno.w, h: disegno.h }, serie: [], fs: FS_BLOCCHI };
 }

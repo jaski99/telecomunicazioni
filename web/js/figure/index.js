@@ -30,7 +30,7 @@ function completaCacheFigure() {
 }
 completaCacheFigure();
 
-export function renderFigura(specOId, figureDisponibili = []) {
+export function renderFigura(specOId, figureDisponibili = [], opzioni = {}) {
   try {
     let spec = specOId;
     if (typeof specOId === 'string') {
@@ -39,9 +39,9 @@ export function renderFigura(specOId, figureDisponibili = []) {
     }
     if (!spec || typeof spec !== 'object') return figuraSoloTesto(spec);
     const tipo = spec.tipo; if (!tipo || !RENDERER[tipo]) return figuraSoloTesto({ titolo: spec.titolo, descrizione: spec.descrizione });
-    const r = RENDERER[tipo](spec);
+    const r = RENDERER[tipo](spec, opzioni);
     const fs = r.fs || fontSize(r.viewBox.w);
-    const svg = svgBase(spec, r.viewBox.w, r.viewBox.h, r.svgInner, fs);
-    return figuraSVG(spec, svg, r.serie);
+    const svg = svgBase(spec, r.viewBox.w, r.viewBox.h, r.svgInner, fs, opzioni);
+    return figuraSVG(spec, svg, r.serie, opzioni);
   } catch (_e) { return figuraSoloTesto(specOId); }
 }

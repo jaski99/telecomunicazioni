@@ -393,3 +393,50 @@ def test_notazione_lunga_scrollabile_e_frazioni_non_tagliate(server, width, heig
             assert not errori, errori
         finally:
             browser.close()
+"""B9: verifica che la punteggiatura adiacente alle inline non migri a una riga nuova."""
+
+R1_DIMS = [
+    'dim-teorema-campionamento',
+    'dim-modulazione-prodotto-qam-errore-fase',
+    'dim-spettri-modulazione-prodotto',
+    'dim-poisson-tempo-residuo',
+    'dim-filtro-trasversale',
+    'dim-quadripoli-passa-basso-equivalente',
+]
+R1_VIEWPORTS = [(360, 780), (390, 844), (768, 1024), (1440, 900)]
+
+
+@pytest.mark.parametrize('width,height', R1_VIEWPORTS)
+@pytest.mark.parametrize('dim_id', R1_DIMS)
+def test_b9_punteggiatura_inline_non_orfana(server, width, height, dim_id):
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        try:
+            page = browser.new_page(viewport={'width': width, 'height': height})
+            errori = console_errors(page)
+            page.goto(f'{server}#/dim/{dim_id}?passo=4', wait_until='networkidle')
+            sommario = page.locator('.dim-menu > summary')
+            if sommario.is_visible() and not page.get_by_role('button', name='Mostra tutti').is_visible():
+                sommario.click()
+            page.get_by_role('button', name='Mostra tutti').click()
+            risultati = page.evaluate('''() => {
+              const orfani = [];
+              for (const formula of document.querySelectorAll('.formula-inline')) {
+                let nodo = formula.nextSibling;
+                while (nodo && nodo.nodeType === Node.TEXT_NODE && !nodo.textContent.trim()) nodo = nodo.nextSibling;
+                if (!nodo || nodo.nodeType !== Node.TEXT_NODE) continue;
+                const match = /^(\\s*)([,.;:)])/.exec(nodo.textContent);
+                if (!match) continue;
+                const range = document.createRange();
+                range.setStart(nodo, match[1].length); range.setEnd(nodo, match[1].length + 1);
+                const a = formula.getBoundingClientRect(), b = range.getBoundingClientRect();
+                    const sogliaRiga = (parseFloat(getComputedStyle(formula.parentElement).fontSize) || 16) * 1.3;
+                    if (Math.abs(a.top - b.top) > sogliaRiga || b.left < a.left - 1) orfani.push({formula: formula.textContent, segno: match[2], y1: a.top, y2: b.top});
+              }
+              return orfani;
+            }''')
+            assert risultati == [], (dim_id, width, risultati)
+            assert not errori, (dim_id, width, errori)
+            page.close()
+        finally:
+            browser.close()

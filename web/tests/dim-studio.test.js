@@ -8,7 +8,7 @@ const meta = { fonti: {} };
 
 test('Studio contiene nell\'ordine enunciato, passi, formula finale, errori, figure, fonti', () => {
   const html = renderStudio(dim, 0, meta);
-  const ordine = ['titolo-enunciato', 'titolo-ipotesi', 'titolo-notazione', 'Idea', '<h2>Passi</h2>', 'data-finale', 'titolo-errori', 'titolo-figure', 'dim-fonti'];
+  const ordine = ['titolo-enunciato', 'titolo-ipotesi', 'titolo-notazione', '<h2>Passi</h2>', 'data-finale', 'titolo-errori', 'titolo-figure', 'dim-fonti'];
   let ultimo = -1;
   for (const marcatore of ordine) {
     const pos = html.indexOf(marcatore);
