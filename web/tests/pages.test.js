@@ -193,3 +193,17 @@ test('B10: precache contiene tutti i file serviti sotto js/ e css/', () => {
   cammina(path.join(dir, 'css'));
   for (const f of attesi) assert.ok(manifest.includes(f), 'mancante in precache: ' + f);
 });
+
+test('La chiave usa la prima frase didattica, non il testo amministrativo', async () => {
+  const { primaFrase, renderChiave } = await import('../js/pages/nodo/chiave.js');
+  assert.equal(primaFrase('Una frase $x$. Una seconda $y$.'), 'Una frase $x$.');
+  const html = renderChiave({ id: 'test', lezione: {
+    riepilogo: 'Una frase $x$. Una seconda frase.', perche_ti_serve: 'Priorità alta e prova T1.',
+    definizione_esame: { definizione: 'Altra definizione.' },
+  } });
+  assert.match(html, /Da ricordare/);
+  assert.match(html, /Una frase/);
+  assert.doesNotMatch(html, /Priorità|seconda frase|Altra definizione/);
+  assert.match(renderChiave({ id: 'test', lezione: { definizione_esame: { definizione: 'Definizione. Altra.' } } }), /Definizione\./);
+  assert.equal((primaFrase('Primo $x$ e secondo $y$.').match(/\$/g) || []).length, 2);
+});

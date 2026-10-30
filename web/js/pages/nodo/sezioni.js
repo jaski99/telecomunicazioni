@@ -15,7 +15,7 @@ function prossimaFigura() { figuraNum += 1; return `${sezioneNum}.${figuraNum}`;
 export function figuraConNumero(f) {
   const num = prossimaFigura();
   return renderFigura(f, []).replace('class="figure', 'class="figura-numerata figure')
-    .replace(/(<figcaption[^>]*>)/, `$1<span class="figure__numero">Figura ${num} — </span>`);
+    .replace(/(<figcaption[^>]*>)/, `$1<span class="figure__numero">Figura ${num}</span> `);
 }
 
 export function notaMargine(testo, etichetta) {
@@ -23,8 +23,8 @@ export function notaMargine(testo, etichetta) {
   return `<aside class="nota-margine" id="${id}" role="note"><p class="nota-margine__titolo">${esc(etichetta || 'Nota')}</p>${renderProsaMarkdown(testo)}</aside>`;
 }
 
-function renderSezione(numero, titolo, contenuto) {
-  return `<section class="nodo-sezione" id="sez-${numero}"><h2><span class="sezione__num">${numero}</span> ${esc(titolo)}</h2><div class="prose">${contenuto}</div></section>`;
+function renderSezione(numero, titolo, contenuto, classe = '') {
+  return `<section class="nodo-sezione ${classe}" id="sez-${numero}"><h2><span class="sezione__num">${numero}</span> ${esc(titolo)}</h2><div class="prose">${contenuto}</div></section>`;
 }
 
 export function renderLezione(L) {
@@ -41,7 +41,7 @@ export function renderLezione(L) {
   const varianti = Array.isArray(L.varianti_notazione) ? L.varianti_notazione : [];
   const puntiAperti = Array.isArray(L.verifica && L.verifica.punti_aperti) ? L.verifica.punti_aperti : [];
   const parti = [];
-  if (def.definizione) parti.push(renderSezione(prossimaSezione(), 'Definizione per l’esame', `${blocchi(def.definizione, 'Definizione:')}${blocchi(def.scopo, 'Scopo:')}${blocchi(def.esempio, 'Esempio:')}`));
+  if (def.definizione) parti.push(renderSezione(prossimaSezione(), 'Definizione per l’esame', `${blocchi(def.definizione, 'Definizione:')}${blocchi(def.scopo, 'Scopo:')}${blocchi(def.esempio, 'Esempio:')}`, 'definizione'));
   if (L.spiegazione) {
     const numero = prossimaSezione();
     const spiegazioneHtml = renderProsaMarkdown(L.spiegazione).replace(/<h3>(.*?)<\/h3>/g, (_, testo) => `<h3><span class="sezione__num">${prossimaSottosezione()}</span> ${esc(testo)}</h3>`);
@@ -52,12 +52,12 @@ export function renderLezione(L) {
     parti.push(renderSezione(numero, 'Figure', L.figure.map(figuraConNumero).join('')));
   }
   for (const v of varianti) parti.push(notaMargine(`${esc(v.canonica || '')} → ${esc(v.variante || '')}`, esc(v.fonte || 'Variante di notazione')));
-  if (ex.problema) parti.push(renderSezione(prossimaSezione(), 'Esempio svolto', `${blocchi(ex.problema)}${Array.isArray(ex.passi) && ex.passi.length ? `<ol>${ex.passi.map((p) => `<li>${voce(p)}</li>`).join('')}</ol>` : ''}${blocchi(ex.soluzione, 'Soluzione:')}${blocchi(ex.perche_funziona, 'Perché funziona:')}`));
+  if (ex.problema) parti.push(renderSezione(prossimaSezione(), 'Esempio svolto', `${blocchi(ex.problema)}${Array.isArray(ex.passi) && ex.passi.length ? `<ol>${ex.passi.map((p) => `<li>${voce(p)}</li>`).join('')}</ol>` : ''}${blocchi(ex.soluzione, 'Soluzione:')}${blocchi(ex.perche_funziona, 'Perché funziona:')}`, 'esempio'));
   const provaTu = [];
   if (cp.testo) provaTu.push(`${blocchi(cp.testo)}${renderChecklist(cp.passi_mancanti)}${bottoneRivelatore('nodo-cp-sol', 'Mostra soluzione', blocchi(cp.soluzione))}`);
   if (ea.testo) provaTu.push(`${blocchi(ea.testo)}${blocchi(ea.suggerimento, 'Suggerimento:')}${bottoneRivelatore('nodo-ea-sol', 'Mostra soluzione attesa', blocchi(ea.soluzione_attesa))}`);
   if (provaTu.length) parti.push(renderSezione(prossimaSezione(), 'Prova tu', provaTu.join('')));
-  if (errori.length) parti.push(`<section class="nodo-sezione" id="sez-${prossimaSezione()}"><h2><span class="sezione__num">${sezioneNum}</span> Errori da non fare</h2><div class="prose">${errori.map((e) => `<div class="errore-blocco"><div class="errore-blocco__riga"><span class="errore-blocco__label">Errore</span>${voce(e.errore, true)}</div><div class="errore-blocco__riga"><span class="errore-blocco__label">Perché è sbagliato</span>${blocchi(e.perche_sbagliato)}</div><div class="errore-blocco__riga"><span class="errore-blocco__label">Correzione</span>${blocchi(e.correzione)}</div></div>`).join('')}</div></section>`);
+  if (errori.length) parti.push(`<section class="nodo-sezione" id="sez-${prossimaSezione()}"><h2><span class="sezione__num">${sezioneNum}</span> Errori da non fare</h2><div class="prose">${errori.map((e) => `<div class="errore errore-blocco"><div class="errore-blocco__riga"><span class="errore-blocco__label">Errore</span>${voce(e.errore, true)}</div><div class="errore-blocco__riga"><span class="errore-blocco__label">Perché è sbagliato</span>${blocchi(e.perche_sbagliato)}</div><div class="errore-blocco__riga"><span class="errore-blocco__label">Correzione</span>${blocchi(e.correzione)}</div></div>`).join('')}</div></section>`);
   const verificaParti = [];
   if (spiegaTue) verificaParti.push(blocchi(spiegaTue));
   if (domande.length) { verificaParti.push('<h3>Richiamo attivo</h3>'); verificaParti.push(domande.map((r, i) => `<div class="verifica-domanda"><p>${blocchi(r.domanda, `Domanda ${i + 1}:`)}</p>${bottoneRivelatore(`nodo-rich-${i}`, 'Mostra risposta', blocchi(r.risposta))}</div>`).join('')); }

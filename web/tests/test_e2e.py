@@ -156,7 +156,7 @@ def controlla_pagina(page, errori):
     katex_error = page.locator(".katex-error, .katex-err").count()
     svg = page.locator("svg").count()
     h1_count = page.locator("h1").count()
-    errore_pagina = page.locator(".errore, h1:has-text('Errore di pagina')").count()
+    errore_pagina = page.locator(".errore:not(.errore-blocco), h1:has-text('Errore di pagina')").count()
     return scroll_ok, nessun_vietato, katex, katex_error, svg, errore_pagina, h1_count
 
 
@@ -399,7 +399,7 @@ def test_offline_quiz(server, browser, width, height):
         page.goto(f"{BASE_URL}/index.html#/quiz", wait_until="load")
         page.wait_for_timeout(200)
 
-        errore_pagina = page.locator(".errore, h1:has-text('Errore di pagina')").count()
+        errore_pagina = page.locator(".errore:not(.errore-blocco), h1:has-text('Errore di pagina')").count()
         assert errore_pagina == 0, "[quiz] offline: pagina in errore"
         assert page.locator(".quiz-form").count() == 1, "[quiz] offline: form quiz non montato"
         (
@@ -417,3 +417,15 @@ def test_offline_quiz(server, browser, width, height):
     assert errori == [], f"[quiz] offline errori JS: {errori}"
     assert scroll_ok is True
     assert nessun_vietato == []
+
+
+def test_distinzione_errore_pagina_da_blocchi_didattici(server, browser):
+    page = browser.new_page()
+    page.goto(f"{BASE_URL}/index.html#/nodo/serie-fourier", wait_until="load")
+    page.wait_for_selector('.errore-blocco')
+    assert page.locator('.errore.errore-blocco').count() > 0
+    assert controlla_pagina(page, [])[5] == 0
+    page.goto(f"{BASE_URL}/index.html#/rotta-inesistente", wait_until="load")
+    page.wait_for_selector("h1:has-text('Errore di pagina')")
+    assert controlla_pagina(page, [])[5] > 0
+    page.close()

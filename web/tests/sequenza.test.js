@@ -76,3 +76,12 @@ test('ordine reale coincide con il piano di studio generato', async () => {
   const ids = [...piano.matchAll(/^\| \d+ \| `([^`]+)` \|/gm)].map((m) => m[1]);
   assert.deepEqual(ordinePianoDiStudio(graph), ids);
 });
+
+test('navigazione sequenziale porta le dimostrazioni alla pagina dedicata', () => {
+  const graph = { nodi: [
+    { id: 'a', priorita: { livello: 'alta' }, prerequisiti: [] },
+    { id: 'dim-b', priorita: { livello: 'media' }, prerequisiti: [], dimostrazione: {} },
+  ] };
+  assert.match(navSequenzaHTML(graph, 'a'), /href="#\/dim\/dim-b"/);
+  assert.match(navSequenzaHTML(graph, 'dim-b'), /href="#\/nodo\/a"/);
+});

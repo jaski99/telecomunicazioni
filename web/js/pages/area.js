@@ -56,7 +56,7 @@ export function render(ctx, params) {
     ? nodi.map((n) => {
       const tipo = etichettaTipo(n.tipo);
       const chipDim = n.tipo === 'dimostrazione' ? '<span class="chip chip--info">Dimostrazione</span>' : '';
-      return `<li class="card area-node-card"><a class="area-node__titolo" href="#/nodo/${esc(String(n.id))}">${esc(n.titolo || n.id)}</a><div class="chip-row"><span class="chip">${esc(tipo)}</span>${chipDim}</div></li>`;
+      return `<li class="card area-node-card"><a class="area-node__titolo" href="#/${n.dimostrazione ? 'dim' : 'nodo'}/${esc(String(n.id))}">${esc(n.titolo || n.id)}</a><div class="chip-row"><span class="chip">${esc(tipo)}</span>${chipDim}</div></li>`;
     }).join('')
     : '<li class="card"><p>Nessun argomento.</p></li>';
 
@@ -86,7 +86,7 @@ export function render(ctx, params) {
 
   return `<h1>Capitolo ${nArea} — ${titArea}</h1>
 <p class="area-lead">${esc(nodiArea.length)} argomenti · ${dimostrazioni.length} ${dimostrazioni.length === 1 ? 'dimostrazione' : 'dimostrazioni'} · ${tempoTotale(nodiArea)} stimati.</p>
-${primoNodo ? `<section class="card area-inizio"><h2>Da dove cominciare</h2><p>${esc(primoNodo.titolo || primoNodo.id)}</p><a class="btn btn--primary" href="#/nodo/${esc(String(primoNodo.id))}">Apri l'argomento</a></section>` : ''}
+${primoNodo ? `<section class="card area-inizio"><h2>Da dove cominciare</h2><p>${esc(primoNodo.titolo || primoNodo.id)}</p><a class="btn btn--primary" href="#/${primoNodo.dimostrazione ? 'dim' : 'nodo'}/${esc(String(primoNodo.id))}">Apri l'argomento</a></section>` : ''}
 <section class="card area-criteri-card"><h2>Che cosa saprai fare</h2>${criteriHtml}</section>
 <section>${concHtml}${demoHtml}</section>${navHtml}
 ${checkpoint}
@@ -94,7 +94,7 @@ ${checkpoint}
 }
 
 export function setup(container, ctx) {
-  container.addEventListener('click', (event) => {
+  const onClick = (event) => {
     const button = event.target.closest('.area-risposta');
     if (!button) return;
     const soluzione = button.nextElementSibling;
@@ -107,5 +107,7 @@ export function setup(container, ctx) {
     }
     button.setAttribute('aria-expanded', String(!aperta));
     button.textContent = aperta ? 'Mostra risposta' : 'Nascondi risposta';
-  });
+  };
+  container.addEventListener('click', onClick);
+  return () => container.removeEventListener('click', onClick);
 }

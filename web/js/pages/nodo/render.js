@@ -27,7 +27,7 @@ export function render(ctx, params) {
   const risorse = Array.isArray(nodo.risorse) ? nodo.risorse.filter((r) => r && r.url) : [];
   const lezione = nodo.lezione;
 
-  const chiaveHtml = lezione && lezione.perche_ti_serve ? renderChiave(nodo) : '';
+  const chiaveHtml = lezione ? renderChiave(nodo) : '';
   const scenarioHtml = renderScenario(nodo);
   const analogiaHtml = renderAnalogia(lezione);
   const lezioneHtml = lezione ? renderLezione(lezione) : '';
@@ -38,7 +38,7 @@ export function render(ctx, params) {
     for (const m of lezioneHtml.matchAll(/<h2[^>]*><span class="sezione__num">(\d+)<\/span>([^<]+)<\/h2>/g)) {
       const num = m[1];
       const titolo = m[2].trim();
-      if (titolo) indiceVoci.push({ id: `sez-${num}`, titolo, href: `#sez-${num}`, livello: 2 });
+      if (titolo) indiceVoci.push({ id: `sez-${num}`, titolo, href: `#/nodo/${encodeURIComponent(String(nodo.id))}?sezione=${num}`, livello: 2 });
     }
   }
   const indiceHtml = indiceHTML(indiceVoci);
@@ -61,7 +61,7 @@ export function render(ctx, params) {
 ${chiaveHtml}
 ${scenarioHtml}
 ${analogiaHtml}
-<nav class="indice-in-testa" aria-label="In questa scheda">${indiceHtml || '<p>Indice non disponibile.</p>'}</nav>
+<div class="indice-in-testa">${indiceHtml || '<p>Indice non disponibile.</p>'}</div>
 <section class="nodo-corpo prose">${lezioneHtml}</section>
 <section class="nodo-sezione prose">
   <h2>Cosa si deve sapere</h2>

@@ -80,10 +80,10 @@ export function navSequenzaHTML(graph, id) {
   const prev = i > 0 ? mappa.get(ordine[i - 1]) : null;
   const next = i >= 0 && i < ordine.length - 1 ? mappa.get(ordine[i + 1]) : null;
   const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');
-  const href = (id) => `#/nodo/${esc(String(id))}`;
+  const href = (nodo) => `#/${nodo.dimostrazione ? 'dim' : 'nodo'}/${esc(String(nodo.id))}`;
   let html = '<nav class="nav-sequenza" aria-label="Navigazione sequenziale">';
-  if (prev) html += `<a class="btn btn--ghost" href="${href(prev.id)}" rel="prev"><span>←</span> ${esc(prev.titolo || prev.id)}</a>`;
-  if (next) html += `<a class="btn btn--primary" href="${href(next.id)}" rel="next">${esc(next.titolo || next.id)} <span>→</span></a>`;
+  if (prev) html += `<a class="btn btn--ghost" href="${href(prev)}" rel="prev"><span>←</span> ${esc(prev.titolo || prev.id)}</a>`;
+  if (next) html += `<a class="btn btn--primary" href="${href(next)}" rel="next">${esc(next.titolo || next.id)} <span>→</span></a>`;
   html += '</nav>';
   return html;
 }

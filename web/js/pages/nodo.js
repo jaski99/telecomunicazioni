@@ -5,14 +5,7 @@
 export { render } from './nodo/render.js';
 
 export function setup(container, ctx, params) {
-  container.addEventListener('click', (ev) => {
-    const link = ev.target.closest('.indice-pagina a[href^="#sez-"]');
-    if (link) {
-      ev.preventDefault();
-      const numero = link.getAttribute('href').slice(5);
-      location.hash = `#/nodo/${encodeURIComponent(params.id)}?sezione=${numero}`;
-      return;
-    }
+  const onClick = (ev) => {
     const btn = ev.target.closest('.js-rivelatore');
     if (!btn) return;
     const target = container.querySelector(`#${btn.getAttribute('data-target')}`);
@@ -21,7 +14,8 @@ export function setup(container, ctx, params) {
     target.hidden = !apri;
     btn.setAttribute('aria-expanded', apri ? 'true' : 'false');
     btn.textContent = apri ? 'Nascondi' : (btn.getAttribute('data-label') || 'Mostra');
-  });
+  };
+  container.addEventListener('click', onClick);
   // Apertura sezione richiesta da ?sezione=
   const sezione = (params && params.sezione) || '';
   if (sezione) {
@@ -30,4 +24,5 @@ export function setup(container, ctx, params) {
       el.scrollIntoView({ block: 'start' });
     }
   }
+  return () => container.removeEventListener('click', onClick);
 }

@@ -171,8 +171,9 @@ def test_b13_nodo_chiave_indice_figurenumerate(server, browser, width, height):
         # Ogni ancore dell'indice punta a un id esistente
         hrefs = indice.locator("a").evaluate_all("els => els.map(e => e.getAttribute('href'))")
         for href in hrefs:
-            target = href.lstrip("#")
-            assert page.locator(f"#{target}").count() > 0, f"[{nid}] ancore indice {href} senza target"
+            assert href.startswith(f"#/nodo/{nid}?sezione="), href
+            numero = href.split("?sezione=", 1)[1]
+            assert numero.isdigit() and page.locator(f"#sez-{numero}").count() == 1, href
 
         # Figure numerate "Figura n.m" in ordine
         figNumeri = page.locator(".figura-numerata .figure__numero").all_text_contents()
@@ -214,11 +215,83 @@ def test_b13_nav_sequenza_prev_succ(server, browser, width, height):
         grafo = leggi_grafo()
         idValidi = set(n.get("id") for n in grafo.get("nodi", []))
         for href in hrefs:
-            idDest = href.replace("#/nodo/", "")
+            tipo, idDest = href.removeprefix("#/").split("/", 1)
             assert idDest in idValidi, f"[{nid}] link nav verso nodo inesistente: {idDest}"
+            destinazione = next(n for n in grafo["nodi"] if n["id"] == idDest)
+            assert tipo == ("dim" if destinazione.get("dimostrazione") else "nodo")
 
         scroll_ok = page.evaluate("document.documentElement.scrollWidth <= document.documentElement.clientWidth")
         assert scroll_ok is True
         assert not errori, f"[{nid}] errori JS: {errori}"
     finally:
         context.close()
+
+
+def test_listener_rivelatore_dopo_navigazioni(server, browser):
+    page = browser.new_page()
+    page.goto(f"{server}/index.html#/nodo/serie-fourier", wait_until="load")
+    page.wait_for_selector(".js-rivelatore")
+    page.goto(f"{server}/index.html#/nodo/energia-potenza-spettri", wait_until="load")
+    page.wait_for_selector(".js-rivelatore")
+    page.evaluate("location.hash = '#/nodo/serie-fourier'")
+    page.wait_for_selector(".nodo-testata h1:has-text('Serie di Fourier')")
+    button = page.locator(".js-rivelatore").first
+    button.click()
+    assert button.get_attribute("aria-expanded") == "true"
+    assert page.locator("#" + button.get_attribute("data-target")).is_visible()
+    button.click()
+    assert button.get_attribute("aria-expanded") == "false"
+    page.close()
+
+
+def test_link_dimostrazioni_capitoli_e_sequenza(server, browser):
+    page = browser.new_page()
+    nodi = GRAFO['nodi']
+    for area in GRAFO['aree']:
+        page.goto(f"{server}/index.html#/area/{area['id']}", wait_until="load")
+        page.wait_for_selector('.area-criteri')
+        for nodo in (n for n in nodi if n['area'] == area['id'] and n.get('dimostrazione')):
+            assert page.locator(f".area-node__titolo[href='#/dim/{nodo['id']}']").count() == 1
+    for nodo in (n for n in nodi if n.get('lezione')):
+        page.goto(f"{server}/index.html#/nodo/{nodo['id']}", wait_until="load")
+        page.wait_for_selector('.nav-sequenza')
+        for href in page.locator('.nav-sequenza a').evaluate_all("els => els.map(e => e.getAttribute('href'))"):
+            tipo, ident = href.removeprefix('#/').split('/', 1)
+            destinazione = next(n for n in nodi if n['id'] == ident)
+            assert tipo == ('dim' if destinazione.get('dimostrazione') else 'nodo')
+    page.close()
+
+
+def test_indice_permalink_e_chiave(server, browser):
+    page = browser.new_page(viewport={"width": 1440, "height": 900})
+    page.goto(f"{server}/index.html#/nodo/serie-fourier", wait_until="load")
+    page.wait_for_selector('.indice-pagina a')
+    assert page.locator('nav nav').count() == 0
+    chiave = page.locator('.chiave')
+    assert chiave.locator('.blocco__etichetta').text_content() == 'Da ricordare'
+    assert chiave.evaluate("e => parseFloat(getComputedStyle(e).paddingLeft)") >= 16
+    assert chiave.locator('.formula-inline, .formula-box').count() <= 1
+    href = page.locator('.indice-pagina a').nth(1).get_attribute('href')
+    assert href.startswith('#/nodo/serie-fourier?sezione=')
+    page.locator('.indice-pagina a').nth(1).click()
+    page.wait_for_function("href => location.hash === href", arg=href)
+    numero = href.split('=')[-1]
+    assert page.locator(f'#sez-{numero}').is_visible()
+    page.close()
+
+
+def test_listener_capitolo_dopo_navigazioni(server, browser):
+    page = browser.new_page()
+    page.goto(f"{server}/index.html#/area/1", wait_until="load")
+    page.wait_for_selector('.area-risposta')
+    page.evaluate("location.hash = '#/area/2'")
+    page.wait_for_selector('h1:has-text("Capitolo 2")')
+    page.evaluate("location.hash = '#/area/1'")
+    page.wait_for_selector('h1:has-text("Capitolo 1")')
+    button = page.locator('.area-risposta').first
+    button.click()
+    assert button.get_attribute('aria-expanded') == 'true'
+    assert button.locator('+ .area-soluzione').inner_text()
+    button.click()
+    assert button.get_attribute('aria-expanded') == 'false'
+    page.close()
