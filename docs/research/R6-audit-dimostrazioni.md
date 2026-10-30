@@ -45,7 +45,7 @@
 5. Ho trovato **un errore di segno nella fonte**: `file1` p. 29 stampa `s_i(t)=½∫V cos[(ω₀−ω)t − φ]`; il segno corretto è `+φ` (controesempio numerico in T6). Va **non copiato**, e la conclusione del prof resta giusta.
 6. **T11** (10 punti) è corretta ma **incompleta sul punto che fa perdere punti**: la condizione di realizzabilità `H₀(−ω)=H₀*(ω)` è solo enunciata in `errori_frequenti`, mai derivata come passo; mancano la condizione sufficiente di `file1` p. 44 (ampiezza simmetrica rispetto a `ω₀`, fase antisimmetrica con `β(ω₀)=0`) e la distinzione fra modello matematico e rete fisica.
 7. **T5** (10 punti) è la più completa, ma sbaglia un dettaglio di definizione (`1/(2N)` invece di `1/(2N+1)` di file1 p. 19), salta il passaggio finestra finita → integrale su tutto l'asse e non mostra la serie di Fourier di `{C_k}` come passo autonomo.
-8. **T15, T16, T17 sono ora verificabili sui lucidi del docente**: T15 conferma `1/(2e)` e `1/e`; T17 conferma «TDMA strutturalmente superiore a FDMA» (la parola mancante in `file3` p. 31 è un refuso); **T16 rivela un disallineamento**: la curva del sito dà 0,83 e 0,76 dove la tabella dei lucidi dà 0,85 e 0,65.
+8. **T15, T16, T17 sono ora verificabili sui lucidi del docente**: T15 conferma `1/(2e)≈0,18` a `G=0,5` e `1/e≈0,36` a `G=1`, e distingue `λ_t=λ+λ_r` da `λ` come il sito; T16 ha **la stessa formula** del sito (`S=1/[1+2a(1-A)/A]`); T17 conferma «TDMA strutturalmente superiore a FDMA dal punto di vista del ritardo» (la parola mancante in `file3` p. 31 è un refuso). Le tabelle numeriche delle Figure 1 e 4 dei lucidi sono immagini e non le ho lette: **NON TROVATO** il loro contenuto.
 9. Due passi in tutta la collezione non hanno **né formula né figura** (`filtro-trasversale` 7, `teorema-campionamento` 3): sono passi concettuali che senza immagine non si ricordano; la regola «una sola idea, una sola riga di calcolo» va precisata in «formula **oppure** figura».
 10. Il lavoro si chiude con **tre worker** su file esclusivi (aree 1-3, 4-5, 6-7), T5 e T11 per primi, e un criterio di accettazione per ogni modifica: nessuna modifica di significato, nessun punto d'esame inventato.
 
@@ -74,7 +74,7 @@ Legenda: `P0` = intervento da fare per primo (T5 e T11 valgono 10 punti); `P1` =
 | 13 | `poisson-tempo-residuo` | T13 | 5 | 1 | 0 | verificata_file1_file3 | P2 | S |
 | 14 | `nascita-morte-equilibrio` | T14 | 5 | 1 | 0 | verificata_file1_file3 | P2 | M |
 | 15 | `aloha-throughput` | T15 | 6 | 3 | 0 | verificata_file1_file3 | P2 | S |
-| 16 | `csma-cd-throughput` | T16 | 6 | 2 | 0 | da_verificare | P1 | M |
+| 16 | `csma-cd-throughput` | T16 | 6 | 2 | 0 | da_verificare | P1 | S |
 | 17 | `ritardo-tdma-fdma` | T17 | 5 | 1 | 0 | da_verificare | P2 | S |
 | 18 | `formula-carson` | M12-M14 | 5 | 1 | **1** | ricostruzione_non_del_prof | P3 | M |
 | — | **totale** | — | **116** | **39** | **5 in 4 file** | 9 verificate, 7 da verificare, 2 ricostruzioni | — | — |
@@ -84,7 +84,7 @@ Legenda: `P0` = intervento da fare per primo (T5 e T11 valgono 10 punti); `P1` =
 - **Figure orfane** (presenti in `figure[]`, mai usate in `passi[].figura`): `catena` di `conversione-ad`, `catena` di `conversione-da`, `righe-carson` di `formula-carson`, `catena` e `ampiezza` di `spettri-modulazione-prodotto`. In questi casi il renderer le mostra nella sezione **«Figure generali»** (`figureGenerali` in `web/js/pages/dim/dati.js`): non sono perse, ma fuori dal passo che illustrano. Nota: in `spettri-modulazione-prodotto` è agganciata solo `fase`, quindi **ampiezza** resta orfana mentre la sua gemella è agganciata — segno che lo spezzone è stato montato a metà.
 - **Figura ripetuta**: `finestra-con-attesa` è agganciata sia al passo 1 sia al passo 3 di `sliding-window-efficienza`.
 - **Passi senza formula**: 5 (`filtro-trasversale` 1 e 7, `risposta-impulsiva-h` 1 e 3, `teorema-campionamento` 3). Di questi, **2 non hanno nemmeno una figura** (`filtro-trasversale` 7, `teorema-campionamento` 3).
-- **Soluzioni «a buchi» non digitabili**: 142 varianti totali, **36** contengono caratteri che lo studente non può digitare in modo naturale. Scomposizione esatta: **29 contengono `$` o `\`** (21 con `$`, 13 con `\`, alcune entrambi) e sono **irrecuperabili** — non vengono resi e non sono digitabili; **7 contengono solo `_` o `^`** (14 varianti con `_`, 10 con `^` nel totale, sovrapposte) e sono **ambigue** (si possono digitare, ma `2^b`, `2b`, `2**b` sono tutti modi diversi di scrivere la stessa cosa). Causa nel codice: `valutaBuchi` confronta la stringa normalizzata (solo `trim` + minuscole, `web/js/pages/dim/abuchi.js`) e la soluzione non passa da KaTeX, quindi `$…$` e `\omega` restano testo letterale.
+- **Soluzioni «a buchi» non digitabili**: 142 varianti totali, **36** contengono caratteri che lo studente non può digitare in modo naturale. Scomposizione esatta: **27 contengono `$` o `\`** (21 con `$`, 13 con `\`, alcune entrambi) e sono **irrecuperabili** — non vengono resi e non sono digitabili; **9 contengono solo `_` o `^`** (sul totale delle 36: 14 contengono `_` e 10 contengono `^`, comprese quelle già contate sopra) e sono **ambigue** (si possono digitare, ma `2^b`, `2b`, `2**b` sono tutti modi diversi di scrivere la stessa cosa). Causa nel codice: `valutaBuchi` confronta la stringa normalizzata (solo `trim` + minuscole, `web/js/pages/dim/abuchi.js`) e la soluzione non passa da KaTeX, quindi `$…$` e `\omega` restano testo letterale.
 - **Prosa dei passi** (`testo` e `perche`): **zero** lettere greche o simboli matematici Unicode fuori dai blocchi `$…$` (verificato sugli intervalli Unicode 0370-03FF, 2200-22FF, 2190-21FF, più `≠ ≤ ≥`). I simboli sono già in LaTeX: coerente con la regola di notazione. Restano solo le lettere accentate italiane, che sono corrette.
 - **`varianti_notazione`**: campo **opzionale** (CONTRACTS §3.3) — manca del tutto in `formula-carson` e `pm-fm-trasformazione`, ed è **presente ma vuoto** (`[]`) in `poisson-tempo-residuo`, `nascita-morte-equilibrio`, `aloha-throughput`. Non è un errore di schema, ma in quei cinque file le differenze di simbolo rispetto alle fonti non sono dichiarate.
 - **`collegamenti`**: campo opzionale, **assente** in `conversione-ad`, `conversione-da`, `spettri-modulazione-prodotto`, `modulazione-prodotto-qam-errore-fase`.
@@ -442,9 +442,9 @@ Verifica alternativa bilaterale, da tenere come **ultimo passo facoltativo** con
 |---|---|---|
 | 1. granularità | **ridondanza** | I passi 5 e 7 dicono la stessa cosa (`I_r=H_0I`): il 5 la ricava dal confronto, il 7 la ripete applicando la definizione. Si può chiudere in un passo. |
 | 2. perché | ok fino al passo 7 | Il fattore 2 del passo 3 è spiegato (parte reale, bande disgiunte) — è il punto che `file1` p. 42-43 mette in evidenza. |
-| 3. notazione | **una differenza** | `file1` p. 43-44 chiama `H_0(\omega)` la funzione equivalente: identico ✔. Per la fase di `H` usa `\beta(\omega)` con `\beta(\omega_0)=0`, simbolo **assente** dal JSON: se si aggiunge la parte sulla realizzabilità, va aggiunto anche `\beta`, dichiarando che è `\arg H` e **non** `-\arg` (la convenzione `\varphi=-\arg` vale per gli spettri, non per `H`). |
+| 3. notazione | **una differenza** | `file1` p. 43-44 chiama `H_0(\omega)` la funzione equivalente: identico ✔. Per la fase di `H` usa `\beta(\omega)` con `\beta(\omega_0)=0`, simbolo **assente** dal JSON: se si aggiunge la parte sulla realizzabilità, va aggiunto anche `\beta`, dichiarando che è `-\arg H` (in `file1` p. 44, figure, si legge `H=\lvert H\rvert e^{-j\beta}`): è **la stessa convenzione** di `\varphi=-\arg X`. |
 | 4. passaggi assenti | **due, decisivi** | (a) `H_0(-\omega)\neq H_0^*(\omega)` in generale → **non** è una rete fisica (p. 43); (b) condizione sufficiente: ampiezza **simmetrica** rispetto a `\omega_0` e fase **antisimmetrica** con `\beta(\omega_0)=0` → `H_0(-\omega)=H_0^*(\omega)` → rete fisica (p. 44). Entrambe sono sull'immagine, quindi sono FATTI, non mie deduzioni. |
-| 5. errori | nessuno | Verificata anche la condizione (b) in algebra: con `H=\lvert H\rvert e^{j\beta}`, `\lvert H(\omega_0-\omega)\rvert=\lvert H(\omega_0+\omega)\rvert` e `\beta(\omega_0-\omega)=-\beta(\omega_0+\omega)` danno `H_0(-\omega)=H_0^*(\omega)` ✔. |
+| 5. errori | nessuno | Verificata anche la condizione (b) in algebra, con la convenzione di `file1` p. 44 (`\beta=-\arg H`, quindi `H=\lvert H\rvert e^{-j\beta}`): ampiezza pari rispetto a `\omega_0` (`\lvert H(\omega_0-\omega)\rvert=\lvert H(\omega_0+\omega)\rvert`) e `\beta` dispari (`\beta(\omega_0-\omega)=-\beta(\omega_0+\omega)`) danno `H_0(-\omega)=H_0^*(\omega)` ✔. |
 | 6. dove si blocca | **sì** | Lo studente sa scrivere `H_0=H(\omega+\omega_0)` ma non sa dire **quando** quel modello è realizzabile: è la metà dei punti. |
 | 7. coerenza | **una** | `punti_aperti` dice «verifica della realizzabilità fisica completa: NON TROVATO», ma la condizione è su `file1` p. 44 (letta a immagine): il punto aperto va **chiuso** con il riferimento, non lasciato aperto. |
 
@@ -454,7 +454,7 @@ Verifica alternativa bilaterale, da tenere come **ultimo passo facoltativo** con
 |---|---|---|---|---|
 | T11-1 | dopo il passo 7 (o al posto del 7, se si fonde con il 5) | **nuovo passo**: il modello non è sempre fisico | testo: «L'operatore `H_0` non è sempre la funzione di trasferimento di una rete fisicamente realizzabile: in generale manca la simmetria coniugata.» formula: `H_0(-\omega)\neq H_0^{*}(\omega)` | esiste il passo con la disuguaglianza; il `perche` cita «modello matematico, non fisico» |
 | T11-2 | subito dopo | **nuovo passo**: quando lo è | testo: «Se la rete passa-banda ha ampiezza simmetrica rispetto a `\omega_0` e fase antisimmetrica con `\beta(\omega_0)=0`, allora la simmetria coniugata vale e `H_0` è realizzabile.» formula: `\lvert H(\omega_0-\omega)\rvert=\lvert H(\omega_0+\omega)\rvert,\ \ \beta(\omega_0-\omega)=-\beta(\omega_0+\omega)\ \Longrightarrow\ H_0(-\omega)=H_0^{*}(\omega)` | esiste il passo; la formula è verificabile per sostituzione (test T11-6) |
-| T11-3 | `notazione` | aggiungere `\beta` | `\beta(\omega)=\arg H(\omega)`, con la nota: «segno opposto alla convenzione `\varphi=-\arg` usata per gli spettri: qui `H=\lvert H\rvert e^{j\beta}`» | il simbolo è definito e la differenza di convenzione è dichiarata |
+| T11-3 | `notazione` | aggiungere `\beta` con il segno di `file1` p. 44 | `\beta(\omega)=-\arg H(\omega)`, cioè `H=\lvert H\rvert e^{-j\beta}` (corretto in revisione: `file1` p. 44, figure, usa il **meno**), con la nota: «stessa convenzione di `\varphi=-\arg X`, **non** `\arg H`» | il simbolo è definito con il segno di `file1` p. 44; nessun `\arg H` senza segno |
 | T11-4 | `verifica.punti_aperti` | chiudere il punto | togliere «verifica della realizzabilità fisica completa: NON TROVATO» e sostituirlo con «realizzabilità verificata su `file1` p. 44 (immagine); resta NON TROVATO il confronto con il libro» | il punto aperto non afferma più il contrario di quanto ora dimostrato |
 | T11-5 | passo 5 e passo 7 | **fondere** | un solo passo finale: `I_r(\omega)=H_0(\omega)I(\omega)` sul supporto di `I` (perché: la definizione `H_0=H(\omega+\omega_0)` coincide con il risultato del confronto nella banda utile) | i passi passano da 7 a 8 ma nessuno ripete la stessa formula finale due volte |
 | T11-6 | test (in `tests/test_contenuti_w4.py`) | asserzione numerica | con `H(\omega)=H_{LP}(\omega-\omega_0)` (LP reale) si deve avere `H_0=H_{LP}` e `H_0(-\omega)=H_0^*(\omega)`: asserire su 3 pulsazioni di esempio | il test passa e fallisce se si inverte un segno |
@@ -590,7 +590,7 @@ Verifica alternativa bilaterale, da tenere come **ultimo passo facoltativo** con
 |---|---|---|
 | 1. granularità | ok | 6 passi, una formula ciascuno; il passo 6 fa la derivata di entrambe le curve in una riga: legittimo perché è la stessa operazione. |
 | 2. perché | ok | Finestra vulnerabile `2\tau` spiegata geometricamente. |
-| 3. notazione | **una differenza** | I lucidi scrivono `G=\lambda\tau` e `\rho=G e^{-2G}` (un solo tasso); il JSON distingue `\lambda_t` (tentativi) da `\lambda` (successi), che è più rigoroso ma diverso dalla fonte: va dichiarato in `varianti_notazione`. |
+| 3. notazione | **conforme** (corretto in revisione) | I lucidi definiscono `\lambda_t=\lambda+\lambda_r` (successi più ritrasmissioni), `\rho=\lambda\tau`, `G=\lambda_t\tau` e `\rho=G e^{-2G}`: **la stessa distinzione del JSON** ✔. Manca solo `\lambda_r` in `notazione`. |
 | 4. passaggi assenti | **uno** | Il valore dei massimi `\rho_{\max}=1/(2e)\approx0{,}1839` e `1/e\approx0{,}3679`: il passo 6 trova solo i punti `G=1/2` e `G=1`. |
 | 5. errori | nessuno | Derivate e punti stazionari ✔; `0{,}1839` e `0{,}3679` ricalcolati ✔; il refuso di `file3` p. 20 è dichiarato ✔. |
 | 6. dove si blocca | **il numero** | Chi deve «calcolare il massimo» deve saper dire 0,18 e 0,36, non solo `G=0,5` e `G=1`. |
@@ -602,7 +602,7 @@ Verifica alternativa bilaterale, da tenere come **ultimo passo facoltativo** con
 |---|---|---|---|---|
 | T15-1 | passo 6 | **aggiungere le ordinate** | dopo i punti stazionari: `\rho_{\max}=\frac{1}{2e}\approx0{,}1839\ (G=\tfrac12),\qquad \rho_{\mathrm{slot},\max}=\frac1e\approx0{,}3679\ (G=1)` | le due ordinate compaiono nel passo o in `formula_finale` |
 | T15-2 | `formula_finale` | allineare | includere i due massimi (oggi la formula finale contiene solo le curve) | `formula_finale` contiene `1/(2e)` e `1/e` |
-| T15-3 | `varianti_notazione` | `\lambda_t` vs `\lambda` | canonica: `\lambda_t` tentativi, `\lambda` successi — variante: `G=\lambda\tau` con un solo tasso (lucidi del corso) | esiste la voce; la fonte è citata |
+| T15-3 | `notazione` | aggiungere `\lambda_r` | voce: `\lambda_r` = tasso delle ritrasmissioni, con `\lambda_t=\lambda+\lambda_r`, fonte `LUCIDI_CASONI`: i lucidi **confermano** la distinzione del JSON, quindi non serve nessuna variante | il simbolo è in `notazione` e la fonte è citata |
 | T15-4 | `fonti` | aggiungere i lucidi | `{chiave: "LUCIDI_CASONI", rif: "AccessoMultiplo.pdf, slide ALOHA puro e slotted ALOHA"}` | la chiave è fra quelle ammesse da CONTRACTS §5 e il test `test_contenuti_w5.py` la accetta |
 | T15-5 | `verifica` | aggiornare note e stato | note: «numeri e massimi confermati sui lucidi del corso oltre che su `file1` pp. 45-46»; stato: **proposta** `verificata_testo_prof` (i lucidi sono materiale del docente) — se il coordinatore riserva quello stato al libro, lasciare `verificata_file1_file3` | la nota non afferma nulla che non sia nei lucidi |
 | T15-6 | `richiamo_attivo` | confronto in una riga | «A parità di traffico `G=0{,}5`: ALOHA puro vale `0{,}184`, slotted `0{,}303`; il massimo slotted (`0{,}368`) si ha a `G=1`, dove il puro vale `0{,}135`» | i quattro valori sono calcolati dalla formula del passo 4-5 (verificabili: `0{,}5e^{-1}=0{,}1839`, `0{,}5e^{-0{,}5}=0{,}3033`, `1e^{-2}=0{,}1353`) |
@@ -611,56 +611,47 @@ Verifica alternativa bilaterale, da tenere come **ultimo passo facoltativo** con
 
 #### T16 — `dim-csma-cd-throughput.json` (6 passi, 2 figure)
 
-**Esito in una riga:** la formula è giusta (confermata dai lucidi: `S=1/[1+2a(1-A)/A]`, `A=Np(1-p)^{N-1}`, `E[w]=(1-A)/A`) ma **la curva del sito non coincide con la tabella dei lucidi** — è il disallineamento più rischioso emerso dall'audit.
+**Esito in una riga:** la formula del sito **coincide con quella dei lucidi del docente**: i lucidi scrivono `S=\frac{1/2a}{1/2a+\frac{1-A}{A}}` e il sito `S=\frac{1}{1+2a\frac{1-A}{A}}`, che sono la **stessa espressione**; identici anche `A=Np(1-p)^{N-1}`, `p=1/N` ed `E[w]=\frac{1-A}{A}`. La dimostrazione è corretta e **non c'è nessuna divergenza da documentare**: restano una **precisazione** sul rapporto `1/(2a)`, il **contesto del protocollo** e la variante di notazione per `a`.
 
-**Evidenza:** `file1` p. 47 letta come immagine; `file3` p. 22 letta come immagine; **`AccessoMultiplo.pdf` aperto** (formula, definizione `a=Rd/(VL)`, tabella «effetto di `a` sul throughput» con `a=0`; `0,1`; `1`; `10`).
-
-**Riquadro — i due modelli a confronto (FATTO: valori del sito calcolati da me; valori dei lucidi letti sul PDF)**
-
-| configurazione | modello del sito `S_{\max}=\dfrac{1}{1+2a(1-A_{\max})/A_{\max}}` | tabella dei lucidi |
-|---|---|---|
-| `a=0{,}1`, `N=2` | `A_{\max}=0{,}5` → `S=0{,}833` | `0{,}85` |
-| `a=0{,}1`, `N=10` | `A_{\max}=0{,}9^{9}=0{,}3874` → `S=0{,}760` | `0{,}65` |
-| `a=0` (limite) | `S\to1` | `0{,}95` |
-
-Lettura (IPOTESI): la tabella dei lucidi comprende un **overhead per slot** e un modello di ciclo diverso dal `S=T_f/(T_f+2T_pE[w])` del sito; per `N` grande la differenza è di **17 punti percentuali**. Non è un errore di calcolo del JSON — è un **modello diverso**, e va detto, altrimenti chi risponde 0,76 dove il docente si aspetta 0,65 perde punti senza capire perché.
+**Evidenza:** `file1` p. 47 letta come immagine; `file3` p. 22 letta come immagine; **`AccessoMultiplo.pdf` aperto e leggibile nel testo** (le tre funzioni di CSMA/CD; `A`; `E[w]`; `S`; `a=\frac{Rd}{VL}`; la frase «intervallo di trasmissione di durata `1/2a` slot, assumendo unitario il tempo di trasmissione di un frame»). **NON TROVATO:** il contenuto delle **Figure 1 e 4** del PDF, che sono immagini e che non ho letto come immagine; quindi in questa scheda **non è citato nessun valore numerico dei lucidi**.
 
 | asse | esito | fatto |
 |---|---|---|
 | 1. granularità | ok | 6 passi, una formula ciascuno. |
-| 2. perché | **una frase sbagliata** | Passo 1: «`1/(2a)` è una durata misurata in numero di slot». È un **numero di slot**, non una durata: la frase confonde proprio la grandezza che serve al passo 5. |
-| 3. notazione | **una differenza** | I lucidi definiscono `a=Rd/(VL)` (propagazione su trasmissione), il JSON `a=T_p/T_f`: è la stessa grandezza ✔, ma la variante va dichiarata. |
-| 4. passaggi assenti | **due** | (a) le tre funzioni del protocollo (ascolto, rilevazione della collisione, `jamming`/back-off) che danno senso a `2T_p` — presenti nei lucidi; (b) la dichiarazione dell'ambito `a\le1/2` **rispetto** al grafico, che nei lucidi arriva a `a=10`. |
-| 5. errori | nessuno nel calcolo | `A`, `p=1/N`, `A_{\max}=(1-1/N)^{N-1}`, `E[w]=(1-A)/A`, `S` ✔ tutti ricalcolati; `S(a=0{,}5;N=2)=0{,}5` ✔. |
-| 6. dove si blocca | **l'asse del grafico** | Con l'asse limitato a `0<a\le1/2` non si può rispondere a «disegnarne il grafico in funzione di `a`» come lo intende il docente (0…10). |
-| 7. coerenza | **sì, una** | `ipotesi[3]` dice `0<a\le1/2` ma la figura e la formula non hanno limite: dichiarare che è un limite **fisico** (rilevazione entro la trama) non matematico. |
+| 2. perché | **precisazione, non errore** (corretto in revisione) | Passo 1: «`1/(2a)` è una durata misurata in numero di slot». I lucidi hanno «l'intervallo di trasmissione di **durata `1/2a` slot**»: la frase del JSON è **compatibile** con la fonte. Conviene solo aggiungere che `1/(2a)=T_f/T_{\mathrm{slot}}` è un **rapporto fra due durate** e citare i lucidi. |
+| 3. notazione | **una variante da dichiarare** | I lucidi: `a=\frac{Rd}{VL}=\frac{propagation\ time}{transmission\ time}`; il JSON: `a=T_p/T_f`. Stessa grandezza: va dichiarata la variante. |
+| 4. passaggi assenti | **uno** | Le tre funzioni del protocollo — *carrier sensing*, *multiple access*, *collision detection* con segnalazione di `jamming` e ritrasmissione dopo back-off — che il testo dei lucidi elenca e che il JSON non nomina: senza di esse `2T_p` e lo slot restano numeri senza origine. |
+| 5. errori | nessuno | `A`, `p=1/N`, `A_{\max}=(1-1/N)^{N-1}`, `E[w]=(1-A)/A`, `S` ricalcolati; `S(a=0{,}5;N=2)=0{,}5` ✔ (conto mio sulla formula del sito, non un dato dei lucidi). |
+| 6. dove si blocca | **l'asse del grafico — solo IPOTESI** | Il JSON si limita a `0<a\le1/2`, che è il limite **fisico** (la collisione va rilevata entro la trama). Se la domanda chiede «il grafico in funzione di `a`», un asse esteso oltre `1/2` mostrerebbe perché il protocollo richiede `a` piccolo. **IPOTESI**: non ho letto le Figure 1 e 4, quindi non so che intervallo usi il docente. |
+| 7. coerenza | **sì, una** | `ipotesi[3]` dice `0<a\le1/2` ma la figura e la formula non hanno limite: dichiarare che è un limite **fisico**, non matematico. |
+| 8. modello | **conforme** | La formula dei lucidi è algebricamente **identica** a quella del sito: nessuna divergenza, nessun valore da riconciliare. |
 
 **Modifiche**
 
 | # | dove | azione | contenuto proposto | criterio |
 |---|---|---|---|---|
-| T16-1 | passo 1 `perche` | correggere la frase | «`T_f/T_{\mathrm{slot}}=1/(2a)` è il numero di slot di contesa contenuti in un frame, non una durata» | la frase non chiama più «durata» quel rapporto |
-| T16-2 | `idea` o `ipotesi` | aggiungere il contesto del protocollo | una riga: «CSMA/CD: ascolto del canale prima di trasmettere, rilevazione della collisione durante la trasmissione, segnalazione di `jamming` e ritrasmissione dopo un back-off casuale» — con fonte `LUCIDI_CASONI` | la riga esiste e la fonte è citata; nessun dettaglio non presente nei lucidi |
-| T16-3 | figura `csma-cd-throughput-grafico` | **allargare l'asse** | asse `a` da `0` a `10` (con `a=0` a sinistra), curve per `N=2` e `N=10`, **zona `a>1/2` tratteggiata** e didascalia «oltre `1/2` la collisione non è più rilevabile entro la trama» | la descrizione della figura nomina l'intervallo `0\ldots10` e la zona tratteggiata |
-| T16-4 | `verifica.note` | dichiarare il disallineamento | «La curva del sito (`S_{\max}` a `A` ottimo) dà `0{,}833` e `0{,}760` per `a=0{,}1` con `N=2` e `N=10`; la tabella dei lucidi dà `0{,}85` e `0{,}65`: il modello dei lucidi comprende un overhead per slot. Divergenza dichiarata, non risolta.» | la nota contiene i quattro valori |
-| T16-5 | `errori_frequenti` | l'errore che nasce dal disallineamento | errore: «Riportare `0{,}76` dove il corso si aspetta `0{,}65` senza dichiarare il modello»; correzione: «dire quale modello si sta usando (ciclo con `E[w]` slot falliti) e citare la tabella dei lucidi» | l'errore esiste |
-| T16-6 | `fonti` e `varianti_notazione` | lucidi e `a=Rd/(VL)` | fonte `LUCIDI_CASONI` (`AccessoMultiplo.pdf`, slide CSMA/CD); variante `a=T_p/T_f` ↔ `a=Rd/(VL)` | entrambe presenti |
-| T16-7 | `verifica.stato` | valutare il passaggio | da `da_verificare` a `verificata_file1_file3` (o `verificata_testo_prof` se si accettano i lucidi come testo del docente) | lo stato non è più `da_verificare` senza motivo |
+| T16-1 | passo 1 `perche` | **precisazione** (non correzione) | aggiungere: «come nei lucidi, `1/2a` slot è la durata dell'intervallo di trasmissione quando il frame vale un tempo unitario: `T_f/T_{\mathrm{slot}}=1/(2a)` è un rapporto fra due durate» | il `perche` cita i lucidi e contiene `T_f/T_{\mathrm{slot}}`; nessuna affermazione che la frase attuale sia sbagliata |
+| T16-2 | `idea` o `ipotesi` | aggiungere il contesto del protocollo | una riga: «CSMA/CD: *carrier sensing*, *multiple access*, *collision detection* con segnalazione di `jamming` e ritrasmissione dopo un back-off casuale» | la riga esiste e ogni elemento è citabile dal testo dei lucidi |
+| T16-3 | figura `csma-cd-throughput-grafico` | **allargare l'asse — solo IPOTESI** | asse `a` da `0` a `10`, curve per `N=2` e `N=10`, zona `a>1/2` tratteggiata con didascalia «oltre `1/2` la collisione non è più rilevabile entro la trama» | si applica **solo se** il coordinatore accetta l'IPOTESI; il criterio è che la descrizione della figura nomini l'intervallo effettivamente scelto |
+| T16-4 | `fonti` e `varianti_notazione` | lucidi e variante di `a` | fonte `LUCIDI_CASONI` (`AccessoMultiplo.pdf`, sezione CSMA/CD); variante: canonica `a=T_p/T_f` — variante `a=\frac{Rd}{VL}` | la fonte è presente; la variante cita i lucidi |
+| T16-5 | `verifica` | aggiornare stato e note | da `da_verificare` a `verificata_file1_file3` (o `verificata_testo_prof` se il coordinatore accetta i lucidi come testo del docente); `note`: «la formula coincide con quella dei lucidi; le Figure 1 e 4 non sono state lette» | lo stato non è più `da_verificare` senza motivo; la nota non cita valori numerici dei lucidi |
+
+*(Nota di revisione: la prima versione attribuiva ai lucidi una tabella numerica di throughput e ne deduceva un modello diverso dal sito. L'attribuzione è stata **rimossa**: quei numeri stanno in figure che non ho letto come immagine, mentre la formula leggibile nel testo è identica a quella del sito.)*
 
 ---
 
 #### T17 — `dim-ritardo-tdma-fdma.json` (5 passi, 1 figura)
 
-**Esito in una riga:** la formula è corretta (`D_{TD}=T(M+1)/(2M)=D_{FD}-\frac{T}{2}(1-\frac1M)`, ricalcolata) e **l'ambiguità sulla conclusione è risolta dai lucidi**: «TDMA strutturalmente superiore a FDMA dal punto di vista del ritardo». Resta un problema di **simboli**: `\omega` come tempo di attesa.
+**Esito in una riga:** la formula è corretta (`D_{TD}=T(M+1)/(2M)=D_{FD}-\frac{T}{2}(1-\frac1M)`, ricalcolata) e **l'ambiguità sulla conclusione è risolta dai lucidi**: «TDMA strutturalmente superiore a FDMA dal punto di vista del ritardo». Resta un problema di **simbolo**: il JSON usa `\omega` (che nel resto del sito è la pulsazione) dove i lucidi usano **`w`**.
 
-**Evidenza:** `file1` p. 48 letta come immagine; `file3` p. 31 letta come immagine (manca la parola dopo «a FDMA»); **`AccessoMultiplo.pdf` aperto**: `R_{FD}=Mb/T`, `R_{TD}=b/(T/M)`, `D_{TD}=D_{FD}-\frac{T}{2}(1-\frac1M)` e la frase sulla superiorità del TDMA.
+**Evidenza:** `file1` p. 48 letta come immagine; `file3` p. 31 letta come immagine (manca la parola dopo «a FDMA»); **`AccessoMultiplo.pdf` aperto e leggibile nel testo**: `R_{FD}=Mb/T`, `R_{TD}=b/(T/M)`, `D=w+\tau` con `w_{FD}=0` e `w_{TD}=\frac{T}{2}(1-\frac1M)`, `D_{TD}=D_{FD}-\frac{T}{2}(1-\frac1M)` e la frase «TDMA è strutturalmente superiore a FDMA dal punto di vista del ritardo».
 
 | asse | esito | fatto |
 |---|---|---|
 | 1. granularità | ok | 5 passi; il passo 4 (media delle attese) è il cuore e ha la giustificazione giusta (`M(M-1)/2`). |
-| 2. perché | **una lacuna** | L'ipotesi che rende discreta la media (pacchetti generati **all'inizio del ciclo**) è in `ipotesi[1]` ma il passo 3 la cita solo di sfuggita: è l'ipotesi che un revisore contesta. |
-| 3. notazione | **conflitto interno al sito** | Il JSON dichiara `\omega` = «tempo di attesa», ma in tutto il resto del sito `\omega` è la **pulsazione**. In `D=\omega+\tau` un lettore legge «pulsazione più tempo». Va rinominato (proposta: `t_a`) con la variante `\omega` se è il simbolo delle fonti. |
-| 4. passaggi assenti | **due** | (a) la forma della fonte `D_{TD}=D_{FD}-\frac{T}{2}(1-\frac1M)` come **risultato** (il JSON la scrive come `D_{FD}-\frac{b}{2R}(M-1)`, equivalente ma non riconoscibile); (b) la frase-conclusione del confronto come passo. |
+| 2. perché | **una lacuna, ma l'ipotesi è della fonte** | L'ipotesi che rende discreta la media (pacchetti generati **all'inizio del ciclo**) è in `ipotesi[1]` ma il passo 3 la cita solo di sfuggita. I lucidi la contengono esplicitamente («il pacchetto `S_{mk}` comincerà ad essere trasmesso `(m-1)T/M` s dopo la sua generazione»): `ipotesi[1]` **non è più una ricostruzione** e va riformulata citando i lucidi. |
+| 3. notazione | **simbolo diverso dal docente** (corretto in revisione) | I lucidi scrivono `D=w+\tau`, con `w` tempo di attesa medio, `w_{FD}=0` e `w_{TD}=\frac{1}{M}\sum_{m=1}^{M}(m-1)\frac{T}{M}=\frac{T}{2}(1-\frac1M)`: il simbolo del docente è **`w`**. Il JSON usa `\omega`, che nel resto del sito è la **pulsazione**: in `D=\omega+\tau` si legge «pulsazione più tempo». Va rinominato `w`. |
+| 4. passaggi assenti | **uno** (corretto in revisione) | (a) nessuna assenza di sostanza: il JSON scrive `D_{TD}=D_{FD}-\frac{b}{2R}(M-1)`, che è **una delle due forme dei lucidi** ✔ (i lucidi danno anche `D_{FD}-\frac{T}{2}(1-\frac1M)`), e conviene riportare entrambe; (b) la frase-conclusione del confronto come passo. |
 | 5. errori | nessuno | Verificato: `\frac{T(M+1)}{2M}=T-\frac{T}{2}(1-\frac1M)` ✔ e `\frac{T(M+1)}{2M}=D_{FD}-\frac{b}{2R}(M-1)` con `T=Mb/R` ✔. |
 | 6. dove si blocca | **due punti** | Il valore numerico e la frase da scrivere in fondo («il TDMA è superiore per `M>1`»). |
 | 7. coerenza | ok | `a_voce` (663 caratteri) e compatta coerenti. |
@@ -669,13 +660,13 @@ Lettura (IPOTESI): la tabella dei lucidi comprende un **overhead per slot** e un
 
 | # | dove | azione | contenuto proposto | criterio |
 |---|---|---|---|---|
-| T17-1 | `notazione`, `passi`, `formula_finale`, `a_voce`, `a_buchi` | **rinominare** il tempo di attesa | `t_a` al posto di `\omega` (es. `D_{TD}=t_a+\tau`), con `varianti_notazione`: canonica `t_a` — variante `\omega` se le fonti usano `\omega` (da confermare a immagine su `file3` p. 31) | nessuna occorrenza di `\omega` come tempo nel file |
-| T17-2 | passo 5 `formula` | allineare alla forma della fonte | `D_{TD}=D_{FD}-\frac{T}{2}\left(1-\frac1M\right)=\frac{T(M+1)}{2M}` | la formula contiene entrambe le forme |
+| T17-1 | `notazione`, `passi`, `formula_finale`, `a_voce`, `a_buchi` | **rinominare** il tempo di attesa in `w` | `w` al posto di `\omega` (es. `D=w+\tau`, `w_{FD}=0`, `w_{TD}=\frac{T}{2}(1-\frac1M)`), come nei lucidi; in `varianti_notazione` la voce «canonica `w`» — la variante tipografica si aggiunge **solo** se l'immagine di `file3` p. 31 mostra un altro simbolo (non verificato) | nessuna occorrenza di `\omega` come tempo; `w` coincide con il simbolo dei lucidi |
+| T17-2 | passo 5 `formula` | riportare **entrambe** le forme dei lucidi | `D_{TD}=\frac{T}{2}\left(1-\frac1M\right)+\frac{T}{M}=D_{FD}-\frac{T}{2}\left(1-\frac1M\right)=\frac{T(M+1)}{2M}` (e, se serve, `=D_{FD}-\frac{b}{2R}(M-1)`) | la formula contiene la forma con `T/2` e quella con `b/(2R)` |
 | T17-3 | dopo il passo 5 | **nuovo passo**: la conclusione | testo: «Per `M>1` il TDMA ha ritardo medio minore; per `M=1` i due sistemi coincidono. Il vantaggio viene dall'attesa nulla dell'utente 1 e massima dell'utente `M`, mediata.» formula: `D_{TD}<D_{FD}\ \text{per}\ M>1,\qquad D_{TD}=D_{FD}\ \text{per}\ M=1` | esiste il passo con la disuguaglianza e il caso `M=1` |
 | T17-4 | `richiamo_attivo` | esempio numerico | «`M=4`, `b=1000\ \mathrm{bit}`, `R=4\ \mathrm{kbit/s}` → `T=1\ \mathrm{s}`, `D_{FD}=1\ \mathrm{s}`, `D_{TD}=0{,}625\ \mathrm{s}`, differenza `0{,}375\ \mathrm{s}`» | i quattro valori sono coerenti (`T=Mb/R=1`) |
-| T17-5 | `fonti` | aggiungere i lucidi | `{chiave: "LUCIDI_CASONI", rif: "AccessoMultiplo.pdf, slide ritardo FDMA/TDMA"}` | la fonte è presente |
+| T17-5 | `fonti` e `ipotesi[1]` | aggiungere i lucidi e correggere la qualifica dell'ipotesi | fonte `LUCIDI_CASONI` (`AccessoMultiplo.pdf`, sezione «FDMA vs. TDMA: ritardo medio»); `ipotesi[1]` non è più «IPOTESI di ricostruzione»: i lucidi danno la derivazione di `w_{TD}`, quindi va riformulata come ipotesi **della fonte** | la fonte è presente e `ipotesi[1]` non si presenta più come ricostruzione del sito |
 | T17-6 | `verifica` | chiudere l'ambiguità | note: «La conclusione del sito (TDMA superiore) coincide con i lucidi del corso; la parola mancante in `file3` p. 31 è un refuso»; stato → `verificata_file1_file3` (o `verificata_testo_prof` con i lucidi) | il `punti_aperti` non contiene più la contraddizione |
-| T17-7 | passo 3 `perche` | dichiarare l'ipotesi della media | «la media è discreta e uniforme **perché** ogni utente genera all'inizio del ciclo: è l'ipotesi che rende `\omega_m` multiplo intero di `T/M`» | il `perche` contiene «ipotesi» e «inizio del ciclo» |
+| T17-7 | passo 3 `perche` | dichiarare l'ipotesi della media | «la media è discreta e uniforme **perché** ogni utente genera all'inizio del ciclo: è l'ipotesi che rende `w_m` multiplo intero di `T/M`» | il `perche` contiene «ipotesi» e «inizio del ciclo» |
 
 ---
 
@@ -685,10 +676,10 @@ Lettura (IPOTESI): la tabella dei lucidi comprende un **overhead per slot** e un
 
 | # | modifica | dove | perché aiuta a capire e ricordare | sforzo | criterio misurabile |
 |---|---|---|---|---|---|
-| **G-1** | rendere **digitabili** le soluzioni «a buchi» | 12 file su 18 (`aloha`, `conversione-ad`, `csma-cd`, `filtro-trasversale`, `nascita-morte`, `pam`, `poisson`, `ritardo-tdma`, `sliding-window`, `teorema-campionamento`): **36** varianti su 142, di cui **29 con `$` o `\`** (irrecuperabili) e **7 con sole `_`/`^`** (ambigue) | la modalità «a buchi» è quella che si usa per l'autoverifica: se la soluzione non è digitabile, la modalità è **rotta** e lo studente la abbandona | S per file | `re.compile(r"[\\$^_]")` non trova nulla in nessuna variante; le forme latinizzate (`omega_s >= 2 omega_m`, `1/(2e)`) sono accettate accanto a quelle con simboli |
+| **G-1** | rendere **digitabili** le soluzioni «a buchi» | 12 file su 18 (`aloha`, `conversione-ad`, `csma-cd`, `filtro-trasversale`, `nascita-morte`, `pam`, `poisson`, `ritardo-tdma`, `sliding-window`, `teorema-campionamento`): **36** varianti su 142, di cui **27 con `$` o `\`** (irrecuperabili) e **9 con sole `_`/`^`** (ambigue) | la modalità «a buchi» è quella che si usa per l'autoverifica: se la soluzione non è digitabile, la modalità è **rotta** e lo studente la abbandona | S per file | `re.compile(r"[\\$^_]")` non trova nulla in nessuna variante; le forme latinizzate (`omega_s >= 2 omega_m`, `1/(2e)`) sono accettate accanto a quelle con simboli |
 | **G-2** | agganciare le **figure orfane** | 5 orfane in 4 file (`conversione-ad`, `conversione-da`, `formula-carson`, `spettri-modulazione-prodotto`×2) e 1 figura ripetuta (`sliding-window`) | una figura che illustra un passo deve stare **a quel passo**: oggi finisce in «Figure generali» e il legame si perde | S | il controllo di §7.3 non segnala orfane né ripetizioni |
 | **G-3** | precisare la regola dei passi: «**una formula _o_ una figura** per passo» | 18 file | due passi (`filtro-trasversale` 7, `teorema-campionamento` 3) non hanno né formula né figura: sono i due che nessuno ricorda | S | nessun passo privo di entrambi; il test accetta `formula` **o** `figura` |
-| **G-4** | aggiungere i **lucidi del docente** come fonte dove li ho aperti | `aloha`, `csma-cd`, `ritardo-tdma` (chiave `LUCIDI_CASONI`, `AccessoMultiplo.pdf`) | sono l'unica verifica **del docente** disponibile: T15 conferma i massimi, T17 chiude la contraddizione, T16 svela un modello diverso | S | `fonti` contiene la chiave; la `note` di `verifica` dice che cosa conferma |
+| **G-4** | aggiungere i **lucidi del docente** come fonte dove li ho aperti | `aloha`, `csma-cd`, `ritardo-tdma` (chiave `LUCIDI_CASONI`, `AccessoMultiplo.pdf`) | sono l'unica verifica **del docente** disponibile: T15 conferma i massimi e la distinzione `\lambda_t/\lambda`, T17 chiude la contraddizione, T16 conferma la formula | S | `fonti` contiene la chiave; la `note` di `verifica` dice che cosa conferma |
 | **G-5** | aggiornare **passi + compatta + a voce + buchi nello stesso commit** | 18 file | le quattro rappresentazioni sono la stessa dimostrazione: se si toccano i passi e non `a_voce`, lo studente sente raccontare una cosa che non vede | S per file | `git show --stat` di ogni commit di area tocca un file per volta con tutti i campi; nessun campo cita passi inesistenti (rinominare i passi di T5 rompe la stringa «passi 6-9» in `errori_frequenti`) |
 | **G-6** | colmare i `collegamenti` mancanti | `conversione-ad`, `conversione-da`, `spettri-modulazione-prodotto`, `qam-errore-fase` (campo **opzionale** ma utile all'interleaving) | collega la dimostrazione ai nodi di teoria e alle altre dimostrazioni: è ciò che rende il ripasso «a rete» e non «a lista» | S | ogni dimostrazione ha almeno 2 collegamenti a nodi esistenti; `tests/test_graph.py` non segnala ID inesistenti |
 
@@ -701,12 +692,12 @@ Lettura (IPOTESI): la tabella dei lucidi comprende un **overhead per slot** e un
 | P0-1 | T5-1 (media `1/(2N+1)`), T5-2 e T5-3 (limite alla finestra infinita), T5-4 (serie di Fourier di `{C_k}`), T5-5 (figura righe + continuo), T5-6 (controllo di potenza), T5-7 (stringa «passi 6-9») | `pam-due-spettri` | sono i quattro anelli mancanti della catena: senza, la formula finale resta «un atto di fede» (parole dell'`errori_frequenti` del file stesso) | L |
 | P0-2 | T11-1 e T11-2 (realizzabilità: `H_0(-\omega)\neq H_0^*(\omega)` e condizione sufficiente con `\beta`), T11-3 (`\beta` in notazione), T11-4 (chiudere il punto aperto), T11-5 (fondere 5 e 7), T11-7 (figura a 4 pannelli), T11-8 (modello matematico ≠ fisico) | `quadripoli-passa-basso-equivalente` | è la metà «da 10 punti» della domanda: la condizione è su `file1` p. 44 e nel sito non è mai un passo | L |
 
-**P1 — i buchi didattici veri** (T6 riscrittura, T16 disallineamento, e i quattro «manca il numero»).
+**P1 — i buchi didattici veri e le schede da precisare** (T6 da riscrivere; T7, T8, T10, T1, T3, T12, T16 da completare o precisare, più i «numeri che mancano»).
 
 | # | modifica | file | perché | sforzo |
 |---|---|---|---|---|
 | P1-1 | T6-1 ÷ T6-7 (riscrittura completa, 10 passi, figure, controesempio sul segno) | `spettri-modulazione-prodotto` | la domanda chiede ampiezza **e** fase: il file fa un'altra cosa | L |
-| P1-2 | T16-1 ÷ T16-7 (frase corretta, contesto del protocollo, asse fino a `a=10`, nota sul modello, fonte) | `csma-cd-throughput` | rischio concreto di rispondere un numero che il docente non si aspetta | M |
+| P1-2 | T16-1 ÷ T16-5 (precisazione sul rapporto `1/(2a)` citando i lucidi, contesto del protocollo, variante di `a`, aggiornamento di `verifica`; l'asse esteso è **IPOTESI**) | `csma-cd-throughput` | la formula è già identica a quella dei lucidi: mancano solo il contesto del protocollo e le citazioni | S |
 | P1-3 | T7-1 ÷ T7-7 (disuguaglianza `\ge`, catena, caratteristica del quantizzatore, segnale numerico) | `conversione-ad` | la domanda chiede il segnale numerico: oggi non c'è | M |
 | P1-4 | T8-1 ÷ T8-6 (spezzare, equalizzatore, `\varepsilon`, catena, esempio `T/\tau`) | `conversione-da` | il fattore `T` è il punto in cui tutti sbagliano il conto | M |
 | P1-5 | T10-1 ÷ T10-6 (fattore 2, lettura vettoriale, figura della rotazione, numeri) | `modulazione-prodotto-qam-errore-fase` | la matrice è giusta ma resta una formula da imparare a memoria senza figura | M |
@@ -719,7 +710,7 @@ Lettura (IPOTESI): la tabella dei lucidi comprende un **overhead per slot** e un
 | # | modifica | file | perché | sforzo |
 |---|---|---|---|---|
 | P2-1 | T15-1 ÷ T15-6 (massimi `0,1839`/`0,3679`, fonti, confronto) | `aloha-throughput` | «calcolare il massimo» richiede il valore, non solo il punto | S |
-| P2-2 | T17-1 ÷ T17-7 (rinomina `t_a`, forma della fonte, conclusione, numeri) | `ritardo-tdma-fdma` | `\omega` come tempo è una trappola di lettura | S |
+| P2-2 | T17-1 ÷ T17-7 (rinomina `w`, forme della fonte, conclusione, numeri) | `ritardo-tdma-fdma` | `w` è il simbolo dei lucidi; `\omega` come tempo è una trappola di lettura | S |
 | P2-3 | T13-1 ÷ T13-5 (assenza di memoria, paradosso, numeri, figura) | `poisson-tempo-residuo` | il risultato senza il nome «assenza di memoria» non si collega a nulla | S |
 | P2-4 | T14-1 ÷ T14-6 (equilibrio esplicito, taglio, numeri) | `nascita-morte-equilibrio` | il salto `dp_k/dt=0` è il punto in cui si perde il filo | M |
 | P2-5 | T2-1 ÷ T2-3 (parità dell'impulso, numero dello zero) | `impulso-dirac-trasformata` | un solo passaggio non dichiarato | S |
@@ -822,7 +813,7 @@ for f in sorted(glob.glob("graph/dimostrazioni/*.json")):
 | T13 | `\lambda=500`, `r=1\ \mathrm{ms}` | `e^{-0{,}5}=0{,}6065`, `E[R]=2\ \mathrm{ms}` |
 | T14 | `\lambda_0=2\mu_1`, `\lambda_1=\mu_2/2` | `P=(0{,}25;0{,}5;0{,}25)` |
 | T15 | massimi | `0{,}1839` e `0{,}3679` |
-| T16 | `S_{\max}(a=0{,}1;N=2)` e `(a=0{,}1;N=10)` | `0{,}833` e `0{,}760` |
+| T16 | proprietà della formula del sito: `S(a=0)=1`; `S` decrescente in `a`; `S(a=0{,}5;N=2)=0{,}5` | `1`; monotonia; `0{,}5` |
 | T17 | `M=4`, `b=1000`, `R=4\ \mathrm{kbit/s}` | `D_{FD}=1\ \mathrm{s}`, `D_{TD}=0{,}625\ \mathrm{s}` |
 | Carson | `\beta=2`, `f_m=1\ \mathrm{kHz}` | `6\ \mathrm{kHz}` |
 
@@ -838,11 +829,11 @@ for f in sorted(glob.glob("graph/dimostrazioni/*.json")):
 | 2 | Punteggi delle domande diverse da T5 e T11 | **NON TROVATO** (`file2` non è allegato al repository) |
 | 3 | Lucidi di Reti (`lucidi_new.pdf`, slide 75 e 106 citate da `file1`): T13 e T14 | **NON LETTI**: il PDF non è scaricabile da questa sandbox e il lettore di pagine web si ferma a 30 pagine |
 | 4 | `ComElettriche.pdf` oltre le prime pagine (PAM, modulazioni angolari, Carson) | **NON TROVATO** nello spezzone leggibile |
-| 5 | Modello esatto della tabella «effetto di `a` sul throughput» dei lucidi CSMA/CD | **NON TROVATO**: si osserva solo che diverge dal modello del sito (T16) |
+| 5 | Contenuto numerico delle Figure 1 e 4 dei lucidi CSMA/CD (tabelle di throughput) | **NON TROVATO**: sono immagini e non le ho lette come immagine; la formula leggibile nel testo è identica a quella del sito (T16) |
 | 6 | Pagine di `file1` lette **solo nel testo estratto** e rilevanti per le schede | p. 12 (T2), pp. 25-27 e 30-31 (T6), pp. 33-34 (T7), pp. 37-39 (T10), p. 41 (Carson), pp. 51-52 (T13) |
 | 7 | Pagine di `file3` lette **solo nel testo estratto** e rilevanti | pp. 1-2 (T1), 3-4 (T2), 5-6 (T4), 8-12 (T7-T8), 14-15 (T5), 18-19 (T6: **da rileggere a immagine prima di riscrivere T6**), 21 (T15), 23 e 25-28 (T10, Carson), 33-35, 41-44 (T11: le immagini di `file1` bastano, `file3` no), 47 (T13), 49-51 |
 | 8 | Forma esatta della formula di Carson e definizione di `\beta` nelle fonti | **NON TROVATO a immagine** (solo testo estratto) |
-| 9 | Simbolo usato dalle fonti per il tempo di attesa in TDMA (per decidere se `\omega` è del docente o del sito) | **NON TROVATO**: `file3` p. 31 è un'immagine e non l'ho riletta a ingrandimento sufficiente |
+| 9 | ~~Simbolo del tempo di attesa in TDMA~~ | **CHIUSO in revisione**: i lucidi scrivono `D=w+\tau` con `w_{FD}=0` e `w_{TD}=\frac{T}{2}(1-\frac1M)`, quindi il simbolo del docente è `w` (l'azione è T17-1). Resta NON TROVATO il solo simbolo tipografico di `file3` p. 31, che è un'immagine |
 
 ---
 
@@ -850,6 +841,6 @@ for f in sorted(glob.glob("graph/dimostrazioni/*.json")):
 
 - **Che cosa ho confrontato:** le 18 dimostrazioni (116 passi, 39 figure) con `file1` (27 pagine lette come immagine), `file3` (10 pagine), i lucidi `AccessoMultiplo.pdf` e `ComElettriche.pdf` aperti sul sito del corso, e i documenti R1-R3, CONTRACTS, DIDATTICA, NOTAZIONE.
 - **Errori di matematica trovati nelle dimostrazioni: nessuno.** Tutte le formule finali tornano (ricalcolate a mano e, dove serve, numericamente). Un errore di segno c'è, ma è **nella fonte studentesca** (`file1` p. 29) e il documento dice come non copiarlo.
-- **Difetti veri:** 5 figure orfane e 1 ripetuta, 2 passi senza formula né figura, 36 varianti di buchi non digitabili, 1 stringa che cita numeri di passo, e soprattutto **due dimostrazioni incomplete** (T6) o **incomplete sul punto decisivo** (T11), più un **disallineamento di modello** su T16.
-- **Conferme nuove dai lucidi del docente:** T15 (massimi `1/(2e)`, `1/e`), T17 («TDMA strutturalmente superiore a FDMA»), T16 (formula `S=1/[1+2a(1-A)/A]`) — con l'eccezione della tabella, che diverge dal modello del sito.
+- **Difetti veri:** 5 figure orfane e 1 ripetuta, 2 passi senza formula né figura, 36 varianti di buchi non digitabili, 1 stringa che cita numeri di passo, e soprattutto **due dimostrazioni incomplete** (T6) o **incomplete sul punto decisivo** (T11). La formula di T16, invece, **coincide** con quella dei lucidi: nessuna divergenza da correggere.
+- **Conferme nuove dai lucidi del docente:** T15 (massimi `1/(2e)` e `1/e`; `\lambda_t=\lambda+\lambda_r`), T17 («TDMA strutturalmente superiore a FDMA»; `D=w+\tau` con `w_{TD}=\frac{T}{2}(1-\frac1M)`), T16 (formula identica a quella del sito). **NON TROVATO:** le tabelle numeriche delle figure dei lucidi, che sono immagini.
 - **Il libro del docente resta NON TROVATO:** nessuna affermazione di questo documento gli è attribuita.
