@@ -28,6 +28,8 @@ def test_catena_fixture_nuovi_confronto_e_movimento(server, width, height):
             errori = console_errors(page)
             page.goto(f'{server}/#/dim/dim-teorema-campionamento?passo=4', wait_until='networkidle')
             assert page.locator('.progress[role="progressbar"]').get_attribute('aria-valuenow') == '4'
+            # La fixture usa i passi 98 e 99, che nessuna dimostrazione reale raggiunge: così
+            # passo-99 e confronto-passo-99 non collidono con gli id dei passi veri della pagina.
             page.evaluate('''async () => {
               const { renderPasso } = await import('./js/pages/dim/passi.js');
               const assi = { etichetta: 'ω', min: -2, max: 2, tacche: [-2, 0, 2] };
@@ -37,14 +39,17 @@ def test_catena_fixture_nuovi_confronto_e_movimento(server, width, height):
                 { stile: 'linea', etichetta: 'repliche laterali', punti: [[-2,0],[-1,1],[0,0]] }] };
               const dim = { figure: [{ ...base, id: 'stato-centrale', titolo: 'Spettro centrale', descrizione: 'È presente lo spettro centrale.' },
                 { ...finale, id: 'stato-repliche', titolo: 'Spettro con repliche', descrizione: 'Si aggiungono le repliche laterali.' }],
-                passi: [{ n: 1, figura: 'stato-centrale' }, { n: 2, figura: 'stato-repliche' }] };
-              const p2 = { n: 2, figura: 'stato-repliche', testo: 'Il nuovo stato aggiunge le repliche.', formula: '', perche: 'La periodicità dello spettro giustifica le repliche.' };
+                passi: [{ n: 98, figura: 'stato-centrale' }, { n: 99, figura: 'stato-repliche' }] };
+              const passoFinale = { n: 99, figura: 'stato-repliche', testo: 'Il nuovo stato aggiunge le repliche.', formula: '', perche: 'La periodicità dello spettro giustifica le repliche.' };
               const lista = document.createElement('ol'); lista.className = 'dim-passi';
-              lista.innerHTML = renderPasso(p2, dim, true, 1);
+              lista.innerHTML = renderPasso(passoFinale, dim, true, 1);
               lista.dataset.fixture = 'progressione'; document.querySelector('#modo-studio').append(lista);
             }''')
             fixture = page.locator('[data-fixture="progressione"]')
             assert fixture.count() == 1
+            duplicati = page.evaluate('''() => { const ids = [...document.querySelectorAll('[id]')].map(e => e.id);
+              return ids.filter((id, i) => ids.indexOf(id) !== i); }''')
+            assert not duplicati, (width, duplicati)
             nuova = fixture.locator('[data-nuovo="true"]')
             ereditata = fixture.locator('[data-ereditato="true"]')
             assert nuova.count() >= 1

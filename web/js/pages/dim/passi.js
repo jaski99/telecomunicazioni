@@ -43,7 +43,7 @@ export function renderPasso(p, dim, rivelato, area = 1) {
 <div class="prose step__testo"><p>${t(p.testo)}</p></div>
 ${p.formula ? `<div class="passo-formula">${formulaBlock(p.formula)}</div>` : ''}
 ${slot}
-<aside class="callout callout--tip nota-margine" role="note"><p class="callout__title">Perché si può fare</p><p>${t(p.perche)}</p></aside>
+<aside class="callout callout--tip dim-nota" role="note"><p class="callout__title">Perché si può fare</p><p>${t(p.perche)}</p></aside>
 </div>
 </li>`;
 }

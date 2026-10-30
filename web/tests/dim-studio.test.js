@@ -120,3 +120,39 @@ test('il menu «Altro» è aperto da 1024 px e la sincronizzazione si rimuove al
   assert.equal(ascoltatori.length, 0);
   delete globalThis.matchMedia;
 });
+
+function pulsanteConfronto(passo, id) {
+  const bottone = elemento({ attrs: { 'aria-controls': id, 'aria-expanded': 'false' } });
+  bottone.closest = (sel) => (sel === '.step' ? passo : (sel.startsWith('.figura-confronta') ? bottone : null));
+  return bottone;
+}
+
+test('il confronto apre il pannello del proprio passo anche con id omonimi nella pagina', () => {
+  const { pannello } = montaStudio(0);
+  const id = 'confronto-passo-2';
+  const fabbrica = () => {
+    const foglio = elemento({ attrs: { id }, hidden: true });
+    const passo = elemento({ children: { '[id]': [foglio] } });
+    return { passo, foglio, bottone: pulsanteConfronto(passo, id) };
+  };
+  const [reale, fixture] = [fabbrica(), fabbrica()];
+  pannello.dispatch('click', { target: fixture.bottone });
+  assert.equal(fixture.foglio.hidden, false);
+  assert.equal(fixture.bottone.getAttribute('aria-expanded'), 'true');
+  assert.equal(reale.foglio.hidden, true);
+  assert.equal(reale.bottone.getAttribute('aria-expanded'), 'false');
+  pannello.dispatch('click', { target: fixture.bottone });
+  assert.equal(fixture.foglio.hidden, true);
+  assert.equal(fixture.bottone.getAttribute('aria-expanded'), 'false');
+});
+
+test('un pulsante di confronto fuori da un passo non apre nulla', () => {
+  const { pannello } = montaStudio(0);
+  const foglio = elemento({ attrs: { id: 'confronto-passo-3' }, hidden: true });
+  const orfano = elemento({ attrs: { 'aria-controls': 'confronto-passo-3' } });
+  orfano.closest = (sel) => (sel.startsWith('.figura-confronta') ? orfano : null);
+  pannello.children['[id]'] = [foglio];
+  pannello.dispatch('click', { target: orfano });
+  assert.equal(foglio.hidden, true);
+  assert.equal(orfano.getAttribute('aria-expanded'), null);
+});

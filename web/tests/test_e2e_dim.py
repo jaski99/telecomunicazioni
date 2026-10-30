@@ -269,19 +269,40 @@ def test_note_marginale_non_restringe_formula_e_figura_a_1440(browser, server):
     misure = page.evaluate('''() => {
       const corpo = document.querySelector('#passo-4 .step__corpo');
       const testo = corpo.querySelector('.step__testo').getBoundingClientRect();
-      const nota = corpo.querySelector('.nota-margine').getBoundingClientRect();
+      const nota = corpo.querySelector('.dim-nota').getBoundingClientRect();
       const formula = corpo.querySelector('.passo-formula').getBoundingClientRect();
       const figura = corpo.querySelector('.step__figura').getBoundingClientRect();
       const area = e => getComputedStyle(e).gridArea;
       return {larghezza: corpo.clientWidth, testo: testo.toJSON(), nota: nota.toJSON(),
         formula: formula.toJSON(), figura: figura.toJSON(), aree: [area(corpo.querySelector('.step__testo')),
-          area(corpo.querySelector('.nota-margine')), area(corpo.querySelector('.passo-formula')),
+          area(corpo.querySelector('.dim-nota')), area(corpo.querySelector('.passo-formula')),
           area(corpo.querySelector('.step__figura'))]};
     }''')
     assert misure['aree'] == ['testo', 'nota', 'formula', 'figura'], misure
     assert misure['testo']['right'] <= misure['nota']['left'], misure
     assert misure['formula']['width'] >= misure['larghezza'] - 1, misure
     assert misure['figura']['width'] >= misure['larghezza'] - 1, misure
+    assert not errori
+    page.close()
+
+
+def test_nota_passo_resta_callout_verde_a_1440(browser, server):
+    """La nota del passo usa la classe propria .dim-nota: sopra 1200 px non eredita il
+    filetto grigio da 1 px di .nota-margine (nodo.css) e resta un callout da 4 px verdi."""
+    page, errori = apri(browser, server, 'dim-pam-due-spettri', 1440, 900, '?passo=4')
+    note = page.evaluate('''() => [...document.querySelectorAll('#modo-studio .step__corpo aside')]
+      .filter(e => e.getClientRects().length).map(e => {
+        const s = getComputedStyle(e);
+        return {classi: e.className.split(' '), larghezza: s.borderLeftWidth,
+          stile: s.borderLeftStyle, colore: s.borderLeftColor, corpo: parseFloat(s.fontSize)};
+      })''')
+    assert len(note) == 4, note
+    for nota in note:
+        assert nota['classi'] == ['callout', 'callout--tip', 'dim-nota'], nota
+        assert nota['larghezza'] == '4px', nota
+        assert nota['stile'] == 'solid', nota
+        assert nota['colore'] == 'rgb(21, 128, 61)', nota  # --c-ok
+        assert nota['corpo'] == 19, nota
     assert not errori
     page.close()
 

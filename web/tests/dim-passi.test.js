@@ -11,7 +11,7 @@ test('un passo rivelato mostra testo, formula, figura e il perché', () => {
   assert.match(html, /<div class="step__corpo">/);
   assert.match(html, /<div class="passo-formula"><div class="formula-box">/);
   assert.match(html, /data-figura="fig-a"><figure/);
-  assert.match(html, /callout--tip nota-margine" role="note"><p class="callout__title">Perché si può fare<\/p><p>Per definizione\.<\/p>/);
+  assert.match(html, /callout--tip dim-nota" role="note"><p class="callout__title">Perché si può fare<\/p><p>Per definizione\.<\/p>/);
 });
 
 test('stato compatibile attenua gli ereditati, marca i nuovi e offre il confronto numerato', () => {

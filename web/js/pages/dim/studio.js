@@ -29,6 +29,15 @@ function modificatori(ev) {
   return { altKey: ev.altKey, ctrlKey: ev.ctrlKey, metaKey: ev.metaKey };
 }
 
+/** Il pannello di confronto va cercato dentro il passo del pulsante, non in tutto il
+ *  pannello Studio: lo stesso id può comparire in più istanze della pagina. */
+function pannelloConfronto(bottone) {
+  const passo = bottone.closest('.step');
+  if (!passo) return null;
+  const id = bottone.getAttribute('aria-controls');
+  return [...passo.querySelectorAll('[id]')].find(e => e.id === id) || null;
+}
+
 /** Collega barra, indice e tastiera. Restituisce la funzione che rimuove i listener. */
 export function setupStudio(container, dim, storage, area = 1, passoRichiesto = null) {
   const pannello = container.querySelector('#modo-studio');
@@ -58,7 +67,7 @@ export function setupStudio(container, dim, storage, area = 1, passoRichiesto = 
   const confrontoClick = ev => {
     const bottone = ev.target.closest('.figura-confronta[aria-controls]');
     if (!bottone) return;
-    const target = [...pannello.querySelectorAll('[id]')].find(e => e.id === bottone.getAttribute('aria-controls'));
+    const target = pannelloConfronto(bottone);
     if (!target) return;
     target.hidden = !target.hidden;
     bottone.setAttribute('aria-expanded', String(!target.hidden));
