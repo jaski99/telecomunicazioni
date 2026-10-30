@@ -6,7 +6,7 @@
   ],
   "enunciato": "Un segnale PAM è la successione di impulsi modulati in ampiezza $s(t) = \\sum_{n} a_n\\, g(t-nT)$, dove $\\{a_n\\}$ è una serie temporale a potenza finita e $g(t)$ un impulso a energia finita. Scomponendo i simboli in valor medio e parte a valor medio zero, $s(t) = s_m(t) + x(t)$, si ottengono due spettri: $s_m(t)$ è periodica e ha uno spettro a righe alle pulsazioni $2\\pi n/T$ con coefficienti $c_n = \\frac{\\langle a_n \\rangle}{T} G\\!\\left(\\frac{2\\pi n}{T}\\right)$; $x(t)$ ha lo spettro di potenza distribuito, nella convenzione unilaterale del sito, $G_x(\\omega) = \\frac{1}{\\pi T} |G(\\omega)|^2 \\left\\{ \\langle a_n^2 \\rangle - [\\langle a_n \\rangle]^2 + 2 \\sum_{k=1}^{\\infty} \\left[ \\langle a_n a_{n+k} \\rangle - [\\langle a_n \\rangle]^2 \\right] \\cos k\\omega T \\right\\}$, che si sovrappone allo spettro a righe. La prova T5 vale 10 punti, uno dei due soli punteggi dichiarati nel materiale raccolto.",
   "ipotesi": [
-    "La serie temporale $\\{a_n\\}$ ha valor medio temporale $\\langle a_n \\rangle$ in generale diverso da zero e potenza finita: $\\langle a_n^2 \\rangle = \\lim_{N \\to \\infty} \\frac{1}{2N} \\sum_{-N}^{N} a_n^2 < \\infty$.",
+    "La serie temporale $\\{a_n\\}$ ha valor medio temporale $\\langle a_n \\rangle$ in generale diverso da zero e potenza finita: $\\langle a_n^2 \\rangle = \\lim_{N \\to \\infty} \\frac{1}{2N+1} \\sum_{n=-N}^{+N} a_n^2 < +\\infty$.",
     "L'impulso formatore $g(t)$ ha energia finita, trasformata $G(\\omega)$ e funzione di autocorrelazione $\\phi(\\tau)$ legate da $F[\\phi(\\tau)] = |G(\\omega)|^2$.",
     "La serie centrata $x_n = a_n - \\langle a_n \\rangle$ è parzialmente coerente: esistono i limiti $C_k = \\langle x_n x_{n+k} \\rangle$ delle medie temporali dei prodotti a distanza $k$.",
     "Lo spettro di potenza è quello unilaterale in $\\omega$ adottato in NOTAZIONE.md: $G_x(\\omega) = F[C(\\tau)]/\\pi$ per $\\omega \\ge 0$ e $P_x = \\int_0^{\\infty} G_x(\\omega)\\, d\\omega$ (decisione sul punto A2).",
@@ -44,15 +44,20 @@
       "canonica": "$\\frac{2\\pi}{T}$ per la spaziatura delle righe",
       "variante": "$\\omega_{0} = \\frac{2\\pi}{T}$ per la stessa quantità",
       "fonte": "FILE1 p. 20"
+    },
+    {
+      "canonica": "$1/(2N+1)$ nella media di $2N+1$ simboli da $-N$ a $N$",
+      "variante": "$1/(2N)$ per i coefficienti $C_k$: il limite non cambia quando esiste",
+      "fonte": "FILE1 pp. 19, 21"
     }
   ],
   "idea": "Si separa il valor medio dei simboli dal resto: il valor medio ripete l'impulso in modo periodico e dà righe; il resto, a media zero, dà uno spettro continuo via autocorrelazione.",
   "passi": [
     {
       "n": 1,
-      "testo": "Si parte dalla serie temporale $\\{a_n\\}$ con valor medio $\\langle a_n \\rangle$ non necessariamente zero e potenza finita, e da un impulso $g(t)$ a energia finita con autocorrelazione $\\phi(\\tau)$ e trasformata $G(\\omega)$.",
-      "formula": "\\langle a_n^2 \\rangle = \\lim_{N \\to \\infty} \\frac{1}{2N} \\sum_{n=-N}^{N} a_n^2 < \\infty, \\qquad F[\\phi(\\tau)] = |G(\\omega)|^2",
-      "perche": "Sono le ipotesi che rendono definite potenza del segnale, spettro a righe e spettro distribuito; la seconda relazione è il legame fra autocorrelazione e spettro di energia dell'impulso."
+      "testo": "Si considera la serie temporale $\\{a_n\\}$, con valor medio non necessariamente nullo e potenza finita. L’impulso formatore ha energia finita.",
+      "formula": "\\langle a_n^2 \\rangle = \\lim_{N \\to \\infty} \\frac{1}{2N+1} \\sum_{n=-N}^{+N} a_n^2 < +\\infty",
+      "perche": "La media comprende esattamente $2N+1$ simboli, da $-N$ a $N$; la sua finitezza è una delle ipotesi dello sviluppo."
     },
     {
       "n": 2,
@@ -76,21 +81,21 @@
     },
     {
       "n": 5,
-      "testo": "Secondo spettro: per $x(t)$ si parte dalla funzione di autocorrelazione temporale e dalla definizione unilaterale dello spettro di potenza.",
-      "formula": "C(\\tau) = \\langle x(t) x(t+\\tau) \\rangle, \\qquad G_x(\\omega) = \\frac{F[C(\\tau)]}{\\pi}",
-      "perche": "$x(t)$ è un segnale di potenza a valor medio zero: il suo spettro si definisce trasformando l'autocorrelazione (Wiener-Chinchin); il divisore $\\pi$ è la convenzione unilaterale di file1 p. 21 (punto A2)."
+      "testo": "Per lo spettro della parte centrata si espande la definizione di autocorrelazione come media temporale del prodotto delle due somme.",
+      "formula": "C(\\tau) = \\langle x(t)x(t+\\tau)\\rangle = \\lim_{N\\to\\infty}\\frac{1}{2NT}\\int_{-NT}^{NT}\\sum_n\\sum_i x_n x_i\\,g(t-nT)g(t+\\tau-iT)\\,dt",
+      "perche": "Gli indici $n$ e $i$ distinguono i due fattori; lo spettro unilaterale si otterrà trasformando questa autocorrelazione e dividendo per $\\pi$."
     },
     {
       "n": 6,
-      "testo": "Si sostituiscono le espressioni di $x(t)$ e $x(t+\\tau)$ come doppia somma sugli indici $n$ e $i$ e si scrive la media temporale come limite dell'integrale su $2NT$.",
-      "formula": "C(\\tau) = \\lim_{N \\to \\infty} \\frac{1}{2NT} \\int_{-NT}^{NT} \\sum_{n} \\sum_{i} x_n x_i\\, g(t-nT) g(t+\\tau-iT)\\, dt",
-      "perche": "È la definizione di media temporale applicata al prodotto delle due somme del passo 3; gli indici diversi evitano di confondere i due fattori."
+      "testo": "La finestra di osservazione cresce: si porta l’integrale sull’intero asse mantenendo la media sui simboli nella finestra.",
+      "formula": "C(\\tau) = \\lim_{N\\to\\infty}\\frac{1}{2NT}\\sum_{n=-N}^{N}\\sum_i x_n x_i\\int_{-\\infty}^{+\\infty}g(t-nT)g(t+\\tau-iT)\\,dt",
+      "perche": "Si assume che il contributo dei bordi si annulli nel limite e che siano leciti gli scambi usati; il fattore di media resta dentro il limite, come negli appunti."
     },
     {
       "n": 7,
-      "testo": "Si scambiano limite, somme e integrale: l'integrale interno dipende solo da $\\tau$ e dalla differenza degli indici, ed è l'autocorrelazione dell'impulso traslata.",
-      "formula": "\\int_{-\\infty}^{+\\infty} g(t-nT) g(t+\\tau-iT)\\, dt = \\phi[\\tau - (i-n)T] \\;\\Longrightarrow\\; C(\\tau) = \\lim_{N \\to \\infty} \\frac{1}{2NT} \\sum_{n=-N}^{N} \\sum_{i} x_n x_i\\, \\phi[\\tau - (i-n)T]",
-      "perche": "Per $N$ grande gli impulsi che contano sono quelli dentro la finestra di osservazione; il cambio di variabile nell'integrale lo riduce alla definizione di $\\phi$."
+      "testo": "Il cambio di variabile nell’integrale riconosce l’autocorrelazione dell’impulso traslata della differenza fra gli indici.",
+      "formula": "C(\\tau) = \\lim_{N\\to\\infty}\\frac{1}{2NT}\\sum_{n=-N}^{N}\\sum_i x_n x_i\\,\\phi[\\tau-(i-n)T]",
+      "perche": "Con $u=t-nT$ il prodotto integra $g(u)g(u+\\tau-(i-n)T)$: per definizione questo integrale è $\\phi[\\tau-(i-n)T]$."
     },
     {
       "n": 8,
@@ -100,16 +105,31 @@
     },
     {
       "n": 9,
-      "testo": "Si trasforma secondo Fourier: la convoluzione diventa prodotto, la trasformata di $\\phi$ è $|G(\\omega)|^2$ e quella della serie $\\{C_k\\}$ si riscrive con i coseni accoppiando $k$ e $-k$.",
-      "formula": "G_x(\\omega) = \\frac{F[C(\\tau)]}{\\pi} = \\frac{1}{\\pi T} |G(\\omega)|^2 \\left[ C_0 + 2 \\sum_{k=1}^{+\\infty} C_k \\cos k\\omega T \\right]",
-      "perche": "Valgono il teorema della convoluzione e $F[\\phi] = |G|^2$; inoltre $C_{-k} = C_k$ perché i simboli sono reali, quindi $e^{-jk\\omega T} + e^{jk\\omega T} = 2\\cos k\\omega T$.",
-      "figura": "spettro-distribuito-pam"
+      "testo": "Si trasforma la convoluzione dell’autocorrelazione. Nella figura si tengono come riferimento le righe periodiche già ottenute al passo 4.",
+      "formula": "F[C(\\tau)] = \\frac{1}{T}F[\\{C_k\\}*\\phi] = \\frac{1}{T}F[\\{C_k\\}]\\,|G(\\omega)|^2",
+      "perche": "Il teorema della convoluzione trasforma il prodotto convolutivo in un prodotto; la trasformata dell’autocorrelazione dell’impulso è $|G(\\omega)|^2$.",
+      "figura": "spettro-pam-righe-progressivo"
     },
     {
       "n": 10,
-      "testo": "Si torna ai simboli originari con $x_n = a_n - \\langle a_n \\rangle$: per ogni $k$ vale $C_k = \\langle a_n a_{n+k} \\rangle - [\\langle a_n \\rangle]^2$ e in particolare $C_0 = \\langle a_n^2 \\rangle - [\\langle a_n \\rangle]^2$. Si ottiene la formula finale dello spettro distribuito, che si sovrappone allo spettro a righe del passo 4.",
+      "testo": "Si sviluppa la trasformata della successione $\\{C_k\\}$ accoppiando i termini con indici opposti. La figura aggiunge il continuo nell’esempio di simboli centrati incorrelati.",
+      "formula": "F[\\{C_k\\}] = \\sum_{k=-\\infty}^{+\\infty}C_k e^{-jk\\omega T} = C_0+2\\sum_{k=1}^{+\\infty}C_k\\cos(k\\omega T)",
+      "perche": "Per simboli reali $C_{-k}=C_k$: le due esponenziali di indici opposti si sommano nel doppio del coseno. La curva mostrata è un caso particolare, non la forma generale.",
+      "figura": "spettro-pam-righe-continuo"
+    },
+    {
+      "n": 11,
+      "testo": "Si riscrivono le covarianze mediante i simboli originari: lo spettro distribuito ottenuto si sovrappone alle righe della componente periodica.",
       "formula": "G_x(\\omega) = \\frac{1}{\\pi T} |G(\\omega)|^2 \\left\\{ \\langle a_n^2 \\rangle - [\\langle a_n \\rangle]^2 + 2 \\sum_{k=1}^{+\\infty} \\left[ \\langle a_n a_{n+k} \\rangle - [\\langle a_n \\rangle]^2 \\right] \\cos k\\omega T \\right\\}",
-      "perche": "Sviluppando il prodotto $(a_n - \\langle a_n \\rangle)(a_{n+k} - \\langle a_n \\rangle)$ e mediando, i termini misti danno ciascuno $[\\langle a_n \\rangle]^2$ e resta la covarianza dei simboli a distanza $k$."
+      "perche": "Sviluppando il prodotto $(a_n - \\langle a_n \\rangle)(a_{n+k} - \\langle a_n \\rangle)$ e mediando, i termini misti danno ciascuno $[\\langle a_n \\rangle]^2$ e resta la covarianza dei simboli a distanza $k$.",
+      "figura": "spettro-pam-totale"
+    },
+    {
+      "n": 12,
+      "testo": "Controllo di potenza: con impulso rettangolare unitario di durata $T$ e simboli indipendenti equiprobabili $+1$ e $-1$, la media è zero e la potenza vale $1$.",
+      "formula": "\\int_{-\\infty}^{+\\infty}|G(\\omega)|^2\\,d\\omega = 2\\pi\\int_{-\\infty}^{+\\infty}g^2(t)\\,dt = 2\\pi T \\;\\Longrightarrow\\; P=\\int_0^{+\\infty}G_x(\\omega)\\,d\\omega = \\langle a_n^2\\rangle = 1",
+      "perche": "Per Parseval l’energia del rettangolo è $T$; con simboli centrati incorrelati resta solo $C_0=1$ e la convenzione unilaterale dà il fattore $1/(\\pi T)$.",
+      "figura": "spettro-distribuito-pam"
     }
   ],
   "formula_finale": "c_n = \\frac{\\langle a_n \\rangle}{T} G\\!\\left(\\frac{2\\pi n}{T}\\right), \\qquad G_x(\\omega) = \\frac{1}{\\pi T} |G(\\omega)|^2 \\left\\{ \\langle a_n^2 \\rangle - [\\langle a_n \\rangle]^2 + 2 \\sum_{k=1}^{+\\infty} \\left[ \\langle a_n a_{n+k} \\rangle - [\\langle a_n \\rangle]^2 \\right] \\cos k\\omega T \\right\\}",
@@ -909,9 +929,1840 @@
           "a": "out"
         }
       ]
+    },
+    {
+      "id": "spettro-pam-righe-progressivo",
+      "tipo": "grafico",
+      "titolo": "PAM: righe e inviluppo",
+      "descrizione": "Novità: le righe della componente periodica e il loro inviluppo, in un esempio con impulso rettangolare di durata metà del periodo e valor medio non nullo. Le altezze delle masse sono normalizzate separatamente dalla densità.",
+      "asse_x": {
+        "etichetta": "ω (rad/s), T = 1 s",
+        "min": 0,
+        "max": 20,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 6.2832,
+            "etichetta": "2π/T"
+          },
+          {
+            "valore": 12.5664,
+            "etichetta": "4π/T"
+          },
+          {
+            "valore": 18.8496,
+            "etichetta": "6π/T"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "normalizzazioni separate (schema)",
+        "min": 0,
+        "max": 1.15
+      },
+      "serie": [
+        {
+          "stile": "righe",
+          "etichetta": "masse discrete, scala separata",
+          "punti": [
+            [
+              0,
+              0.5
+            ],
+            [
+              6.2832,
+              0.4053
+            ],
+            [
+              12.5664,
+              0
+            ],
+            [
+              18.8496,
+              0.045
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "inviluppo normalizzato |G(ω)|²",
+          "punti": [
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.25,
+              0.9987
+            ],
+            [
+              0.5,
+              0.9948
+            ],
+            [
+              0.75,
+              0.98834
+            ],
+            [
+              1.0,
+              0.97934
+            ],
+            [
+              1.25,
+              0.96787
+            ],
+            [
+              1.5,
+              0.954
+            ],
+            [
+              1.75,
+              0.9378
+            ],
+            [
+              2.0,
+              0.9194
+            ],
+            [
+              2.25,
+              0.89888
+            ],
+            [
+              2.5,
+              0.87639
+            ],
+            [
+              2.75,
+              0.85205
+            ],
+            [
+              3.0,
+              0.82601
+            ],
+            [
+              3.25,
+              0.79843
+            ],
+            [
+              3.5,
+              0.76947
+            ],
+            [
+              3.75,
+              0.73929
+            ],
+            [
+              4.0,
+              0.70807
+            ],
+            [
+              4.25,
+              0.67599
+            ],
+            [
+              4.5,
+              0.64323
+            ],
+            [
+              4.75,
+              0.60996
+            ],
+            [
+              5.0,
+              0.57637
+            ],
+            [
+              5.25,
+              0.54262
+            ],
+            [
+              5.5,
+              0.50891
+            ],
+            [
+              5.75,
+              0.47538
+            ],
+            [
+              6.0,
+              0.44222
+            ],
+            [
+              6.25,
+              0.40957
+            ],
+            [
+              6.5,
+              0.37759
+            ],
+            [
+              6.75,
+              0.3464
+            ],
+            [
+              7.0,
+              0.31616
+            ],
+            [
+              7.25,
+              0.28696
+            ],
+            [
+              7.5,
+              0.25892
+            ],
+            [
+              7.75,
+              0.23214
+            ],
+            [
+              8.0,
+              0.20671
+            ],
+            [
+              8.25,
+              0.18268
+            ],
+            [
+              8.5,
+              0.16012
+            ],
+            [
+              8.75,
+              0.13908
+            ],
+            [
+              9.0,
+              0.11958
+            ],
+            [
+              9.25,
+              0.10166
+            ],
+            [
+              9.5,
+              0.08531
+            ],
+            [
+              9.75,
+              0.07053
+            ],
+            [
+              10.0,
+              0.05731
+            ],
+            [
+              10.25,
+              0.04561
+            ],
+            [
+              10.5,
+              0.0354
+            ],
+            [
+              10.75,
+              0.02664
+            ],
+            [
+              11.0,
+              0.01926
+            ],
+            [
+              11.25,
+              0.0132
+            ],
+            [
+              11.5,
+              0.0084
+            ],
+            [
+              11.75,
+              0.00476
+            ],
+            [
+              12.0,
+              0.00221
+            ],
+            [
+              12.25,
+              0.00067
+            ],
+            [
+              12.5,
+              3e-05
+            ],
+            [
+              12.75,
+              0.00021
+            ],
+            [
+              13.0,
+              0.00111
+            ],
+            [
+              13.25,
+              0.00264
+            ],
+            [
+              13.5,
+              0.0047
+            ],
+            [
+              13.75,
+              0.0072
+            ],
+            [
+              14.0,
+              0.01004
+            ],
+            [
+              14.25,
+              0.01315
+            ],
+            [
+              14.5,
+              0.01644
+            ],
+            [
+              14.75,
+              0.01982
+            ],
+            [
+              15.0,
+              0.02323
+            ],
+            [
+              15.25,
+              0.02659
+            ],
+            [
+              15.5,
+              0.02984
+            ],
+            [
+              15.75,
+              0.03293
+            ],
+            [
+              16.0,
+              0.0358
+            ],
+            [
+              16.25,
+              0.03841
+            ],
+            [
+              16.5,
+              0.04072
+            ],
+            [
+              16.75,
+              0.04271
+            ],
+            [
+              17.0,
+              0.04435
+            ],
+            [
+              17.25,
+              0.04562
+            ],
+            [
+              17.5,
+              0.04652
+            ],
+            [
+              17.75,
+              0.04704
+            ],
+            [
+              18.0,
+              0.04719
+            ],
+            [
+              18.25,
+              0.04697
+            ],
+            [
+              18.5,
+              0.04639
+            ],
+            [
+              18.75,
+              0.04548
+            ],
+            [
+              19.0,
+              0.04426
+            ],
+            [
+              19.25,
+              0.04275
+            ],
+            [
+              19.5,
+              0.04097
+            ],
+            [
+              19.75,
+              0.03898
+            ],
+            [
+              20.0,
+              0.03678
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spettro-pam-righe-continuo",
+      "tipo": "grafico",
+      "titolo": "PAM: aggiunta della densità continua",
+      "descrizione": "Novità: si aggiunge la densità continua della componente centrata, per simboli centrati incorrelati. In questo esempio coincide, dopo normalizzazione, con l’inviluppo già tratteggiato; masse discrete e densità usano scale indipendenti.",
+      "asse_x": {
+        "etichetta": "ω (rad/s), T = 1 s",
+        "min": 0,
+        "max": 20,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 6.2832,
+            "etichetta": "2π/T"
+          },
+          {
+            "valore": 12.5664,
+            "etichetta": "4π/T"
+          },
+          {
+            "valore": 18.8496,
+            "etichetta": "6π/T"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "normalizzazioni separate (schema)",
+        "min": 0,
+        "max": 1.15
+      },
+      "serie": [
+        {
+          "stile": "righe",
+          "etichetta": "masse discrete, scala separata",
+          "punti": [
+            [
+              0,
+              0.5
+            ],
+            [
+              6.2832,
+              0.4053
+            ],
+            [
+              12.5664,
+              0
+            ],
+            [
+              18.8496,
+              0.045
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "inviluppo normalizzato |G(ω)|²",
+          "punti": [
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.25,
+              0.9987
+            ],
+            [
+              0.5,
+              0.9948
+            ],
+            [
+              0.75,
+              0.98834
+            ],
+            [
+              1.0,
+              0.97934
+            ],
+            [
+              1.25,
+              0.96787
+            ],
+            [
+              1.5,
+              0.954
+            ],
+            [
+              1.75,
+              0.9378
+            ],
+            [
+              2.0,
+              0.9194
+            ],
+            [
+              2.25,
+              0.89888
+            ],
+            [
+              2.5,
+              0.87639
+            ],
+            [
+              2.75,
+              0.85205
+            ],
+            [
+              3.0,
+              0.82601
+            ],
+            [
+              3.25,
+              0.79843
+            ],
+            [
+              3.5,
+              0.76947
+            ],
+            [
+              3.75,
+              0.73929
+            ],
+            [
+              4.0,
+              0.70807
+            ],
+            [
+              4.25,
+              0.67599
+            ],
+            [
+              4.5,
+              0.64323
+            ],
+            [
+              4.75,
+              0.60996
+            ],
+            [
+              5.0,
+              0.57637
+            ],
+            [
+              5.25,
+              0.54262
+            ],
+            [
+              5.5,
+              0.50891
+            ],
+            [
+              5.75,
+              0.47538
+            ],
+            [
+              6.0,
+              0.44222
+            ],
+            [
+              6.25,
+              0.40957
+            ],
+            [
+              6.5,
+              0.37759
+            ],
+            [
+              6.75,
+              0.3464
+            ],
+            [
+              7.0,
+              0.31616
+            ],
+            [
+              7.25,
+              0.28696
+            ],
+            [
+              7.5,
+              0.25892
+            ],
+            [
+              7.75,
+              0.23214
+            ],
+            [
+              8.0,
+              0.20671
+            ],
+            [
+              8.25,
+              0.18268
+            ],
+            [
+              8.5,
+              0.16012
+            ],
+            [
+              8.75,
+              0.13908
+            ],
+            [
+              9.0,
+              0.11958
+            ],
+            [
+              9.25,
+              0.10166
+            ],
+            [
+              9.5,
+              0.08531
+            ],
+            [
+              9.75,
+              0.07053
+            ],
+            [
+              10.0,
+              0.05731
+            ],
+            [
+              10.25,
+              0.04561
+            ],
+            [
+              10.5,
+              0.0354
+            ],
+            [
+              10.75,
+              0.02664
+            ],
+            [
+              11.0,
+              0.01926
+            ],
+            [
+              11.25,
+              0.0132
+            ],
+            [
+              11.5,
+              0.0084
+            ],
+            [
+              11.75,
+              0.00476
+            ],
+            [
+              12.0,
+              0.00221
+            ],
+            [
+              12.25,
+              0.00067
+            ],
+            [
+              12.5,
+              3e-05
+            ],
+            [
+              12.75,
+              0.00021
+            ],
+            [
+              13.0,
+              0.00111
+            ],
+            [
+              13.25,
+              0.00264
+            ],
+            [
+              13.5,
+              0.0047
+            ],
+            [
+              13.75,
+              0.0072
+            ],
+            [
+              14.0,
+              0.01004
+            ],
+            [
+              14.25,
+              0.01315
+            ],
+            [
+              14.5,
+              0.01644
+            ],
+            [
+              14.75,
+              0.01982
+            ],
+            [
+              15.0,
+              0.02323
+            ],
+            [
+              15.25,
+              0.02659
+            ],
+            [
+              15.5,
+              0.02984
+            ],
+            [
+              15.75,
+              0.03293
+            ],
+            [
+              16.0,
+              0.0358
+            ],
+            [
+              16.25,
+              0.03841
+            ],
+            [
+              16.5,
+              0.04072
+            ],
+            [
+              16.75,
+              0.04271
+            ],
+            [
+              17.0,
+              0.04435
+            ],
+            [
+              17.25,
+              0.04562
+            ],
+            [
+              17.5,
+              0.04652
+            ],
+            [
+              17.75,
+              0.04704
+            ],
+            [
+              18.0,
+              0.04719
+            ],
+            [
+              18.25,
+              0.04697
+            ],
+            [
+              18.5,
+              0.04639
+            ],
+            [
+              18.75,
+              0.04548
+            ],
+            [
+              19.0,
+              0.04426
+            ],
+            [
+              19.25,
+              0.04275
+            ],
+            [
+              19.5,
+              0.04097
+            ],
+            [
+              19.75,
+              0.03898
+            ],
+            [
+              20.0,
+              0.03678
+            ]
+          ]
+        },
+        {
+          "stile": "linea",
+          "etichetta": "densità continua, scala separata",
+          "punti": [
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.25,
+              0.9987
+            ],
+            [
+              0.5,
+              0.9948
+            ],
+            [
+              0.75,
+              0.98834
+            ],
+            [
+              1.0,
+              0.97934
+            ],
+            [
+              1.25,
+              0.96787
+            ],
+            [
+              1.5,
+              0.954
+            ],
+            [
+              1.75,
+              0.9378
+            ],
+            [
+              2.0,
+              0.9194
+            ],
+            [
+              2.25,
+              0.89888
+            ],
+            [
+              2.5,
+              0.87639
+            ],
+            [
+              2.75,
+              0.85205
+            ],
+            [
+              3.0,
+              0.82601
+            ],
+            [
+              3.25,
+              0.79843
+            ],
+            [
+              3.5,
+              0.76947
+            ],
+            [
+              3.75,
+              0.73929
+            ],
+            [
+              4.0,
+              0.70807
+            ],
+            [
+              4.25,
+              0.67599
+            ],
+            [
+              4.5,
+              0.64323
+            ],
+            [
+              4.75,
+              0.60996
+            ],
+            [
+              5.0,
+              0.57637
+            ],
+            [
+              5.25,
+              0.54262
+            ],
+            [
+              5.5,
+              0.50891
+            ],
+            [
+              5.75,
+              0.47538
+            ],
+            [
+              6.0,
+              0.44222
+            ],
+            [
+              6.25,
+              0.40957
+            ],
+            [
+              6.5,
+              0.37759
+            ],
+            [
+              6.75,
+              0.3464
+            ],
+            [
+              7.0,
+              0.31616
+            ],
+            [
+              7.25,
+              0.28696
+            ],
+            [
+              7.5,
+              0.25892
+            ],
+            [
+              7.75,
+              0.23214
+            ],
+            [
+              8.0,
+              0.20671
+            ],
+            [
+              8.25,
+              0.18268
+            ],
+            [
+              8.5,
+              0.16012
+            ],
+            [
+              8.75,
+              0.13908
+            ],
+            [
+              9.0,
+              0.11958
+            ],
+            [
+              9.25,
+              0.10166
+            ],
+            [
+              9.5,
+              0.08531
+            ],
+            [
+              9.75,
+              0.07053
+            ],
+            [
+              10.0,
+              0.05731
+            ],
+            [
+              10.25,
+              0.04561
+            ],
+            [
+              10.5,
+              0.0354
+            ],
+            [
+              10.75,
+              0.02664
+            ],
+            [
+              11.0,
+              0.01926
+            ],
+            [
+              11.25,
+              0.0132
+            ],
+            [
+              11.5,
+              0.0084
+            ],
+            [
+              11.75,
+              0.00476
+            ],
+            [
+              12.0,
+              0.00221
+            ],
+            [
+              12.25,
+              0.00067
+            ],
+            [
+              12.5,
+              3e-05
+            ],
+            [
+              12.75,
+              0.00021
+            ],
+            [
+              13.0,
+              0.00111
+            ],
+            [
+              13.25,
+              0.00264
+            ],
+            [
+              13.5,
+              0.0047
+            ],
+            [
+              13.75,
+              0.0072
+            ],
+            [
+              14.0,
+              0.01004
+            ],
+            [
+              14.25,
+              0.01315
+            ],
+            [
+              14.5,
+              0.01644
+            ],
+            [
+              14.75,
+              0.01982
+            ],
+            [
+              15.0,
+              0.02323
+            ],
+            [
+              15.25,
+              0.02659
+            ],
+            [
+              15.5,
+              0.02984
+            ],
+            [
+              15.75,
+              0.03293
+            ],
+            [
+              16.0,
+              0.0358
+            ],
+            [
+              16.25,
+              0.03841
+            ],
+            [
+              16.5,
+              0.04072
+            ],
+            [
+              16.75,
+              0.04271
+            ],
+            [
+              17.0,
+              0.04435
+            ],
+            [
+              17.25,
+              0.04562
+            ],
+            [
+              17.5,
+              0.04652
+            ],
+            [
+              17.75,
+              0.04704
+            ],
+            [
+              18.0,
+              0.04719
+            ],
+            [
+              18.25,
+              0.04697
+            ],
+            [
+              18.5,
+              0.04639
+            ],
+            [
+              18.75,
+              0.04548
+            ],
+            [
+              19.0,
+              0.04426
+            ],
+            [
+              19.25,
+              0.04275
+            ],
+            [
+              19.5,
+              0.04097
+            ],
+            [
+              19.75,
+              0.03898
+            ],
+            [
+              20.0,
+              0.03678
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spettro-pam-totale",
+      "tipo": "grafico",
+      "titolo": "PAM: sovrapposizione dei due spettri",
+      "descrizione": "Novità: l’annotazione mostra la lettura congiunta dei due contributi. Le righe nascono dal valor medio e il continuo dalla parte a media zero; le masse e la densità sono normalizzate separatamente e non si sommano come altezze.",
+      "asse_x": {
+        "etichetta": "ω (rad/s), T = 1 s",
+        "min": 0,
+        "max": 20,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 6.2832,
+            "etichetta": "2π/T"
+          },
+          {
+            "valore": 12.5664,
+            "etichetta": "4π/T"
+          },
+          {
+            "valore": 18.8496,
+            "etichetta": "6π/T"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "normalizzazioni separate (schema)",
+        "min": 0,
+        "max": 1.15
+      },
+      "serie": [
+        {
+          "stile": "righe",
+          "etichetta": "masse discrete, scala separata",
+          "punti": [
+            [
+              0,
+              0.5
+            ],
+            [
+              6.2832,
+              0.4053
+            ],
+            [
+              12.5664,
+              0
+            ],
+            [
+              18.8496,
+              0.045
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "inviluppo normalizzato |G(ω)|²",
+          "punti": [
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.25,
+              0.9987
+            ],
+            [
+              0.5,
+              0.9948
+            ],
+            [
+              0.75,
+              0.98834
+            ],
+            [
+              1.0,
+              0.97934
+            ],
+            [
+              1.25,
+              0.96787
+            ],
+            [
+              1.5,
+              0.954
+            ],
+            [
+              1.75,
+              0.9378
+            ],
+            [
+              2.0,
+              0.9194
+            ],
+            [
+              2.25,
+              0.89888
+            ],
+            [
+              2.5,
+              0.87639
+            ],
+            [
+              2.75,
+              0.85205
+            ],
+            [
+              3.0,
+              0.82601
+            ],
+            [
+              3.25,
+              0.79843
+            ],
+            [
+              3.5,
+              0.76947
+            ],
+            [
+              3.75,
+              0.73929
+            ],
+            [
+              4.0,
+              0.70807
+            ],
+            [
+              4.25,
+              0.67599
+            ],
+            [
+              4.5,
+              0.64323
+            ],
+            [
+              4.75,
+              0.60996
+            ],
+            [
+              5.0,
+              0.57637
+            ],
+            [
+              5.25,
+              0.54262
+            ],
+            [
+              5.5,
+              0.50891
+            ],
+            [
+              5.75,
+              0.47538
+            ],
+            [
+              6.0,
+              0.44222
+            ],
+            [
+              6.25,
+              0.40957
+            ],
+            [
+              6.5,
+              0.37759
+            ],
+            [
+              6.75,
+              0.3464
+            ],
+            [
+              7.0,
+              0.31616
+            ],
+            [
+              7.25,
+              0.28696
+            ],
+            [
+              7.5,
+              0.25892
+            ],
+            [
+              7.75,
+              0.23214
+            ],
+            [
+              8.0,
+              0.20671
+            ],
+            [
+              8.25,
+              0.18268
+            ],
+            [
+              8.5,
+              0.16012
+            ],
+            [
+              8.75,
+              0.13908
+            ],
+            [
+              9.0,
+              0.11958
+            ],
+            [
+              9.25,
+              0.10166
+            ],
+            [
+              9.5,
+              0.08531
+            ],
+            [
+              9.75,
+              0.07053
+            ],
+            [
+              10.0,
+              0.05731
+            ],
+            [
+              10.25,
+              0.04561
+            ],
+            [
+              10.5,
+              0.0354
+            ],
+            [
+              10.75,
+              0.02664
+            ],
+            [
+              11.0,
+              0.01926
+            ],
+            [
+              11.25,
+              0.0132
+            ],
+            [
+              11.5,
+              0.0084
+            ],
+            [
+              11.75,
+              0.00476
+            ],
+            [
+              12.0,
+              0.00221
+            ],
+            [
+              12.25,
+              0.00067
+            ],
+            [
+              12.5,
+              3e-05
+            ],
+            [
+              12.75,
+              0.00021
+            ],
+            [
+              13.0,
+              0.00111
+            ],
+            [
+              13.25,
+              0.00264
+            ],
+            [
+              13.5,
+              0.0047
+            ],
+            [
+              13.75,
+              0.0072
+            ],
+            [
+              14.0,
+              0.01004
+            ],
+            [
+              14.25,
+              0.01315
+            ],
+            [
+              14.5,
+              0.01644
+            ],
+            [
+              14.75,
+              0.01982
+            ],
+            [
+              15.0,
+              0.02323
+            ],
+            [
+              15.25,
+              0.02659
+            ],
+            [
+              15.5,
+              0.02984
+            ],
+            [
+              15.75,
+              0.03293
+            ],
+            [
+              16.0,
+              0.0358
+            ],
+            [
+              16.25,
+              0.03841
+            ],
+            [
+              16.5,
+              0.04072
+            ],
+            [
+              16.75,
+              0.04271
+            ],
+            [
+              17.0,
+              0.04435
+            ],
+            [
+              17.25,
+              0.04562
+            ],
+            [
+              17.5,
+              0.04652
+            ],
+            [
+              17.75,
+              0.04704
+            ],
+            [
+              18.0,
+              0.04719
+            ],
+            [
+              18.25,
+              0.04697
+            ],
+            [
+              18.5,
+              0.04639
+            ],
+            [
+              18.75,
+              0.04548
+            ],
+            [
+              19.0,
+              0.04426
+            ],
+            [
+              19.25,
+              0.04275
+            ],
+            [
+              19.5,
+              0.04097
+            ],
+            [
+              19.75,
+              0.03898
+            ],
+            [
+              20.0,
+              0.03678
+            ]
+          ]
+        },
+        {
+          "stile": "linea",
+          "etichetta": "densità continua, scala separata",
+          "punti": [
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.25,
+              0.9987
+            ],
+            [
+              0.5,
+              0.9948
+            ],
+            [
+              0.75,
+              0.98834
+            ],
+            [
+              1.0,
+              0.97934
+            ],
+            [
+              1.25,
+              0.96787
+            ],
+            [
+              1.5,
+              0.954
+            ],
+            [
+              1.75,
+              0.9378
+            ],
+            [
+              2.0,
+              0.9194
+            ],
+            [
+              2.25,
+              0.89888
+            ],
+            [
+              2.5,
+              0.87639
+            ],
+            [
+              2.75,
+              0.85205
+            ],
+            [
+              3.0,
+              0.82601
+            ],
+            [
+              3.25,
+              0.79843
+            ],
+            [
+              3.5,
+              0.76947
+            ],
+            [
+              3.75,
+              0.73929
+            ],
+            [
+              4.0,
+              0.70807
+            ],
+            [
+              4.25,
+              0.67599
+            ],
+            [
+              4.5,
+              0.64323
+            ],
+            [
+              4.75,
+              0.60996
+            ],
+            [
+              5.0,
+              0.57637
+            ],
+            [
+              5.25,
+              0.54262
+            ],
+            [
+              5.5,
+              0.50891
+            ],
+            [
+              5.75,
+              0.47538
+            ],
+            [
+              6.0,
+              0.44222
+            ],
+            [
+              6.25,
+              0.40957
+            ],
+            [
+              6.5,
+              0.37759
+            ],
+            [
+              6.75,
+              0.3464
+            ],
+            [
+              7.0,
+              0.31616
+            ],
+            [
+              7.25,
+              0.28696
+            ],
+            [
+              7.5,
+              0.25892
+            ],
+            [
+              7.75,
+              0.23214
+            ],
+            [
+              8.0,
+              0.20671
+            ],
+            [
+              8.25,
+              0.18268
+            ],
+            [
+              8.5,
+              0.16012
+            ],
+            [
+              8.75,
+              0.13908
+            ],
+            [
+              9.0,
+              0.11958
+            ],
+            [
+              9.25,
+              0.10166
+            ],
+            [
+              9.5,
+              0.08531
+            ],
+            [
+              9.75,
+              0.07053
+            ],
+            [
+              10.0,
+              0.05731
+            ],
+            [
+              10.25,
+              0.04561
+            ],
+            [
+              10.5,
+              0.0354
+            ],
+            [
+              10.75,
+              0.02664
+            ],
+            [
+              11.0,
+              0.01926
+            ],
+            [
+              11.25,
+              0.0132
+            ],
+            [
+              11.5,
+              0.0084
+            ],
+            [
+              11.75,
+              0.00476
+            ],
+            [
+              12.0,
+              0.00221
+            ],
+            [
+              12.25,
+              0.00067
+            ],
+            [
+              12.5,
+              3e-05
+            ],
+            [
+              12.75,
+              0.00021
+            ],
+            [
+              13.0,
+              0.00111
+            ],
+            [
+              13.25,
+              0.00264
+            ],
+            [
+              13.5,
+              0.0047
+            ],
+            [
+              13.75,
+              0.0072
+            ],
+            [
+              14.0,
+              0.01004
+            ],
+            [
+              14.25,
+              0.01315
+            ],
+            [
+              14.5,
+              0.01644
+            ],
+            [
+              14.75,
+              0.01982
+            ],
+            [
+              15.0,
+              0.02323
+            ],
+            [
+              15.25,
+              0.02659
+            ],
+            [
+              15.5,
+              0.02984
+            ],
+            [
+              15.75,
+              0.03293
+            ],
+            [
+              16.0,
+              0.0358
+            ],
+            [
+              16.25,
+              0.03841
+            ],
+            [
+              16.5,
+              0.04072
+            ],
+            [
+              16.75,
+              0.04271
+            ],
+            [
+              17.0,
+              0.04435
+            ],
+            [
+              17.25,
+              0.04562
+            ],
+            [
+              17.5,
+              0.04652
+            ],
+            [
+              17.75,
+              0.04704
+            ],
+            [
+              18.0,
+              0.04719
+            ],
+            [
+              18.25,
+              0.04697
+            ],
+            [
+              18.5,
+              0.04639
+            ],
+            [
+              18.75,
+              0.04548
+            ],
+            [
+              19.0,
+              0.04426
+            ],
+            [
+              19.25,
+              0.04275
+            ],
+            [
+              19.5,
+              0.04097
+            ],
+            [
+              19.75,
+              0.03898
+            ],
+            [
+              20.0,
+              0.03678
+            ]
+          ]
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": 10,
+          "y": 0.72,
+          "testo": "Righe + continuo"
+        }
+      ]
     }
   ],
-  "a_voce": "È la domanda da dieci punti e la imposto con calma. Un segnale PAM è una fila di impulsi uguali, uno ogni T, ciascuno scalato dal simbolo corrispondente: lo scrivo come convoluzione fra la serie dei simboli e l'impulso formatore. Poi separo il valor medio: la parte costante dei simboli ripete l'impulso in modo periodico, e un segnale periodico ha spettro a righe; le righe stanno ai multipli di due pi greco diviso T e le loro ampiezze sono la trasformata dell'impulso campionata in quei punti, divisa per T e moltiplicata per il valor medio. La parte che resta ha valor medio zero e va trattata con l'autocorrelazione: calcolo la media temporale del prodotto fra il segnale e la sua copia ritardata, faccio il cambio di indice i uguale a n più k e scopro che l'autocorrelazione è la convoluzione fra l'autocorrelazione dei simboli centrati e quella dell'impulso, divisa per T. Trasformando ottengo il secondo spettro: modulo quadro della trasformata dell'impulso, fattore uno diviso pi greco T per la convenzione unilaterale, e una serie di coseni con le covarianze dei simboli. I due spettri si sovrappongono: righe più continuo.",
+  "a_voce": "Parto da simboli a potenza finita, mediati su due N più uno campioni, e da un impulso a energia finita. Il PAM è una successione di copie dell’impulso, ognuna pesata dal suo simbolo. Separo il valor medio dalla parte centrata: la prima è periodica e produce righe alle armoniche di due pi greco diviso T. Per la seconda calcolo la media temporale del prodotto con la copia ritardata: ottengo una doppia somma, faccio crescere la finestra e riconosco l’autocorrelazione dell’impulso. Con il cambio i uguale a n più k compare la convoluzione con le covarianze dei simboli, divisa per T. La trasformata della convoluzione è un prodotto; accoppiando indici opposti ottengo la serie di coseni e, nella convenzione unilaterale, il fattore uno diviso pi greco T. Le righe e il continuo descrivono contributi distinti: le masse delle righe non sono altezze di densità. Come controllo, per simboli indipendenti più o meno uno equiprobabili e un rettangolo unitario di durata T, l’integrale dello spettro dà potenza uno.",
   "errori_frequenti": [
     {
       "errore": "Scrivere il fattore dello spettro distribuito come $1/(2\\pi T)$ mescolando le convenzioni, o omettere del tutto il divisore $\\pi$.",
@@ -926,22 +2777,23 @@
     {
       "errore": "Saltare il cambio di indice $i = n + k$ e scrivere direttamente la serie di coseni.",
       "perche_sbagliato": "È proprio quel cambio che fa emergere le covarianze $C_k$ a distanza $k$ e la struttura di convoluzione con $\\phi$: senza, la formula finale è un atto di fede e la domanda chiede il calcolo.",
-      "correzione": "Mostrare i passi 6-9: doppia somma, integrale che dà $\\phi[\\tau-(i-n)T]$, cambio $i = n+k$, trasformata e accoppiamento $k$ con $-k$ che produce $2\\cos k\\omega T$."
+      "correzione": "Mostrare i passi 5-10: doppia somma, limite della finestra, identificazione con $\\phi[\\tau-(i-n)T]$, cambio $i=n+k$, trasformata e accoppiamento $k$ con $-k$."
     }
   ],
   "versione_compatta": [
-    "PAM: $s(t) = \\sum_n a_n g(t-nT) = \\{a_n\\} * g(t)$, $\\langle a_n^2 \\rangle < \\infty$, $F[\\phi] = |G(\\omega)|^2$.",
-    "Centro i simboli: $x_n = a_n - \\langle a_n \\rangle$, $s(t) = s_m(t) + x(t)$.",
-    "Spettro a righe di $s_m$: $c_n = \\frac{\\langle a_n \\rangle}{T} G(2\\pi n/T)$ alle pulsazioni $2\\pi n/T$.",
-    "Autocorrelazione: $C(\\tau) = \\frac{1}{T}\\sum_k C_k \\phi(\\tau-kT)$ (cambio $i = n+k$).",
-    "Trasformo e accoppio $\\pm k$: $G_x(\\omega) = \\frac{1}{\\pi T}|G(\\omega)|^2 [C_0 + 2\\sum_{k \\ge 1} C_k \\cos k\\omega T]$.",
-    "Con $C_k = \\langle a_n a_{n+k} \\rangle - [\\langle a_n \\rangle]^2$: formula finale; continuo sovrapposto alle righe."
+    "PAM: $s(t)=\\sum_n a_n g(t-nT)$, con potenza media dei simboli definita mediante $1/(2N+1)$.",
+    "Centro i simboli: $x_n=a_n-\\langle a_n\\rangle$ e $s(t)=s_m(t)+x(t)$.",
+    "Spettro a righe di $s_m$: $c_n=\\frac{\\langle a_n\\rangle}{T}G(2\\pi n/T)$.",
+    "Media temporale: doppia somma e limite della finestra; l’integrale del prodotto degli impulsi dà $\\phi[\\tau-(i-n)T]$.",
+    "Con $i=n+k$: $C(\\tau)=\\frac1T\\sum_k C_k\\phi(\\tau-kT)$.",
+    "Trasformo e accoppio $\\pm k$: $G_x(\\omega)=\\frac1{\\pi T}|G(\\omega)|^2[C_0+2\\sum_{k\\ge1}C_k\\cos k\\omega T]$.",
+    "Con simboli indipendenti equiprobabili $\\pm1$ e rettangolo unitario di durata $T$, $P=\\langle a_n^2\\rangle=1$."
   ],
   "a_buchi": {
-    "testo": "Il segnale PAM è $s(t) = \\sum_n$ ___1___ $g(t-nT)$. La componente periodica nasce dal ___2___ dei simboli e ha righe a pulsazioni multiple di ___3___. Per la componente a valor medio zero si calcola l'___4___ $C(\\tau)$; con il cambio di indice $i = n + k$ essa diventa $(1/T)\\sum_k C_k \\phi(\\tau - kT)$, dove $\\phi$ è l'autocorrelazione dell'___5___. Trasformando si ottiene il fattore $|G(\\omega)|^2$ e, nella convenzione unilaterale, il fattore complessivo ___6___ davanti alla serie di coseni.",
+    "testo": "Il segnale PAM è $s(t)=\\sum_n$ ___1___ $g(t-nT)$. La componente periodica nasce dal ___2___ dei simboli e ha righe a pulsazioni multiple di ___3___. La componente centrata si studia con l’___4___, passando al limite della finestra e cambiando indice. La trasformata contiene lo spettro di energia dell’___5___ e il fattore unilaterale ___6___.",
     "soluzioni": {
       "1": [
-        "a_n",
+        "an",
         "a con pedice n"
       ],
       "2": [
@@ -949,7 +2801,9 @@
       ],
       "3": [
         "2π/T",
-        "due pi greco diviso T"
+        "due pi greco diviso T",
+        "2 pi/T",
+        "2pigreco/T"
       ],
       "4": [
         "autocorrelazione"

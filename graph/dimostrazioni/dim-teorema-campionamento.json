@@ -49,50 +49,61 @@
   "passi": [
     {
       "n": 1,
-      "testo": "Si fissano gli istanti di lettura $t_n = nT$ e i valori campionati $x_n = x(nT)$, che formano la serie temporale; senza altre condizioni infinite funzioni passano per gli stessi campioni, quindi serve un'ipotesi in più.",
+      "testo": "Si fissano gli istanti di lettura $t_n = nT$ e i valori campionati $x_n = x(nT)$, che formano la serie temporale; senza altre condizioni infinite funzioni passano per gli stessi campioni, quindi serve un'ipotesi in più. Si considera il segnale limitato in banda dell’ipotesi, rappresentato dalla sola componente centrale.",
       "formula": "x_n = x(nT), \\qquad n = \\dots, -1, 0, 1, \\dots",
-      "perche": "È la definizione di campionamento uniforme; l'origine si può porre in un istante di campionamento senza perdere generalità."
+      "perche": "È la definizione di campionamento uniforme; l'origine si può porre in un istante di campionamento senza perdere generalità.",
+      "figura": "spettro-solo-centrale"
     },
     {
       "n": 2,
       "testo": "Si richiama la trasformata della serie temporale: conoscere i campioni equivale a conoscere la ripetizione periodica della trasformata del segnale con periodo $\\omega_s = 2\\pi/T$, scalata di $1/T$.",
       "formula": "X_s(\\omega) = \\frac{1}{T} \\sum_{k=-\\infty}^{+\\infty} X(\\omega + k\\omega_s)",
       "perche": "È il risultato già dimostrato per le serie temporali a partire dalla rappresentazione del segnale campionato come somma di impulsi pesati.",
-      "figura": "spettro-e-repliche"
+      "figura": "spettro-centrale-e-repliche"
     },
     {
       "n": 3,
-      "testo": "Si disegna in modulo lo spettro del segnale, concentrato fra $-\\omega_m$ e $\\omega_m$, e le repliche traslate di multipli di $\\omega_s$: in generale dalla loro somma non si risale allo spettro originario.",
-      "perche": "Se le repliche si sovrappongono, in ogni pulsazione arrivano contributi di più repliche e l'informazione sulle singole è persa (aliasing)."
+      "testo": "Si interpreta ciascun termine della somma come una replica dello spettro, traslata di un multiplo della pulsazione di campionamento e scalata.",
+      "formula": "X_k(\\omega) = \\frac{1}{T}X(\\omega+k\\omega_s), \\qquad k\\in\\mathbb{Z}",
+      "perche": "La figura rappresenta il modulo dei singoli termini: in generale il modulo della loro somma non è la somma dei moduli, perché contano anche le fasi.",
+      "figura": "spettro-e-repliche"
     },
     {
       "n": 4,
-      "testo": "Si impone che le repliche occupino bande distinte: il bordo destro della replica centrale non deve superare il bordo sinistro della successiva.",
-      "formula": "\\omega_m \\le \\omega_s - \\omega_m \\;\\Longrightarrow\\; \\omega_s \\ge 2\\omega_m \\;\\Longleftrightarrow\\; f_s \\ge 2 f_m \\;\\Longleftrightarrow\\; T \\le \\frac{1}{2 f_m}",
-      "perche": "La replica con $k=-1$ è centrata in $\\omega_s$ e inizia a $\\omega_s - \\omega_m$; la separazione è la condizione geometrica che le due bande non si tocchino.",
-      "figura": "catena-campionamento-ricostruzione"
+      "testo": "Se la separazione manca, una pulsazione riceve contributi da più repliche. Nel caso illustrato la prima replica può confondere la frequenza massima con la sua immagine.",
+      "formula": "\\omega_m<\\omega_s<2\\omega_m \\;\\Longrightarrow\\; \\omega_s-\\omega_m<\\omega_m,\\qquad f_a=|f_m-f_s|",
+      "perche": "In questo intervallo la replica di ordine uno si sovrappone alla centrale: le componenti complesse si sommano e la frequenza originale non è più distinguibile dalla sua immagine.",
+      "figura": "spettro-aliasing"
     },
     {
       "n": 5,
+      "testo": "Per ricostruire si richiede che le repliche siano separate: il filtro passa basso illustrato agisce sul caso separato, non sul caso con aliasing.",
+      "formula": "\\omega_m \\le \\omega_s - \\omega_m \\;\\Longrightarrow\\; \\omega_s \\ge 2\\omega_m \\;\\Longleftrightarrow\\; f_s \\ge 2 f_m \\;\\Longleftrightarrow\\; T \\le \\frac{1}{2 f_m}",
+      "perche": "La replica centrata in $\\omega_s$ inizia a $\\omega_s-\\omega_m$. Con separazione stretta il filtro isola la centrale; al bordo di uguaglianza le eventuali componenti esatte di frontiera richiedono attenzione.",
+      "figura": "spettro-repliche-filtro"
+    },
+    {
+      "n": 6,
       "testo": "Con le repliche separate, nella banda centrale la somma periodica coincide con il solo termine $k=0$: si risale così allo spettro originario moltiplicando per $T$ e azzerando fuori banda, con banda di ricostruzione scelta in $\\Omega = \\omega_s/2 = \\pi/T$.",
       "formula": "X(\\omega) = \\begin{cases} T\\, X_s(\\omega) & |\\omega| < \\dfrac{\\omega_s}{2} = \\dfrac{\\pi}{T} \\\\ 0 & \\text{altrove} \\end{cases}",
       "perche": "Dentro $(-\\Omega, \\Omega)$, con $\\omega_m \\le \\Omega \\le \\omega_s - \\omega_m$, contribuisce solo la replica centrale; il fattore $T$ compensa esattamente il fattore $1/T$ del passo 2 (punto A3, verificato in file1 p. 9)."
     },
     {
-      "n": 6,
-      "testo": "Si antitrasforma sostituendo a $X_s(\\omega)$ la sua definizione come serie di esponenziali e scambiando serie e integrale.",
+      "n": 7,
+      "testo": "La catena di ricostruzione isola la replica centrale; si antitrasforma sostituendo la serie dei campioni e scambiando serie e integrale.",
       "formula": "x(t) = \\frac{T}{2\\pi} \\int_{-\\pi/T}^{\\pi/T} X_s(\\omega) e^{j\\omega t}\\, d\\omega = \\frac{T}{2\\pi} \\sum_{n} x_n \\int_{-\\pi/T}^{\\pi/T} e^{j\\omega (t-nT)}\\, d\\omega",
-      "perche": "L'antitrasformata è lineare e l'intervallo di integrazione è finito; la definizione di $X_s$ è quella del nodo sulle serie temporali."
+      "perche": "L'antitrasformata è lineare e l'intervallo di integrazione è finito; la definizione di $X_s$ è quella del nodo sulle serie temporali.",
+      "figura": "catena-campionamento-ricostruzione"
     },
     {
-      "n": 7,
+      "n": 8,
       "testo": "L'integrale elementare dà il seno cardinale traslato in $nT$, e si ottiene la formula di ricostruzione; in $t = mT$ tutti i termini con $n \\ne m$ si annullano e resta proprio il campione $x(mT)$, come deve essere.",
       "formula": "x(t) = \\sum_{n=-\\infty}^{+\\infty} x(nT)\\, \\frac{\\sin \\frac{\\pi}{T}(t-nT)}{\\frac{\\pi}{T}(t-nT)} = \\sum_{n} x(nT)\\, \\operatorname{sinc}\\frac{t-nT}{T}",
       "perche": "L'antitrasformata di uno spettro rettangolare è il seno cardinale (già calcolata nel nodo sulla trasformata) e $\\operatorname{sinc}(0)=1$, mentre si annulla negli altri multipli interi di $T$.",
       "figura": "seno-cardinale-ricostruzione"
     },
     {
-      "n": 8,
+      "n": 9,
       "testo": "Chiusura interpretativa, presente in file1: le funzioni seno cardinale traslate sono fra loro ortogonali, quindi la ricostruzione è uno sviluppo in serie di funzioni ortogonali i cui coefficienti sono gli stessi campioni; il campionamento è il primo passo della conversione analogico-numerica.",
       "formula": "\\int_{-\\infty}^{+\\infty} \\operatorname{sinc}\\frac{t-nT}{T}\\, \\operatorname{sinc}\\frac{t-mT}{T}\\, dt = \\begin{cases} 0 & m \\ne n \\\\ T & m = n \\end{cases}",
       "perche": "Segue dal teorema di Parseval generalizzato applicato agli spettri rettangolari traslati, come svolto in file1 p. 10; è un commento, non serve alla tesi."
@@ -104,7 +115,7 @@
       "id": "spettro-e-repliche",
       "tipo": "grafico",
       "titolo": "Spettro del segnale e sue repliche dopo il campionamento",
-      "descrizione": "Grafico in modulo: al centro lo spettro triangolare del segnale, largo da meno omega emme a più omega emme e alto uno; ai lati, tratteggiate, le repliche centrate in più e meno omega esse. Le repliche sono separate perché omega esse vale il triplo di omega emme, più del doppio richiesto.",
+      "descrizione": "Novità: un marcatore indica il bordo della replica destra. Si vedono lo spettro centrale e le due repliche separate per una pulsazione di campionamento pari a tre volte la banda del segnale.",
       "asse_x": {
         "etichetta": "ω (rad/s, unità arbitrarie)",
         "min": -9,
@@ -411,19 +422,9 @@
       ],
       "annotazioni": [
         {
-          "x": 0,
-          "y": 1.06,
-          "testo": "k = 0"
-        },
-        {
-          "x": 6,
-          "y": 1.06,
-          "testo": "k = −1"
-        },
-        {
-          "x": -6,
-          "y": 1.06,
-          "testo": "k = 1"
+          "x": 4,
+          "y": 0.12,
+          "testo": "inizio della replica"
         }
       ]
     },
@@ -1096,9 +1097,1312 @@
           "a": "out"
         }
       ]
+    },
+    {
+      "id": "spettro-solo-centrale",
+      "tipo": "grafico",
+      "titolo": "Campionamento: spettro originario",
+      "descrizione": "Primo stato: lo spettro del segnale è limitato alla banda centrale. Il triangolo è un esempio normalizzato, non la forma obbligatoria di ogni spettro.",
+      "asse_x": {
+        "etichetta": "ω (rad/s, unità arbitrarie)",
+        "min": -9,
+        "max": 9,
+        "tacche": [
+          {
+            "valore": -6,
+            "etichetta": "−ωs"
+          },
+          {
+            "valore": -2,
+            "etichetta": "−ωm"
+          },
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 2,
+            "etichetta": "ωm"
+          },
+          {
+            "valore": 6,
+            "etichetta": "ωs"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "|X(ω)| (unità arbitrarie)",
+        "min": 0,
+        "max": 1.15
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -2.0,
+              0.0
+            ],
+            [
+              -1.8,
+              0.1
+            ],
+            [
+              -1.6,
+              0.2
+            ],
+            [
+              -1.4,
+              0.3
+            ],
+            [
+              -1.2,
+              0.4
+            ],
+            [
+              -1.0,
+              0.5
+            ],
+            [
+              -0.8,
+              0.6
+            ],
+            [
+              -0.6,
+              0.7
+            ],
+            [
+              -0.4,
+              0.8
+            ],
+            [
+              -0.2,
+              0.9
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.2,
+              0.9
+            ],
+            [
+              0.4,
+              0.8
+            ],
+            [
+              0.6,
+              0.7
+            ],
+            [
+              0.8,
+              0.6
+            ],
+            [
+              1.0,
+              0.5
+            ],
+            [
+              1.2,
+              0.4
+            ],
+            [
+              1.4,
+              0.3
+            ],
+            [
+              1.6,
+              0.2
+            ],
+            [
+              1.8,
+              0.1
+            ],
+            [
+              2.0,
+              0.0
+            ]
+          ],
+          "etichetta": "spettro originario (k = 0)"
+        }
+      ]
+    },
+    {
+      "id": "spettro-centrale-e-repliche",
+      "tipo": "grafico",
+      "titolo": "Campionamento: spettro e repliche",
+      "descrizione": "Novità: alle due estremità della banda centrale si aggiungono le repliche spostate, già presenti nella ripetizione periodica. In questo esempio normalizzato le repliche sono separate.",
+      "asse_x": {
+        "etichetta": "ω (rad/s, unità arbitrarie)",
+        "min": -9,
+        "max": 9,
+        "tacche": [
+          {
+            "valore": -6,
+            "etichetta": "−ωs"
+          },
+          {
+            "valore": -2,
+            "etichetta": "−ωm"
+          },
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 2,
+            "etichetta": "ωm"
+          },
+          {
+            "valore": 6,
+            "etichetta": "ωs"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "|X(ω)| (unità arbitrarie)",
+        "min": 0,
+        "max": 1.15
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -2.0,
+              0.0
+            ],
+            [
+              -1.8,
+              0.1
+            ],
+            [
+              -1.6,
+              0.2
+            ],
+            [
+              -1.4,
+              0.3
+            ],
+            [
+              -1.2,
+              0.4
+            ],
+            [
+              -1.0,
+              0.5
+            ],
+            [
+              -0.8,
+              0.6
+            ],
+            [
+              -0.6,
+              0.7
+            ],
+            [
+              -0.4,
+              0.8
+            ],
+            [
+              -0.2,
+              0.9
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.2,
+              0.9
+            ],
+            [
+              0.4,
+              0.8
+            ],
+            [
+              0.6,
+              0.7
+            ],
+            [
+              0.8,
+              0.6
+            ],
+            [
+              1.0,
+              0.5
+            ],
+            [
+              1.2,
+              0.4
+            ],
+            [
+              1.4,
+              0.3
+            ],
+            [
+              1.6,
+              0.2
+            ],
+            [
+              1.8,
+              0.1
+            ],
+            [
+              2.0,
+              0.0
+            ]
+          ],
+          "etichetta": "spettro originario (k = 0)"
+        },
+        {
+          "stile": "tratteggio",
+          "punti": [
+            [
+              4.0,
+              0.0
+            ],
+            [
+              4.2,
+              0.1
+            ],
+            [
+              4.4,
+              0.2
+            ],
+            [
+              4.6,
+              0.3
+            ],
+            [
+              4.8,
+              0.4
+            ],
+            [
+              5.0,
+              0.5
+            ],
+            [
+              5.2,
+              0.6
+            ],
+            [
+              5.4,
+              0.7
+            ],
+            [
+              5.6,
+              0.8
+            ],
+            [
+              5.8,
+              0.9
+            ],
+            [
+              6.0,
+              1.0
+            ],
+            [
+              6.2,
+              0.9
+            ],
+            [
+              6.4,
+              0.8
+            ],
+            [
+              6.6,
+              0.7
+            ],
+            [
+              6.8,
+              0.6
+            ],
+            [
+              7.0,
+              0.5
+            ],
+            [
+              7.2,
+              0.4
+            ],
+            [
+              7.4,
+              0.3
+            ],
+            [
+              7.6,
+              0.2
+            ],
+            [
+              7.8,
+              0.1
+            ],
+            [
+              8.0,
+              0.0
+            ]
+          ],
+          "etichetta": "replica k = −1"
+        },
+        {
+          "stile": "tratteggio",
+          "punti": [
+            [
+              -8.0,
+              0.0
+            ],
+            [
+              -7.8,
+              0.1
+            ],
+            [
+              -7.6,
+              0.2
+            ],
+            [
+              -7.4,
+              0.3
+            ],
+            [
+              -7.2,
+              0.4
+            ],
+            [
+              -7.0,
+              0.5
+            ],
+            [
+              -6.8,
+              0.6
+            ],
+            [
+              -6.6,
+              0.7
+            ],
+            [
+              -6.4,
+              0.8
+            ],
+            [
+              -6.2,
+              0.9
+            ],
+            [
+              -6.0,
+              1.0
+            ],
+            [
+              -5.8,
+              0.9
+            ],
+            [
+              -5.6,
+              0.8
+            ],
+            [
+              -5.4,
+              0.7
+            ],
+            [
+              -5.2,
+              0.6
+            ],
+            [
+              -5.0,
+              0.5
+            ],
+            [
+              -4.8,
+              0.4
+            ],
+            [
+              -4.6,
+              0.3
+            ],
+            [
+              -4.4,
+              0.2
+            ],
+            [
+              -4.2,
+              0.1
+            ],
+            [
+              -4.0,
+              0.0
+            ]
+          ],
+          "etichetta": "replica k = 1"
+        }
+      ]
+    },
+    {
+      "id": "spettro-aliasing",
+      "tipo": "grafico",
+      "titolo": "Campionamento: confronto con aliasing",
+      "descrizione": "Novità: una replica e la zona tratteggiata mostrano un secondo esempio, con pulsazione di campionamento più bassa, che si sovrappone alla banda centrale. Le repliche ereditate appartengono invece all’esempio separato: sono due casi alternativi.",
+      "asse_x": {
+        "etichetta": "ω (rad/s, unità arbitrarie)",
+        "min": -9,
+        "max": 9,
+        "tacche": [
+          {
+            "valore": -6,
+            "etichetta": "−ωs"
+          },
+          {
+            "valore": -2,
+            "etichetta": "−ωm"
+          },
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 2,
+            "etichetta": "ωm"
+          },
+          {
+            "valore": 6,
+            "etichetta": "ωs"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "|X(ω)| (unità arbitrarie)",
+        "min": 0,
+        "max": 1.15
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -2.0,
+              0.0
+            ],
+            [
+              -1.8,
+              0.1
+            ],
+            [
+              -1.6,
+              0.2
+            ],
+            [
+              -1.4,
+              0.3
+            ],
+            [
+              -1.2,
+              0.4
+            ],
+            [
+              -1.0,
+              0.5
+            ],
+            [
+              -0.8,
+              0.6
+            ],
+            [
+              -0.6,
+              0.7
+            ],
+            [
+              -0.4,
+              0.8
+            ],
+            [
+              -0.2,
+              0.9
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.2,
+              0.9
+            ],
+            [
+              0.4,
+              0.8
+            ],
+            [
+              0.6,
+              0.7
+            ],
+            [
+              0.8,
+              0.6
+            ],
+            [
+              1.0,
+              0.5
+            ],
+            [
+              1.2,
+              0.4
+            ],
+            [
+              1.4,
+              0.3
+            ],
+            [
+              1.6,
+              0.2
+            ],
+            [
+              1.8,
+              0.1
+            ],
+            [
+              2.0,
+              0.0
+            ]
+          ],
+          "etichetta": "spettro originario (k = 0)"
+        },
+        {
+          "stile": "tratteggio",
+          "punti": [
+            [
+              4.0,
+              0.0
+            ],
+            [
+              4.2,
+              0.1
+            ],
+            [
+              4.4,
+              0.2
+            ],
+            [
+              4.6,
+              0.3
+            ],
+            [
+              4.8,
+              0.4
+            ],
+            [
+              5.0,
+              0.5
+            ],
+            [
+              5.2,
+              0.6
+            ],
+            [
+              5.4,
+              0.7
+            ],
+            [
+              5.6,
+              0.8
+            ],
+            [
+              5.8,
+              0.9
+            ],
+            [
+              6.0,
+              1.0
+            ],
+            [
+              6.2,
+              0.9
+            ],
+            [
+              6.4,
+              0.8
+            ],
+            [
+              6.6,
+              0.7
+            ],
+            [
+              6.8,
+              0.6
+            ],
+            [
+              7.0,
+              0.5
+            ],
+            [
+              7.2,
+              0.4
+            ],
+            [
+              7.4,
+              0.3
+            ],
+            [
+              7.6,
+              0.2
+            ],
+            [
+              7.8,
+              0.1
+            ],
+            [
+              8.0,
+              0.0
+            ]
+          ],
+          "etichetta": "replica k = −1"
+        },
+        {
+          "stile": "tratteggio",
+          "punti": [
+            [
+              -8.0,
+              0.0
+            ],
+            [
+              -7.8,
+              0.1
+            ],
+            [
+              -7.6,
+              0.2
+            ],
+            [
+              -7.4,
+              0.3
+            ],
+            [
+              -7.2,
+              0.4
+            ],
+            [
+              -7.0,
+              0.5
+            ],
+            [
+              -6.8,
+              0.6
+            ],
+            [
+              -6.6,
+              0.7
+            ],
+            [
+              -6.4,
+              0.8
+            ],
+            [
+              -6.2,
+              0.9
+            ],
+            [
+              -6.0,
+              1.0
+            ],
+            [
+              -5.8,
+              0.9
+            ],
+            [
+              -5.6,
+              0.8
+            ],
+            [
+              -5.4,
+              0.7
+            ],
+            [
+              -5.2,
+              0.6
+            ],
+            [
+              -5.0,
+              0.5
+            ],
+            [
+              -4.8,
+              0.4
+            ],
+            [
+              -4.6,
+              0.3
+            ],
+            [
+              -4.4,
+              0.2
+            ],
+            [
+              -4.2,
+              0.1
+            ],
+            [
+              -4.0,
+              0.0
+            ]
+          ],
+          "etichetta": "replica k = 1"
+        },
+        {
+          "stile": "linea",
+          "etichetta": "replica nel caso alias: ωs = 3",
+          "punti": [
+            [
+              1,
+              0
+            ],
+            [
+              1.5,
+              0.25
+            ],
+            [
+              2,
+              0.5
+            ],
+            [
+              2.5,
+              0.75
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              3.5,
+              0.75
+            ],
+            [
+              4,
+              0.5
+            ],
+            [
+              4.5,
+              0.25
+            ],
+            [
+              5,
+              0
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "zona sovrapposta nel caso alias",
+          "punti": [
+            [
+              1,
+              0
+            ],
+            [
+              1.1,
+              0.05
+            ],
+            [
+              1.2,
+              0
+            ],
+            [
+              1.3,
+              0.15
+            ],
+            [
+              1.4,
+              0
+            ],
+            [
+              1.5,
+              0.25
+            ],
+            [
+              1.6,
+              0
+            ],
+            [
+              1.7,
+              0.15
+            ],
+            [
+              1.8,
+              0
+            ],
+            [
+              1.9,
+              0.05
+            ],
+            [
+              2,
+              0
+            ]
+          ]
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": 4,
+          "y": 0.12,
+          "testo": "inizio della replica"
+        },
+        {
+          "x": 1.5,
+          "y": 0.32,
+          "testo": "ωs − ωm < ωm"
+        }
+      ]
+    },
+    {
+      "id": "spettro-repliche-filtro",
+      "tipo": "grafico",
+      "titolo": "Campionamento: filtro di ricostruzione",
+      "descrizione": "Novità: il profilo del filtro passa basso seleziona la banda centrale nell’esempio con repliche separate. La replica sovrapposta resta visibile solo come confronto: il filtro non corregge l’aliasing del secondo caso.",
+      "asse_x": {
+        "etichetta": "ω (rad/s, unità arbitrarie)",
+        "min": -9,
+        "max": 9,
+        "tacche": [
+          {
+            "valore": -6,
+            "etichetta": "−ωs"
+          },
+          {
+            "valore": -2,
+            "etichetta": "−ωm"
+          },
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 2,
+            "etichetta": "ωm"
+          },
+          {
+            "valore": 6,
+            "etichetta": "ωs"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "|X(ω)| (unità arbitrarie)",
+        "min": 0,
+        "max": 1.15
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -2.0,
+              0.0
+            ],
+            [
+              -1.8,
+              0.1
+            ],
+            [
+              -1.6,
+              0.2
+            ],
+            [
+              -1.4,
+              0.3
+            ],
+            [
+              -1.2,
+              0.4
+            ],
+            [
+              -1.0,
+              0.5
+            ],
+            [
+              -0.8,
+              0.6
+            ],
+            [
+              -0.6,
+              0.7
+            ],
+            [
+              -0.4,
+              0.8
+            ],
+            [
+              -0.2,
+              0.9
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.2,
+              0.9
+            ],
+            [
+              0.4,
+              0.8
+            ],
+            [
+              0.6,
+              0.7
+            ],
+            [
+              0.8,
+              0.6
+            ],
+            [
+              1.0,
+              0.5
+            ],
+            [
+              1.2,
+              0.4
+            ],
+            [
+              1.4,
+              0.3
+            ],
+            [
+              1.6,
+              0.2
+            ],
+            [
+              1.8,
+              0.1
+            ],
+            [
+              2.0,
+              0.0
+            ]
+          ],
+          "etichetta": "spettro originario (k = 0)"
+        },
+        {
+          "stile": "tratteggio",
+          "punti": [
+            [
+              4.0,
+              0.0
+            ],
+            [
+              4.2,
+              0.1
+            ],
+            [
+              4.4,
+              0.2
+            ],
+            [
+              4.6,
+              0.3
+            ],
+            [
+              4.8,
+              0.4
+            ],
+            [
+              5.0,
+              0.5
+            ],
+            [
+              5.2,
+              0.6
+            ],
+            [
+              5.4,
+              0.7
+            ],
+            [
+              5.6,
+              0.8
+            ],
+            [
+              5.8,
+              0.9
+            ],
+            [
+              6.0,
+              1.0
+            ],
+            [
+              6.2,
+              0.9
+            ],
+            [
+              6.4,
+              0.8
+            ],
+            [
+              6.6,
+              0.7
+            ],
+            [
+              6.8,
+              0.6
+            ],
+            [
+              7.0,
+              0.5
+            ],
+            [
+              7.2,
+              0.4
+            ],
+            [
+              7.4,
+              0.3
+            ],
+            [
+              7.6,
+              0.2
+            ],
+            [
+              7.8,
+              0.1
+            ],
+            [
+              8.0,
+              0.0
+            ]
+          ],
+          "etichetta": "replica k = −1"
+        },
+        {
+          "stile": "tratteggio",
+          "punti": [
+            [
+              -8.0,
+              0.0
+            ],
+            [
+              -7.8,
+              0.1
+            ],
+            [
+              -7.6,
+              0.2
+            ],
+            [
+              -7.4,
+              0.3
+            ],
+            [
+              -7.2,
+              0.4
+            ],
+            [
+              -7.0,
+              0.5
+            ],
+            [
+              -6.8,
+              0.6
+            ],
+            [
+              -6.6,
+              0.7
+            ],
+            [
+              -6.4,
+              0.8
+            ],
+            [
+              -6.2,
+              0.9
+            ],
+            [
+              -6.0,
+              1.0
+            ],
+            [
+              -5.8,
+              0.9
+            ],
+            [
+              -5.6,
+              0.8
+            ],
+            [
+              -5.4,
+              0.7
+            ],
+            [
+              -5.2,
+              0.6
+            ],
+            [
+              -5.0,
+              0.5
+            ],
+            [
+              -4.8,
+              0.4
+            ],
+            [
+              -4.6,
+              0.3
+            ],
+            [
+              -4.4,
+              0.2
+            ],
+            [
+              -4.2,
+              0.1
+            ],
+            [
+              -4.0,
+              0.0
+            ]
+          ],
+          "etichetta": "replica k = 1"
+        },
+        {
+          "stile": "linea",
+          "etichetta": "replica nel caso alias: ωs = 3",
+          "punti": [
+            [
+              1,
+              0
+            ],
+            [
+              1.5,
+              0.25
+            ],
+            [
+              2,
+              0.5
+            ],
+            [
+              2.5,
+              0.75
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              3.5,
+              0.75
+            ],
+            [
+              4,
+              0.5
+            ],
+            [
+              4.5,
+              0.25
+            ],
+            [
+              5,
+              0
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "zona sovrapposta nel caso alias",
+          "punti": [
+            [
+              1,
+              0
+            ],
+            [
+              1.1,
+              0.05
+            ],
+            [
+              1.2,
+              0
+            ],
+            [
+              1.3,
+              0.15
+            ],
+            [
+              1.4,
+              0
+            ],
+            [
+              1.5,
+              0.25
+            ],
+            [
+              1.6,
+              0
+            ],
+            [
+              1.7,
+              0.15
+            ],
+            [
+              1.8,
+              0
+            ],
+            [
+              1.9,
+              0.05
+            ],
+            [
+              2,
+              0
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "filtro ideale (caso separato)",
+          "punti": [
+            [
+              -3.2,
+              0
+            ],
+            [
+              -3,
+              0
+            ],
+            [
+              -3,
+              0.92
+            ],
+            [
+              3,
+              0.92
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              3.2,
+              0
+            ]
+          ]
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": 4,
+          "y": 0.12,
+          "testo": "inizio della replica"
+        },
+        {
+          "x": 1.5,
+          "y": 0.32,
+          "testo": "ωs − ωm < ωm"
+        },
+        {
+          "x": -2.9,
+          "y": 1.02,
+          "testo": "banda π/T, guadagno T"
+        }
+      ]
     }
   ],
-  "a_voce": "Parto dai campioni x di nT e ricordo che la loro trasformata è la ripetizione periodica dello spettro del segnale, con periodo omega esse uguale a due pi greco diviso T e fattore uno diviso T. Disegno lo spettro triangolare e le sue copie: se le copie si sovrappongono è finita, perché in ogni pulsazione si sommano contributi diversi e non posso più separarli. La condizione perché stiano separate è che omega emme non superi omega esse meno omega emme, cioè omega esse almeno doppia di omega emme: in frequenza, campionare almeno al doppio della massima frequenza. Quando vale, nella banda centrale resta solo la replica zero, quindi lo spettro vero è T volte la trasformata della serie dentro la banda e zero fuori: il fattore T cancella l'uno diviso T di prima. Antitrasformando, ogni campione produce un seno cardinale centrato nel suo istante, e la somma ricostruisce il segnale; negli istanti di campionamento i seni cardinali degli altri campioni valgono zero, così ritrovo esattamente i campioni. In pratica ho sostituito una funzione tempo-continua con una serie temporale senza perdere informazione.",
+  "a_voce": "Parto dai campioni e dallo spettro limitato in banda. La trasformata della serie è la ripetizione periodica dello spettro, scalata di uno diviso T: ogni copia è una replica complessa e i suoi contributi si sommano tenendo conto delle fasi. Se si sovrappongono compare aliasing: con frequenza massima cento hertz e campionamento a centocinquanta hertz la prima immagine cade a cinquanta hertz. Per evitare la sovrapposizione si richiede che la frequenza di campionamento sia almeno il doppio della massima frequenza, con attenzione ai casi esatti sul bordo. Nel caso separato un passa basso isola la replica centrale e il guadagno T compensa il fattore uno diviso T. Antitrasformando ottengo una somma di seni cardinali traslati e pesati con i campioni; in ogni istante di campionamento tutti gli altri termini si annullano. Le funzioni traslate sono anche ortogonali.",
   "errori_frequenti": [
     {
       "errore": "Scrivere la condizione come $T \\ge 1/(2 f_m)$ oppure dire che basta campionare alla frequenza massima del segnale.",
@@ -1119,13 +2423,14 @@
   "versione_compatta": [
     "Campioni: $x_n = x(nT)$, trasformata della serie $X_s(\\omega) = \\sum_n x_n e^{-jn\\omega T}$.",
     "Ripetizione: $X_s(\\omega) = \\frac{1}{T}\\sum_k X(\\omega + k\\omega_s)$, $\\omega_s = 2\\pi/T$.",
+    "In aliasing, per $f_m=100\\,\\mathrm{Hz}$ e $f_s=150\\,\\mathrm{Hz}$ la prima immagine è a $50\\,\\mathrm{Hz}$.",
     "Separazione repliche: $\\omega_m \\le \\omega_s - \\omega_m$, cioè $f_s \\ge 2 f_m$, $T \\le 1/(2f_m)$.",
     "In banda resta solo $k=0$: $X(\\omega) = T X_s(\\omega)$ per $|\\omega| < \\pi/T$, zero altrove.",
     "Antitrasformando: $x(t) = \\sum_n x(nT)\\, \\operatorname{sinc}\\frac{t-nT}{T}$.",
     "Verifica: in $t = mT$ sopravvive solo il termine $n = m$ e si ritrova $x(mT)$."
   ],
   "a_buchi": {
-    "testo": "La trasformata della serie dei campioni è la ripetizione periodica dello spettro con fattore ___1___. Le repliche sono separate se ___2___, cioè se la frequenza di campionamento è almeno ___3___ della massima frequenza del segnale. In banda si ha $X(\\omega) = \\; $___4___$\\; X_s(\\omega)$; antitrasformando ogni campione genera un ___5___ centrato nel suo istante, e la ricostruzione funziona perché tale funzione vale ___6___ negli altri istanti di campionamento.",
+    "testo": "La trasformata dei campioni ripete lo spettro con fattore ___1___. Se le repliche si sovrappongono si ha aliasing; per separarle serve ___2___, cioè una frequenza di campionamento almeno ___3___ della massima frequenza. In banda $X(\\omega)=$ ___4___ $X_s(\\omega)$; antitrasformando ogni campione genera un ___5___ che vale ___6___ negli altri istanti di campionamento.",
     "soluzioni": {
       "1": [
         "1/T",
@@ -1133,8 +2438,11 @@
       ],
       "2": [
         "ωm ≤ ωs − ωm",
-        "omega_s >= 2 omega_m",
-        "ωs ≥ 2ωm"
+        "omegas >= 2 omegam",
+        "omega s >= 2 omega m",
+        "ωs ≥ 2ωm",
+        "fs >= 2 fm",
+        "fs>=2fm"
       ],
       "3": [
         "il doppio",
@@ -1170,6 +2478,10 @@
     {
       "domanda": "Perché nella ricostruzione compare il fattore $T$ davanti a $X_s$?",
       "risposta": "Perché la ripetizione periodica è scalata di $1/T$; moltiplicare per $T$ ripristina l'ampiezza corretta dello spettro originario (punto A3)."
+    },
+    {
+      "domanda": "Con $f_m=100\\,\\mathrm{Hz}$ e $f_s=150\\,\\mathrm{Hz}$ che cosa si osserva?",
+      "risposta": "Le repliche si sovrappongono: la componente a $100\\,\\mathrm{Hz}$ è confusa con l’immagine a $150-100=50\\,\\mathrm{Hz}$. Con $f_s=250\\,\\mathrm{Hz}$ le bande sono separate."
     }
   ],
   "collegamenti": [

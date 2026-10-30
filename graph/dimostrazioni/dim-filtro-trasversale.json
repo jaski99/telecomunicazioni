@@ -40,15 +40,16 @@
   "passi": [
     {
       "n": 1,
-      "testo": "Si disegna il filtro ricorrente generale: due linee di ritardo con celle da $T$, prese con moltiplicatori $h_k$ sull'ingresso e $h'_k$ sull'uscita, tutte convergenti in un unico sommatore; l'uscita del sommatore è $y(t)$ e alimenta anche la seconda linea.",
-      "perche": "La domanda chiede lo schema prima della formula: è dallo schema che si legge, ramo per ramo, quali segnali ritardati entrano nel sommatore.",
-      "figura": "schema-filtro-ricorrente-semplificato"
+      "testo": "Si disegna la linea di ingresso: le celle introducono ritardi di $T$, le prese sono pesate dagli $h_k$ e convergono nel sommatore.",
+      "perche": "Cominciare dalla sola linea diretta permette di leggere i contributi dell’ingresso prima di aggiungere il ramo di retroazione.",
+      "figura": "schema-linea-ingresso-filtro"
     },
     {
       "n": 2,
-      "testo": "Si scrive l'equazione ingresso-uscita leggendo lo schema: l'uscita è la somma degli ingressi ritardati pesati più la somma delle uscite ritardate pesate.",
+      "testo": "Si aggiunge la linea sull’uscita, con celle di ritardo e pesi $h'_k$, e si legge l’equazione del sommatore.",
       "formula": "y(t) = \\sum_{k=0}^{N-1} h_k\\, x(t-kT) + \\sum_{k=1}^{M} h'_k\\, y(t-kT)",
-      "perche": "Il sommatore somma esattamente i contributi delle prese; la prima somma parte da $k=0$ perché esiste anche la presa senza ritardo, la seconda da $k=1$ perché l'uscita istantanea non può rientrare senza almeno un ritardo."
+      "perche": "Il sommatore somma esattamente i contributi delle prese; la prima somma parte da $k=0$ perché esiste anche la presa senza ritardo, la seconda da $k=1$ perché l'uscita istantanea non può rientrare senza almeno un ritardo.",
+      "figura": "schema-filtro-ricorrente-semplificato"
     },
     {
       "n": 3,
@@ -58,31 +59,38 @@
     },
     {
       "n": 4,
-      "testo": "Si raccoglie $Y(\\omega)$ a primo membro e si divide per $X(\\omega)$, ottenendo la funzione di trasferimento del filtro ricorrente; essa dipende, oltre che da $T$, dai valori di $N$ ed $M$ e da quelli di $h_k$ e $h'_k$, ed è periodica in $\\omega$ con periodo $2\\pi/T$.",
-      "formula": "H(\\omega) = \\frac{Y(\\omega)}{X(\\omega)} = \\frac{\\sum_{k=0}^{N-1} h_k e^{-jk\\omega T}}{1 - \\sum_{k=1}^{M} h'_k e^{-jk\\omega T}}",
-      "perche": "È algebra elementare sul passo 3; la periodicità segue da $e^{-jk\\omega T}$ che non cambia se $\\omega$ cresce di $2\\pi/T$ (punto A4, verificato in file1 p. 15 e in file3)."
+      "testo": "Si raccolgono a sinistra i termini che contengono $Y(\\omega)$.",
+      "formula": "Y(\\omega)\\left[1-\\sum_{k=1}^{M}h'_k e^{-jk\\omega T}\\right] = X(\\omega)\\sum_{k=0}^{N-1}h_k e^{-jk\\omega T}",
+      "perche": "La trasformata dell’uscita compare nel termine diretto e nella somma di retroazione: portando quest’ultima a sinistra si raccoglie $Y(\\omega)$."
     },
     {
       "n": 5,
-      "testo": "Specializzazione chiesta dalla domanda: filtro trasversale, con tutti gli $h'_k$ uguali a zero. Lo schema perde la linea sull'uscita e la funzione di trasferimento diventa una somma finita di esponenziali complessi.",
-      "formula": "H(\\omega) = \\sum_{k=0}^{N-1} h_k e^{-jk\\omega T}",
-      "perche": "Sostituendo $h'_k = 0$ il denominatore del passo 4 vale uno; nel dominio del tempo resta $y(t) = \\sum_k h_k x(t-kT)$.",
-      "figura": "schema-filtro-trasversale"
+      "testo": "Si divide per $X(\\omega)$ e si ottiene il rapporto che definisce la funzione di trasferimento.",
+      "formula": "H(\\omega)=\\frac{\\sum_{k=0}^{N-1} h_k e^{-jk\\omega T}}{1-\\sum_{k=1}^{M}h'_k e^{-jk\\omega T}}",
+      "perche": "Per $X(\\omega)\\ne0$ la funzione è il rapporto $Y/X$; dove definita è periodica con periodo $2\\pi/T$, perché ogni fattore di ritardo è periodico."
     },
     {
       "n": 6,
-      "testo": "Altro caso particolare, da citare a chiusura: filtro puramente ricorrente, con gli $h_k$ uguali a zero per $k \\ge 1$ e $h_0 = 1$; resta il solo denominatore.",
-      "formula": "H(\\omega) = \\frac{1}{1 - \\sum_{k=1}^{M} h'_k e^{-jk\\omega T}}",
-      "perche": "È la sostituzione speculare nel passo 4: al numeratore sopravvive solo il termine diretto $h_0 = 1$."
+      "testo": "Specializzazione chiesta dalla domanda: filtro trasversale, con tutti gli $h'_k$ uguali a zero. Lo schema perde la linea sull'uscita e la funzione di trasferimento diventa una somma finita di esponenziali complessi.",
+      "formula": "H(\\omega) = \\sum_{k=0}^{N-1} h_k e^{-jk\\omega T}",
+      "perche": "Sostituendo $h'_k = 0$ il denominatore del passo 5 vale uno; nel dominio del tempo resta $y(t) = \\sum_k h_k x(t-kT)$.",
+      "figura": "schema-filtro-trasversale"
     },
     {
       "n": 7,
-      "testo": "Lettura in termini di zeri e poli nella variabile $e^{-j\\omega T}$: il numeratore da solo dà solo zeri (filtro trasversale), il denominatore da solo dà solo poli (puramente ricorrente), insieme danno zeri e poli (ricorrente). È lo stesso contenuto dei temi di quiz M16, M17 e M18.",
-      "perche": "Numeratore e denominatore sono polinomi nella stessa variabile complessa $e^{-j\\omega T}$; la classificazione segue da quali dei due restano dopo le specializzazioni dei passi 5 e 6.",
-      "figura": "ampiezza-h-trasversale-esempio"
+      "testo": "Altro caso particolare, da citare a chiusura: filtro puramente ricorrente, con gli $h_k$ uguali a zero per $k \\ge 1$ e $h_0 = 1$; resta il solo denominatore.",
+      "formula": "H(\\omega) = \\frac{1}{1 - \\sum_{k=1}^{M} h'_k e^{-jk\\omega T}}",
+      "perche": "È la sostituzione speculare nel passo 5: al numeratore sopravvive solo il termine diretto $h_0 = 1$."
+    },
+    {
+      "n": 8,
+      "testo": "La stessa funzione si legge tramite zeri e poli nel piano complesso; la figura mostra un esempio di modulo del caso trasversale.",
+      "perche": "Gli zeri del denominatore in $z$ sono i poli non cancellati; per un filtro causale razionale stabile devono essere dentro il cerchio unitario. La sola periodicità in pulsazione non garantisce la stabilità.",
+      "figura": "ampiezza-h-trasversale-esempio",
+      "formula": "H(z)=\\frac{\\sum_{k=0}^{N-1}h_k z^{-k}}{1-\\sum_{k=1}^{M}h'_k z^{-k}},\\qquad z=e^{j\\omega T}"
     }
   ],
-  "formula_finale": "H(\\omega) = \\sum_{k=0}^{N-1} h_k e^{-jk\\omega T} \\qquad \\text{(trasversale; in generale } H(\\omega) = \\frac{\\sum_{k=0}^{N-1} h_k e^{-jk\\omega T}}{1 - \\sum_{k=1}^{M} h'_k e^{-jk\\omega T}}\\text{)}",
+  "formula_finale": "H(\\omega) = \\frac{\\sum_{k=0}^{N-1} h_k e^{-jk\\omega T}}{1 - \\sum_{k=1}^{M} h'_k e^{-jk\\omega T}}",
   "figure": [
     {
       "id": "schema-filtro-trasversale",
@@ -230,59 +238,166 @@
     {
       "id": "schema-filtro-ricorrente-semplificato",
       "tipo": "blocchi",
-      "titolo": "Filtro ricorrente: struttura semplificata con retroazione",
-      "descrizione": "Schema concettuale semplificato del filtro ricorrente: accanto alla parte trasversale che pesa gli ingressi ritardati, una seconda linea ritarda l'uscita e la riporta, pesata dai coefficienti con apice, allo stesso sommatore. È questa retroazione a introdurre il denominatore nella funzione di trasferimento.",
+      "titolo": "Filtro ricorrente: due linee di ritardo",
+      "descrizione": "Novità: alla linea di ingresso con pesi da h zero a h enne meno uno si aggiunge la linea di uscita, con pesi da h primo uno a h primo emme. Le celle ritardano di T e tutte le prese arrivano a un solo sommatore, che fornisce e retroaziona l’uscita.",
       "blocchi": [
         {
           "id": "in",
           "etichetta": "x(t)",
           "forma": "ingresso",
           "colonna": 0,
-          "riga": 2
-        },
-        {
-          "id": "trasv",
-          "etichetta": "Parte trasversale: pesi hₖ sugli ingressi ritardati",
-          "forma": "rettangolo",
-          "colonna": 3,
           "riga": 0
         },
         {
+          "id": "r1",
+          "etichetta": "T",
+          "forma": "ritardo",
+          "colonna": 2,
+          "riga": 0
+        },
+        {
+          "id": "r2",
+          "etichetta": "T",
+          "forma": "ritardo",
+          "colonna": 4,
+          "riga": 0
+        },
+        {
+          "id": "rn",
+          "etichetta": "T",
+          "forma": "ritardo",
+          "colonna": 6,
+          "riga": 0
+        },
+        {
+          "id": "m0",
+          "etichetta": "h₀",
+          "forma": "moltiplicatore",
+          "colonna": 0,
+          "riga": 1
+        },
+        {
+          "id": "m1",
+          "etichetta": "h₁",
+          "forma": "moltiplicatore",
+          "colonna": 2,
+          "riga": 1
+        },
+        {
+          "id": "m2",
+          "etichetta": "h₂",
+          "forma": "moltiplicatore",
+          "colonna": 4,
+          "riga": 1
+        },
+        {
+          "id": "mn",
+          "etichetta": "hN−1",
+          "forma": "moltiplicatore",
+          "colonna": 6,
+          "riga": 1
+        },
+        {
           "id": "somma",
-          "etichetta": "Sommatore Σ",
+          "etichetta": "+",
           "forma": "sommatore",
-          "colonna": 3,
-          "riga": 2
+          "colonna": 8,
+          "riga": 3
         },
         {
           "id": "out",
           "etichetta": "y(t)",
           "forma": "uscita",
-          "colonna": 9,
-          "riga": 2
+          "colonna": 12,
+          "riga": 3
         },
         {
-          "id": "rity",
-          "etichetta": "Linea di ritardo sull'uscita (celle da T)",
+          "id": "ry1",
+          "etichetta": "T",
           "forma": "ritardo",
-          "colonna": 7,
+          "colonna": 10,
+          "riga": 5
+        },
+        {
+          "id": "ry2",
+          "etichetta": "T",
+          "forma": "ritardo",
+          "colonna": 8,
+          "riga": 5
+        },
+        {
+          "id": "rym",
+          "etichetta": "T",
+          "forma": "ritardo",
+          "colonna": 6,
+          "riga": 5
+        },
+        {
+          "id": "my1",
+          "etichetta": "h′₁",
+          "forma": "moltiplicatore",
+          "colonna": 10,
           "riga": 4
         },
         {
-          "id": "pesi",
-          "etichetta": "Pesi h′ₖ sulle uscite ritardate",
+          "id": "my2",
+          "etichetta": "h′₂",
           "forma": "moltiplicatore",
-          "colonna": 3,
+          "colonna": 8,
+          "riga": 4
+        },
+        {
+          "id": "mym",
+          "etichetta": "h′M",
+          "forma": "moltiplicatore",
+          "colonna": 6,
           "riga": 4
         }
       ],
       "collegamenti": [
         {
           "da": "in",
-          "a": "trasv"
+          "a": "r1"
         },
         {
-          "da": "trasv",
+          "da": "r1",
+          "a": "r2"
+        },
+        {
+          "da": "r2",
+          "a": "rn",
+          "etichetta": "…"
+        },
+        {
+          "da": "in",
+          "a": "m0"
+        },
+        {
+          "da": "r1",
+          "a": "m1"
+        },
+        {
+          "da": "r2",
+          "a": "m2"
+        },
+        {
+          "da": "rn",
+          "a": "mn"
+        },
+        {
+          "da": "m0",
+          "a": "somma"
+        },
+        {
+          "da": "m1",
+          "a": "somma"
+        },
+        {
+          "da": "m2",
+          "a": "somma"
+        },
+        {
+          "da": "mn",
           "a": "somma"
         },
         {
@@ -291,16 +406,40 @@
         },
         {
           "da": "out",
-          "a": "rity"
+          "a": "ry1"
         },
         {
-          "da": "rity",
-          "a": "pesi"
+          "da": "ry1",
+          "a": "ry2"
         },
         {
-          "da": "pesi",
-          "a": "somma",
-          "etichetta": "retroazione"
+          "da": "ry2",
+          "a": "rym",
+          "etichetta": "…"
+        },
+        {
+          "da": "ry1",
+          "a": "my1"
+        },
+        {
+          "da": "ry2",
+          "a": "my2"
+        },
+        {
+          "da": "rym",
+          "a": "mym"
+        },
+        {
+          "da": "my1",
+          "a": "somma"
+        },
+        {
+          "da": "my2",
+          "a": "somma"
+        },
+        {
+          "da": "mym",
+          "a": "somma"
         }
       ]
     },
@@ -829,9 +968,138 @@
           "etichetta": "|1 + 0,5·e^(−jωT)|"
         }
       ]
+    },
+    {
+      "id": "schema-linea-ingresso-filtro",
+      "tipo": "blocchi",
+      "titolo": "Filtro: linea di ingresso e prese",
+      "descrizione": "Primo stato: la linea di ingresso attraversa le celle di ritardo, le prese sono pesate e confluiscono nel sommatore. La linea di retroazione verrà aggiunta nel passo successivo.",
+      "blocchi": [
+        {
+          "id": "in",
+          "etichetta": "x(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 0
+        },
+        {
+          "id": "r1",
+          "etichetta": "T",
+          "forma": "ritardo",
+          "colonna": 2,
+          "riga": 0
+        },
+        {
+          "id": "r2",
+          "etichetta": "T",
+          "forma": "ritardo",
+          "colonna": 4,
+          "riga": 0
+        },
+        {
+          "id": "rn",
+          "etichetta": "T",
+          "forma": "ritardo",
+          "colonna": 6,
+          "riga": 0
+        },
+        {
+          "id": "m0",
+          "etichetta": "h₀",
+          "forma": "moltiplicatore",
+          "colonna": 0,
+          "riga": 1
+        },
+        {
+          "id": "m1",
+          "etichetta": "h₁",
+          "forma": "moltiplicatore",
+          "colonna": 2,
+          "riga": 1
+        },
+        {
+          "id": "m2",
+          "etichetta": "h₂",
+          "forma": "moltiplicatore",
+          "colonna": 4,
+          "riga": 1
+        },
+        {
+          "id": "mn",
+          "etichetta": "hN−1",
+          "forma": "moltiplicatore",
+          "colonna": 6,
+          "riga": 1
+        },
+        {
+          "id": "somma",
+          "etichetta": "+",
+          "forma": "sommatore",
+          "colonna": 8,
+          "riga": 3
+        },
+        {
+          "id": "out",
+          "etichetta": "y(t)",
+          "forma": "uscita",
+          "colonna": 12,
+          "riga": 3
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "in",
+          "a": "r1"
+        },
+        {
+          "da": "r1",
+          "a": "r2"
+        },
+        {
+          "da": "r2",
+          "a": "rn",
+          "etichetta": "…"
+        },
+        {
+          "da": "in",
+          "a": "m0"
+        },
+        {
+          "da": "r1",
+          "a": "m1"
+        },
+        {
+          "da": "r2",
+          "a": "m2"
+        },
+        {
+          "da": "rn",
+          "a": "mn"
+        },
+        {
+          "da": "m0",
+          "a": "somma"
+        },
+        {
+          "da": "m1",
+          "a": "somma"
+        },
+        {
+          "da": "m2",
+          "a": "somma"
+        },
+        {
+          "da": "mn",
+          "a": "somma"
+        },
+        {
+          "da": "somma",
+          "a": "out"
+        }
+      ]
     }
   ],
-  "a_voce": "Disegno prima il filtro generale: l'ingresso scorre in una linea di ritardo fatta di celle da T, ogni presa viene moltiplicata per un peso h con indice k e tutto finisce in un sommatore; nel filtro ricorrente c'è anche una seconda linea che ritarda l'uscita e la riporta, pesata dagli h con apice, allo stesso sommatore. Leggendo lo schema scrivo l'uscita come somma di ingressi ritardati più somma di uscite ritardate. Trasformo termine a termine: ogni ritardo kT diventa e alla meno j k omega T. Raccolgo Y di omega e divido per X di omega: al numeratore restano i pesi dell'ingresso, al denominatore uno meno i pesi di retroazione, e il tutto è periodico in omega con periodo due pi greco diviso T. Il filtro trasversale si ottiene spegnendo la retroazione: sparisce la seconda linea nello schema e il denominatore diventa uno, quindi H di omega è una somma finita di esponenziali pesati. Per questo il trasversale ha solo zeri, mentre il ricorrente ha zeri e poli e il puramente ricorrente solo poli.",
+  "a_voce": "Disegno la linea di ingresso: ogni cella introduce un ritardo T, le prese sono pesate e arrivano al sommatore. Aggiungo la linea che ritarda l’uscita, con i pesi indicati dall’apice, e porta gli altri contributi allo stesso sommatore. Scrivo l’equazione nel tempo e la trasformo: ogni ritardo diventa un esponenziale. Raccolgo la trasformata dell’uscita e solo dopo divido per quella dell’ingresso; ottengo numeratore diretto e denominatore di retroazione, periodici in pulsazione. Se i pesi di retroazione sono zero il filtro è trasversale; se resta soltanto il primo peso diretto è puramente ricorrente. Per leggere i poli uso la variabile z: per un filtro causale razionale stabile i poli non cancellati sono dentro il cerchio unitario. La periodicità, da sola, non implica stabilità. Nell’esempio con pesi uno e mezzo, il modulo è uno virgola cinque a pulsazione zero e zero virgola cinque a metà periodo.",
   "errori_frequenti": [
     {
       "errore": "Far partire entrambe le somme da $k = 1$, perdendo il ramo diretto $h_0 x(t)$.",
@@ -852,27 +1120,28 @@
   "versione_compatta": [
     "Schema generale: linea di ritardo su $x$ (pesi $h_k$) + linea su $y$ (pesi $h'_k$) $\\to$ unico sommatore.",
     "Tempo: $y(t) = \\sum_{k=0}^{N-1} h_k x(t-kT) + \\sum_{k=1}^{M} h'_k y(t-kT)$.",
-    "Fourier: ritardo $kT \\to e^{-jk\\omega T}$; raccolgo $Y$ e divido per $X$.",
+    "Fourier: ritardo $kT\\to e^{-jk\\omega T}$; raccolgo $Y$, poi divido per $X$.",
     "Ricorrente: $H(\\omega) = \\dfrac{\\sum_0^{N-1} h_k e^{-jk\\omega T}}{1 - \\sum_1^{M} h'_k e^{-jk\\omega T}}$, periodica con periodo $2\\pi/T$.",
     "Trasversale ($h'_k = 0$): $H(\\omega) = \\sum_0^{N-1} h_k e^{-jk\\omega T}$, solo zeri.",
-    "Puramente ricorrente ($h_0 = 1$, altri $h_k = 0$): solo il denominatore, solo poli."
+    "Puramente ricorrente ($h_0 = 1$, altri $h_k = 0$): solo il denominatore, solo poli.",
+    "Per un filtro causale razionale stabile i poli non cancellati stanno dentro il cerchio unitario; la periodicità da sola non basta."
   ],
   "a_buchi": {
-    "testo": "Ogni cella della linea introduce un ritardo ___1___, che in frequenza diventa il fattore ___2___. Nel filtro ricorrente $H(\\omega)$ ha al denominatore $1 - \\sum h'_k e^{-jk\\omega T}$ perché l'uscita rientra nel sommatore: è la ___3___. Il filtro trasversale si ottiene ponendo ___4___ e la sua $H(\\omega)$ è una ___5___ finita di esponenziali, periodica in $\\omega$ con periodo ___6___.",
+    "testo": "Ogni cella introduce un ritardo ___1___, che in frequenza diventa ___2___. L’uscita rientra nel sommatore attraverso la ___3___. Il filtro trasversale si ottiene ponendo ___4___; la sua funzione di trasferimento è una ___5___ finita di esponenziali, periodica con periodo ___6___.",
     "soluzioni": {
       "1": [
         "T"
       ],
       "2": [
-        "e^{-jkωT}",
-        "e alla -jkωT"
+        "exp(-j k omega T)",
+        "e alla meno j k omega T"
       ],
       "3": [
         "retroazione"
       ],
       "4": [
-        "h'_k = 0 per ogni k",
-        "gli h con apice uguali a zero"
+        "gli h con apice uguali a zero",
+        "h primo k uguale a zero"
       ],
       "5": [
         "somma"
@@ -899,6 +1168,10 @@
     {
       "domanda": "Come si classificano i tre filtri rispetto a zeri e poli?",
       "risposta": "Trasversale: solo zeri (solo numeratore). Puramente ricorrente: solo poli (solo denominatore). Ricorrente: zeri e poli insieme."
+    },
+    {
+      "domanda": "Nel filtro trasversale con $h_0=1$, $h_1=0{,}5$ e $T$ qualsiasi, quanto vale $H$ a $\\omega=0$ e a $\\omega=\\pi/T$?",
+      "risposta": "$H(0)=1{,}5$ e $H(\\pi/T)=1-0{,}5=0{,}5$."
     }
   ],
   "collegamenti": [

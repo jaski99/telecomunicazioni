@@ -121,9 +121,10 @@ test('geometria: colonne cumulative, frecce ai bordi, bbox e input immutato', ()
   assert.ok(frecce[0].inizio.x > nodi[0].x && frecce[0].fine.x < nodi[1].x); assert.match(disegnaBlocco(nodi[0]), /class="blocco ingresso"/); assert.match(disegnaFreccia(frecce[0]), /<path/);
   const box = bboxBlocchi(nodi, frecce); for (const nodo of nodi) assert.ok(nodo.box.left >= box.left && nodo.box.right <= box.right && nodo.box.top >= box.top && nodo.box.bottom <= box.bottom);
 });
-test('tutte le 17 figure blocchi: testi in box, nessun annidamento, colonne crescenti e viewBox non tagliato', () => {
+test('tutte le figure blocchi: testi in box, nessun annidamento, colonne crescenti e viewBox non tagliato', () => {
   const figure = leggiGraph().nodi.flatMap(n => [n.lezione, n.dimostrazione].flatMap(s => (s?.figure || []).filter(f => f.tipo === 'blocchi')));
-  assert.equal(figure.length, 17); const decodifica = s => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&amp;/g, '&');
+  // Mantiene il minimo originario, ma consente gli stati progressivi aggiunti al grafo.
+  assert.ok(figure.length >= 17, `attese almeno 17 figure a blocchi, trovate ${figure.length}`); const decodifica = s => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&amp;/g, '&');
   for (const f of figure) {
     const r = renderBlocchi(f), [ , dx, dy ] = /translate\(([-\d.]+),([-\d.]+)\)/.exec(r.svgInner).map(Number);
     assert.ok(r.viewBox.w <= 700 && r.fs === 14, f.id); assert.doesNotMatch(r.svgInner, /<text\b[^>]*>(?:(?!<\/text>)[\s\S])*<text\b/, f.id);

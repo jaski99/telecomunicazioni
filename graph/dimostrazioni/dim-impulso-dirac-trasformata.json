@@ -52,9 +52,10 @@
     },
     {
       "n": 2,
-      "testo": "Si calcola l'integrale di $x$ pesata con l'impulso traslato e ribaltato: l'impulso seleziona un intorno destro di $a$ largo $\\Delta$, e l'integrale è la media di $x$ su quell'intervallo.",
+      "testo": "Si calcola l’integrale di $x$ pesata con l’impulso traslato e ribaltato: si seleziona un intorno sinistro di $a$, cioè l’intervallo $[a-\\Delta,a]$, e l’integrale è la media di $x$ su tale intervallo.",
       "formula": "\\lim_{\\Delta \\to 0} \\int_{-\\infty}^{+\\infty} x(t) D(a-t,\\Delta)\\, dt = \\lim_{\\Delta \\to 0} \\int_{-\\infty}^{+\\infty} x(a-t) D(t,\\Delta)\\, dt = \\lim_{\\Delta \\to 0} \\frac{1}{\\Delta} \\int_{0}^{\\Delta} x(a-t)\\, dt",
-      "perche": "Nel primo passaggio si cambia variabile; nel secondo si usa che $D(t,\\Delta)$ è diverso da zero solo fra $0$ e $\\Delta$, dove vale $1/\\Delta$."
+      "perche": "Nel primo passaggio si cambia variabile; poiché $D(t,\\Delta)$ è diverso da zero per $t\\in[0,\\Delta]$, gli argomenti $a-t$ percorrono $[a-\\Delta,a]$.",
+      "figura": "impulso-intervallo-sinistro"
     },
     {
       "n": 3,
@@ -77,8 +78,8 @@
     {
       "n": 6,
       "testo": "Per calcolare la trasformata si applica la forma simbolica alla funzione $x(t) = e^{j\\omega t}$ nell'istante $t = 0$.",
-      "formula": "\\int_{-\\infty}^{+\\infty} e^{j\\omega\\tau} \\delta(-\\tau)\\, d\\tau = e^{j\\omega \\cdot 0} = 1",
-      "perche": "L'esponenziale è continuo ovunque, quindi la selezione del passo 4 è applicabile; il valore selezionato è quello in zero."
+      "formula": "\\int_{-\\infty}^{+\\infty}e^{j\\omega\\tau}\\,\\delta(-\\tau)\\,d\\tau = \\int_{-\\infty}^{+\\infty}e^{-j\\omega t}\\,\\delta(t)\\,dt = 1",
+      "perche": "La delta, limite distribuzionale dell’impulso ausiliario, è pari: $\\delta(-\\tau)=\\delta(\\tau)$. La sostituzione $t=-\\tau$ e la selezione in zero danno uno."
     },
     {
       "n": 7,
@@ -90,7 +91,7 @@
       "n": 8,
       "testo": "Conferma indipendente: l'impulso $D(t,\\Delta)$ è centrato in $\\Delta/2$, quindi dalla trasformata dell'impulso rettangolare centrato si ricava la sua, il cui limite per $\\Delta \\to 0$ vale uno.",
       "formula": "F[D(t,\\Delta)] = \\frac{\\sin \\frac{\\omega\\Delta}{2}}{\\frac{\\omega\\Delta}{2}}\\, e^{-j\\frac{\\omega\\Delta}{2}} \\;\\xrightarrow{\\;\\Delta \\to 0\\;}\\; 1",
-      "perche": "Un impulso rettangolare di ampiezza $A$ e durata $\\tau$ centrato ha trasformata $A\\tau \\sin(\\omega\\tau/2)/(\\omega\\tau/2)$; qui $A\\tau = 1$, il ritardo $\\Delta/2$ dà il fattore di fase e il limite notevole del seno dà uno.",
+      "perche": "Un impulso rettangolare di ampiezza $A$ e durata $\\tau$ centrato ha trasformata $A\\tau \\sin(\\omega\\tau/2)/(\\omega\\tau/2)$; qui $A\\tau = 1$, il ritardo $\\Delta/2$ dà il fattore di fase e il limite notevole del seno dà uno. Per $\\Delta=0{,}5\\,\\mathrm{s}$ il primo zero positivo è $2\\pi/\\Delta=12{,}57\\,\\mathrm{rad/s}$; quando la durata tende a zero, lo zero si allontana e il limite vale uno a pulsazione fissata.",
       "figura": "trasformata-impulso-ausiliario"
     }
   ],
@@ -819,9 +820,84 @@
           "etichetta": "limite per Δ → 0: 1"
         }
       ]
+    },
+    {
+      "id": "impulso-intervallo-sinistro",
+      "tipo": "grafico",
+      "titolo": "Impulso e intervallo selezionato",
+      "descrizione": "Novità: l’annotazione esplicita che il rettangolo attivo fra zero e delta porta a valutare la funzione nell’intervallo a sinistra del punto a.",
+      "asse_x": {
+        "etichetta": "t (s)",
+        "min": -1,
+        "max": 1.5,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 0.5,
+            "etichetta": "Δ"
+          },
+          {
+            "valore": 1,
+            "etichetta": "1"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "D(t, Δ) (1/s)",
+        "min": 0,
+        "max": 2.4,
+        "tacche": [
+          {
+            "valore": 2,
+            "etichetta": "1/Δ"
+          }
+        ]
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              0.5,
+              2
+            ],
+            [
+              0.5,
+              0
+            ],
+            [
+              1.5,
+              0
+            ]
+          ],
+          "etichetta": "D(t, Δ) con Δ = 0,5 s"
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": 0.5,
+          "y": 2.2,
+          "testo": "x(a−t) su [a−Δ,a]"
+        }
+      ]
     }
   ],
-  "a_voce": "Non definisco la delta come una funzione che vale infinito: parto da un rettangolo vero, alto uno diviso delta e largo delta, quindi di area uno. Se peso una funzione continua con questo rettangolo traslato e integro, ottengo la media della funzione su un intervallino largo delta; quando delta tende a zero la media tende al valore nel punto. Questa è la selezione, e scrivendola per il generico istante t ottengo che x di t è l'integrale di x di tau per delta di t meno tau: in forma simbolica la convoluzione con la delta restituisce la funzione stessa. Attenzione all'ordine: prima integro e poi faccio il limite, altrimenti otterrei zero. Per la trasformata applico la selezione all'esponenziale in t uguale a zero e, con il cambio tau uguale a meno t, trovo che la trasformata della delta è uno per ogni pulsazione: tutte le pulsazioni sono presenti con la stessa ampiezza. Lo confermo con il rettangolo: la sua trasformata è un seno diviso il suo argomento, con una fase da ritardo, e al limite tende a uno.",
+  "a_voce": "Parto da un rettangolo vero, alto uno diviso delta e largo delta, quindi di area uno. Pesando una funzione continua con l’impulso ribaltato ottengo la sua media sull’intervallo a sinistra di a, da a meno delta fino ad a. Nel limite questa media restituisce il valore nel punto: è la selezione. La delta si usa in forma simbolica e la convoluzione con essa restituisce il segnale; prima integro e poi passo al limite. La delta è pari, anche se il rettangolo ausiliario finito non lo è: applico la selezione all’esponenziale e ribalto la variabile, ottenendo trasformata identicamente uno. Confermo con la trasformata del rettangolo: per durata mezzo secondo il primo zero positivo è circa dodici virgola cinquantasette radianti al secondo; quando la durata tende a zero, quello zero si allontana e la trasformata tende a uno per ogni pulsazione fissata.",
   "errori_frequenti": [
     {
       "errore": "Definire $\\delta(t)$ come il limite puntuale di $D(t,\\Delta)$ e integrarlo come una funzione ordinaria uguale a zero quasi ovunque.",
@@ -841,13 +917,13 @@
   ],
   "versione_compatta": [
     "Impulso ausiliario: $D(t,\\Delta) = 1/\\Delta$ fra $0$ e $\\Delta$, area uno.",
-    "Selezione: $\\lim_{\\Delta \\to 0} \\frac{1}{\\Delta}\\int_0^\\Delta x(a-t)\\, dt = x(a)$ per $x$ continua.",
+    "Selezione sull’intervallo sinistro $[a-\\Delta,a]$: $\\lim_{\\Delta\\to0}\\frac1\\Delta\\int_0^\\Delta x(a-t)\\,dt=x(a)$.",
     "Definizione simbolica: $x(t) = \\int x(\\tau)\\delta(t-\\tau)\\, d\\tau = x(t) * \\delta(t)$; prima integrare, poi il limite.",
-    "Con $x(t) = e^{j\\omega t}$ in $t=0$ e $\\tau = -t$: $\\int \\delta(t) e^{-j\\omega t} dt = 1$.",
-    "Conferma: $F[D(t,\\Delta)] = \\frac{\\sin(\\omega\\Delta/2)}{\\omega\\Delta/2} e^{-j\\omega\\Delta/2} \\to 1$."
+    "La delta è pari, $\\delta(-\\tau)=\\delta(\\tau)$; con $\\tau=-t$ si ottiene $F[\\delta(t)]=1$.",
+    "Conferma: $F[D(t,\\Delta)] = \\frac{\\sin(\\omega\\Delta/2)}{\\omega\\Delta/2} e^{-j\\omega\\Delta/2} \\to 1$. Per $\\Delta=0{,}5\\,\\mathrm{s}$ il primo zero è $12{,}57\\,\\mathrm{rad/s}$."
   ],
   "a_buchi": {
-    "testo": "L'impulso ausiliario $D(t,\\Delta)$ ha area ___1___ perché vale $1/\\Delta$ su un intervallo largo $\\Delta$. La selezione funziona perché la media di $x$ su quell'intervallo tende a $x(a)$ quando $\\Delta \\to 0$, purché $x$ sia ___2___ in $a$. L'ordine corretto è: prima ___3___, poi il limite. Applicando la selezione a $e^{j\\omega t}$ in $t=0$ si ottiene che la trasformata di $\\delta(t)$ vale ___4___ per ogni $\\omega$.",
+    "testo": "L’impulso ausiliario $D(t,\\Delta)$ ha area ___1___; nella media di $x(a-t)$ seleziona l’intorno sinistro $[a-\\Delta,a]$. Il limite restituisce $x(a)$ se $x$ è ___2___. Prima si esegue ___3___, poi il limite. La delta è pari e la sua trasformata vale ___4___ per ogni pulsazione.",
     "soluzioni": {
       "1": [
         "uno",

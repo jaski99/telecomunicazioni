@@ -42,13 +42,14 @@
       "n": 1,
       "testo": "Primo schema chiesto dalla domanda: si sollecita il quadripolo $Q$ con l'impulso rettangolare $x(t) = D(t,\\Delta)$ di intensità unitaria e si osserva la risposta $y(t)$.",
       "perche": "La funzione di trasferimento caratterizza la rete in frequenza; qui si costruisce la caratterizzazione duale nel dominio dei tempi con una sollecitazione che contiene tutte le pulsazioni.",
-      "figura": "quadripolo-ingresso-generico"
+      "figura": "quadripolo-ingresso-d"
     },
     {
       "n": 2,
       "testo": "Si definisce la risposta impulsiva come limite della risposta quando la durata dell'impulso tende a zero a parità di intensità.",
       "formula": "h(t) = \\lim_{\\Delta \\to 0} y(t)",
-      "perche": "È la definizione operativa: usa solo risposte a impulsi ordinari, così il limite è controllato come nella dimostrazione T2."
+      "perche": "È la definizione operativa: usa solo risposte a impulsi ordinari, così il limite è controllato come nella dimostrazione T2.",
+      "figura": "quadripolo-limite-risposta"
     },
     {
       "n": 3,
@@ -73,19 +74,32 @@
       "n": 6,
       "testo": "La risposta alla generica funzione impulsiva vale $x(\\tau)\\, d\\tau\\; h(t-\\tau)$; sommando tutti i contributi si ottiene la convoluzione, che per una rete causale si può anche scrivere con integrale fino a $t$.",
       "formula": "y(t) = \\int_{-\\infty}^{+\\infty} x(\\tau) h(t-\\tau)\\, d\\tau = x(t) * h(t) = \\int_{-\\infty}^{t} x(\\tau) h(t-\\tau)\\, d\\tau",
-      "perche": "Linearità: il fattore $x(\\tau)\\, d\\tau$ scala la risposta. Permanenza: l'impulso è traslato di $\\tau$, quindi la risposta è $h$ traslata di $\\tau$. Causalità: $h(t-\\tau) = 0$ per $\\tau > t$."
+      "perche": "Linearità: il fattore $x(\\tau)\\, d\\tau$ scala la risposta. Permanenza: l'impulso è traslato di $\\tau$, quindi la risposta è $h$ traslata di $\\tau$. Causalità: $h(t-\\tau) = 0$ per $\\tau > t$.",
+      "figura": "quadripolo-ingresso-generico"
     },
     {
       "n": 7,
-      "testo": "Nota $h(t)$ si determina dunque l'uscita per qualunque ingresso operando solo nel dominio dei tempi; ora si cerca il legame con la caratterizzazione in frequenza partendo dal primo schema.",
+      "testo": "Nota la risposta impulsiva, l’uscita per un ingresso qualunque si ottiene operando nel solo dominio dei tempi; ora si cerca il legame con la caratterizzazione in frequenza.",
       "formula": "F[y(t)] = H(\\omega)\\, F[D(t,\\Delta)]",
       "perche": "Per definizione di funzione di trasferimento, la trasformata dell'uscita è il prodotto di $H(\\omega)$ per la trasformata dell'ingresso, qui l'impulso ausiliario."
     },
     {
       "n": 8,
-      "testo": "Si passa al limite per $\\Delta \\to 0$ nei due membri: a sinistra $y(t)$ tende a $h(t)$ per definizione, a destra la trasformata dell'impulso tende a uno per la T2. Risulta che $H(\\omega)$ è la trasformata di $h(t)$, e antitrasformando si ottiene la relazione inversa.",
-      "formula": "H(\\omega) = F[h(t)] = \\int_{-\\infty}^{+\\infty} h(t) e^{-j\\omega t}\\, dt, \\qquad h(t) = F^{-1}[H(\\omega)] = \\frac{1}{2\\pi} \\int_{-\\infty}^{+\\infty} H(\\omega) e^{j\\omega t}\\, d\\omega",
-      "perche": "Si usano insieme il passo 2 (definizione di $h$) e il risultato $\\lim_{\\Delta \\to 0} F[D(t,\\Delta)] = 1$ di T2; l'antitrasformata esiste con il fattore $1/(2\\pi)$ della convenzione adottata."
+      "testo": "Al tendere di $\\Delta$ a zero l’impulso ausiliario tende all’impulso unitario e la sua trasformata tende a uno.",
+      "formula": "\\lim_{\\Delta\\to0}F[D(t,\\Delta)]=1",
+      "perche": "È il limite della trasformata dell’impulso rettangolare unitario, dimostrato nella scheda sulla funzione impulsiva per ogni pulsazione fissata."
+    },
+    {
+      "n": 9,
+      "testo": "Si passa al limite nella relazione di ingresso e uscita: la funzione di trasferimento è la trasformata della risposta impulsiva.",
+      "formula": "H(\\omega)\\cdot1 = F[h(t)] = \\int_{-\\infty}^{+\\infty}h(t)e^{-j\\omega t}\\,dt",
+      "perche": "Nel limite la risposta a $D$ tende a $h$ e $F[D]$ tende a uno, quindi da $F[y]=H\\,F[D]$ segue la relazione diretta."
+    },
+    {
+      "n": 10,
+      "testo": "Si applica la trasformazione inversa per ritrovare la risposta impulsiva dalla funzione di trasferimento.",
+      "formula": "h(t)=F^{-1}[H(\\omega)]=\\frac{1}{2\\pi}\\int_{-\\infty}^{+\\infty}H(\\omega)e^{j\\omega t}\\,d\\omega",
+      "perche": "La risposta impulsiva e la funzione di trasferimento formano una coppia di trasformate, con il fattore dell’antitrasformata della convenzione adottata."
     }
   ],
   "formula_finale": "y(t) = x(t) * h(t), \\qquad H(\\omega) = F[h(t)], \\qquad h(t) = F^{-1}[H(\\omega)], \\qquad h(t) = 0 \\;\\; (t<0) \\text{ se causale}",
@@ -137,7 +151,7 @@
       "blocchi": [
         {
           "id": "in",
-          "etichetta": "x(t) = D(t, Δ) oppure segnale generico",
+          "etichetta": "x(t)",
           "forma": "ingresso",
           "colonna": 0,
           "riga": 2
@@ -612,9 +626,109 @@
           ]
         }
       ]
+    },
+    {
+      "id": "quadripolo-ingresso-d",
+      "tipo": "blocchi",
+      "titolo": "Quadripolo con impulso ausiliario",
+      "descrizione": "Primo stato: l’impulso rettangolare ausiliario di area unitaria entra nel quadripolo e produce la risposta osservata in uscita.",
+      "blocchi": [
+        {
+          "id": "in",
+          "etichetta": "D(t, Δ)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 2
+        },
+        {
+          "id": "q",
+          "etichetta": "Q",
+          "forma": "rettangolo",
+          "colonna": 3,
+          "riga": 2
+        },
+        {
+          "id": "out",
+          "etichetta": "y(t)",
+          "forma": "uscita",
+          "colonna": 6,
+          "riga": 2
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "in",
+          "a": "q"
+        },
+        {
+          "da": "q",
+          "a": "out"
+        }
+      ]
+    },
+    {
+      "id": "quadripolo-limite-risposta",
+      "tipo": "blocchi",
+      "titolo": "Risposta impulsiva come limite",
+      "descrizione": "Novità: alla risposta osservata si applica il limite per durata dell’impulso tendente a zero; il risultato è la risposta impulsiva, senza dividere la risposta per la durata.",
+      "blocchi": [
+        {
+          "id": "in",
+          "etichetta": "D(t, Δ)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 2
+        },
+        {
+          "id": "q",
+          "etichetta": "Q",
+          "forma": "rettangolo",
+          "colonna": 3,
+          "riga": 2
+        },
+        {
+          "id": "out",
+          "etichetta": "y(t)",
+          "forma": "uscita",
+          "colonna": 6,
+          "riga": 2
+        },
+        {
+          "id": "limite",
+          "etichetta": "lim Δ → 0",
+          "forma": "rettangolo",
+          "colonna": 9,
+          "riga": 2
+        },
+        {
+          "id": "h",
+          "etichetta": "h(t)",
+          "forma": "uscita",
+          "colonna": 12,
+          "riga": 2
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "in",
+          "a": "q"
+        },
+        {
+          "da": "q",
+          "a": "out"
+        },
+        {
+          "da": "out",
+          "a": "limite"
+        },
+        {
+          "da": "limite",
+          "a": "h"
+        }
+      ]
     }
   ],
-  "a_voce": "La funzione di trasferimento descrive la rete in frequenza; voglio l'equivalente nel tempo. Sollecito il quadripolo con un impulso rettangolare di area uno e chiamo risposta impulsiva il limite della risposta quando la durata tende a zero: in forma simbolica è la risposta alla delta. Se la rete è causale questa risposta è zero per tempi negativi. Ora prendo un ingresso qualunque e lo penso come una somma di impulsi elementari: quello in tau ha peso x di tau per d tau. Per linearità la sua risposta è lo stesso peso per la risposta impulsiva traslata, e per permanenza la traslazione è proprio tau. Sommando tutti i contributi esce la convoluzione: nota h, conosco l'uscita per ogni ingresso. Infine torno in frequenza: con l'impulso ausiliario in ingresso, la trasformata dell'uscita è H per la trasformata dell'impulso; al limite l'uscita tende a h e la trasformata dell'impulso tende a uno, quindi H è esattamente la trasformata di h, e h è l'antitrasformata di H.",
+  "a_voce": "La funzione di trasferimento descrive la rete in frequenza; per il dominio del tempo sollecito il quadripolo con un rettangolo di area uno. La risposta impulsiva è il limite della risposta quando la durata tende a zero, senza dividerla per la durata; simbolicamente è la risposta alla delta. Per una rete causale è zero nei tempi negativi. Scompongo un ingresso generico in impulsi elementari: per linearità ciascuna risposta è pesata e per permanenza è traslata. Sommandole ottengo la convoluzione. Torno in frequenza e scrivo la trasformata della risposta al rettangolo come prodotto di H per la trasformata dell’impulso. Isolo prima il limite di quest’ultima, che vale uno; poi ottengo H come trasformata della risposta impulsiva. Infine applico l’antitrasformata, con il fattore uno su due pi greco, per tornare da H a h.",
   "errori_frequenti": [
     {
       "errore": "Definire $h(t)$ direttamente come «risposta alla delta» senza il limite sull'impulso rettangolare.",
@@ -638,10 +752,10 @@
     "Causale $\\Rightarrow h(t) = 0$ per $t < 0$ (fisica realizzabilità).",
     "Ingresso generico = somma di impulsi $x(\\tau)\\, d\\tau\\, \\delta(t-\\tau)$ (da T2).",
     "Linearità + permanenza: $y(t) = \\int x(\\tau) h(t-\\tau)\\, d\\tau = x(t) * h(t)$.",
-    "In frequenza: $F[y] = H(\\omega) F[D(t,\\Delta)]$; con $\\Delta \\to 0$ e $F[D] \\to 1$: $H(\\omega) = F[h(t)]$."
+    "In frequenza: $F[y]=H F[D]$; prima $F[D]\\to1$, poi $H=F[h]$ e $h=F^{-1}[H]$."
   ],
   "a_buchi": {
-    "testo": "La risposta impulsiva è $h(t) = \\lim_{\\Delta \\to 0}$ ___1___, dove l'ingresso è l'impulso di intensità ___2___. La risposta all'impulso elementare applicato in $\\tau$ vale $x(\\tau)\\, d\\tau\\;$ ___3___: il fattore scala viene dalla ___4___, la traslazione dalla permanenza. Sommando si ottiene la ___5___. In frequenza il legame $H(\\omega) = F[h(t)]$ segue facendo tendere $\\Delta$ a zero e usando che la trasformata dell'impulso ausiliario tende a ___6___.",
+    "testo": "La risposta impulsiva è $h(t)=\\lim_{\\Delta\\to0}$ ___1___, senza dividere per la durata: l’ingresso ha intensità ___2___. La risposta all’impulso elementare è $x(\\tau)\\,d\\tau$ ___3___, per ___4___ e permanenza. La somma dà la ___5___. In frequenza si isola il limite di $F[D]$, che vale ___6___, e si applicano trasformata e inversa.",
     "soluzioni": {
       "1": [
         "y(t)"
