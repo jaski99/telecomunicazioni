@@ -16,7 +16,7 @@ export function renderScenario(nodo) {
 export function renderAnalogia(lezione) {
   if (!lezione || !lezione.analogia || !lezione.analogia.testo) return '';
   const an = lezione.analogia;
-  return `<div class="analogia">${blocchi(an.testo)}${an.limite ? `<p class="analogia__limite"><span class="errore__label">Limite</span>${blocchi(an.limite)}</p>` : ''}</div>`;
+  return `<div class="analogia">${blocchi(an.testo)}${an.limite ? `<p class="analogia__limite"><span class="errore-blocco__label">Limite</span>${blocchi(an.limite)}</p>` : ''}</div>`;
 }
 
 function testoSicuro(v) {

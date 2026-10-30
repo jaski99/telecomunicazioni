@@ -1,4 +1,4 @@
-/* web/css/print.css — owner E1. Stampa da manuale: @media print, zero !important,
+/* web/css/print.css — owner E1. Stampa da manuale: @media print, zero importanti,
    sezioni aperte via markup (open impostato dal JS su beforeprint),
    nessuna navigazione, URL dei link stampati a piè di pagina. */
 @media print {
