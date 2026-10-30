@@ -3,16 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#102a43">
   <title>Quiz — Fondamenti di Telecomunicazioni</title>
-  <style>
-    *{box-sizing:border-box}:root{font-family:system-ui,sans-serif;color:#102a43;background:#f4f7fb}body{margin:0;padding:1rem}main{max-width:48rem;margin:2rem auto;background:#fff;padding:clamp(1rem,4vw,2rem);border-radius:1rem;box-shadow:0 8px 30px #102a4318}h1{font-size:clamp(1.4rem,4vw,2rem)}button,input{font:inherit}button{border:0;border-radius:.5rem;padding:.7rem 1rem;margin:.25rem;background:#075985;color:white;cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #f59e0b;outline-offset:2px}.quiz-option{display:flex;gap:.75rem;padding:.7rem;border:1px solid #cbd5e1;border-radius:.5rem;margin:.5rem 0}.quiz-status{color:#334e68}.quiz-form input[type=text]{width:min(12rem,45vw);padding:.5rem;margin:.25rem}.quiz-feedback{padding:.5rem 0}.quiz-controls{display:flex;flex-wrap:wrap;gap:.25rem;align-items:center}.quiz-controls label{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap}input[type=number]{width:5rem}.quiz-form input[type=text]{max-width:100%}@media(max-width:420px){body{padding:.5rem}main{margin:.5rem auto}.quiz-option{align-items:flex-start}}
-  </style>
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages/quiz.css">
 </head>
 <body>
-<main>
+<main class="page">
   <h1>Quiz di Fondamenti di Telecomunicazioni</h1>
-  <p>Demo autonoma del modulo. I dati mostrati sono un piccolo campione didattico, senza punteggio ufficiale.</p>
+  <div class="prose">
+    <p>Demo autonoma del modulo quiz. I dati mostrati sono un piccolo campione didattico, senza punteggio ufficiale.</p>
+  </div>
   <div id="quiz" data-durata-minuti="20"></div>
 </main>
 <script type="module">

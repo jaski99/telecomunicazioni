@@ -1,1 +1,129 @@
-/* Owner: D4. */
+/* web/css/pages/grafo.css — owner D4 */
+
+.grafo-filtri {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  margin-bottom: var(--s-6);
+}
+
+.grafo-filtri__campi {
+  display: grid;
+  gap: var(--s-4);
+}
+
+.grafo-campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.grafo-campo label {
+  font-weight: 600;
+  font-size: var(--fs-small);
+}
+
+.grafo-campo input,
+.grafo-campo select {
+  width: 100%;
+  min-height: var(--tap);
+  min-width: var(--tap);
+  padding: var(--s-2) var(--s-3);
+  margin: 0;
+  border: 1px solid var(--c-text-muted);
+  border-radius: var(--radius-sm);
+  background: var(--c-bg);
+  color: var(--c-text);
+}
+
+.grafo-campo option {
+  gap: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.grafo-stato {
+  font-size: var(--fs-small);
+  color: var(--c-text-muted);
+}
+
+.grafo-sezione {
+  margin-bottom: var(--s-7);
+}
+
+.grafo-sezione__testata {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  margin: var(--s-6) 0 var(--s-4);
+}
+
+.grafo-sezione__testata h2 {
+  margin: 0;
+}
+
+.nodo-card {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.nodo-card__titolo {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  min-width: var(--tap);
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--c-primary);
+}
+
+.nodo-card__titolo:hover {
+  text-decoration: underline;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.link-nodo-chip {
+  min-height: var(--tap);
+  min-width: var(--tap);
+  padding: var(--s-2) var(--s-3);
+  text-decoration: none;
+  justify-content: center;
+}
+
+.parola-intera {
+  white-space: nowrap;
+}
+
+.nodo-card__prereq {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--c-border);
+}
+
+.nodo-card__label {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--c-text-muted);
+}
+
+@media (min-width: 768px) {
+  .grafo-filtri__campi {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grafo-griglia {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

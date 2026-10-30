@@ -1,1 +1,114 @@
-/* Owner: D4. */
+/* web/css/pages/ripasso.css — owner D4 */
+
+.ripasso-sezione {
+  margin-bottom: var(--s-7);
+}
+
+.ripasso-card {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.ripasso-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  min-width: var(--tap);
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--c-primary);
+}
+
+.ripasso-link:hover {
+  text-decoration: underline;
+}
+
+.ripasso-azioni {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.ripasso-azioni .btn {
+  min-width: var(--tap);
+}
+
+.ripasso-desktop .tabella {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.ripasso-desktop .table th:first-child,
+.ripasso-desktop .table td:first-child {
+  width: calc(var(--s-8) * 7);
+  min-width: calc(var(--s-8) * 6);
+}
+
+.ripasso-desktop .table td:nth-child(2),
+.ripasso-desktop .table td:nth-child(3),
+.ripasso-azioni .btn,
+.parola-intera,
+.tabella .chip {
+  white-space: nowrap;
+}
+
+.ripasso-desktop .table th,
+.ripasso-desktop .table td {
+  padding: var(--s-3);
+  vertical-align: middle;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.ripasso-desktop .table th {
+  background: var(--c-surface-2);
+}
+
+.ripasso-impostazioni {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.ripasso-impostazioni h2 {
+  margin: 0;
+}
+
+.ripasso-campo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-2);
+}
+
+.ripasso-campo label {
+  font-weight: 600;
+  font-size: var(--fs-small);
+}
+
+.ripasso-campo input[type="date"] {
+  min-height: var(--tap);
+  min-width: var(--tap);
+  padding: var(--s-2) var(--s-3);
+  margin: 0;
+  border: 1px solid var(--c-text-muted);
+  border-radius: var(--radius-sm);
+  background: var(--c-bg);
+  color: var(--c-text);
+}
+
+@media (max-width: 767px) {
+  .ripasso-desktop {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .ripasso-mobile {
+    display: none;
+  }
+}

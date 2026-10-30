@@ -1,54 +1,55 @@
-/** Pagina #/quiz: monta il modulo quiz di W6 (web/modules/quiz/index.js).
- * Il modulo e' disponibile su questo ramo: viene importato e montato
- * direttamente. Se l'import fallisce, l'app non si interrompe.
+/**
+ * Pagina #/quiz: monta il modulo quiz (web/modules/quiz/index.js) con
+ * modalità Allenamento e Simulazione. Se l'import fallisce mostra un avviso.
  */
 
-let montaQuiz = null;
+let montaQuizFn = null;
 let importTentato = false;
-let smontaQuiz = null;
 
 async function ottieniMontaQuiz() {
-  if (importTentato) return montaQuiz;
+  if (importTentato) return montaQuizFn;
   importTentato = true;
   try {
     const mod = await import('../../modules/quiz/index.js');
-    montaQuiz = mod && typeof mod.montaQuiz === 'function' ? mod.montaQuiz : null;
+    montaQuizFn = mod && typeof mod.montaQuiz === 'function' ? mod.montaQuiz : null;
   } catch (_err) {
-    montaQuiz = null;
+    montaQuizFn = null;
   }
-  return montaQuiz;
+  return montaQuizFn;
 }
 
-export async function render(ctx) {
-  const mq = await ottieniMontaQuiz();
-  if (!mq) {
-    return `<h1>Quiz</h1>
-<div id=\"quiz-root\"></div>`;
-  }
-  return `<h1>Quiz</h1><div id=\"quiz-root\"></div>`;
+export async function render() {
+  return `<h1>Quiz di allenamento</h1>
+<div class="prose">
+  <p>Verifica la preparazione in modalità <strong>Allenamento</strong> con spiegazione immediata oppure in <strong>Simulazione</strong> con consegna finale e durata ipotetica configurabile.</p>
+</div>
+<div id="quiz-root"></div>`;
 }
 
 export async function setup(container, ctx) {
-  const mq = await ottieniMontaQuiz();
-  if (!mq) return;
   const root = container.querySelector('#quiz-root');
-  if (!root) return;
+  if (!root) return undefined;
+  const mq = await ottieniMontaQuiz();
+  if (!mq) {
+    const box = document.createElement('div');
+    box.className = 'callout callout--warn';
+    box.textContent = 'Quiz non disponibile.';
+    root.replaceChildren(box);
+    return undefined;
+  }
   try {
-    smontaQuiz = mq(root, {
-      quiz: ctx.quiz || { versione: 1, descrizione: '', elementi: [] },
-      graph: ctx.graph || { versione: 1, nodi: [], esame: [], pendenti: [] },
-      storage: ctx.storage,
-      renderMath: ctx.renderMath,
+    return mq(root, {
+      quiz: (ctx && ctx.quiz) || { versione: 1, descrizione: '', elementi: [] },
+      graph: (ctx && ctx.graph) || { versione: 1, nodi: [], esame: [], pendenti: [] },
+      storage: ctx && ctx.storage,
+      renderMath: (ctx && ctx.renderMath) || (() => {}),
       naviga: (hash) => { location.hash = hash; },
     });
   } catch (_err) {
-    root.innerHTML = `<p class=\"avviso\">Quiz non disponibile (errore di montaggio del modulo).</p>`;
-  }
-}
-
-export function smonta() {
-  if (typeof smontaQuiz === 'function') {
-    try { smontaQuiz(); } catch (_err) { /* ignora */ }
-    smontaQuiz = null;
+    const box = document.createElement('div');
+    box.className = 'callout callout--error';
+    box.textContent = 'Quiz non disponibile (errore di montaggio del modulo).';
+    root.replaceChildren(box);
+    return undefined;
   }
 }

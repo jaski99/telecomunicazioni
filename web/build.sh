@@ -41,7 +41,6 @@ const files = [
   'css/base.css',
   'css/layout.css',
   'css/components.css',
-  'css/legacy.css',
   'css/math.css',
   'css/figure.css',
   'css/pages/dimostrazione.css',
@@ -62,6 +61,8 @@ const files = [
   'js/figure/index.js',
   'js/figure/grafico.js',
   'js/figure/blocchi.js',
+  'js/figure/blocchi-layout.js',
+  'js/figure/blocchi-forme.js',
   'js/figure/temporale.js',
   'js/pages/home.js',
   'js/pages/grafo.js',
@@ -99,6 +100,8 @@ const files = [
   'vendor/dompurify/purify.es.mjs',
   'modules/quiz/index.js',
   'modules/quiz/esiti.js',
+  'modules/quiz/logica.js',
+  'modules/quiz/vista.js',
 ];
 // Versione di cache derivata dal contenuto delle risorse precachate.
 const existing = files.filter((f) => fs.existsSync(path.join(webDir, f)));

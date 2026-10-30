@@ -1,195 +1,86 @@
 import { leggiEsiti, registraEsito } from './esiti.js';
-
-const el = (tag, attrs = {}, text = '') => {
-  const node = document.createElement(tag);
-  for (const [key, value] of Object.entries(attrs)) {
-    if (key === 'className') node.className = value;
-    else if (key === 'disabled') node.disabled = Boolean(value);
-    else if (key.startsWith('aria-') || key.startsWith('data-')) node.setAttribute(key, value);
-    else node[key] = value;
-  }
-  if (text) node.textContent = text;
-  return node;
-};
-const RISPOSTA_ASSENTE = Symbol('risposta assente');
-const listaQuiz = quiz => Array.isArray(quiz) ? quiz : (quiz?.elementi || []);
-const normalize = text => String(text ?? '').trim().toLocaleLowerCase('it-IT').replace(/\s+/g, ' ');
-
-function rispostaUtente(item, form) {
-  if (item.tipo === 'scelta_multipla') return form.querySelector('input[name="risposta"]:checked')?.value ?? RISPOSTA_ASSENTE;
-  if (item.tipo === 'vero_falso') return form.querySelector('input[name="risposta"]:checked')?.value ?? RISPOSTA_ASSENTE;
-  const campi = [...form.querySelectorAll('input[data-buco]')];
-  return campi.map(input => normalize(input.value));
-}
-function rispostaCorretta(item, answer) {
-  if (item.tipo === 'scelta_multipla') return answer === item.corretta;
-  if (item.tipo === 'vero_falso') return answer === String(item.risposta_corretta);
-  return Object.entries(item.soluzioni || {}).every(([key, varianti]) => {
-    const index = Number(key) - 1;
-    return Array.isArray(answer) && (varianti || []).some(value => normalize(value) === answer[index]);
-  });
-}
-function descrizioneCorretta(item) {
-  if (item.tipo === 'scelta_multipla') return item.opzioni?.find(option => option.id === item.corretta)?.testo || 'Risposta corretta.';
-  if (item.tipo === 'vero_falso') return item.risposta_corretta ? 'Vero.' : 'Falso.';
-  return Object.entries(item.soluzioni || {}).map(([key, values]) => `${key}: ${values.join(' / ')}`).join('; ');
-}
-function renderQuestion(item, form) {
-  form.replaceChildren();
-  form.append(el('h3', {}, item.domanda || 'Quiz'));
-  if (item.tipo === 'scelta_multipla') {
-    item.opzioni.forEach(option => {
-      const label = el('label', { className: 'quiz-option' });
-      label.append(el('input', { type: 'radio', name: 'risposta', value: option.id }));
-      label.append(el('span', {}, option.testo));
-      form.append(label);
-    });
-  } else if (item.tipo === 'vero_falso') {
-    form.append(el('p', {}, item.affermazione));
-    for (const [value, labelText] of [['true', 'Vero'], ['false', 'Falso']]) {
-      const label = el('label', { className: 'quiz-option' });
-      label.append(el('input', { type: 'radio', name: 'risposta', value }));
-      label.append(el('span', {}, labelText));
-      form.append(label);
-    }
-  } else {
-    const parts = String(item.testo_con_buchi || '').split(/(___\d+___)/g);
-    for (const part of parts) {
-      const match = part.match(/^___(\d+)___$/);
-      form.append(match ? el('input', { type: 'text', 'data-buco': match[1], 'aria-label': `Risposta ${match[1]}` }) : document.createTextNode(part));
-    }
-  }
-}
+import { RISPOSTA_ASSENTE, el, listaQuiz, rispostaUtente, rispostaCorretta, renderDomanda } from './logica.js';
+import { costruisciStrutturaQuiz, mostraEsitoAllenamento, mostraRiepilogoFinale } from './vista.js';
 
 /** Monta le modalità allenamento e simulazione in un contenitore esistente. */
 export function montaQuiz(radice, { quiz, graph, storage = globalThis.localStorage, renderMath = () => {}, naviga = () => {} } = {}) {
   if (!radice || typeof radice.replaceChildren !== 'function') throw new TypeError('Contenitore quiz non valido.');
   const items = listaQuiz(quiz);
   if (!items.length) {
-    radice.replaceChildren(el('p', { role: 'status' }, 'Quiz non disponibile.'));
+    radice.replaceChildren(el('div', { className: 'callout callout--warn', role: 'status' }, 'Quiz non disponibile.'));
     return () => radice.replaceChildren();
   }
-  let indice = 0;
-  let modalita = 'allenamento';
-  let risposte = [];
-  let chiuso = false;
-  let timerId = null;
-  let secondiResidui = 0;
-  const titolo = el('h2', {}, 'Banca quiz');
-  const status = el('p', { 'aria-live': 'polite', className: 'quiz-status' });
-  const clock = el('p', { 'aria-live': 'polite', className: 'quiz-clock' });
-  const controls = el('div', { className: 'quiz-controls' });
-  const training = el('button', { type: 'button' }, 'Allenamento');
-  const simulation = el('button', { type: 'button' }, 'Simulazione');
-  const durationLabel = el('label', {}, 'Durata simulazione (minuti, ipotesi) ');
-  const durationInput = el('input', { type: 'number', min: 1, max: 180, step: 1, value: Number(radice.dataset.durataMinuti || 20), 'aria-label': 'Durata simulazione in minuti' });
-  durationLabel.append(durationInput);
-  const form = el('form', { className: 'quiz-form' });
-  const feedback = el('section', { className: 'quiz-feedback', 'aria-live': 'polite' });
-  const submit = el('button', { type: 'submit' }, 'Conferma risposta');
-  const next = el('button', { type: 'button', hidden: true }, 'Prossima domanda');
-  const nodeLink = el('button', { type: 'button', hidden: true }, 'Riapri il nodo');
-  controls.append(training, simulation, durationLabel);
-  form.append(submit);
-  radice.replaceChildren(titolo, controls, status, clock, form, feedback, next, nodeLink);
+  let indice = 0; let modalita = 'allenamento'; let risposte = []; let chiuso = false; let timerId = null; let secondiResidui = 0;
+  const ui = costruisciStrutturaQuiz(radice, items.length);
 
-  function fermaTimer() {
-    if (timerId !== null) globalThis.clearInterval(timerId);
-    timerId = null;
-  }
-  function aggiornaOrologio() {
-    const minuti = Math.floor(secondiResidui / 60);
-    const secondi = String(secondiResidui % 60).padStart(2, '0');
-    clock.textContent = `Tempo ipotetico residuo: ${minuti}:${secondi}`;
-  }
-  function selectMode(mode) {
+  const fermaTimer = () => { if (timerId !== null) globalThis.clearInterval(timerId); timerId = null; };
+  const aggiornaOrologio = () => {
+    ui.clock.textContent = `Tempo ipotetico residuo: ${Math.floor(secondiResidui / 60)}:${String(secondiResidui % 60).padStart(2, '0')}`;
+  };
+
+  function concludi() {
     fermaTimer();
-    modalita = mode; indice = 0; risposte = []; feedback.replaceChildren(); next.hidden = true;
-    submit.hidden = false; submit.disabled = false; form.hidden = false;
-    clock.textContent = '';
-    if (mode === 'simulazione') {
-      const parsed = Number(durationInput.value);
-      const mins = Number.isFinite(parsed) ? Math.min(180, Math.max(1, Math.floor(parsed))) : 20;
-      durationInput.value = String(mins);
-      secondiResidui = mins * 60;
-      aggiornaOrologio();
-      timerId = globalThis.setInterval(() => {
-        secondiResidui -= 1;
-        aggiornaOrologio();
-        if (secondiResidui <= 0) finish();
-      }, 1000);
-      status.textContent = `Simulazione di allenamento: ${items.length} quesiti. Durata configurabile: ${mins} minuti (ipotesi, non durata ufficiale).`;
-    }
-    showQuestion();
+    ui.form.hidden = true; ui.submit.hidden = true; ui.next.hidden = true; ui.nodeLink.hidden = true;
+    mostraRiepilogoFinale(ui.feedback, modalita, risposte, renderMath);
+    ui.status.textContent = 'Esiti salvati nel dispositivo, se la memoria è disponibile.';
   }
-  function showQuestion() {
+
+  function mostraDomanda() {
     if (chiuso) return;
-    if (indice >= items.length) return finish();
-    const item = items[indice];
-    status.textContent = `${modalita === 'allenamento' ? 'Allenamento' : 'Simulazione'} · domanda ${indice + 1} di ${items.length}`;
-    nodeLink.hidden = true; feedback.replaceChildren(); next.hidden = true; submit.hidden = false;
-    renderQuestion(item, form); form.append(submit); renderMath(form);
+    if (indice >= items.length) { concludi(); return; }
+    const val = Math.min(Math.max(indice + 1, 1), items.length);
+    ui.status.textContent = `${modalita === 'allenamento' ? 'Allenamento' : 'Simulazione'} · domanda ${val} di ${items.length}`;
+    ui.progress.setAttribute('aria-valuenow', String(val));
+    ui.progressBar.style.width = `${Math.round((val / items.length) * 100)}%`;
+    ui.nodeLink.hidden = true; ui.feedback.hidden = true; ui.feedback.replaceChildren();
+    ui.next.hidden = true; ui.next.textContent = 'Prossima domanda'; ui.submit.hidden = false; ui.form.hidden = false;
+    renderDomanda(items[indice], ui.corpoDomanda);
+    renderMath(ui.corpoDomanda);
   }
-  function persist(item, correct, mode) {
-    registraEsito(storage, { item_id: item.id, nodo_id: item.nodo_id, corretto: correct, modalita: mode, ts: new Date().toISOString() });
+
+  function selezionaModalita(mode) {
+    fermaTimer();
+    modalita = mode; indice = 0; risposte = []; ui.clock.textContent = '';
+    ui.tabAllenamento.setAttribute('aria-selected', String(mode === 'allenamento'));
+    ui.tabSimulazione.setAttribute('aria-selected', String(mode === 'simulazione'));
+    ui.tabAllenamento.classList.toggle('quiz-tab--attiva', mode === 'allenamento');
+    ui.tabSimulazione.classList.toggle('quiz-tab--attiva', mode === 'simulazione');
+    if (mode === 'simulazione') {
+      const parsed = Number(ui.durataInput.value);
+      const mins = Number.isFinite(parsed) ? Math.min(180, Math.max(1, Math.floor(parsed))) : 20;
+      ui.durataInput.value = String(mins); secondiResidui = mins * 60; aggiornaOrologio();
+      timerId = globalThis.setInterval(() => { secondiResidui -= 1; aggiornaOrologio(); if (secondiResidui <= 0) concludi(); }, 1000);
+    }
+    mostraDomanda();
   }
-  function showNode(item) {
-    const nodes = graph?.nodi || [];
-    const n = nodes.find(value => value.id === item.nodo_id);
-    if (!n) return;
-    nodeLink.hidden = false;
-    nodeLink.onclick = () => naviga(`#${item.nodo_id}`);
-  }
-  form.addEventListener('submit', event => {
-    event.preventDefault();
-    const item = items[indice]; const answer = rispostaUtente(item, form);
-    if (answer === RISPOSTA_ASSENTE || (Array.isArray(answer) && answer.some(value => !value))) {
-      feedback.replaceChildren(el('p', { role: 'alert' }, 'Inserisci una risposta prima di continuare.')); return;
+
+  ui.form.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const item = items[indice]; const answer = rispostaUtente(item, ui.form);
+    if (answer === RISPOSTA_ASSENTE || (Array.isArray(answer) && answer.some((v) => !v))) {
+      ui.feedback.hidden = false; ui.feedback.className = 'callout callout--error quiz-feedback';
+      ui.feedback.replaceChildren(el('p', { role: 'alert' }, 'Inserisci una risposta prima di continuare.')); return;
     }
     const correct = rispostaCorretta(item, answer);
-    risposte.push({ item, correct, answer }); persist(item, correct, modalita);
-    submit.hidden = true;
+    risposte.push({ item, correct, answer });
+    registraEsito(storage, { item_id: item.id, nodo_id: item.nodo_id, corretto: correct, modalita, ts: new Date().toISOString() });
+    ui.submit.hidden = true;
     if (modalita === 'allenamento') {
-      const heading = el('strong', {}, correct ? 'Corretto.' : 'Da rivedere.');
-      feedback.replaceChildren(heading, el('p', {}, item.spiegazione));
-      if (!correct && item.tipo === 'scelta_multipla') {
-        const rationale = item.opzioni.find(option => option.id === answer)?.perche_sbagliata;
-        if (rationale) feedback.append(el('p', {}, `Perché questa scelta non funziona: ${rationale}`));
+      mostraEsitoAllenamento(ui.feedback, item, correct, answer, renderMath);
+      if ((graph?.nodi || []).some((n) => n && n.id === item.nodo_id)) {
+        ui.nodeLink.hidden = false; ui.nodeLink.onclick = () => naviga(`#/nodo/${item.nodo_id}`);
       }
-      feedback.append(el('p', {}, `Risposta attesa: ${descrizioneCorretta(item)}`));
-      showNode(item); next.hidden = false;
+      ui.next.hidden = false;
     } else {
-      feedback.replaceChildren(el('p', {}, `Risposta registrata (${risposte.length} di ${items.length}). La correzione sarà mostrata alla consegna.`));
-      indice += 1;
-      if (indice < items.length) { next.hidden = false; next.textContent = 'Continua'; }
-      else { next.hidden = false; next.textContent = 'Consegna simulazione'; }
+      ui.feedback.hidden = false; ui.feedback.className = 'callout quiz-feedback';
+      ui.feedback.replaceChildren(el('p', {}, `Risposta registrata (${risposte.length} di ${items.length}). La correzione sarà mostrata alla consegna.`));
+      indice += 1; ui.next.hidden = false; ui.next.textContent = indice < items.length ? 'Continua' : 'Consegna simulazione';
     }
   });
-  next.addEventListener('click', () => {
-    if (modalita === 'allenamento') indice += 1;
-    showQuestion();
-  });
-  function finish() {
-    fermaTimer();
-    const score = risposte.filter(answer => answer.correct).length;
-    form.hidden = true; submit.hidden = true; next.hidden = true;
-    const titoloEsito = modalita === 'simulazione' ? 'Simulazione completata' : 'Allenamento completato';
-    feedback.replaceChildren(el('h3', {}, titoloEsito), el('p', {}, `Risposte corrette: ${score} su ${risposte.length}. Esito di allenamento, nessun voto ufficiale.`));
-    const review = el('ol');
-    risposte.forEach(({ item, correct, answer }) => {
-      const entry = el('li', {}, `${item.domanda} — ${correct ? 'corretta' : 'da rivedere'}. ${item.spiegazione} Risposta attesa: ${descrizioneCorretta(item)}`);
-      if (!correct && item.tipo === 'scelta_multipla') {
-        const rationale = item.opzioni.find(option => option.id === answer)?.perche_sbagliata;
-        if (rationale) entry.append(document.createTextNode(` Motivazione: ${rationale}`));
-      }
-      review.append(entry);
-    });
-    feedback.append(review);
-    status.textContent = 'Esiti salvati nel dispositivo, se la memoria è disponibile.';
-  }
-  training.addEventListener('click', () => selectMode('allenamento'));
-  simulation.addEventListener('click', () => selectMode('simulazione'));
-  selectMode('allenamento');
+  ui.next.addEventListener('click', () => { if (modalita === 'allenamento') indice += 1; mostraDomanda(); });
+  ui.tabAllenamento.addEventListener('click', () => selezionaModalita('allenamento'));
+  ui.tabSimulazione.addEventListener('click', () => selezionaModalita('simulazione'));
+  selezionaModalita('allenamento');
   return () => { chiuso = true; fermaTimer(); radice.replaceChildren(); };
 }
 
