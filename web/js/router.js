@@ -10,8 +10,21 @@ export function parseHash() {
   return hash || '';
 }
 
+/** Restituisce { percorso, query } separando la query string dall'hash. */
+export function parseHashConQuery() {
+  const hash = parseHash();
+  const [percorso, qs = ''] = hash.split('?');
+  const query = {};
+  for (const coppia of qs.split('&')) {
+    const [k, v] = coppia.split('=');
+    if (k !== undefined && k.length > 0) query[decodeURIComponent(k)] = v !== undefined ? decodeURIComponent(v) : '';
+  }
+  return { percorso: percorso || '', query };
+}
+
 export function corrispondenzaPercorso(percorso, pattern) {
-  const partiP = percorso.split('/').filter(s => s.length > 0);
+  const percorsoPuro = percorso.split('?')[0];
+  const partiP = percorsoPuro.split('/').filter(s => s.length > 0);
   const partiPat = pattern.split('/').filter(s => s.length > 0);
   if (partiP.length !== partiPat.length) return null;
   const params = {};

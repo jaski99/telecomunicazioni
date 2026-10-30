@@ -31,47 +31,26 @@ node - "$WEB_DIR" <<'NODE'
 const fs = require('fs');
 const path = require('path');
 const webDir = process.argv[2];
-const files = [
+function raccogli(dir) {
+  const out = [];
+  const base = path.join(webDir, dir);
+  function cammina(d) {
+    for (const entry of fs.readdirSync(d, { withFileTypes: true })) {
+      const p = path.join(d, entry.name);
+      if (entry.isDirectory()) cammina(p);
+      else out.push(path.relative(webDir, p));
+    }
+  }
+  cammina(base);
+  return out;
+}
+
+const fileFissi = [
   'index.html',
   'manifest.json',
   'sw.js',
   'icon.svg',
   'icon-512.png',
-  'css/tokens.css',
-  'css/base.css',
-  'css/layout.css',
-  'css/components.css',
-  'css/math.css',
-  'css/figure.css',
-  'css/pages/dimostrazione.css',
-  'css/pages/home.css',
-  'css/pages/grafo.css',
-  'css/pages/nodo.css',
-  'css/pages/quiz.css',
-  'css/pages/esercizi.css',
-  'css/pages/ripasso.css',
-  'css/pages/fonti.css',
-  'js/layout/shell.js',
-  'js/app.js',
-  'js/core/math.js',
-  'js/core/store.js',
-  'js/router.js',
-  'js/ui.js',
-  'js/figure/helpers.js',
-  'js/figure/index.js',
-  'js/figure/grafico.js',
-  'js/figure/blocchi.js',
-  'js/figure/blocchi-layout.js',
-  'js/figure/blocchi-forme.js',
-  'js/figure/temporale.js',
-  'js/pages/home.js',
-  'js/pages/grafo.js',
-  'js/pages/nodo.js',
-  'js/pages/dimostrazione.js',
-  'js/pages/esercizi.js',
-  'js/pages/quiz.js',
-  'js/pages/ripasso.js',
-  'js/pages/fonti.js',
   'graph.json',
   'quiz.json',
   'vendor/katex/katex.mjs',
@@ -103,6 +82,10 @@ const files = [
   'modules/quiz/logica.js',
   'modules/quiz/vista.js',
 ];
+// Precache da glob di js/** e css/** (residuo dim/*.js chiuso da E1; pages/dim/cache.js
+// non è toccato qui: lo rimuove E2 dopo il merge di E1).
+const filesGlob = [...raccogli('js'), ...raccogli('css')].sort();
+const files = [...fileFissi, ...filesGlob];
 // Versione di cache derivata dal contenuto delle risorse precachate.
 const existing = files.filter((f) => fs.existsSync(path.join(webDir, f)));
 // Versione di cache derivata dal CONTENUTO delle risorse precachate.
