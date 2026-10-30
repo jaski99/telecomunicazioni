@@ -256,3 +256,380 @@ def test_enunciati_con_risultato():
 def test_niente_punteggio_negli_enunciati_pm_fm_e_carson():
     for id in ('dim-pm-fm-trasformazione', 'dim-formula-carson'):
         assert 'Punteggio' not in load(f'graph/dimostrazioni/{id}.json')['enunciato']
+
+# Round E: le eccezioni sono per correzione, non un permesso generale di
+# cambiare l'intero contenuto. Lo snapshot è stato ricavato da main 0ef8a4c.
+R6_EXCEPTIONS = {
+    'dim-conversione-ad': {
+        'T7-1': {'passi'}, 'T7-2': {'notazione'}, 'T7-3': {'passi', 'figure'},
+        'T7-4': {'passi'}, 'T7-5': {'passi', 'figure'}, 'T7-6': {'passi'},
+        'T7-7': {'verifica'}, 'S1-S8': {'passi', 'figure'},
+        'G-5': {'a_voce', 'versione_compatta', 'a_buchi'}, 'G-6': {'collegamenti'},
+    },
+    'dim-conversione-da': {
+        'T8-1': {'passi'}, 'T8-2': {'passi'}, 'T8-3': {'passi', 'varianti_notazione'},
+        'T8-4': {'passi', 'figure'}, 'T8-5': {'passi'}, 'T8-6': {'richiamo_attivo'},
+        'S1-S8': {'passi', 'figure'},
+        'G-5': {'a_voce', 'versione_compatta', 'a_buchi'}, 'G-6': {'collegamenti'},
+    },
+    'dim-spettri-modulazione-prodotto': {
+        'T6-1': {'passi'}, 'T6-2': {'formula_finale'}, 'T6-3': {'notazione'},
+        'T6-4': {'errori_frequenti'}, 'T6-5': {'passi', 'figure'},
+        'T6-6': {'a_voce', 'versione_compatta', 'a_buchi', 'richiamo_attivo'},
+        'T6-7': {'verifica'}, 'S1-S8': {'passi', 'figure'}, 'G-6': {'collegamenti'},
+    },
+    'dim-modulazione-prodotto-qam-errore-fase': {
+        'T10-1': {'passi'}, 'T10-2': {'passi'}, 'T10-3': {'passi', 'figure'},
+        'T10-4': {'richiamo_attivo'}, 'T10-5': {'passi'}, 'T10-6': {'errori_frequenti'},
+        'S1-S8': {'passi', 'figure'},
+        'G-5': {'a_voce', 'versione_compatta', 'a_buchi'}, 'G-6': {'collegamenti'},
+    },
+    'dim-quadripoli-passa-basso-equivalente': {
+        'T11-1': {'passi'}, 'T11-2': {'passi'}, 'T11-3': {'notazione'},
+        'T11-4': {'verifica'}, 'T11-5': {'passi'}, 'T11-6': set(),
+        'T11-7': {'passi', 'figure'}, 'T11-8': {'figure'}, 'S1-S8': {'passi', 'figure'},
+        'G-5': {'a_voce', 'versione_compatta', 'a_buchi'},
+    },
+    'dim-pm-fm-trasformazione': {
+        'T9-1': {'passi'}, 'T9-2': {'notazione'}, 'T9-3': {'passi'},
+        'T9-4': {'richiamo_attivo'}, 'S1-S8': {'passi', 'figure'},
+        'G-5': {'a_voce', 'versione_compatta', 'a_buchi'}, 'G-6': {'collegamenti'},
+    },
+    'dim-formula-carson': {
+        'C-1': {'notazione'}, 'C-2': {'passi'}, 'C-3': {'passi'},
+        'C-4': {'passi'}, 'C-5': {'verifica'}, 'C-6': {'varianti_notazione'},
+        'S1-S8': {'passi', 'figure'},
+        'G-5': {'a_voce', 'versione_compatta', 'a_buchi'}, 'G-6': {'collegamenti'},
+    },
+}
+SNAPSHOT_SHA256 = {
+    'dim-conversione-ad': '9c5e601b518fe7f4fcbecaf59e28b3c659c7b864041a4d6d4c8a9230c122bb61',
+    'dim-conversione-da': '80999166e5e73f2817e35be0f127263ffc957cca26152a7412af1cece128983a',
+    'dim-spettri-modulazione-prodotto': '59c82315f3003d01e487e75139f1074203c05f67d74ae14aa8d3f947c361adee',
+    'dim-modulazione-prodotto-qam-errore-fase': '9598666f61a81793f784abd57254bc3b84e1e1076240e10ce92c78a559630a90',
+    'dim-quadripoli-passa-basso-equivalente': '154adc5ca6a4b18c76b7148b8a309c79588519d65a71fe123ee3d769cea28144',
+    'dim-pm-fm-trasformazione': 'd34c50363b17a74126f685ff04ec61565e04f07ebc7c96bef5546756ff10e046',
+    'dim-formula-carson': 'c3f22fe47400701fc315495affd0999d9b3f4a6e54f9bdbc558470de8ae47597',
+}
+
+
+def test_e4_b7_snapshot_e_campi_invarianti():
+    import hashlib
+
+    snapshot = load('tests/fixtures/invarianti_w4.json')
+    assert snapshot['commit'] == '0ef8a4c'
+    assert set(snapshot['dimostrazioni']) == IDS == set(R6_EXCEPTIONS)
+    for id, before in snapshot['dimostrazioni'].items():
+        canonical = json.dumps(before, sort_keys=True, ensure_ascii=False,
+                               separators=(',', ':')).encode('utf-8')
+        assert hashlib.sha256(canonical).hexdigest() == SNAPSHOT_SHA256[id], id
+        after = load(f'graph/dimostrazioni/{id}.json')
+        allowed = set().union(*R6_EXCEPTIONS[id].values())
+        assert set(before) <= set(after), id
+        new_fields = set(after) - set(before)
+        assert new_fields <= {'collegamenti', 'varianti_notazione'}, (id, new_fields)
+        if 'varianti_notazione' in new_fields:
+            assert id == 'dim-formula-carson'  # C-6, proprietà già prevista dallo schema
+        for field in set(before) | set(after):
+            if field not in allowed:
+                assert after.get(field) == before.get(field), (id, field)
+        for field in ('id', 'domande_esame', 'enunciato'):
+            assert after[field] == before[field], (id, field)
+        assert after['verifica']['stato'] != 'verificata_testo_prof'
+        assert {f['id'] for f in before['figure']} <= {f['id'] for f in after['figure']}
+
+
+def test_e4_b7_sottocampi_e_figure_non_oggetto_delle_correzioni():
+    before = load('tests/fixtures/invarianti_w4.json')['dimostrazioni']
+    # I diagrammi elencati conservano tutto salvo descrizione/titolo dello stato.
+    description_only = {
+        ('dim-conversione-ad', 'campionamento'): {'descrizione'},
+        ('dim-conversione-da', 'catena'): {'descrizione'},
+        ('dim-spettri-modulazione-prodotto', 'catena'): {'descrizione'},
+        ('dim-quadripoli-passa-basso-equivalente', 'quadripoli'): {'descrizione'},
+        ('dim-formula-carson', 'righe-carson'): {'titolo', 'descrizione'},
+    }
+    unchanged = {
+        'dim-modulazione-prodotto-qam-errore-fase': {'catena', 'modulatore-qam', 'demodulatore-qam'},
+        'dim-pm-fm-trasformazione': {'pm-verso-fm', 'fm-verso-pm'},
+    }
+    for (id, fig_id), allowed in description_only.items():
+        old = next(f for f in before[id]['figure'] if f['id'] == fig_id)
+        new = next(f for f in load(f'graph/dimostrazioni/{id}.json')['figure'] if f['id'] == fig_id)
+        assert {k: v for k, v in old.items() if k not in allowed} == {
+            k: v for k, v in new.items() if k not in allowed}, (id, fig_id)
+    for id, ids in unchanged.items():
+        after = load(f'graph/dimostrazioni/{id}.json')
+        for fig_id in ids:
+            old = next(f for f in before[id]['figure'] if f['id'] == fig_id)
+            new = next(f for f in after['figure'] if f['id'] == fig_id)
+            assert old == new, (id, fig_id)
+    for id in ('dim-conversione-ad', 'dim-quadripoli-passa-basso-equivalente'):
+        after = load(f'graph/dimostrazioni/{id}.json')
+        for field in ('stato', 'data', 'note'):
+            assert after['verifica'][field] == before[id]['verifica'][field], (id, field)
+    for id in ('dim-conversione-ad', 'dim-pm-fm-trasformazione',
+               'dim-quadripoli-passa-basso-equivalente'):
+        after = load(f'graph/dimostrazioni/{id}.json')
+        old_notation = before[id]['notazione']
+        assert after['notazione'][:len(old_notation)] == old_notation
+
+
+def figure_by_step(demo, n):
+    step = demo['passi'][n - 1]
+    assert step['n'] == n and step.get('figura')
+    return next(f for f in demo['figure'] if f['id'] == step['figura'])
+
+
+def within_axes(fig):
+    if fig['tipo'] != 'grafico':
+        return
+    x, y = fig['asse_x'], fig['asse_y']
+    for series in fig['serie']:
+        for px, py in series['punti']:
+            assert x['min'] <= px <= x['max'], (fig['id'], px)
+            assert y['min'] <= py <= y['max'], (fig['id'], py)
+    for point in fig.get('annotazioni', []):
+        assert x['min'] <= point['x'] <= x['max'], fig['id']
+        assert y['min'] <= point['y'] <= y['max'], fig['id']
+
+
+def assert_progressive(previous, current):
+    """S1-S5: stesso spazio, inclusione in testa, crescita e punti in scala."""
+    assert previous['tipo'] == current['tipo'], (previous['id'], current['id'])
+    within_axes(previous)
+    within_axes(current)
+    if previous['tipo'] == 'grafico':
+        assert previous['asse_x'] == current['asse_x']
+        assert previous['asse_y'] == current['asse_y']
+        assert current['serie'][:len(previous['serie'])] == previous['serie']
+        old = previous.get('annotazioni', [])
+        new = current.get('annotazioni', [])
+        assert all(item in new for item in old)
+        assert len(current['serie']) > len(previous['serie']) or len(new) > len(old)
+    elif previous['tipo'] == 'blocchi':
+        blocks = {item['id']: item for item in current['blocchi']}
+        for block in previous['blocchi']:
+            assert blocks[block['id']] == block  # include colonna e riga
+        assert all(link in current['collegamenti'] for link in previous['collegamenti'])
+        assert (len(current['blocchi']) > len(previous['blocchi']) or
+                len(current['collegamenti']) > len(previous['collegamenti']))
+    else:
+        assert previous['tipo'] == 'temporale'
+        assert previous['asse_t'] == current['asse_t'] and previous['corsie'] == current['corsie']
+        keys = ('intervalli', 'frecce', 'marcatori')
+        assert all(item in current.get(key, []) for key in keys for item in previous.get(key, []))
+        assert any(len(current.get(key, [])) > len(previous.get(key, [])) for key in keys)
+
+
+def test_e4_b1_b2_catene_e_descrizioni():
+    chains = {
+        'dim-conversione-ad': (4, 5, 6),
+        'dim-conversione-da': (4, 5),
+        'dim-spettri-modulazione-prodotto': (7, 8, 9),
+        'dim-modulazione-prodotto-qam-errore-fase': (7, 8),
+        'dim-quadripoli-passa-basso-equivalente': (2, 3, 4),
+        'dim-pm-fm-trasformazione': (1, 2),
+        'dim-formula-carson': (3, 4, 5),
+    }
+    assert set(chains) == IDS  # una coppia progressiva in ciascuna scheda E4
+    for id, steps in chains.items():
+        demo = load(f'graph/dimostrazioni/{id}.json')
+        assert list(steps) == list(range(steps[0], steps[-1] + 1))
+        states = [figure_by_step(demo, n) for n in steps]
+        for previous, current in zip(states, states[1:]):
+            assert_progressive(previous, current)
+        for fig in states:
+            assert len(fig['descrizione']) >= 30
+            assert not re.search(r'[ωΩβφϕΔε≥≤≈→±×²₀₁₂]', fig['descrizione']), fig['id']
+            within_axes(fig)
+    assert len(chains['dim-conversione-ad']) >= 3
+    qam = load('graph/dimostrazioni/dim-modulazione-prodotto-qam-errore-fase.json')
+    assert_progressive(figure_by_step(qam, 1), figure_by_step(qam, 2))
+
+
+def test_e4_s6_nessuna_anticipazione_e_pannelli_t11():
+    ad = load('graph/dimostrazioni/dim-conversione-ad.json')
+    first = figure_by_step(ad, 1)
+    assert [b['id'] for b in first['blocchi']] == ['b0', 'b1']
+    assert figure_by_step(ad, 3)['id'] == 'caratteristica-quantizzatore'
+    stage1, stage2, stage3 = [figure_by_step(ad, n) for n in (4, 5, 6)]
+    assert stage1['blocchi'][:len(first['blocchi'])] == first['blocchi']
+    assert [b['id'] for b in stage1['blocchi']] == ['b0', 'b1', 'campioni', 'b2', 'livelli']
+    assert [b['id'] for b in stage2['blocchi']] == ['b0', 'b1', 'campioni', 'b2', 'livelli', 'b3']
+    assert [b['id'] for b in stage3['blocchi']] == ['b0', 'b1', 'campioni', 'b2', 'livelli', 'b3', 'b4']
+    assert 'codifica' not in str(stage1).lower()
+    assert all(b['id'] != 'b4' for b in stage2['blocchi'])
+    sp = load('graph/dimostrazioni/dim-spettri-modulazione-prodotto.json')
+    upper, both = figure_by_step(sp, 7), figure_by_step(sp, 8)
+    assert all('inferiore' not in s['etichetta'].lower() for s in upper['serie'])
+    assert sum('inferiore' in s['etichetta'].lower() for s in both['serie']) == 2
+    quad = load('graph/dimostrazioni/dim-quadripoli-passa-basso-equivalente.json')
+    panels = [figure_by_step(quad, n) for n in (2, 3, 4, 5)]
+    assert [p['id'] for p in panels] == ['bande-segnale', 'traslazione-spettrale',
+                                        'spettro-equivalente', 'filtro-complesso-iq']
+    assert all('banda base' not in s['etichetta'].lower() for p in panels[:2] for s in p['serie'])
+    assert any('banda base' in s['etichetta'].lower() for s in panels[2]['serie'])
+    assert panels[3]['tipo'] == 'blocchi'
+    assert any(b['id'] == 'quadratura' and 'π/2' in b['etichetta'] for b in panels[3]['blocchi'])
+
+
+def test_e4_b3_controllo_r6_7_3():
+    non_digitabile = re.compile(r'[\\$^_]')
+    all_nodes = set(contract())
+    for id in IDS:
+        demo = load(f'graph/dimostrazioni/{id}.json')
+        figure_ids = {fig['id'] for fig in demo['figure']}
+        used = [step['figura'] for step in demo['passi'] if step.get('figura')]
+        assert len(figure_ids) == len(demo['figure'])
+        assert set(used) == figure_ids, (id, figure_ids - set(used))
+        assert len(used) == len(set(used)), id
+        assert 4 <= len(demo['passi']) <= 12
+        assert [step['n'] for step in demo['passi']] == list(range(1, len(demo['passi']) + 1))
+        for step in demo['passi']:
+            assert step.get('formula') or step.get('figura'), (id, step['n'])
+            assert len(step['perche']) >= (60 if id == 'dim-spettri-modulazione-prodotto' else 40)
+        for variants in demo['a_buchi']['soluzioni'].values():
+            assert all(not non_digitabile.search(value) for value in variants), id
+        assert 300 <= len(demo['a_voce']) <= 1500
+        assert len(demo.get('collegamenti', [])) >= 2
+        assert set(demo['collegamenti']) <= all_nodes
+        for fig in demo['figure']:
+            within_axes(fig)
+
+
+def test_e4_b6_modulazione_prodotto_segno_e_numeri():
+    demo = load('graph/dimostrazioni/dim-spettri-modulazione-prodotto.json')
+    assert len(demo['passi']) == 10
+    assert r'+\varphi' in demo['passi'][4]['formula']
+    assert r'-\varphi' in demo['passi'][7]['formula']
+    assert r'\varphi_s' in demo['formula_finale'] and r'\varphi_i' in demo['formula_finale']
+    assert r'\phi(\Omega)' not in str(demo['notazione'])
+    phi, t, wm, w0 = math.pi / 2, 0.1, 1, 10
+    upper = 0.5 * math.cos((w0 + wm) * t - phi)
+    lower = 0.5 * math.cos((w0 - wm) * t + phi)
+    wrong_lower = 0.5 * math.cos((w0 - wm) * t - phi)
+    reference = math.cos(wm * t - phi) * math.cos(w0 * t)
+    assert math.isclose(upper + lower, reference, abs_tol=1e-12)
+    assert round(reference, 3) == 0.054
+    assert round(upper + wrong_lower, 3) == 0.837
+    assert 'file1 p. 29' in demo['verifica']['note']
+
+
+def test_e4_b6_conversione_ad_e_da():
+    ad = load('graph/dimostrazioni/dim-conversione-ad.json')
+    assert r'\ge 2\omega_m' in ad['passi'][0]['formula']
+    assert r'\varepsilon_n=q_n-x_n' in ad['passi'][2]['formula']
+    assert '(-M,M)' in ad['passi'][2]['testo']
+    assert figure_by_step(ad, 3)['id'] == 'caratteristica-quantizzatore'
+    levels, fs = 256, 8000
+    bits = math.ceil(math.log2(levels))
+    assert bits == 8 and bits * fs == 64000
+    assert '64' in ad['passi'][-1]['testo'] and 'NON TROVATO' in ad['verifica']['punti_aperti'][-1]
+    da = load('graph/dimostrazioni/dim-conversione-da.json')
+    assert any('equalizzatrice' in p['testo'] and r'\frac{T}{G(\omega)}' in p['formula'] for p in da['passi'])
+    assert any(r'\omega_s/2' in p['perche'] for p in da['passi'])
+    assert any(r'\varepsilon(t)=x_r(t)-x(t)' in p['formula'] for p in da['passi'])
+    gain = 1e-3 / 8e-6
+    assert math.isclose(gain, 125, abs_tol=1e-12) and round(20 * math.log10(gain)) == 42
+    assert '125' in str(da['richiamo_attivo'])
+
+
+def test_e4_b6_qam_e_carson():
+    demo = load('graph/dimostrazioni/dim-modulazione-prodotto-qam-errore-fase.json')
+    phase = math.radians(10)
+    c, s = math.cos(phase), math.sin(phase)
+    assert round(c, 4) == 0.9848 and round(s, 4) == 0.1736
+    assert round(20 * math.log10(s / c), 1) == -15.1
+    assert '0{,}9848' in str(demo['richiamo_attivo'])
+    assert '0{,}1736' in str(demo['richiamo_attivo'])
+    assert '-15{,}1' in str(demo['richiamo_attivo'])
+    assert any(r'\pi/2' in e['errore'] for e in demo['errori_frequenti'])
+    carson = load('graph/dimostrazioni/dim-formula-carson.json')
+    beta, fm_khz = 2, 1
+    assert 2 * (beta + 1) * fm_khz == 6
+    assert r'6\,\mathrm{kHz}' in carson['passi'][-1]['formula']
+    assert carson['varianti_notazione'][0]['variante'] == 'NON TROVATO'
+    assert 'stima, non un limite' in carson['passi'][3]['perche']
+
+
+def test_e4_t11_6_simmetria_coniugata_con_tre_pulsazioni():
+    import cmath
+
+    demo = load('graph/dimostrazioni/dim-quadripoli-passa-basso-equivalente.json')
+    beta = next(x for x in demo['notazione'] if x['simbolo'] == r'\beta(\omega)')
+    assert r'\beta(\omega)=-\arg H(\omega)' in beta['significato']
+    assert any(r'H_0(-\omega)\ne H_0^*(\omega)' in p['formula'] for p in demo['passi'])
+    carrier = 10.0
+    lowpass = lambda w: 1 / (1 + 1j * w)  # impulso reale, causale, stabile
+    H = lambda w: lowpass(w - carrier)
+    H0 = lambda w: H(w + carrier)
+    for w in (0.25, 1.0, 2.5):
+        assert abs(H0(w) - lowpass(w)) < 1e-12
+        assert abs(H0(-w) - H0(w).conjugate()) < 1e-12
+        assert abs(H(w - carrier) - lowpass(w)) > 0.1  # il segno opposto non funziona
+        amplitude = 1 / (1 + w * w)
+        h_plus = amplitude * cmath.exp(-1j * (0.3 * w))
+        h_minus = amplitude * cmath.exp(-1j * (-0.3 * w))
+        assert abs(h_minus - h_plus.conjugate()) < 1e-12
+    assert 'causalità' in demo['passi'][-1]['perche']
+
+
+def test_e4_katex_tutte_le_formule_pure():
+    """Anche passi e simboli senza delimitatori devono compilare, non solo la prosa."""
+    import subprocess
+
+    entries = []
+    for id in IDS:
+        demo = load(f'graph/dimostrazioni/{id}.json')
+        entries.append([id, demo['formula_finale']])
+        entries.extend([id, p['formula']] for p in demo['passi'] if p.get('formula'))
+        entries.extend([id, n['simbolo']] for n in demo['notazione'])
+    javascript = """
+import { compilaLatex } from './web/js/core/math.js';
+let data = ''; for await (const chunk of process.stdin) data += chunk;
+for (const [id, formula] of JSON.parse(data)) {
+  try { compilaLatex(formula); }
+  catch (error) { console.error(id + ': ' + formula + ' — ' + error.message); process.exitCode = 1; }
+}
+"""
+    result = subprocess.run(['node', '--input-type=module', '-e', javascript],
+                            input=json.dumps(entries), text=True, capture_output=True, cwd=ROOT)
+    assert result.returncode == 0, result.stderr
+    assert len(entries) >= 100
+
+
+def test_e4_etichette_nuove_figure_a_blocchi_non_spezzano_parole():
+    """Gli stati nuovi restano leggibili anche col renderer attuale (B12)."""
+    import subprocess
+
+    targets = {
+        'dim-conversione-ad': ('catena', 'catena-quantizzazione', 'catena-codifica',
+                               'catena-segnale-numerico'),
+        'dim-modulazione-prodotto-qam-errore-fase': ('demodulatore-dsb', 'demodulatore-dsb-filtrato'),
+        'dim-quadripoli-passa-basso-equivalente': ('filtro-complesso-iq',),
+    }
+    entries = []
+    for id, ids in targets.items():
+        figures = {f['id']: f for f in load(f'graph/dimostrazioni/{id}.json')['figure']}
+        entries.extend([id, figures[fig_id]] for fig_id in ids)
+    javascript = r'''
+import { renderBlocchi } from './web/js/figure/blocchi.js';
+let data = ''; for await (const chunk of process.stdin) data += chunk;
+const dec = s => s.replaceAll('&lt;', '<').replaceAll('&gt;', '>')
+  .replaceAll('&quot;', '"').replaceAll('&#039;', "'").replaceAll('&amp;', '&');
+for (const [id, fig] of JSON.parse(data)) {
+  const svg = renderBlocchi(fig).svgInner;
+  for (const m of svg.matchAll(/<text\b[^>]*aria-label="([^"]*)"[^>]*>([\s\S]*?)<\/text>/g)) {
+    const lines = [...m[2].matchAll(/<tspan\b[^>]*>([\s\S]*?)<\/tspan>/g)].map(x => dec(x[1]));
+    const normalize = s => s.trim().replace(/\s+/g, ' ');
+    if (lines.length && normalize(lines.join(' ')) !== normalize(dec(m[1]))) {
+      console.error(`${id}/${fig.id}: ${dec(m[1])} → ${lines.join(' | ')}`); process.exitCode = 1;
+    }
+  }
+}
+'''
+    result = subprocess.run(['node', '--input-type=module', '-e', javascript],
+                            input=json.dumps(entries), text=True, capture_output=True, cwd=ROOT)
+    assert len(entries) == 7
+    assert result.returncode == 0, result.stderr

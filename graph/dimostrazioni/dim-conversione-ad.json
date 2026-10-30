@@ -33,6 +33,34 @@
     {
       "simbolo": "b",
       "significato": "Numero di bit per parola."
+    },
+    {
+      "simbolo": "f_s=1/T",
+      "significato": "Frequenza di campionamento."
+    },
+    {
+      "simbolo": "\\omega_s=2\\pi f_s",
+      "significato": "Pulsazione di campionamento."
+    },
+    {
+      "simbolo": "\\omega_m",
+      "significato": "Massima pulsazione del segnale a banda limitata."
+    },
+    {
+      "simbolo": "M",
+      "significato": "Semiampiezza dell’intervallo di variabilità dei campioni."
+    },
+    {
+      "simbolo": "\\varepsilon_n",
+      "significato": "Errore di quantizzazione: livello meno campione."
+    },
+    {
+      "simbolo": "\\Delta",
+      "significato": "Ampiezza di un intervallo nel caso uniforme."
+    },
+    {
+      "simbolo": "T_b,R_b",
+      "significato": "Durata di bit e velocità binaria senza overhead."
     }
   ],
   "varianti_notazione": [
@@ -46,34 +74,45 @@
   "passi": [
     {
       "n": 1,
-      "testo": "Limitare la banda e scegliere il campionamento.",
-      "formula": "\\omega_s=\\frac{2\\pi}{T}>2\\omega_m",
-      "perche": "La separazione delle repliche evita aliasing per un segnale limitato in banda."
+      "testo": "Scegliere la frequenza per campionare il segnale limitato in banda.",
+      "formula": "\\omega_s=\\frac{2\\pi}{T}\\ge 2\\omega_m\\quad\\Longleftrightarrow\\quad f_s\\ge 2f_m",
+      "perche": "La separazione delle repliche evita aliasing nel modello ideale; al bordo di uguaglianza valgono le condizioni ulteriori indicate nelle ipotesi.",
+      "figura": "catena"
     },
     {
       "n": 2,
-      "testo": "Prelevare i campioni.",
+      "testo": "Prelevare il valore del segnale agli istanti di campionamento.",
       "formula": "x_n=x(nT)",
-      "perche": "La lettura agli istanti nT discretizza il tempo senza ancora quantizzare le ampiezze.",
+      "perche": "Il campionatore discretizza il tempo: i valori dei campioni non sono ancora ridotti a un numero finito di livelli.",
       "figura": "campionamento"
     },
     {
       "n": 3,
-      "testo": "Quantizzare ogni campione.",
-      "formula": "q_n=Q(x_n),\\quad q_n\\in\\{q_1,\\ldots,q_L\\}",
-      "perche": "Il quantizzatore associa a ciascun intervallo un livello rappresentativo."
+      "testo": "Dividere l’intervallo $(-M,M)$ in $L$ intervalli e sostituire ciascun campione con il livello associato: la quantizzazione è irreversibile.",
+      "formula": "q_n=Q(x_n),\\quad x_n\\in(-M,M),\\quad q_n\\in\\{q_1,\\ldots,q_L\\},\\quad\\varepsilon_n=q_n-x_n",
+      "perche": "Più valori di ingresso possono produrre lo stesso livello, perciò il valore originale non è recuperabile in generale.",
+      "figura": "caratteristica-quantizzatore"
     },
     {
       "n": 4,
-      "testo": "Codificare ciascun livello.",
-      "formula": "b=\\lceil\\log_2 L\\rceil,\\quad 2^b\\ge L",
-      "perche": "Le parole binarie di lunghezza b sono 2 alla b e devono distinguere tutti i livelli."
+      "testo": "Collegare il quantizzatore alla catena e considerare livelli uniformi.",
+      "formula": "\\Delta=\\frac{2M}{L},\\qquad |\\varepsilon_n|\\leq\\frac{\\Delta}{2}",
+      "perche": "Con livelli rappresentativi al centro degli intervalli il massimo errore in assenza di sovraccarico è metà del passo.",
+      "figura": "catena-quantizzazione"
     },
     {
       "n": 5,
-      "testo": "Calcolare la velocità binaria senza bit aggiuntivi.",
-      "formula": "R_b=\\frac{b}{T}=b f_s",
-      "perche": "Ogni campione produce b bit e i campioni si ripetono alla frequenza fs."
+      "testo": "Codificare ogni livello con una parola binaria distinta. Per $L=256$ si ottengono $b=8$ bit.",
+      "formula": "b=\\lceil\\log_2L\\rceil,\\qquad 2^b\\ge L",
+      "perche": "Le parole di lunghezza b devono essere almeno tante quanti i livelli di quantizzazione da distinguere.",
+      "figura": "catena-codifica"
+    },
+    {
+      "n": 6,
+      "testo": "Emettere in sequenza i bit delle parole e determinare la velocità del segnale numerico. Con $f_s=8\\,\\mathrm{kHz}$ e $b=8$ si ottengono $64\\,\\mathrm{kbit/s}$.",
+      "formula": "T_b=\\frac{T}{b},\\qquad R_b=\\frac{b}{T}=\\frac1{T_b}",
+      "perche": "Ogni campione produce una parola di b bit in un intervallo T; non sono inclusi bit aggiuntivi di linea.",
+      "figura": "catena-segnale-numerico"
     }
   ],
   "formula_finale": "x(t)\\longrightarrow x_n\\longrightarrow q_n\\longrightarrow (b_n^{(1)},\\ldots,b_n^{(b)})",
@@ -81,8 +120,8 @@
     {
       "id": "catena",
       "tipo": "blocchi",
-      "titolo": "Conversione analogico-digitale",
-      "descrizione": "La sorgente analogica attraversa campionatore, quantizzatore e codificatore per produrre parole PCM.",
+      "titolo": "Conversione A/D: campionatore",
+      "descrizione": "Primo stato: la sorgente analogica entra nel campionatore; la frequenza è scelta rispetto alla banda del segnale.",
       "blocchi": [
         {
           "id": "b0",
@@ -93,30 +132,9 @@
         },
         {
           "id": "b1",
-          "etichetta": "Campionatore",
+          "etichetta": "Campiona",
           "forma": "rettangolo",
           "colonna": 1,
-          "riga": 0
-        },
-        {
-          "id": "b2",
-          "etichetta": "Quantizzatore",
-          "forma": "rettangolo",
-          "colonna": 2,
-          "riga": 0
-        },
-        {
-          "id": "b3",
-          "etichetta": "Codificatore",
-          "forma": "rettangolo",
-          "colonna": 3,
-          "riga": 0
-        },
-        {
-          "id": "b4",
-          "etichetta": "Bit PCM",
-          "forma": "uscita",
-          "colonna": 4,
           "riga": 0
         }
       ],
@@ -124,18 +142,6 @@
         {
           "da": "b0",
           "a": "b1"
-        },
-        {
-          "da": "b1",
-          "a": "b2"
-        },
-        {
-          "da": "b2",
-          "a": "b3"
-        },
-        {
-          "da": "b3",
-          "a": "b4"
         }
       ]
     },
@@ -143,7 +149,7 @@
       "id": "campionamento",
       "tipo": "grafico",
       "titolo": "Campioni di una sinusoide",
-      "descrizione": "Una sinusoide e i campioni presi a intervalli regolari T; i punti mostrano la discretizzazione del tempo prima della quantizzazione.",
+      "descrizione": "Il nuovo confronto mostra una sinusoide e i suoi campioni equispaziati: è un esempio di discretizzazione del tempo, distinto dalla quantizzazione dei valori.",
       "asse_x": {
         "etichetta": "Tempo (periodi T)",
         "min": 0,
@@ -848,9 +854,435 @@
           ]
         }
       ]
+    },
+    {
+      "id": "caratteristica-quantizzatore",
+      "tipo": "grafico",
+      "titolo": "Quantizzatore uniforme a otto livelli",
+      "descrizione": "Nuovo esempio: la caratteristica a L=8 livelli nell’intervallo (-M,M). La diagonale è il riferimento senza quantizzazione; i tratti verticali indicano il passo Delta e l’errore epsilon tra campione e livello.",
+      "asse_x": {
+        "etichetta": "Campione xₙ",
+        "min": -1,
+        "max": 1,
+        "tacche": [
+          {
+            "valore": -1,
+            "etichetta": "−M"
+          },
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 1,
+            "etichetta": "M"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "Livello qₙ",
+        "min": -1,
+        "max": 1,
+        "tacche": [
+          {
+            "valore": -1,
+            "etichetta": "−M"
+          },
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 1,
+            "etichetta": "M"
+          }
+        ]
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "Otto livelli",
+          "punti": [
+            [
+              -1.0,
+              -0.875
+            ],
+            [
+              -0.75,
+              -0.875
+            ],
+            [
+              -0.75,
+              -0.625
+            ],
+            [
+              -0.5,
+              -0.625
+            ],
+            [
+              -0.5,
+              -0.375
+            ],
+            [
+              -0.25,
+              -0.375
+            ],
+            [
+              -0.25,
+              -0.125
+            ],
+            [
+              0.0,
+              -0.125
+            ],
+            [
+              0.0,
+              0.125
+            ],
+            [
+              0.25,
+              0.125
+            ],
+            [
+              0.25,
+              0.375
+            ],
+            [
+              0.5,
+              0.375
+            ],
+            [
+              0.5,
+              0.625
+            ],
+            [
+              0.75,
+              0.625
+            ],
+            [
+              0.75,
+              0.875
+            ],
+            [
+              1.0,
+              0.875
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "Riferimento q = x",
+          "punti": [
+            [
+              -1,
+              -1
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        },
+        {
+          "stile": "linea",
+          "etichetta": "Errore εₙ",
+          "punti": [
+            [
+              0.46,
+              0.4
+            ],
+            [
+              0.49,
+              0.375
+            ],
+            [
+              0.52,
+              0.4
+            ],
+            [
+              0.49,
+              0.375
+            ],
+            [
+              0.49,
+              0.49
+            ],
+            [
+              0.46,
+              0.465
+            ],
+            [
+              0.49,
+              0.49
+            ],
+            [
+              0.52,
+              0.465
+            ]
+          ]
+        },
+        {
+          "stile": "linea",
+          "etichetta": "Passo Δ",
+          "punti": [
+            [
+              0.69,
+              0.375
+            ],
+            [
+              0.74,
+              0.375
+            ],
+            [
+              0.715,
+              0.375
+            ],
+            [
+              0.715,
+              0.625
+            ],
+            [
+              0.69,
+              0.625
+            ],
+            [
+              0.74,
+              0.625
+            ]
+          ]
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": 0.49,
+          "y": 0.49,
+          "testo": "εₙ"
+        },
+        {
+          "x": 0.715,
+          "y": 0.625,
+          "testo": "Δ"
+        }
+      ]
+    },
+    {
+      "id": "catena-quantizzazione",
+      "tipo": "blocchi",
+      "titolo": "Conversione A/D: quantizzazione",
+      "descrizione": "Primo stato della catena dopo l’esempio del quantizzatore: il campionatore fornisce i campioni e il quantizzatore associa loro un livello discreto.",
+      "blocchi": [
+        {
+          "id": "b0",
+          "etichetta": "x(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 0
+        },
+        {
+          "id": "b1",
+          "etichetta": "Campiona",
+          "forma": "rettangolo",
+          "colonna": 1,
+          "riga": 0
+        },
+        {
+          "id": "campioni",
+          "etichetta": "xₙ",
+          "forma": "nodo",
+          "colonna": 2,
+          "riga": 0
+        },
+        {
+          "id": "b2",
+          "etichetta": "Quantizza",
+          "forma": "rettangolo",
+          "colonna": 3,
+          "riga": 0
+        },
+        {
+          "id": "livelli",
+          "etichetta": "qₙ",
+          "forma": "nodo",
+          "colonna": 4,
+          "riga": 0
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "b0",
+          "a": "b1"
+        },
+        {
+          "da": "b1",
+          "a": "campioni"
+        },
+        {
+          "da": "campioni",
+          "a": "b2"
+        },
+        {
+          "da": "b2",
+          "a": "livelli"
+        }
+      ]
+    },
+    {
+      "id": "catena-codifica",
+      "tipo": "blocchi",
+      "titolo": "Conversione A/D: codifica",
+      "descrizione": "Nuovo rispetto al passo precedente: il codificatore riceve i livelli quantizzati e li trasforma in parole binarie.",
+      "blocchi": [
+        {
+          "id": "b0",
+          "etichetta": "x(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 0
+        },
+        {
+          "id": "b1",
+          "etichetta": "Campiona",
+          "forma": "rettangolo",
+          "colonna": 1,
+          "riga": 0
+        },
+        {
+          "id": "campioni",
+          "etichetta": "xₙ",
+          "forma": "nodo",
+          "colonna": 2,
+          "riga": 0
+        },
+        {
+          "id": "b2",
+          "etichetta": "Quantizza",
+          "forma": "rettangolo",
+          "colonna": 3,
+          "riga": 0
+        },
+        {
+          "id": "livelli",
+          "etichetta": "qₙ",
+          "forma": "nodo",
+          "colonna": 4,
+          "riga": 0
+        },
+        {
+          "id": "b3",
+          "etichetta": "Codifica",
+          "forma": "rettangolo",
+          "colonna": 5,
+          "riga": 0
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "b0",
+          "a": "b1"
+        },
+        {
+          "da": "b1",
+          "a": "campioni"
+        },
+        {
+          "da": "campioni",
+          "a": "b2"
+        },
+        {
+          "da": "b2",
+          "a": "livelli"
+        },
+        {
+          "da": "livelli",
+          "a": "b3"
+        }
+      ]
+    },
+    {
+      "id": "catena-segnale-numerico",
+      "tipo": "blocchi",
+      "titolo": "Conversione A/D: segnale numerico",
+      "descrizione": "Nuova rispetto al passo precedente: l’uscita dei bit in sequenza; i blocchi di campionamento, quantizzazione e codifica rimangono nelle stesse posizioni.",
+      "blocchi": [
+        {
+          "id": "b0",
+          "etichetta": "x(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 0
+        },
+        {
+          "id": "b1",
+          "etichetta": "Campiona",
+          "forma": "rettangolo",
+          "colonna": 1,
+          "riga": 0
+        },
+        {
+          "id": "campioni",
+          "etichetta": "xₙ",
+          "forma": "nodo",
+          "colonna": 2,
+          "riga": 0
+        },
+        {
+          "id": "b2",
+          "etichetta": "Quantizza",
+          "forma": "rettangolo",
+          "colonna": 3,
+          "riga": 0
+        },
+        {
+          "id": "livelli",
+          "etichetta": "qₙ",
+          "forma": "nodo",
+          "colonna": 4,
+          "riga": 0
+        },
+        {
+          "id": "b3",
+          "etichetta": "Codifica",
+          "forma": "rettangolo",
+          "colonna": 5,
+          "riga": 0
+        },
+        {
+          "id": "b4",
+          "etichetta": "Bit PCM",
+          "forma": "uscita",
+          "colonna": 6,
+          "riga": 0
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "b0",
+          "a": "b1"
+        },
+        {
+          "da": "b1",
+          "a": "campioni"
+        },
+        {
+          "da": "campioni",
+          "a": "b2"
+        },
+        {
+          "da": "b2",
+          "a": "livelli"
+        },
+        {
+          "da": "livelli",
+          "a": "b3"
+        },
+        {
+          "da": "b3",
+          "a": "b4"
+        }
+      ]
     }
   ],
-  "a_voce": "Si parte da un segnale analogico con banda limitata. Dopo il filtraggio antialias si preleva un campione ogni T secondi, scegliendo la frequenza di campionamento maggiore del doppio della massima frequenza del segnale. Il risultato è una sequenza discreta nel tempo, ma ancora continua nei valori. La quantizzazione sostituisce ogni campione con uno dei livelli disponibili: è il passo irreversibile, perché molti valori diversi diventano lo stesso livello. Infine il codificatore associa a ogni livello una parola binaria. Il numero di bit deve permettere di distinguere tutti i livelli; moltiplicando i bit per campione per i campioni al secondo si ottiene la velocità binaria PCM. La condizione sul campionamento elimina l’aliasing ideale, non l’errore di quantizzazione.",
+  "a_voce": "Un segnale analogico limitato in banda si campiona a intervalli regolari T, scegliendo una frequenza almeno doppia di quella massima nel modello ideale; al limite di uguaglianza servono le condizioni precisate nelle ipotesi. I campioni sono discreti nel tempo ma possono ancora assumere valori continui. La quantizzazione divide l’intervallo da meno M a M in L intervalli e sostituisce ogni campione con un livello: è irreversibile, perché valori diversi possono dare lo stesso livello. In un quantizzatore uniforme con livelli centrali il passo è due M diviso L e l’errore è al massimo metà del passo. Il codificatore assegna a ogni livello una parola di b bit; l’emissione dei bit in sequenza forma il segnale numerico. Senza overhead il tempo di bit è T diviso b e la velocità è b diviso T. La forma d’onda di linea non è specificata.",
   "errori_frequenti": [
     {
       "errore": "Campionare appena sopra la frequenza massima.",
@@ -864,27 +1296,27 @@
     }
   ],
   "versione_compatta": [
-    "Campionare con $\\omega_{s} > 2\\omega_{m}$.",
-    "Quantizzare i campioni su L livelli.",
-    "Codificare ogni livello con $b = \\lceil \\log_{2} L\\rceil$ bit.",
-    "Senza overhead $R_{b} = \\frac{b}{T}$."
+    "Campionare con $\\omega_s\\ge2\\omega_m$, tenendo conto delle ipotesi al bordo.",
+    "Calcolare $x_n=x(nT)$ e quantizzare $x_n\\in(-M,M)$ su $L$ livelli.",
+    "La quantizzazione è irreversibile e $\\varepsilon_n=q_n-x_n$.",
+    "Codificare ogni livello con $b=\\lceil\\log_2 L\\rceil$ bit.",
+    "Senza overhead $T_b=T/b$ e $R_b=b/T$."
   ],
   "a_buchi": {
-    "testo": "La sequenza campionata vale ___1___. Il quantizzatore associa ___2___ livelli; servono almeno ___3___ bit perché ___4___.",
+    "testo": "Il campionamento discretizza il ___1___. La quantizzazione sostituisce ogni campione con un ___2___ ed è ___3___. Ogni livello è codificato in una parola di ___4___ bit.",
     "soluzioni": {
       "1": [
-        "x(nT)"
+        "tempo"
       ],
       "2": [
-        "L"
+        "livello",
+        "livello quantizzato"
       ],
       "3": [
-        "ceil(log2 L)",
-        "⌈log₂ L⌉"
+        "irreversibile"
       ],
       "4": [
-        "2^b ≥ L",
-        "2^b >= L"
+        "b"
       ]
     }
   },
@@ -918,7 +1350,12 @@
     "note": "File3 pp. 7-8 descrive i tre passi ma riporta un criterio di frequenza insufficiente; file1 p. 32 riporta il doppio della banda.",
     "punti_aperti": [
       "File3 p. 7 indica una frequenza maggiore della sola frequenza massima: chiarire il refuso rispetto a file1 p. 32.",
-      "La condizione stretta scelta qui evita il caso critico al bordo; confronto con il libro adottato NON TROVATO."
+      "La condizione stretta scelta qui evita il caso critico al bordo; confronto con il libro adottato NON TROVATO.",
+      "La forma d’onda del segnale numerico e la codifica di linea non sono state confrontate con file1 pp. 33-34: NON TROVATO."
     ]
-  }
+  },
+  "collegamenti": [
+    "conversione-ad-quantizzazione-pcm",
+    "dim-teorema-campionamento"
+  ]
 }

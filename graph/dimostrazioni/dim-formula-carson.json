@@ -22,40 +22,49 @@
     },
     {
       "simbolo": "\\beta",
-      "significato": "Indice di modulazione per il caso sinusoidale."
+      "significato": "Indice nel caso sinusoidale, definito nella ricostruzione da $\\beta=\\Delta\\omega_{\\max}/\\omega_m$."
     }
   ],
   "idea": "Contare approssimativamente le coppie di bande laterali significative nel caso sinusoidale.",
   "passi": [
     {
       "n": 1,
-      "testo": "Considerare una fase sinusoidale.",
-      "formula": "s(t)=A\\cos(\\omega_0 t+\\beta\\sin\\omega_m t)",
-      "perche": "È un modello di modulazione angolare sinusoidale."
+      "testo": "Considerare la modulazione angolare con fase sinusoidale.",
+      "formula": "s(t)=A\\cos(\\omega_0t+\\beta\\sin\\omega_mt)",
+      "perche": "È il modello sinusoidale scelto per motivare la stima, non una derivazione attribuita al docente."
     },
     {
       "n": 2,
-      "testo": "Calcolare la massima deviazione di pulsazione.",
+      "testo": "Calcolare la deviazione massima di pulsazione.",
       "formula": "\\Delta\\omega_{\\max}=\\beta\\omega_m",
-      "perche": "La derivata della fase eccedente è $\\beta\\omega_{m}$ coseno, il cui valore assoluto massimo è $\\beta\\omega_{m}$."
+      "perche": "La derivata della fase eccedente è un coseno moltiplicato per il prodotto fra indice e pulsazione modulante."
     },
     {
       "n": 3,
-      "testo": "Individuare le righe laterali.",
-      "formula": "\\omega=\\omega_0+n\\omega_m,\\quad n\\in\\mathbb{Z}",
-      "perche": "Lo sviluppo di Fourier della fase periodica produce righe spaziate della pulsazione modulante."
+      "testo": "Individuare le righe laterali attorno alla portante.",
+      "formula": "\\omega=\\omega_0+n\\omega_m,\\qquad n\\in\\mathbb{Z}",
+      "perche": "Lo sviluppo di Fourier della fase periodica produce righe separate dalla pulsazione del messaggio sinusoidale.",
+      "figura": "righe-carson"
     },
     {
       "n": 4,
-      "testo": "Applicare la stima empirica dell’ordine significativo.",
+      "testo": "Stimare l’ordine significativo; nell’esempio illustrato l’indice vale due.",
       "formula": "n_{\\max}\\approx\\beta+1",
-      "perche": "È una regola pratica sulle ampiezze delle funzioni di Bessel, non un limite esatto."
+      "perche": "Le righe oltre l’ordine stimato sono generalmente piccole ma non necessariamente nulle: è una stima, non un limite spettrale esatto.",
+      "figura": "ordine-significativo-carson"
     },
     {
       "n": 5,
-      "testo": "Contare entrambi i lati della portante.",
-      "formula": "B_\\omega\\approx2(\\beta+1)\\omega_m",
-      "perche": "La distanza tra le due righe estreme stimate è due volte il loro scostamento dalla portante."
+      "testo": "Contare la distanza tra le due righe significative stimate.",
+      "formula": "B_\\omega\\approx 2(\\beta+1)\\omega_m",
+      "perche": "Le righe estreme sono ai due lati della portante, quindi la loro distanza è il doppio dello scostamento.",
+      "figura": "banda-stimata-carson"
+    },
+    {
+      "n": 6,
+      "testo": "Applicare la stima a un tono da un chilohertz con indice due.",
+      "formula": "\\beta=2,\\quad f_m=1\\,\\mathrm{kHz}\\quad\\Longrightarrow\\quad n_{\\max}\\approx3,\\quad B\\approx2(3)(1\\,\\mathrm{kHz})=6\\,\\mathrm{kHz}",
+      "perche": "L’ordine stimato è tre e, usando frequenze in hertz su entrambi i lati, si ottiene una banda di sei chilohertz."
     }
   ],
   "formula_finale": "B_\\omega\\approx 2(\\Delta\\omega_{\\max}+\\omega_m)",
@@ -63,8 +72,8 @@
     {
       "id": "righe-carson",
       "tipo": "grafico",
-      "titolo": "Bande laterali: esempio schematico",
-      "descrizione": "Righe indicative intorno alla portante; le ampiezze sono schematiche e non rappresentano coefficienti di Bessel calcolati.",
+      "titolo": "Righe laterali schematiche",
+      "descrizione": "Nuovo stato: righe laterali indicative attorno alla portante. Le altezze sono schematiche e non sono coefficienti di Bessel calcolati; lo spettro può proseguire oltre la porzione mostrata.",
       "asse_x": {
         "etichetta": "Scostamento dalla portante (unità di ωm)",
         "min": -4,
@@ -111,9 +120,159 @@
           "etichetta": "Righe indicative"
         }
       ]
+    },
+    {
+      "id": "ordine-significativo-carson",
+      "tipo": "grafico",
+      "titolo": "Ordine significativo stimato",
+      "descrizione": "Nuove rispetto al passo precedente: le annotazioni dell’ordine significativo stimato nell’esempio con indice due. Le righe restano schematiche e la scala non cambia.",
+      "asse_x": {
+        "etichetta": "Scostamento dalla portante (unità di ωm)",
+        "min": -4,
+        "max": 4
+      },
+      "asse_y": {
+        "etichetta": "Ampiezza indicativa",
+        "min": 0,
+        "max": 1
+      },
+      "serie": [
+        {
+          "stile": "righe",
+          "punti": [
+            [
+              -3,
+              0.1
+            ],
+            [
+              -2,
+              0.3
+            ],
+            [
+              -1,
+              0.6
+            ],
+            [
+              0,
+              0.8
+            ],
+            [
+              1,
+              0.6
+            ],
+            [
+              2,
+              0.3
+            ],
+            [
+              3,
+              0.1
+            ]
+          ],
+          "etichetta": "Righe indicative"
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": -3,
+          "y": 0.1,
+          "testo": "n ≈ −3"
+        },
+        {
+          "x": 3,
+          "y": 0.1,
+          "testo": "n ≈ 3"
+        }
+      ]
+    },
+    {
+      "id": "banda-stimata-carson",
+      "tipo": "grafico",
+      "titolo": "Banda stimata con Carson",
+      "descrizione": "Nuova rispetto al passo precedente: la parentesi della banda stimata tra le due righe significative. Non è un limite esatto del supporto spettrale.",
+      "asse_x": {
+        "etichetta": "Scostamento dalla portante (unità di ωm)",
+        "min": -4,
+        "max": 4
+      },
+      "asse_y": {
+        "etichetta": "Ampiezza indicativa",
+        "min": 0,
+        "max": 1
+      },
+      "serie": [
+        {
+          "stile": "righe",
+          "punti": [
+            [
+              -3,
+              0.1
+            ],
+            [
+              -2,
+              0.3
+            ],
+            [
+              -1,
+              0.6
+            ],
+            [
+              0,
+              0.8
+            ],
+            [
+              1,
+              0.6
+            ],
+            [
+              2,
+              0.3
+            ],
+            [
+              3,
+              0.1
+            ]
+          ],
+          "etichetta": "Righe indicative"
+        },
+        {
+          "stile": "linea",
+          "etichetta": "Banda stimata",
+          "punti": [
+            [
+              -3,
+              0.82
+            ],
+            [
+              -3,
+              0.95
+            ],
+            [
+              3,
+              0.95
+            ],
+            [
+              3,
+              0.82
+            ]
+          ]
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": -3,
+          "y": 0.1,
+          "testo": "n ≈ −3"
+        },
+        {
+          "x": 3,
+          "y": 0.1,
+          "testo": "n ≈ 3"
+        }
+      ]
     }
   ],
-  "a_voce": "La regola di Carson fornisce una stima pratica della banda occupata da un segnale a modulazione angolare. La massima deviazione di pulsazione e la massima pulsazione del messaggio devono essere espresse nella stessa unità. Per capire il fattore due considero il caso di un messaggio sinusoidale: lo spettro presenta righe su entrambi i lati della portante, distanziate della pulsazione modulante. La regola approssima l’ordine delle bande laterali significative con l’indice di modulazione più uno. Moltiplicando per la spaziatura e contando entrambi i lati ottengo la formula. Non è un taglio spettrale rigoroso: le bande laterali possono continuare oltre la stima. La motivazione è una ricostruzione e non va attribuita al docente.",
+  "a_voce": "La regola di Carson stima la banda occupata da un segnale a modulazione angolare: sommo la deviazione massima e la massima frequenza modulante, usando unità coerenti, e raddoppio. Per motivarla considero un messaggio sinusoidale e definisco l’indice come deviazione massima divisa per la pulsazione modulante. Lo spettro presenta righe a entrambi i lati della portante, separate dalla pulsazione del messaggio. Una regola pratica stima l’ordine significativo come indice più uno; la distanza tra le righe corrispondenti dà la banda approssimata. Per indice due e frequenza modulante un chilohertz si ottengono circa sei chilohertz. Non è un taglio rigoroso: le righe possono proseguire oltre la banda stimata. La motivazione con righe laterali è una ricostruzione, non attribuita al docente.",
   "errori_frequenti": [
     {
       "errore": "Interpretare la formula come supporto esatto.",
@@ -127,23 +286,25 @@
     }
   ],
   "versione_compatta": [
-    "Per un tono: $\\beta = \\frac{\\Delta\\omega_{\\max}}{\\omega_{m}}$.",
-    "Ordine significativo stimato: $\\beta + 1$.",
-    "$B_{\\omega} \\approx  2(\\Delta\\omega_{\\max} + \\omega_{m})$."
+    "Nel caso sinusoidale $\\beta=\\Delta\\omega_{\\max}/\\omega_m$.",
+    "L’ordine significativo è stimato con $n_{\\max}\\approx\\beta+1$.",
+    "Contando entrambi i lati, $B_\\omega\\approx2(\\Delta\\omega_{\\max}+\\omega_m)$.",
+    "Con $\\beta=2$ e $f_m=1\\,\\mathrm{kHz}$ la stima è $6\\,\\mathrm{kHz}$; non è un limite esatto."
   ],
   "a_buchi": {
-    "testo": "La stima conta ___1___ lati della portante. Per un tono $\\beta =$ ___2___; l’ordine massimo è approssimato con $\\beta + 1$ perché si usa una ___3___ sulle ampiezze laterali.",
+    "testo": "La stima conta ___1___ lati della portante. Per un tono l’ordine significativo è circa l’indice di modulazione più ___2___. La formula di Carson è una ___3___ e non un limite esatto.",
     "soluzioni": {
       "1": [
         "due",
         "2"
       ],
       "2": [
-        "Δωmax/ωm"
+        "uno",
+        "1"
       ],
       "3": [
-        "regola pratica",
-        "stima empirica"
+        "stima",
+        "regola pratica"
       ]
     }
   },
@@ -162,7 +323,8 @@
     }
   ],
   "collegamenti": [
-    "modulazioni-angolo-pm-fm"
+    "modulazioni-angolo-pm-fm",
+    "dim-pm-fm-trasformazione"
   ],
   "fonti": [
     {
@@ -181,9 +343,17 @@
   "verifica": {
     "stato": "ricostruzione_non_del_prof",
     "data": "2026-10-29",
-    "note": "File1 p. 41 e file3 p. 28 presentano la formula, non la derivazione; motivazione qui ricostruita per il caso sinusoidale.",
+    "note": "Le immagini di file1 p. 41 e file3 p. 28 presentano la formula della banda, non la sua derivazione; la motivazione con indice e righe laterali è una ricostruzione.",
     "punti_aperti": [
-      "Confronto della derivazione con il testo del docente: NON TROVATO."
+      "Confronto della derivazione con il testo del docente: NON TROVATO.",
+      "Una definizione o variante dell’indice beta nelle immagini di file1 p. 41 e file3 p. 28 è NON TROVATO; la definizione qui usata appartiene alla ricostruzione."
     ]
-  }
+  },
+  "varianti_notazione": [
+    {
+      "canonica": "$\\beta$",
+      "variante": "NON TROVATO",
+      "fonte": "file1 p. 41 e file3 p. 28, immagini: nessuna variante dell’indice riportata"
+    }
+  ]
 }

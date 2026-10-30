@@ -26,6 +26,26 @@
     {
       "simbolo": "\\omega_0",
       "significato": "Pulsazione della portante."
+    },
+    {
+      "simbolo": "\\theta_{PM}(t),\\theta_{FM}(t)",
+      "significato": "Fasi eccedenti ideali dei due modulatori."
+    },
+    {
+      "simbolo": "\\theta_0",
+      "significato": "Fase iniziale regolabile della modulazione in frequenza."
+    },
+    {
+      "simbolo": "\\mathrm{PM}\\{u\\},\\mathrm{FM}\\{u\\}",
+      "significato": "Segnali modulati con ingresso u, che può essere un integrale o una derivata del messaggio."
+    },
+    {
+      "simbolo": "u(t)",
+      "significato": "Segnale applicato all’ingresso del modulatore considerato."
+    },
+    {
+      "simbolo": "t_0",
+      "significato": "Istante iniziale scelto per gli integrali di fase."
     }
   ],
   "idea": "Confrontare le fasi istantanee: integrare prima della PM e derivare prima della FM.",
@@ -34,13 +54,15 @@
       "n": 1,
       "testo": "Definire la fase eccedente della PM.",
       "formula": "\\theta_{PM}(t)=k_p m(t)",
-      "perche": "È la definizione del modulatore di fase ideale."
+      "perche": "Nel modello ideale la fase eccedente della PM dipende linearmente dal suo ingresso; non si assume lineare il segnale portante.",
+      "figura": "fase-pm"
     },
     {
       "n": 2,
       "testo": "Definire la fase eccedente della FM.",
       "formula": "\\theta_{FM}(t)=k_f\\int_{t_0}^{t}m(\\tau)\\,d\\tau+\\theta_0",
-      "perche": "La deviazione di pulsazione è la derivata temporale della fase eccedente."
+      "perche": "Nel modello ideale la deviazione di pulsazione è la derivata temporale della fase eccedente, a meno della fase iniziale.",
+      "figura": "fase-fm"
     },
     {
       "n": 3,
@@ -53,18 +75,1072 @@
       "n": 4,
       "testo": "Anteporre un derivatore alla FM.",
       "formula": "u(t)=\\frac{k_p}{k_f}\\frac{dm(t)}{dt}",
-      "perche": "Integrando la derivata si ottiene la fase PM a meno di una costante iniziale.",
+      "perche": "Il derivatore va all’ingresso della FM: cercando $k_f\\int u=k_pm$ si ottiene il guadagno indicato, a meno della costante iniziale.",
       "figura": "fm-verso-pm"
     },
     {
       "n": 5,
       "testo": "Regolare la fase iniziale della catena FM.",
       "formula": "\\theta_0=k_p m(t_0)",
-      "perche": "Questa scelta compensa il termine al limite inferiore dell’integrale."
+      "perche": "Ipotesi: fase iniziale regolabile. Altrimenti resta la differenza costante $\\theta_0-k_pm(t_0)$ rispetto alla fase della PM."
     }
   ],
   "formula_finale": "\\mathrm{PM}\\{\\frac{k_f}{k_p}\\int_{t_0}^{t}m(\\tau)\\,d\\tau+\\frac{\\theta_0}{k_p}\\}=\\mathrm{FM}\\{m\\},\\quad \\mathrm{FM}\\{\\frac{k_p}{k_f}m^{\\prime}\\}=\\mathrm{PM}\\{m\\}",
   "figure": [
+    {
+      "id": "fase-pm",
+      "tipo": "grafico",
+      "titolo": "Esempio della fase PM",
+      "descrizione": "Nuovo esempio: messaggio cosinusoidale e fase della PM coincidono con sensibilità unitaria; la scala è espressa in unità illustrative.",
+      "asse_x": {
+        "etichetta": "Tempo t (unità illustrative)",
+        "min": 0,
+        "max": 6.3,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 3.14,
+            "etichetta": "π"
+          },
+          {
+            "valore": 6.28,
+            "etichetta": "2π"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "Ampiezza e fase normalizzate",
+        "min": -1.1,
+        "max": 1.1
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "Messaggio e fase PM",
+          "punti": [
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0785,
+              0.9969
+            ],
+            [
+              0.1571,
+              0.9877
+            ],
+            [
+              0.2356,
+              0.9724
+            ],
+            [
+              0.3142,
+              0.9511
+            ],
+            [
+              0.3927,
+              0.9239
+            ],
+            [
+              0.4712,
+              0.891
+            ],
+            [
+              0.5498,
+              0.8526
+            ],
+            [
+              0.6283,
+              0.809
+            ],
+            [
+              0.7069,
+              0.7604
+            ],
+            [
+              0.7854,
+              0.7071
+            ],
+            [
+              0.8639,
+              0.6494
+            ],
+            [
+              0.9425,
+              0.5878
+            ],
+            [
+              1.021,
+              0.5225
+            ],
+            [
+              1.0996,
+              0.454
+            ],
+            [
+              1.1781,
+              0.3827
+            ],
+            [
+              1.2566,
+              0.309
+            ],
+            [
+              1.3352,
+              0.2334
+            ],
+            [
+              1.4137,
+              0.1564
+            ],
+            [
+              1.4923,
+              0.0785
+            ],
+            [
+              1.5708,
+              0.0
+            ],
+            [
+              1.6493,
+              -0.0785
+            ],
+            [
+              1.7279,
+              -0.1564
+            ],
+            [
+              1.8064,
+              -0.2334
+            ],
+            [
+              1.885,
+              -0.309
+            ],
+            [
+              1.9635,
+              -0.3827
+            ],
+            [
+              2.042,
+              -0.454
+            ],
+            [
+              2.1206,
+              -0.5225
+            ],
+            [
+              2.1991,
+              -0.5878
+            ],
+            [
+              2.2777,
+              -0.6494
+            ],
+            [
+              2.3562,
+              -0.7071
+            ],
+            [
+              2.4347,
+              -0.7604
+            ],
+            [
+              2.5133,
+              -0.809
+            ],
+            [
+              2.5918,
+              -0.8526
+            ],
+            [
+              2.6704,
+              -0.891
+            ],
+            [
+              2.7489,
+              -0.9239
+            ],
+            [
+              2.8274,
+              -0.9511
+            ],
+            [
+              2.906,
+              -0.9724
+            ],
+            [
+              2.9845,
+              -0.9877
+            ],
+            [
+              3.0631,
+              -0.9969
+            ],
+            [
+              3.1416,
+              -1.0
+            ],
+            [
+              3.2201,
+              -0.9969
+            ],
+            [
+              3.2987,
+              -0.9877
+            ],
+            [
+              3.3772,
+              -0.9724
+            ],
+            [
+              3.4558,
+              -0.9511
+            ],
+            [
+              3.5343,
+              -0.9239
+            ],
+            [
+              3.6128,
+              -0.891
+            ],
+            [
+              3.6914,
+              -0.8526
+            ],
+            [
+              3.7699,
+              -0.809
+            ],
+            [
+              3.8485,
+              -0.7604
+            ],
+            [
+              3.927,
+              -0.7071
+            ],
+            [
+              4.0055,
+              -0.6494
+            ],
+            [
+              4.0841,
+              -0.5878
+            ],
+            [
+              4.1626,
+              -0.5225
+            ],
+            [
+              4.2412,
+              -0.454
+            ],
+            [
+              4.3197,
+              -0.3827
+            ],
+            [
+              4.3982,
+              -0.309
+            ],
+            [
+              4.4768,
+              -0.2334
+            ],
+            [
+              4.5553,
+              -0.1564
+            ],
+            [
+              4.6338,
+              -0.0785
+            ],
+            [
+              4.7124,
+              -0.0
+            ],
+            [
+              4.7909,
+              0.0785
+            ],
+            [
+              4.8695,
+              0.1564
+            ],
+            [
+              4.948,
+              0.2334
+            ],
+            [
+              5.0265,
+              0.309
+            ],
+            [
+              5.1051,
+              0.3827
+            ],
+            [
+              5.1836,
+              0.454
+            ],
+            [
+              5.2622,
+              0.5225
+            ],
+            [
+              5.3407,
+              0.5878
+            ],
+            [
+              5.4192,
+              0.6494
+            ],
+            [
+              5.4978,
+              0.7071
+            ],
+            [
+              5.5763,
+              0.7604
+            ],
+            [
+              5.6549,
+              0.809
+            ],
+            [
+              5.7334,
+              0.8526
+            ],
+            [
+              5.8119,
+              0.891
+            ],
+            [
+              5.8905,
+              0.9239
+            ],
+            [
+              5.969,
+              0.9511
+            ],
+            [
+              6.0476,
+              0.9724
+            ],
+            [
+              6.1261,
+              0.9877
+            ],
+            [
+              6.2046,
+              0.9969
+            ],
+            [
+              6.2832,
+              1.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fase-fm",
+      "tipo": "grafico",
+      "titolo": "Dalla fase PM alla fase FM",
+      "descrizione": "Nuova rispetto al passo precedente: la fase della FM, proporzionale all’integrale del messaggio. L’esempio usa sensibilità unitaria e fase iniziale zero.",
+      "asse_x": {
+        "etichetta": "Tempo t (unità illustrative)",
+        "min": 0,
+        "max": 6.3,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 3.14,
+            "etichetta": "π"
+          },
+          {
+            "valore": 6.28,
+            "etichetta": "2π"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "Ampiezza e fase normalizzate",
+        "min": -1.1,
+        "max": 1.1
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "Messaggio e fase PM",
+          "punti": [
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0785,
+              0.9969
+            ],
+            [
+              0.1571,
+              0.9877
+            ],
+            [
+              0.2356,
+              0.9724
+            ],
+            [
+              0.3142,
+              0.9511
+            ],
+            [
+              0.3927,
+              0.9239
+            ],
+            [
+              0.4712,
+              0.891
+            ],
+            [
+              0.5498,
+              0.8526
+            ],
+            [
+              0.6283,
+              0.809
+            ],
+            [
+              0.7069,
+              0.7604
+            ],
+            [
+              0.7854,
+              0.7071
+            ],
+            [
+              0.8639,
+              0.6494
+            ],
+            [
+              0.9425,
+              0.5878
+            ],
+            [
+              1.021,
+              0.5225
+            ],
+            [
+              1.0996,
+              0.454
+            ],
+            [
+              1.1781,
+              0.3827
+            ],
+            [
+              1.2566,
+              0.309
+            ],
+            [
+              1.3352,
+              0.2334
+            ],
+            [
+              1.4137,
+              0.1564
+            ],
+            [
+              1.4923,
+              0.0785
+            ],
+            [
+              1.5708,
+              0.0
+            ],
+            [
+              1.6493,
+              -0.0785
+            ],
+            [
+              1.7279,
+              -0.1564
+            ],
+            [
+              1.8064,
+              -0.2334
+            ],
+            [
+              1.885,
+              -0.309
+            ],
+            [
+              1.9635,
+              -0.3827
+            ],
+            [
+              2.042,
+              -0.454
+            ],
+            [
+              2.1206,
+              -0.5225
+            ],
+            [
+              2.1991,
+              -0.5878
+            ],
+            [
+              2.2777,
+              -0.6494
+            ],
+            [
+              2.3562,
+              -0.7071
+            ],
+            [
+              2.4347,
+              -0.7604
+            ],
+            [
+              2.5133,
+              -0.809
+            ],
+            [
+              2.5918,
+              -0.8526
+            ],
+            [
+              2.6704,
+              -0.891
+            ],
+            [
+              2.7489,
+              -0.9239
+            ],
+            [
+              2.8274,
+              -0.9511
+            ],
+            [
+              2.906,
+              -0.9724
+            ],
+            [
+              2.9845,
+              -0.9877
+            ],
+            [
+              3.0631,
+              -0.9969
+            ],
+            [
+              3.1416,
+              -1.0
+            ],
+            [
+              3.2201,
+              -0.9969
+            ],
+            [
+              3.2987,
+              -0.9877
+            ],
+            [
+              3.3772,
+              -0.9724
+            ],
+            [
+              3.4558,
+              -0.9511
+            ],
+            [
+              3.5343,
+              -0.9239
+            ],
+            [
+              3.6128,
+              -0.891
+            ],
+            [
+              3.6914,
+              -0.8526
+            ],
+            [
+              3.7699,
+              -0.809
+            ],
+            [
+              3.8485,
+              -0.7604
+            ],
+            [
+              3.927,
+              -0.7071
+            ],
+            [
+              4.0055,
+              -0.6494
+            ],
+            [
+              4.0841,
+              -0.5878
+            ],
+            [
+              4.1626,
+              -0.5225
+            ],
+            [
+              4.2412,
+              -0.454
+            ],
+            [
+              4.3197,
+              -0.3827
+            ],
+            [
+              4.3982,
+              -0.309
+            ],
+            [
+              4.4768,
+              -0.2334
+            ],
+            [
+              4.5553,
+              -0.1564
+            ],
+            [
+              4.6338,
+              -0.0785
+            ],
+            [
+              4.7124,
+              -0.0
+            ],
+            [
+              4.7909,
+              0.0785
+            ],
+            [
+              4.8695,
+              0.1564
+            ],
+            [
+              4.948,
+              0.2334
+            ],
+            [
+              5.0265,
+              0.309
+            ],
+            [
+              5.1051,
+              0.3827
+            ],
+            [
+              5.1836,
+              0.454
+            ],
+            [
+              5.2622,
+              0.5225
+            ],
+            [
+              5.3407,
+              0.5878
+            ],
+            [
+              5.4192,
+              0.6494
+            ],
+            [
+              5.4978,
+              0.7071
+            ],
+            [
+              5.5763,
+              0.7604
+            ],
+            [
+              5.6549,
+              0.809
+            ],
+            [
+              5.7334,
+              0.8526
+            ],
+            [
+              5.8119,
+              0.891
+            ],
+            [
+              5.8905,
+              0.9239
+            ],
+            [
+              5.969,
+              0.9511
+            ],
+            [
+              6.0476,
+              0.9724
+            ],
+            [
+              6.1261,
+              0.9877
+            ],
+            [
+              6.2046,
+              0.9969
+            ],
+            [
+              6.2832,
+              1.0
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "Fase FM",
+          "punti": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0785,
+              0.0785
+            ],
+            [
+              0.1571,
+              0.1564
+            ],
+            [
+              0.2356,
+              0.2334
+            ],
+            [
+              0.3142,
+              0.309
+            ],
+            [
+              0.3927,
+              0.3827
+            ],
+            [
+              0.4712,
+              0.454
+            ],
+            [
+              0.5498,
+              0.5225
+            ],
+            [
+              0.6283,
+              0.5878
+            ],
+            [
+              0.7069,
+              0.6494
+            ],
+            [
+              0.7854,
+              0.7071
+            ],
+            [
+              0.8639,
+              0.7604
+            ],
+            [
+              0.9425,
+              0.809
+            ],
+            [
+              1.021,
+              0.8526
+            ],
+            [
+              1.0996,
+              0.891
+            ],
+            [
+              1.1781,
+              0.9239
+            ],
+            [
+              1.2566,
+              0.9511
+            ],
+            [
+              1.3352,
+              0.9724
+            ],
+            [
+              1.4137,
+              0.9877
+            ],
+            [
+              1.4923,
+              0.9969
+            ],
+            [
+              1.5708,
+              1.0
+            ],
+            [
+              1.6493,
+              0.9969
+            ],
+            [
+              1.7279,
+              0.9877
+            ],
+            [
+              1.8064,
+              0.9724
+            ],
+            [
+              1.885,
+              0.9511
+            ],
+            [
+              1.9635,
+              0.9239
+            ],
+            [
+              2.042,
+              0.891
+            ],
+            [
+              2.1206,
+              0.8526
+            ],
+            [
+              2.1991,
+              0.809
+            ],
+            [
+              2.2777,
+              0.7604
+            ],
+            [
+              2.3562,
+              0.7071
+            ],
+            [
+              2.4347,
+              0.6494
+            ],
+            [
+              2.5133,
+              0.5878
+            ],
+            [
+              2.5918,
+              0.5225
+            ],
+            [
+              2.6704,
+              0.454
+            ],
+            [
+              2.7489,
+              0.3827
+            ],
+            [
+              2.8274,
+              0.309
+            ],
+            [
+              2.906,
+              0.2334
+            ],
+            [
+              2.9845,
+              0.1564
+            ],
+            [
+              3.0631,
+              0.0785
+            ],
+            [
+              3.1416,
+              0.0
+            ],
+            [
+              3.2201,
+              -0.0785
+            ],
+            [
+              3.2987,
+              -0.1564
+            ],
+            [
+              3.3772,
+              -0.2334
+            ],
+            [
+              3.4558,
+              -0.309
+            ],
+            [
+              3.5343,
+              -0.3827
+            ],
+            [
+              3.6128,
+              -0.454
+            ],
+            [
+              3.6914,
+              -0.5225
+            ],
+            [
+              3.7699,
+              -0.5878
+            ],
+            [
+              3.8485,
+              -0.6494
+            ],
+            [
+              3.927,
+              -0.7071
+            ],
+            [
+              4.0055,
+              -0.7604
+            ],
+            [
+              4.0841,
+              -0.809
+            ],
+            [
+              4.1626,
+              -0.8526
+            ],
+            [
+              4.2412,
+              -0.891
+            ],
+            [
+              4.3197,
+              -0.9239
+            ],
+            [
+              4.3982,
+              -0.9511
+            ],
+            [
+              4.4768,
+              -0.9724
+            ],
+            [
+              4.5553,
+              -0.9877
+            ],
+            [
+              4.6338,
+              -0.9969
+            ],
+            [
+              4.7124,
+              -1.0
+            ],
+            [
+              4.7909,
+              -0.9969
+            ],
+            [
+              4.8695,
+              -0.9877
+            ],
+            [
+              4.948,
+              -0.9724
+            ],
+            [
+              5.0265,
+              -0.9511
+            ],
+            [
+              5.1051,
+              -0.9239
+            ],
+            [
+              5.1836,
+              -0.891
+            ],
+            [
+              5.2622,
+              -0.8526
+            ],
+            [
+              5.3407,
+              -0.809
+            ],
+            [
+              5.4192,
+              -0.7604
+            ],
+            [
+              5.4978,
+              -0.7071
+            ],
+            [
+              5.5763,
+              -0.6494
+            ],
+            [
+              5.6549,
+              -0.5878
+            ],
+            [
+              5.7334,
+              -0.5225
+            ],
+            [
+              5.8119,
+              -0.454
+            ],
+            [
+              5.8905,
+              -0.3827
+            ],
+            [
+              5.969,
+              -0.309
+            ],
+            [
+              6.0476,
+              -0.2334
+            ],
+            [
+              6.1261,
+              -0.1564
+            ],
+            [
+              6.2046,
+              -0.0785
+            ],
+            [
+              6.2832,
+              -0.0
+            ]
+          ]
+        }
+      ]
+    },
     {
       "id": "pm-verso-fm",
       "tipo": "blocchi",
@@ -166,7 +1242,7 @@
       ]
     }
   ],
-  "a_voce": "La fase eccedente della PM è proporzionale al messaggio applicato. In FM invece è proporzionale al suo integrale, perché la deviazione di pulsazione è la derivata della fase. Se voglio ottenere FM con un modulatore PM, devo quindi prima integrare il messaggio e adattare il guadagno. Se invece voglio ottenere PM con un modulatore FM, devo derivare il messaggio e adattare il guadagno: l’integratore interno del modulatore recupera il messaggio. In entrambi i casi bisogna controllare la costante di fase iniziale. La derivazione richiede un messaggio sufficientemente regolare. Questa è una ricostruzione standard, non una dimostrazione verificata sul testo del docente.",
+  "a_voce": "Nel modello ideale la fase eccedente della PM è proporzionale al segnale applicato, mentre in FM dipende dal suo integrale e da una fase iniziale. Queste relazioni di fase sono lineari rispetto all’ingresso a meno dell’offset; non si afferma che il segnale modulato sia un operatore lineare. Per ottenere una FM con un modulatore PM integro il messaggio e adatto il guadagno, includendo la costante di fase. Viceversa, per ottenere una PM con un modulatore FM applico un derivatore all’ingresso della FM: l’integratore interno recupera il messaggio a meno del valore iniziale. La seconda uguaglianza richiede un messaggio derivabile e una fase iniziale regolabile, scelta per compensare tale valore. È una ricostruzione standard, non una dimostrazione attribuita al docente.",
   "errori_frequenti": [
     {
       "errore": "Invertire integratore e derivatore.",
@@ -180,13 +1256,13 @@
     }
   ],
   "versione_compatta": [
-    "PM: fase proporzionale al messaggio.",
-    "FM: fase proporzionale all’integrale del messaggio.",
-    "Integratore $\\to$ PM realizza FM.",
-    "Derivatore $\\to$ FM realizza PM, con fase iniziale corretta."
+    "La fase PM è $k_p m$; la fase FM è $k_f\\int m+\\theta_0$.",
+    "Integratore con guadagno e offset prima della PM realizza la fase FM.",
+    "Derivatore con guadagno prima della FM realizza la fase PM.",
+    "Per la seconda catena si sceglie $\\theta_0=k_pm(t_0)$; altrimenti resta un offset."
   ],
   "a_buchi": {
-    "testo": "Per ottenere FM si antepone un ___1___ alla PM; per ottenere PM si antepone un ___2___ alla FM. Il secondo passaggio funziona perché l’integrale della derivata restituisce il messaggio a meno di ___3___.",
+    "testo": "Per ottenere FM si antepone un ___1___ alla PM; per ottenere PM si antepone un ___2___ alla FM. Il secondo passaggio richiede una fase iniziale ___3___, che compensa il valore iniziale del messaggio.",
     "soluzioni": {
       "1": [
         "integratore"
@@ -195,8 +1271,8 @@
         "derivatore"
       ],
       "3": [
-        "una costante",
-        "una costante iniziale"
+        "regolabile",
+        "controllata"
       ]
     }
   },
@@ -212,10 +1288,15 @@
     {
       "domanda": "Che cosa accade alla fase iniziale?",
       "risposta": "Va scelta per compensare la costante di integrazione."
+    },
+    {
+      "domanda": "Con $m(t)=A\\cos\\omega_mt$, $k_p=1$ e $k_f=\\omega_m$, che cosa si applica alla PM per ottenere FM?",
+      "risposta": "$u(t)=A\\sin\\omega_mt$ a meno della costante di integrazione e dell’offset di fase richiesto."
     }
   ],
   "collegamenti": [
-    "modulazioni-angolo-pm-fm"
+    "modulazioni-angolo-pm-fm",
+    "dim-formula-carson"
   ],
   "fonti": [
     {

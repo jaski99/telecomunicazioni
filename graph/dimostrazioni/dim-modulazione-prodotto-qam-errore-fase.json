@@ -42,88 +42,126 @@
   "passi": [
     {
       "n": 1,
-      "testo": "Demodulare una singola modulazione DSB-SC con riferimento coerente.",
+      "testo": "Demodulare una singola modulazione a prodotto con riferimento locale.",
       "formula": "2x(t)\\cos(\\omega_0t)\\cos(\\omega_0t-\\Delta)=x(t)\\cos\\Delta+x(t)\\cos(2\\omega_0t-\\Delta)",
-      "perche": "La formula prodotto-somma separa il termine in banda base e quello alla doppia portante.",
-      "figura": "catena"
+      "perche": "Si usa $2\\cos a\\cos b=\\cos(a-b)+\\cos(a+b)$: il fattore 2 lascia $x\\cos\\Delta$ in banda base senza il fattore un mezzo.",
+      "figura": "demodulatore-dsb"
     },
     {
       "n": 2,
-      "testo": "Eliminare la componente attorno a due volte la portante.",
+      "testo": "Eliminare la componente attorno al doppio della portante.",
       "formula": "\\hat{x}(t)=x(t)\\cos\\Delta",
-      "perche": "Il passa-basso conserva solo la banda base quando gli spettri sono separati."
+      "perche": "Il passa-basso conserva la banda base ed elimina il termine traslato quando gli spettri sono separati.",
+      "figura": "demodulatore-dsb-filtrato"
     },
     {
       "n": 3,
-      "testo": "Formare la QAM con portanti ortogonali.",
+      "testo": "Formare la QAM con due portanti ortogonali.",
       "formula": "s(t)=x_1(t)\\cos\\omega_0t-x_2(t)\\sin\\omega_0t",
-      "perche": "La somma di due prodotti trasporta i due messaggi in quadratura.",
+      "perche": "La somma di due prodotti trasporta i messaggi in fase e in quadratura sulla stessa portante.",
       "figura": "modulatore-qam"
     },
     {
       "n": 4,
-      "testo": "Moltiplicare per le due portanti locali.",
-      "formula": "u_1=2s(t)\\cos(\\omega_0t-\\Delta),\\quad u_2=-2s(t)\\sin(\\omega_0t-\\Delta)",
-      "perche": "La stessa fase locale alimenta i due rami separati da un quarto di periodo.",
+      "testo": "Moltiplicare per i due riferimenti locali in quadratura.",
+      "formula": "u_1=2s(t)\\cos(\\omega_0t-\\Delta),\\qquad u_2=-2s(t)\\sin(\\omega_0t-\\Delta)",
+      "perche": "La stessa fase locale alimenta i due rami, separati da un quarto di periodo prima del filtraggio.",
       "figura": "demodulatore-qam"
     },
     {
       "n": 5,
-      "testo": "Separare i termini costanti dal doppio della portante.",
+      "testo": "Separare la componente in banda base dal doppio della portante.",
       "formula": "2\\cos A\\cos B=\\cos(A-B)+\\cos(A+B)",
-      "perche": "Le identità trigonometriche scompongono ciascun prodotto in differenza e somma."
+      "perche": "Le identità prodotto-somma scompongono i prodotti in termini alla differenza e alla somma delle pulsazioni."
     },
     {
       "n": 6,
       "testo": "Filtrare il primo ramo.",
       "formula": "\\hat{x}_1=x_1\\cos\\Delta-x_2\\sin\\Delta",
-      "perche": "Il passa-basso elimina i termini centrati a $2\\omega_{0}$ e conserva la componente in banda base."
+      "perche": "Il passa-basso elimina i termini centrati a $2\\omega_0$ e lascia la combinazione del primo ramo."
     },
     {
       "n": 7,
-      "testo": "Filtrare il secondo ramo.",
+      "testo": "Filtrare il secondo ramo e rappresentare il vettore iniziale delle due componenti.",
       "formula": "\\hat{x}_2=x_2\\cos\\Delta+x_1\\sin\\Delta",
-      "perche": "Le identità prodotto-somma e il filtro lasciano la seconda combinazione lineare."
+      "perche": "Le identità prodotto-somma e il secondo filtro lasciano una combinazione con segno opposto al termine incrociato del primo ramo.",
+      "figura": "rotazione-vettore-iniziale"
     },
     {
       "n": 8,
-      "testo": "Considerare la demodulazione coerente ideale.",
-      "formula": "\\Delta=0\\ \\Longrightarrow\\ (\\hat{x}_1,\\hat{x}_2)=(x_1,x_2)",
-      "perche": "Per fase corretta $\\cos \\Delta$ vale uno e $\\sin \\Delta$ vale zero."
+      "testo": "Leggere le due relazioni come una rotazione dell’inviluppo complesso.",
+      "formula": "s(t)=\\operatorname{Re}\\{(x_1+jx_2)e^{j\\omega_0t}\\},\\qquad\\hat{x}_1+j\\hat{x}_2=e^{j\\Delta}(x_1+jx_2)",
+      "perche": "La moltiplicazione per l’esponenziale di fase combina le due uscite appena ricavate e ruota il vettore senza cambiarne il modulo.",
+      "figura": "rotazione-assi"
+    },
+    {
+      "n": 9,
+      "testo": "Considerare il riferimento locale senza errore di fase.",
+      "formula": "\\Delta=0\\quad\\Longrightarrow\\quad(\\hat{x}_1,\\hat{x}_2)=(x_1,x_2)",
+      "perche": "Il coseno dell’errore vale uno e il seno vale zero: ciascun filtro restituisce soltanto il proprio messaggio.",
+      "figura": "catena"
     }
   ],
   "formula_finale": "\\begin{pmatrix}\\hat{x}_1\\\\\\hat{x}_2\\end{pmatrix}=\\begin{pmatrix}\\cos\\Delta&-\\sin\\Delta\\\\\\sin\\Delta&\\cos\\Delta\\end{pmatrix}\\begin{pmatrix}x_1\\\\x_2\\end{pmatrix}",
   "figure": [
     {
-      "id": "catena",
+      "id": "demodulatore-dsb",
       "tipo": "blocchi",
-      "titolo": "Demodulazione coerente",
-      "descrizione": "Il segnale modulato entra nel demodulatore in quadratura e passa ai filtri che estraggono le due componenti.",
+      "titolo": "Demodulazione DSB: prodotto",
+      "descrizione": "Primo stato: il segnale modulato entra nel moltiplicatore con il riferimento locale, prima della selezione della banda base.",
       "blocchi": [
         {
-          "id": "b0",
+          "id": "ingresso",
           "etichetta": "s(t)",
           "forma": "ingresso",
           "colonna": 0,
           "riga": 0
         },
         {
-          "id": "b1",
-          "etichetta": "Demodulatore I/Q",
+          "id": "prodotto",
+          "etichetta": "× 2 cos(ω₀t − Δ)",
+          "forma": "rettangolo",
+          "colonna": 1,
+          "riga": 0
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "ingresso",
+          "a": "prodotto"
+        }
+      ]
+    },
+    {
+      "id": "demodulatore-dsb-filtrato",
+      "tipo": "blocchi",
+      "titolo": "Demodulazione DSB: passa-basso",
+      "descrizione": "Nuovi rispetto al passo precedente: il filtro passa-basso e l’uscita estratta, dopo la moltiplicazione per il riferimento locale.",
+      "blocchi": [
+        {
+          "id": "ingresso",
+          "etichetta": "s(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 0
+        },
+        {
+          "id": "prodotto",
+          "etichetta": "× 2 cos(ω₀t − Δ)",
           "forma": "rettangolo",
           "colonna": 1,
           "riga": 0
         },
         {
-          "id": "b2",
+          "id": "filtro",
           "etichetta": "Passa-basso",
           "forma": "rettangolo",
           "colonna": 2,
           "riga": 0
         },
         {
-          "id": "b3",
-          "etichetta": "x̂₁, x̂₂",
+          "id": "uscita",
+          "etichetta": "x̂(t)",
           "forma": "uscita",
           "colonna": 3,
           "riga": 0
@@ -131,16 +169,16 @@
       ],
       "collegamenti": [
         {
-          "da": "b0",
-          "a": "b1"
+          "da": "ingresso",
+          "a": "prodotto"
         },
         {
-          "da": "b1",
-          "a": "b2"
+          "da": "prodotto",
+          "a": "filtro"
         },
         {
-          "da": "b2",
-          "a": "b3"
+          "da": "filtro",
+          "a": "uscita"
         }
       ]
     },
@@ -298,9 +336,260 @@
           "a": "uscita-q"
         }
       ]
+    },
+    {
+      "id": "rotazione-vettore-iniziale",
+      "tipo": "grafico",
+      "titolo": "Vettore delle componenti I e Q",
+      "descrizione": "Nuovo in questo stato: il vettore originale che raccoglie le due componenti del messaggio nel piano in fase e in quadratura.",
+      "asse_x": {
+        "etichetta": "Componente in fase x₁",
+        "min": -0.3,
+        "max": 1.6,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 1,
+            "etichetta": "1"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "Componente in quadratura x₂",
+        "min": -0.3,
+        "max": 1.5,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 1,
+            "etichetta": "1"
+          }
+        ]
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "Vettore originale",
+          "punti": [
+            [
+              0,
+              0
+            ],
+            [
+              1.2,
+              0.5
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rotazione-assi",
+      "tipo": "grafico",
+      "titolo": "Rotazione delle componenti QAM",
+      "descrizione": "Nuovi rispetto al passo precedente: il vettore ruotato, le sue proiezioni e l’arco che indica lo scarto di fase. Il vettore originale e gli assi restano invariati.",
+      "asse_x": {
+        "etichetta": "Componente in fase x₁",
+        "min": -0.3,
+        "max": 1.6,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 1,
+            "etichetta": "1"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "Componente in quadratura x₂",
+        "min": -0.3,
+        "max": 1.5,
+        "tacche": [
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 1,
+            "etichetta": "1"
+          }
+        ]
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "Vettore originale",
+          "punti": [
+            [
+              0,
+              0
+            ],
+            [
+              1.2,
+              0.5
+            ]
+          ]
+        },
+        {
+          "stile": "linea",
+          "etichetta": "Vettore ruotato",
+          "punti": [
+            [
+              0,
+              0
+            ],
+            [
+              0.7892,
+              1.033
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "Proiezioni ruotate",
+          "punti": [
+            [
+              0,
+              1.033
+            ],
+            [
+              0.7892,
+              1.033
+            ],
+            [
+              0.7892,
+              0
+            ]
+          ]
+        },
+        {
+          "stile": "linea",
+          "etichetta": "Angolo Δ",
+          "punti": [
+            [
+              0.3877,
+              0.1615
+            ],
+            [
+              0.3803,
+              0.1783
+            ],
+            [
+              0.3721,
+              0.1947
+            ],
+            [
+              0.3633,
+              0.2108
+            ],
+            [
+              0.3538,
+              0.2264
+            ],
+            [
+              0.3435,
+              0.2416
+            ],
+            [
+              0.3327,
+              0.2564
+            ],
+            [
+              0.3212,
+              0.2706
+            ],
+            [
+              0.3091,
+              0.2844
+            ],
+            [
+              0.2964,
+              0.2976
+            ],
+            [
+              0.2831,
+              0.3102
+            ],
+            [
+              0.2693,
+              0.3223
+            ],
+            [
+              0.255,
+              0.3337
+            ]
+          ]
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": 0.32,
+          "y": 0.36,
+          "testo": "Δ"
+        }
+      ]
+    },
+    {
+      "id": "catena",
+      "tipo": "blocchi",
+      "titolo": "Demodulazione coerente",
+      "descrizione": "Il segnale modulato entra nel demodulatore in quadratura e passa ai filtri che estraggono le due componenti.",
+      "blocchi": [
+        {
+          "id": "b0",
+          "etichetta": "s(t)",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 0
+        },
+        {
+          "id": "b1",
+          "etichetta": "Demodulatore I/Q",
+          "forma": "rettangolo",
+          "colonna": 1,
+          "riga": 0
+        },
+        {
+          "id": "b2",
+          "etichetta": "Passa-basso",
+          "forma": "rettangolo",
+          "colonna": 2,
+          "riga": 0
+        },
+        {
+          "id": "b3",
+          "etichetta": "x̂₁, x̂₂",
+          "forma": "uscita",
+          "colonna": 3,
+          "riga": 0
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "b0",
+          "a": "b1"
+        },
+        {
+          "da": "b1",
+          "a": "b2"
+        },
+        {
+          "da": "b2",
+          "a": "b3"
+        }
+      ]
     }
   ],
-  "a_voce": "La QAM combina due messaggi moltiplicati per portanti in quadratura, coseno e meno seno, alla stessa pulsazione. Il ricevitore usa due moltiplicatori e due filtri passa-basso. Se l’oscillatore locale è in fase, i termini incrociati oscillano al doppio della portante e sono eliminati dai filtri; i due messaggi vengono ricostruiti separatamente. Se invece il riferimento ha uno scarto costante delta, lo sviluppo dei prodotti mostra che ciascuna uscita contiene una parte del messaggio desiderato e una parte dell’altro. Con la convenzione adottata la prima uscita contiene x uno coseno delta meno x due seno delta, la seconda x due coseno delta più x uno seno delta. Geometricamente la coppia è ruotata, non semplicemente attenuata.",
+  "a_voce": "Nel caso a un ramo moltiplico il segnale modulato per il riferimento locale con fattore due: l’identità prodotto-somma lascia una componente in banda base e una al doppio della portante. Il passa-basso elimina la seconda e restituisce il messaggio moltiplicato per il coseno dell’errore di fase. La QAM trasmette invece due messaggi con portanti in quadratura. Il ricevitore usa due moltiplicatori e due filtri passa-basso. Con uno scarto di fase costante, ogni uscita contiene una parte del messaggio desiderato e una parte dell’altro. I termini incrociati hanno segno opposto: letti come inviluppo complesso, le due uscite formano una rotazione del vettore iniziale. Per fase corretta la rotazione è nulla; per un quarto di giro i canali si scambiano con il segno previsto.",
   "errori_frequenti": [
     {
       "errore": "Usare lo stesso segno per entrambi i termini incrociati.",
@@ -311,31 +600,36 @@
       "errore": "Affermare che un errore di fase attenua soltanto.",
       "perche_sbagliato": "In QAM i messaggi interferiscono reciprocamente.",
       "correzione": "Usare la matrice di rotazione e valutare entrambi i rami."
+    },
+    {
+      "errore": "Dimenticare che per $\\Delta=\\pi/2$ i canali si scambiano.",
+      "perche_sbagliato": "La rotazione di un quarto di giro dà $\\hat{x}_1=-x_2$ e $\\hat{x}_2=x_1$, non le uscite originali.",
+      "correzione": "Sostituire seno e coseno nella matrice e mantenere il segno del primo ramo."
     }
   ],
   "versione_compatta": [
-    "QAM: $x_{1} \\cos \\omega_{0}t - x_{2} \\sin \\omega_{0}t$.",
-    "Moltiplicare per $2 \\cos(\\omega_{0}t - \\Delta)$ e $-2 \\sin(\\omega_{0}t - \\Delta)$.",
-    "Filtrare i termini al doppio della portante.",
-    "Le uscite sono la coppia ruotata di $\\Delta$."
+    "Nel caso a un ramo, il fattore due produce $\\hat{x}=x\\cos\\Delta$ dopo il passa-basso.",
+    "QAM: $s=x_1\\cos\\omega_0t-x_2\\sin\\omega_0t$.",
+    "Moltiplicare per i due riferimenti locali in quadratura e filtrare i termini al doppio della portante.",
+    "Le uscite sono $\\hat{x}_1=x_1\\cos\\Delta-x_2\\sin\\Delta$ e $\\hat{x}_2=x_1\\sin\\Delta+x_2\\cos\\Delta$.",
+    "Il vettore complesso delle uscite è quello iniziale ruotato di $\\Delta$."
   ],
   "a_buchi": {
-    "testo": "Le portanti dei due rami sono in ___1___. Il filtro elimina i termini a ___2___ e conserva la banda base perché le bande sono ___3___. Se $\\Delta = 0$ si ottengono ___4___.",
+    "testo": "Le portanti dei due rami sono in ___1___. Il filtro conserva la ___2___ ed elimina i termini al doppio della portante. Uno scarto di fase produce una ___3___ delle componenti e quindi ___4___ tra i canali.",
     "soluzioni": {
       "1": [
         "quadratura"
       ],
       "2": [
-        "2ω₀",
-        "2ω0"
+        "banda base"
       ],
       "3": [
-        "separate",
-        "disgiunte"
+        "rotazione"
       ],
       "4": [
-        "x₁ e x₂",
-        "i messaggi originali"
+        "interferenza",
+        "interferenza reciproca",
+        "diafonia"
       ]
     }
   },
@@ -351,6 +645,10 @@
     {
       "domanda": "Che cosa accade per $\\Delta = 0$?",
       "risposta": "Le uscite ideali coincidono con i due messaggi."
+    },
+    {
+      "domanda": "Con $\\Delta=10^\\circ$, $x_1=1$ e $x_2=0$, quali sono le uscite e la diafonia rispetto al segnale utile?",
+      "risposta": "$\\cos\\Delta=0{,}9848$, $\\sin\\Delta=0{,}1736$: le uscite sono $(0{,}9848;0{,}1736)$ e $20\\log_{10}(\\sin\\Delta/\\cos\\Delta)\\simeq-15{,}1\\,\\mathrm{dB}$."
     }
   ],
   "fonti": [
@@ -371,5 +669,9 @@
       "Confrontare tutti i passaggi del caso con errore di fase con file1 p. 40 e con la convenzione di segno del testo adottato.",
       "Corrispondenza dei riferimenti p. 9.34 e p. 9.36 con il libro: NON TROVATO."
     ]
-  }
+  },
+  "collegamenti": [
+    "modulazione-prodotto-dsb-ssb",
+    "segnali-passa-banda-inviluppo-complesso"
+  ]
 }

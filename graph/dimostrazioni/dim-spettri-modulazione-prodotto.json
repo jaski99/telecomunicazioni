@@ -12,7 +12,7 @@
   "notazione": [
     {
       "simbolo": "x(t)",
-      "significato": "Segnale reale modulante."
+      "significato": "Segnale modulante reale, limitato in banda."
     },
     {
       "simbolo": "X(\\omega)",
@@ -20,11 +20,31 @@
     },
     {
       "simbolo": "\\omega_0",
-      "significato": "Pulsazione della portante."
+      "significato": "Pulsazione della portante a fase zero."
     },
     {
-      "simbolo": "\\phi(\\Omega)",
-      "significato": "Argomento di $X(\\Omega)$, per $\\Omega$ positiva."
+      "simbolo": "\\omega_i,\\omega_m",
+      "significato": "Estremi della banda positiva del messaggio; il limite inferiore può essere zero."
+    },
+    {
+      "simbolo": "V(\\omega)",
+      "significato": "Spettro di ampiezza unilaterale: $V(\\omega)=|X(\\omega)|/\\pi$ per pulsazioni positive."
+    },
+    {
+      "simbolo": "\\varphi(\\omega)",
+      "significato": "Fase unilaterale canonica: $\\varphi(\\omega)=-\\arg X(\\omega)$ dove lo spettro non si annulla."
+    },
+    {
+      "simbolo": "s_s(t),s_i(t)",
+      "significato": "Contributi reale superiore e inferiore del segnale modulato."
+    },
+    {
+      "simbolo": "V_s,\\varphi_s,V_i,\\varphi_i",
+      "significato": "Ampiezze e fasi unilaterali dei contributi superiore e inferiore."
+    },
+    {
+      "simbolo": "\\Omega",
+      "significato": "Pulsazione positiva del messaggio usata per confrontare le due bande laterali."
     }
   ],
   "varianti_notazione": [
@@ -38,49 +58,77 @@
   "passi": [
     {
       "n": 1,
-      "testo": "Scrivere l’oscillazione modulata.",
-      "formula": "s(t)=x(t)\\cos(\\omega_0 t)",
-      "perche": "La modulazione a prodotto moltiplica messaggio e portante."
+      "testo": "Moltiplicare il messaggio reale per la portante cosinusoidale.",
+      "formula": "s(t)=x(t)\\cos(\\omega_0t)",
+      "perche": "La modulazione a prodotto nasce dal prodotto tra il segnale utile a banda limitata e una portante a fase zero.",
+      "figura": "catena"
     },
     {
       "n": 2,
-      "testo": "Espandere la portante in esponenziali.",
-      "formula": "\\cos(\\omega_0 t)=\\frac{e^{j\\omega_0 t}+e^{-j\\omega_0 t}}{2}",
-      "perche": "Segue dalla formula di Eulero."
+      "testo": "Scrivere il messaggio nella forma unilaterale ampiezza e fase.",
+      "formula": "x(t)=\\int_{\\omega_i}^{\\omega_m}V(\\omega)\\cos[\\omega t-\\varphi(\\omega)]\\,d\\omega",
+      "perche": "La rappresentazione di Fourier raccoglie le componenti positive; ampiezza e fase usano la convenzione canonica del sito.",
+      "figura": "spettro-ingresso"
     },
     {
       "n": 3,
-      "testo": "Trasformare i due prodotti.",
-      "formula": "S(\\omega)=\\frac{1}{2}X(\\omega-\\omega_0)+\\frac{1}{2}X(\\omega+\\omega_0)",
-      "perche": "La moltiplicazione per un esponenziale trasla la trasformata."
+      "testo": "Scomporre il prodotto di due coseni in somma e differenza.",
+      "formula": "\\cos a\\cos b=\\tfrac12\\cos(a+b)+\\tfrac12\\cos(a-b)",
+      "perche": "L’identità trigonometrica vale per ogni componente del messaggio e introduce un fattore un mezzo in ciascun contributo."
     },
     {
       "n": 4,
-      "testo": "Valutare la banda laterale superiore positiva.",
-      "formula": "S(\\omega_0+\\Omega)=\\frac{1}{2}X(\\Omega),\\quad 0<\\Omega\\le\\omega_m",
-      "perche": "La replica centrata su meno $\\omega_{0}$ non contribuisce perché le bande sono disgiunte."
+      "testo": "Isolare il contributo della banda laterale superiore.",
+      "formula": "s_s(t)=\\tfrac12\\int_{\\omega_i}^{\\omega_m}V(\\omega)\\cos[(\\omega_0+\\omega)t-\\varphi(\\omega)]\\,d\\omega",
+      "perche": "Nel termine somma la pulsazione della portante si aggiunge a quella del messaggio, mentre la sua fase mantiene il segno."
     },
     {
       "n": 5,
-      "testo": "Valutare la banda laterale inferiore positiva.",
-      "formula": "S(\\omega_0-\\Omega)=\\frac{1}{2}X(-\\Omega)=\\frac{1}{2}X^*(\\Omega)",
-      "perche": "La realtà di x impone la simmetria coniugata della sua trasformata."
+      "testo": "Isolare il contributo della banda laterale inferiore con il segno corretto della fase.",
+      "formula": "s_i(t)=\\tfrac12\\int_{\\omega_i}^{\\omega_m}V(\\omega)\\cos[(\\omega_0-\\omega)t+\\varphi(\\omega)]\\,d\\omega",
+      "perche": "Nella differenza si sottrae tutto l’argomento del messaggio: il meno davanti alla sua fase diventa un più."
     },
     {
       "n": 6,
-      "testo": "Confrontare ampiezze e fasi delle due bande.",
-      "formula": "|S(\\omega_0\\pm\\Omega)|=\\frac{1}{2}|X(\\Omega)|,\\quad \\arg S(\\omega_0\\pm\\Omega)=\\pm\\phi(\\Omega)",
-      "perche": "Il coniugato mantiene il modulo e cambia il segno dell’argomento, modulo $2\\pi$.",
+      "testo": "Sommare i contributi laterali.",
+      "formula": "s(t)=s_s(t)+s_i(t)",
+      "perche": "L’integrazione è lineare, quindi la somma dei contributi calcolati ricostruisce il prodotto originale."
+    },
+    {
+      "n": 7,
+      "testo": "Traslare verso l’alto lo spettro della banda superiore.",
+      "formula": "V_s(\\omega_0+\\Omega)=\\tfrac12V(\\Omega),\\qquad\\varphi_s(\\omega_0+\\Omega)=\\varphi(\\Omega)",
+      "perche": "La frequenza positiva è traslata dalla portante: l’ampiezza si dimezza e la fase canonica resta invariata.",
+      "figura": "ampiezza"
+    },
+    {
+      "n": 8,
+      "testo": "Ribaltare lo spettro della banda inferiore e cambiare il segno della sua fase.",
+      "formula": "V_i(\\omega_0-\\Omega)=\\tfrac12V(\\Omega),\\qquad\\varphi_i(\\omega_0-\\Omega)=-\\varphi(\\Omega)",
+      "perche": "Il segnale reale ha spettro coniugato: la riflessione mantiene il modulo e inverte la fase dove questa è definita.",
       "figura": "fase"
+    },
+    {
+      "n": 9,
+      "testo": "Sovrapporre le bande senza perdere il confronto tra ampiezze.",
+      "formula": "V_s(\\omega_0+\\Omega)=V_i(\\omega_0-\\Omega)=\\tfrac12V(\\Omega)",
+      "perche": "Le bande positive non si sovrappongono perché la portante supera la banda del messaggio; la figura le riunisce.",
+      "figura": "spettri-sovrapposti"
+    },
+    {
+      "n": 10,
+      "testo": "Selezionare, per esempio, la sola banda superiore con un filtro passa-banda.",
+      "formula": "s_{\\mathrm{SSB}}(t)=s_s(t)",
+      "perche": "La banda selezionata conserva ampiezza e fase del messaggio a meno della traslazione e del fattore noto, permettendo la trasmissione a banda laterale unica."
     }
   ],
-  "formula_finale": "S(\\omega)=\\frac{X(\\omega-\\omega_0)+X(\\omega+\\omega_0)}{2}",
+  "formula_finale": "V_s(\\omega_0+\\Omega)=\\tfrac12V(\\Omega),\\quad\\varphi_s(\\omega_0+\\Omega)=\\varphi(\\Omega),\\qquad V_i(\\omega_0-\\Omega)=\\tfrac12V(\\Omega),\\quad\\varphi_i(\\omega_0-\\Omega)=-\\varphi(\\Omega)",
   "figure": [
     {
       "id": "catena",
       "tipo": "blocchi",
       "titolo": "Modulatore a prodotto",
-      "descrizione": "Il messaggio moltiplica una portante cosinusoidale per generare un segnale DSB a portante soppressa.",
+      "descrizione": "Primo stato: il messaggio attraversa il modulatore a prodotto e diventa il segnale modulato con portante soppressa.",
       "blocchi": [
         {
           "id": "b0",
@@ -116,51 +164,67 @@
       ]
     },
     {
-      "id": "ampiezza",
+      "id": "spettro-ingresso",
       "tipo": "grafico",
-      "titolo": "Ampiezza delle bande laterali positive",
-      "descrizione": "Esempio schematico delle bande laterali positiva inferiore e superiore, speculari attorno alla portante, con ampiezza dimezzata rispetto al messaggio.",
+      "titolo": "Ampiezza e fase del messaggio",
+      "descrizione": "Nuovi in questo stato: un esempio di ampiezza normalizzata e di fase in radianti del messaggio sulla banda positiva. La fase è indicata solo dove il modulo è diverso da zero.",
       "asse_x": {
-        "etichetta": "Pulsazione ω",
+        "etichetta": "Pulsazione del messaggio Ω",
         "min": 0,
-        "max": 10,
+        "max": 2.5,
         "tacche": [
           {
-            "valore": 5,
-            "etichetta": "ω₀"
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 0.5,
+            "etichetta": "ωᵢ"
+          },
+          {
+            "valore": 2,
+            "etichetta": "ωₘ"
           }
         ]
       },
       "asse_y": {
-        "etichetta": "Modulo indicativo",
-        "min": 0,
-        "max": 1
+        "etichetta": "Valori illustrativi",
+        "min": -1,
+        "max": 1.1
       },
       "serie": [
         {
           "stile": "linea",
-          "etichetta": "Banda inferiore",
+          "etichetta": "Ampiezza V normalizzata",
           "punti": [
             [
-              3,
-              0.8
+              0.5,
+              0.25
             ],
             [
-              5,
-              0
+              1,
+              0.5
+            ],
+            [
+              2,
+              1
             ]
           ]
         },
         {
           "stile": "tratteggio",
-          "etichetta": "Banda superiore",
+          "etichetta": "Fase φ (rad)",
           "punti": [
             [
-              5,
-              0
+              0.5,
+              0.2
             ],
             [
-              7,
+              1,
+              0.4
+            ],
+            [
+              2,
               0.8
             ]
           ]
@@ -168,52 +232,60 @@
       ]
     },
     {
-      "id": "fase",
+      "id": "ampiezza",
       "tipo": "grafico",
-      "titolo": "Fase nelle bande laterali positive",
-      "descrizione": "Esempio schematico di fase negativa nella banda inferiore e positiva nella banda superiore, con ribaltamento attorno alla portante; fase non definita fuori banda.",
+      "titolo": "Banda laterale superiore",
+      "descrizione": "Primo stato della coppia: si mostrano l’ampiezza dimezzata e la fase della banda superiore traslate rispetto al messaggio. Le ampiezze sono normalizzate e le fasi sono in radianti.",
       "asse_x": {
-        "etichetta": "Pulsazione ω",
+        "etichetta": "Pulsazione positiva ω",
         "min": 0,
-        "max": 10,
+        "max": 8,
         "tacche": [
+          {
+            "valore": 3,
+            "etichetta": "ω₀−ωₘ"
+          },
           {
             "valore": 5,
             "etichetta": "ω₀"
+          },
+          {
+            "valore": 7,
+            "etichetta": "ω₀+ωₘ"
           }
         ]
       },
       "asse_y": {
-        "etichetta": "Fase (radianti)",
+        "etichetta": "Valori illustrativi",
         "min": -1,
-        "max": 1
+        "max": 1.1
       },
       "serie": [
         {
           "stile": "linea",
-          "etichetta": "Fase banda inferiore",
+          "etichetta": "Ampiezza superiore Vₛ",
           "punti": [
             [
-              3,
-              -0.8
+              5.5,
+              0.125
             ],
             [
-              4,
-              -0.4
+              6,
+              0.25
             ],
             [
-              4.9,
-              -0.04
+              7,
+              0.5
             ]
           ]
         },
         {
           "stile": "tratteggio",
-          "etichetta": "Fase banda superiore",
+          "etichetta": "Fase superiore φₛ (rad)",
           "punti": [
             [
-              5.1,
-              0.04
+              5.5,
+              0.2
             ],
             [
               6,
@@ -226,9 +298,224 @@
           ]
         }
       ]
+    },
+    {
+      "id": "fase",
+      "tipo": "grafico",
+      "titolo": "Banda inferiore e fase",
+      "descrizione": "Nuovi rispetto al passo precedente: l’ampiezza inferiore riflessa e la fase inferiore di segno opposto. Restano visibili le due serie della banda superiore.",
+      "asse_x": {
+        "etichetta": "Pulsazione positiva ω",
+        "min": 0,
+        "max": 8,
+        "tacche": [
+          {
+            "valore": 3,
+            "etichetta": "ω₀−ωₘ"
+          },
+          {
+            "valore": 5,
+            "etichetta": "ω₀"
+          },
+          {
+            "valore": 7,
+            "etichetta": "ω₀+ωₘ"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "Valori illustrativi",
+        "min": -1,
+        "max": 1.1
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "Ampiezza superiore Vₛ",
+          "punti": [
+            [
+              5.5,
+              0.125
+            ],
+            [
+              6,
+              0.25
+            ],
+            [
+              7,
+              0.5
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "Fase superiore φₛ (rad)",
+          "punti": [
+            [
+              5.5,
+              0.2
+            ],
+            [
+              6,
+              0.4
+            ],
+            [
+              7,
+              0.8
+            ]
+          ]
+        },
+        {
+          "stile": "linea",
+          "etichetta": "Ampiezza inferiore Vᵢ",
+          "punti": [
+            [
+              3,
+              0.5
+            ],
+            [
+              4,
+              0.25
+            ],
+            [
+              4.5,
+              0.125
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "Fase inferiore φᵢ (rad)",
+          "punti": [
+            [
+              3,
+              -0.8
+            ],
+            [
+              4,
+              -0.4
+            ],
+            [
+              4.5,
+              -0.2
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spettri-sovrapposti",
+      "tipo": "grafico",
+      "titolo": "Bande laterali sovrapposte",
+      "descrizione": "Nuova in questo stato: l’annotazione che identifica la sovrapposizione completa delle bande. Le quattro serie e la scala restano identiche al passo precedente.",
+      "asse_x": {
+        "etichetta": "Pulsazione positiva ω",
+        "min": 0,
+        "max": 8,
+        "tacche": [
+          {
+            "valore": 3,
+            "etichetta": "ω₀−ωₘ"
+          },
+          {
+            "valore": 5,
+            "etichetta": "ω₀"
+          },
+          {
+            "valore": 7,
+            "etichetta": "ω₀+ωₘ"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "Valori illustrativi",
+        "min": -1,
+        "max": 1.1
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "Ampiezza superiore Vₛ",
+          "punti": [
+            [
+              5.5,
+              0.125
+            ],
+            [
+              6,
+              0.25
+            ],
+            [
+              7,
+              0.5
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "Fase superiore φₛ (rad)",
+          "punti": [
+            [
+              5.5,
+              0.2
+            ],
+            [
+              6,
+              0.4
+            ],
+            [
+              7,
+              0.8
+            ]
+          ]
+        },
+        {
+          "stile": "linea",
+          "etichetta": "Ampiezza inferiore Vᵢ",
+          "punti": [
+            [
+              3,
+              0.5
+            ],
+            [
+              4,
+              0.25
+            ],
+            [
+              4.5,
+              0.125
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "Fase inferiore φᵢ (rad)",
+          "punti": [
+            [
+              3,
+              -0.8
+            ],
+            [
+              4,
+              -0.4
+            ],
+            [
+              4.5,
+              -0.2
+            ]
+          ]
+        }
+      ],
+      "annotazioni": [
+        {
+          "x": 5,
+          "y": 1,
+          "testo": "Bande complete"
+        }
+      ]
     }
   ],
-  "a_voce": "Per una modulazione a prodotto moltiplico il messaggio reale per una portante cosinusoidale. Espandendo il coseno in esponenziali, la trasformata dell’uscita diventa la somma di due repliche della trasformata del messaggio, centrate sulle pulsazioni positiva e negativa della portante e moltiplicate per un mezzo. Considero la banda positiva: nella banda superiore la pulsazione del messaggio è positiva, mentre nella banda inferiore è negativa. Per un messaggio reale le componenti a frequenza opposta sono coniugate. Quindi le ampiezze delle bande laterali sono speculari intorno alla portante e le fasi hanno segno opposto, dove sono definite. Il fattore un mezzo è quello della trasformata bilaterale; bisogna distinguere questa convenzione dalla rappresentazione unilaterale di ampiezza adottata nelle figure delle fonti.",
+  "a_voce": "Moltiplico il messaggio reale, scritto come integrale di coseni con ampiezza unilaterale V e fase canonica negativa dell’argomento, per la portante. L’identità prodotto-somma dà due contributi dimezzati. Il contributo superiore ha pulsazione pari alla somma e mantiene la fase del messaggio. In quello inferiore si sottrae l’intero argomento del messaggio: perciò la fase compare con il segno più nel coseno. Gli spettri risultanti hanno ampiezze V superiore e V inferiore pari a metà dell’ampiezza originale. La banda inferiore è ribaltata rispetto alla portante e la sua fase cambia segno; la superiore mantiene la fase. Queste relazioni valgono dove il modulo non è zero. Con un filtro passa-banda posso isolare una banda laterale che conserva le caratteristiche del messaggio.",
   "errori_frequenti": [
     {
       "errore": "Dimenticare il fattore un mezzo.",
@@ -239,45 +526,59 @@
       "errore": "Copiare la fase senza cambiare segno nella banda inferiore.",
       "perche_sbagliato": "La componente negativa del messaggio è coniugata.",
       "correzione": "Ribaltare la banda e cambiare segno alla fase."
+    },
+    {
+      "errore": "Scrivere $\\cos[(\\omega_0-\\omega)t-\\varphi(\\omega)]$ per la banda inferiore.",
+      "perche_sbagliato": "La differenza sottrae tutto $\\omega t-\\varphi$. Con $\\varphi=\\pi/2$, $\\omega=1$, $\\omega_0=10$ e $t=0{,}1\\,\\mathrm{s}$ il segno meno dà circa 0,837 invece di 0,054.",
+      "correzione": "Usare $+\\varphi$ nel coseno inferiore; la fase dello spettro corrispondente cambia invece segno."
     }
   ],
   "versione_compatta": [
-    "Scrivere il coseno come somma di esponenziali.",
-    "Traslare X a $\\pm\\omega_{0}$ con fattore $\\frac{1}{2}$.",
-    "La banda inferiore è coniugata della superiore.",
-    "La fase è definita solo dove il modulo non è zero."
+    "Scrivere $x$ con ampiezza $V=|X|/\\pi$ e fase $\\varphi=-\\arg X$.",
+    "Il prodotto dei coseni genera due bande e il fattore un mezzo.",
+    "Nel coseno inferiore compare $+\\varphi$: si sottrae tutto l’argomento del messaggio.",
+    "$V_s(\\omega_0+\\Omega)=V_i(\\omega_0-\\Omega)=V(\\Omega)/2$.",
+    "$\\varphi_s(\\omega_0+\\Omega)=\\varphi(\\Omega)$; $\\varphi_i(\\omega_0-\\Omega)=-\\varphi(\\Omega)$.",
+    "Una banda si può selezionare con un passa-banda."
   ],
   "a_buchi": {
-    "testo": "La moltiplicazione per il coseno crea due repliche centrate in ___1___ e ___2___. Il peso è ___3___ perché il coseno è somma di due ___4___.",
+    "testo": "Il prodotto dei coseni genera due bande con fattore ___1___. La banda superiore è traslata e la sua fase resta ___2___. La banda inferiore è ribaltata e la sua fase ___3___. Selezionando una sola banda si ottiene una trasmissione ___4___.",
     "soluzioni": {
       "1": [
-        "ω₀",
-        "+ω₀"
+        "1/2",
+        "mezzo",
+        "un mezzo"
       ],
       "2": [
-        "−ω₀",
-        "-ω₀"
+        "invariata",
+        "uguale"
       ],
       "3": [
-        "1/2"
+        "cambia segno",
+        "si inverte"
       ],
       "4": [
-        "esponenziali"
+        "ssb",
+        "a banda laterale unica"
       ]
     }
   },
   "richiamo_attivo": [
     {
+      "domanda": "Quali ampiezze hanno le due bande rispetto al messaggio?",
+      "risposta": "Entrambe hanno ampiezza pari alla metà: $V_s=V_i=V/2$ nei punti corrispondenti."
+    },
+    {
       "domanda": "Perché la fase della banda inferiore cambia segno?",
-      "risposta": "La trasformata di un segnale reale è a simmetria coniugata."
+      "risposta": "La riflessione dello spettro di un segnale reale corrisponde al coniugato e inverte la fase canonica."
     },
     {
-      "domanda": "Che cosa succede nei punti in cui il modulo si annulla?",
-      "risposta": "La fase non è definita."
+      "domanda": "Che cosa succede dove lo spettro ha modulo zero?",
+      "risposta": "La fase non è definita in quei punti."
     },
     {
-      "domanda": "Come si ricava la replica centrata a $-\\omega_{0}$?",
-      "risposta": "Traslando la trasformata del messaggio e moltiplicandola per un mezzo."
+      "domanda": "Quale segno ha la fase nel coseno del contributo inferiore?",
+      "risposta": "Ha il segno più: si sottrae l’intero argomento del messaggio."
     }
   ],
   "fonti": [
@@ -292,11 +593,14 @@
   ],
   "verifica": {
     "stato": "da_verificare",
-    "data": "2026-10-29",
-    "note": "Le immagini file3 pp. 18-19 e file1 p. 28 rappresentano gli spettri mediante ampiezza e fase; qui si usa la trasformata bilaterale canonica.",
+    "data": "2026-10-30",
+    "note": "Confrontate le immagini di file1 pp. 28-29 e file3 pp. 18-19: file1 p. 29 stampa un segno errato nella banda inferiore; qui è corretto e concorda con file3 p. 18.",
     "punti_aperti": [
-      "Confrontare la conversione tra ampiezza e fase unilaterali delle fonti e la trasformata bilaterale impiegata nella scheda.",
-      "La corrispondenza del riferimento p. 6.12 con il libro è NON TROVATO."
+      "Confronto con il libro adottato e con la sua notazione: NON TROVATO."
     ]
-  }
+  },
+  "collegamenti": [
+    "modulazione-prodotto-dsb-ssb",
+    "trasformata-fourier"
+  ]
 }

@@ -28,6 +28,17 @@ def leggi_grafo():
         return json.load(f)
 
 
+def conta_figure(tipo=None):
+    """Numero atteso ricavato dal grafo, incluse le nuove figure-stato."""
+    return sum(
+        1
+        for nodo in leggi_grafo()["nodi"]
+        for sezione in (nodo.get("lezione") or {}, nodo.get("dimostrazione") or {})
+        for figura in sezione.get("figure", [])
+        if tipo is None or figura.get("tipo") == tipo
+    )
+
+
 def promuovibile(s):
     """True se una formula inline sorgente viene promossa in display (§3.2)."""
     return bool(s) and len(s) > 40 and bool(DISPLAY_CMD.search(s))
@@ -190,7 +201,9 @@ def test_tutte_figure_blocchi_geometria_reale(server, width, height):
                 unavailable: host.querySelectorAll('.figura-non-disponibile').length,
                 pageWidth: document.scrollingElement.scrollWidth, viewport: innerWidth, issues};
             }''')
-            assert risultato["count"] == risultato["rendered"] == 17
+            attese = conta_figure("blocchi")
+            assert attese >= 17
+            assert risultato["count"] == risultato["rendered"] == attese
             assert risultato["unavailable"] == 0
             assert risultato["pageWidth"] <= risultato["viewport"]
             assert not risultato["issues"], risultato["issues"]
@@ -247,7 +260,10 @@ def test_nuovi_moduli_figura_disponibili_dopo_ricarica_offline(server):
             context.set_offline(True)
             page.goto(f"{server}/#/dim/dim-conversione-ad", wait_until="load")
             page.reload(wait_until="load")
-            page.locator('.sempre-visibile #catena svg.figura-svg').wait_for()
+            # La catena non è più orfana: viene resa quando si rivela il primo passo.
+            page.get_by_role('button', name='Prossimo passo').click()
+            page.locator('#passo-1 #catena svg.figura-svg').wait_for()
+            assert page.locator('#passo-1 .figura-non-disponibile').count() == 0
             assert page.locator('.sempre-visibile .figura-non-disponibile').count() == 0
             assert page.locator('h1').count() == 1
             assert not errori, errori
@@ -303,7 +319,9 @@ def test_testo_dentro_viewbox_per_ogni_figura_del_grafo(server, width, height):
               return {count: specs.length, rendered: host.querySelectorAll('svg.figura-svg').length,
                 issues, scroll: document.scrollingElement.scrollWidth, viewport: innerWidth};
             }''')
-            assert risultato["count"] == risultato["rendered"] == 63
+            attese = conta_figure()
+            assert attese >= 63
+            assert risultato["count"] == risultato["rendered"] == attese
             assert risultato["scroll"] <= risultato["viewport"]
             assert not risultato["issues"], risultato["issues"]
             assert not errori, errori

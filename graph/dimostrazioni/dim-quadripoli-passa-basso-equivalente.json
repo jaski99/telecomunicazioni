@@ -30,6 +30,10 @@
     {
       "simbolo": "\\omega_0",
       "significato": "Pulsazione della portante."
+    },
+    {
+      "simbolo": "\\beta(\\omega)",
+      "significato": "Fase con segno cambiato: $\\beta(\\omega)=-\\arg H(\\omega)$, quindi $H(\\omega)=|H(\\omega)|e^{-j\\beta(\\omega)}$; stessa convenzione di $\\varphi=-\\arg X$."
     }
   ],
   "varianti_notazione": [
@@ -43,47 +47,56 @@
   "passi": [
     {
       "n": 1,
-      "testo": "Rappresentare ingresso e uscita con gli inviluppi.",
-      "formula": "s(t)=\\operatorname{Re}\\{i(t)e^{j\\omega_0 t}\\},\\quad s_r(t)=\\operatorname{Re}\\{i_r(t)e^{j\\omega_0 t}\\}",
-      "perche": "La separazione tra le bande permette la rappresentazione tramite inviluppi complessi.",
+      "testo": "Rappresentare ingresso e uscita mediante i rispettivi inviluppi complessi.",
+      "formula": "s(t)=\\operatorname{Re}\\{i(t)e^{j\\omega_0t}\\},\\qquad s_r(t)=\\operatorname{Re}\\{i_r(t)e^{j\\omega_0t}\\}",
+      "perche": "Le bande positiva e negativa sono disgiunte: ciascun segnale passa-banda ammette una rappresentazione tramite inviluppo.",
       "figura": "quadripoli"
     },
     {
       "n": 2,
-      "testo": "Applicare la funzione di trasferimento del quadripolo.",
+      "testo": "Applicare il quadripolo lineare allo spettro; il primo stato mostra le due bande del segnale di ingresso.",
       "formula": "S_r(\\omega)=H(\\omega)S(\\omega)",
-      "perche": "La trasformata della risposta LTI è il prodotto della trasformata d’ingresso per H."
+      "perche": "L’invarianza temporale e la linearità trasformano la convoluzione in un prodotto in frequenza.",
+      "figura": "bande-segnale"
     },
     {
       "n": 3,
-      "testo": "Riportare la banda positiva in banda base.",
-      "formula": "I(\\omega)=2S(\\omega+\\omega_0),\\quad I_r(\\omega)=2S_r(\\omega+\\omega_0),\\quad |\\omega|\\leq B_\\omega/2",
-      "perche": "Il fattore due compensa il fattore un mezzo introdotto prendendo la parte reale; le due bande sono disgiunte.",
+      "testo": "Traslare in banda base la banda positiva; nel secondo stato si aggiungono il modulo e la fase della rete.",
+      "formula": "I(\\omega)=2S(\\omega+\\omega_0),\\qquad I_r(\\omega)=2S_r(\\omega+\\omega_0)",
+      "perche": "La parte reale introduce il fattore un mezzo e la separazione delle bande consente di recuperare gli inviluppi nel loro supporto.",
       "figura": "traslazione-spettrale"
     },
     {
       "n": 4,
-      "testo": "Sostituire la relazione del quadripolo.",
-      "formula": "I_r(\\omega)=2H(\\omega+\\omega_0)S(\\omega+\\omega_0)",
-      "perche": "Si applica il prodotto ingresso-uscita alla pulsazione traslata nella banda utile."
+      "testo": "Definire la funzione equivalente e rappresentare lo spettro di inviluppo insieme alla risposta traslata.",
+      "formula": "H_0(\\omega)=\\begin{cases}H(\\omega+\\omega_0),&\\omega+\\omega_0\\geq0,\\\\0,&\\text{altrove}.\\end{cases}",
+      "perche": "Sostituendo il prodotto del quadripolo nelle relazioni traslate, la funzione della rete è valutata alla pulsazione originale.",
+      "figura": "spettro-equivalente"
     },
     {
       "n": 5,
-      "testo": "Confrontare con lo spettro dell’inviluppo di ingresso.",
-      "formula": "I_r(\\omega)=H(\\omega+\\omega_0)I(\\omega)",
-      "perche": "Il fattore due e lo spettro traslato formano I nella banda dell’inviluppo."
+      "testo": "Applicare il modello equivalente agli inviluppi; il quarto stato mostra una possibile decomposizione in quadratura.",
+      "formula": "I_r(\\omega)=H_0(\\omega)I(\\omega)",
+      "perche": "La definizione appena introdotta coincide con il risultato del confronto sul supporto dello spettro di ingresso.",
+      "figura": "filtro-complesso-iq"
     },
     {
       "n": 6,
-      "testo": "Definire l’equivalente con la convenzione delle fonti.",
-      "formula": "H_0(\\omega)=\\begin{cases}H(\\omega+\\omega_0),&\\omega+\\omega_0\\geq 0,\\\\0,&\\text{altrove}.\\end{cases}",
-      "perche": "Nella banda utile la pulsazione traslata è positiva; fuori dalla banda il prodotto per I è nullo."
+      "testo": "Osservare che il modello equivalente in generale non è una rete reale.",
+      "formula": "H_0(-\\omega)\\ne H_0^*(\\omega)",
+      "perche": "È un modello matematico, non fisico: senza simmetria coniugata non può essere la risposta di una rete a impulso reale."
     },
     {
       "n": 7,
-      "testo": "Applicare l’equivalente agli inviluppi.",
-      "formula": "I_r(\\omega)=H_0(\\omega)I(\\omega)",
-      "perche": "La definizione coincide con il risultato precedente sul supporto dello spettro I."
+      "testo": "Richiedere ampiezza simmetrica della rete attorno alla portante.",
+      "formula": "|H(\\omega_0-\\omega)|=|H(\\omega_0+\\omega)|",
+      "perche": "Con questa ipotesi i moduli della funzione traslata coincidono ai due estremi opposti della banda utile."
+    },
+    {
+      "n": 8,
+      "testo": "Completare la condizione con una fase antisimmetrica e nulla alla portante.",
+      "formula": "\\beta(\\omega_0-\\omega)=-\\beta(\\omega_0+\\omega),\\quad\\beta(\\omega_0)=0\\quad\\Longrightarrow\\quad H_0(-\\omega)=H_0^*(\\omega)",
+      "perche": "Con l’ampiezza simmetrica del passo precedente le fasi opposte danno la simmetria coniugata sul supporto utile; causalità e stabilità restano da verificare."
     }
   ],
   "formula_finale": "I_r(\\omega)=H_0(\\omega)I(\\omega),\\quad H_0(\\omega)=H(\\omega+\\omega_0)\\quad(\\omega+\\omega_0\\geq0)",
@@ -92,7 +105,7 @@
       "id": "quadripoli",
       "tipo": "blocchi",
       "titolo": "Quadripolo ed equivalente",
-      "descrizione": "In alto il quadripolo agisce sul segnale passa-banda; in basso il modello equivalente agisce sugli inviluppi complessi.",
+      "descrizione": "In alto il quadripolo agisce sul segnale passa-banda; in basso il modello equivalente agisce sugli inviluppi complessi. Come in file1 p. 43, il ramo in basso è un modello matematico, non un modello fisico.",
       "blocchi": [
         {
           "id": "ingresso-pb",
@@ -157,15 +170,19 @@
       ]
     },
     {
-      "id": "traslazione-spettrale",
+      "id": "bande-segnale",
       "tipo": "grafico",
-      "titolo": "Traslazione della banda positiva",
-      "descrizione": "Esempio schematico di una banda positiva centrata su ω₀ e della stessa banda traslata attorno a zero per rappresentare l’equivalente passa-basso.",
+      "titolo": "Bande del segnale passa-banda",
+      "descrizione": "Primo stato di quattro: si mostrano le due bande dello spettro del segnale reale. I valori sono soltanto un esempio schematico.",
       "asse_x": {
-        "etichetta": "Pulsazione ω (unità arbitrarie)",
-        "min": -3,
+        "etichetta": "Pulsazione: scala originale e traslata",
+        "min": -8,
         "max": 8,
         "tacche": [
+          {
+            "valore": -5,
+            "etichetta": "−ω₀"
+          },
           {
             "valore": 0,
             "etichetta": "0"
@@ -177,14 +194,338 @@
         ]
       },
       "asse_y": {
-        "etichetta": "Modulo indicativo",
-        "min": 0,
+        "etichetta": "Valori illustrativi",
+        "min": -0.1,
         "max": 1.2
       },
       "serie": [
         {
           "stile": "linea",
-          "etichetta": "Equivalente passa-basso",
+          "etichetta": "Modulo S, banda negativa",
+          "punti": [
+            [
+              -7,
+              0
+            ],
+            [
+              -6,
+              0.35
+            ],
+            [
+              -5,
+              0.5
+            ],
+            [
+              -4,
+              0.2
+            ],
+            [
+              -3,
+              0
+            ]
+          ]
+        },
+        {
+          "stile": "linea",
+          "etichetta": "Modulo S, banda positiva",
+          "punti": [
+            [
+              3,
+              0
+            ],
+            [
+              4,
+              0.2
+            ],
+            [
+              5,
+              0.5
+            ],
+            [
+              6,
+              0.35
+            ],
+            [
+              7,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "traslazione-spettrale",
+      "tipo": "grafico",
+      "titolo": "Rete sulla banda positiva",
+      "descrizione": "Secondo stato di quattro: alle due bande si aggiungono modulo e fase della rete nella banda positiva. I successivi stati mostrano la banda base e lo schema in quadratura.",
+      "asse_x": {
+        "etichetta": "Pulsazione: scala originale e traslata",
+        "min": -8,
+        "max": 8,
+        "tacche": [
+          {
+            "valore": -5,
+            "etichetta": "−ω₀"
+          },
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 5,
+            "etichetta": "ω₀"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "Valori illustrativi",
+        "min": -0.1,
+        "max": 1.2
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "Modulo S, banda negativa",
+          "punti": [
+            [
+              -7,
+              0
+            ],
+            [
+              -6,
+              0.35
+            ],
+            [
+              -5,
+              0.5
+            ],
+            [
+              -4,
+              0.2
+            ],
+            [
+              -3,
+              0
+            ]
+          ]
+        },
+        {
+          "stile": "linea",
+          "etichetta": "Modulo S, banda positiva",
+          "punti": [
+            [
+              3,
+              0
+            ],
+            [
+              4,
+              0.2
+            ],
+            [
+              5,
+              0.5
+            ],
+            [
+              6,
+              0.35
+            ],
+            [
+              7,
+              0
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "Modulo H, banda positiva",
+          "punti": [
+            [
+              3,
+              0.4
+            ],
+            [
+              4,
+              0.65
+            ],
+            [
+              5,
+              0.8
+            ],
+            [
+              6,
+              0.95
+            ],
+            [
+              7,
+              0.8
+            ]
+          ]
+        },
+        {
+          "stile": "linea",
+          "etichetta": "Fase β di H (rad)",
+          "punti": [
+            [
+              3,
+              0
+            ],
+            [
+              4,
+              0.1
+            ],
+            [
+              5,
+              0.2
+            ],
+            [
+              6,
+              0.3
+            ],
+            [
+              7,
+              0.5
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spettro-equivalente",
+      "tipo": "grafico",
+      "titolo": "Traslazione nella banda base",
+      "descrizione": "Terzo stato di quattro: oltre agli elementi precedenti si aggiungono il modulo dell’inviluppo e la risposta traslata in banda base. Le ampiezze sono normalizzate; la fase è in radianti.",
+      "asse_x": {
+        "etichetta": "Pulsazione: scala originale e traslata",
+        "min": -8,
+        "max": 8,
+        "tacche": [
+          {
+            "valore": -5,
+            "etichetta": "−ω₀"
+          },
+          {
+            "valore": 0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 5,
+            "etichetta": "ω₀"
+          }
+        ]
+      },
+      "asse_y": {
+        "etichetta": "Valori illustrativi",
+        "min": -0.1,
+        "max": 1.2
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "Modulo S, banda negativa",
+          "punti": [
+            [
+              -7,
+              0
+            ],
+            [
+              -6,
+              0.35
+            ],
+            [
+              -5,
+              0.5
+            ],
+            [
+              -4,
+              0.2
+            ],
+            [
+              -3,
+              0
+            ]
+          ]
+        },
+        {
+          "stile": "linea",
+          "etichetta": "Modulo S, banda positiva",
+          "punti": [
+            [
+              3,
+              0
+            ],
+            [
+              4,
+              0.2
+            ],
+            [
+              5,
+              0.5
+            ],
+            [
+              6,
+              0.35
+            ],
+            [
+              7,
+              0
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "Modulo H, banda positiva",
+          "punti": [
+            [
+              3,
+              0.4
+            ],
+            [
+              4,
+              0.65
+            ],
+            [
+              5,
+              0.8
+            ],
+            [
+              6,
+              0.95
+            ],
+            [
+              7,
+              0.8
+            ]
+          ]
+        },
+        {
+          "stile": "linea",
+          "etichetta": "Fase β di H (rad)",
+          "punti": [
+            [
+              3,
+              0
+            ],
+            [
+              4,
+              0.1
+            ],
+            [
+              5,
+              0.2
+            ],
+            [
+              6,
+              0.3
+            ],
+            [
+              7,
+              0.5
+            ]
+          ]
+        },
+        {
+          "stile": "linea",
+          "etichetta": "Modulo I, banda base",
           "punti": [
             [
               -2,
@@ -210,34 +551,110 @@
         },
         {
           "stile": "tratteggio",
-          "etichetta": "Banda positiva",
+          "etichetta": "Modulo H₀, banda base",
           "punti": [
             [
-              3,
-              0
-            ],
-            [
-              4,
+              -2,
               0.4
             ],
             [
-              5,
-              1
+              -1,
+              0.65
             ],
             [
-              6,
-              0.7
+              0,
+              0.8
             ],
             [
-              7,
-              0
+              1,
+              0.95
+            ],
+            [
+              2,
+              0.8
             ]
           ]
         }
       ]
+    },
+    {
+      "id": "filtro-complesso-iq",
+      "tipo": "blocchi",
+      "titolo": "Modello complesso in quadratura",
+      "descrizione": "Quarto stato: un esempio di filtro complesso si divide in un ramo diretto e un ramo in quadratura. La loro somma realizza H zero come H i più j volte H q; la decomposizione è un modello e non garantisce causalità o stabilità.",
+      "blocchi": [
+        {
+          "id": "ingresso",
+          "etichetta": "I complesso",
+          "forma": "ingresso",
+          "colonna": 0,
+          "riga": 1
+        },
+        {
+          "id": "parte-i",
+          "etichetta": "Hᵢ",
+          "forma": "rettangolo",
+          "colonna": 1,
+          "riga": 0
+        },
+        {
+          "id": "parte-q",
+          "etichetta": "Hᵩ",
+          "forma": "rettangolo",
+          "colonna": 1,
+          "riga": 2
+        },
+        {
+          "id": "quadratura",
+          "etichetta": "× j (π/2)",
+          "forma": "rettangolo",
+          "colonna": 2,
+          "riga": 2
+        },
+        {
+          "id": "somma",
+          "etichetta": "+",
+          "forma": "sommatore",
+          "colonna": 3,
+          "riga": 1
+        },
+        {
+          "id": "uscita",
+          "etichetta": "Iᵣ complesso",
+          "forma": "uscita",
+          "colonna": 4,
+          "riga": 1
+        }
+      ],
+      "collegamenti": [
+        {
+          "da": "ingresso",
+          "a": "parte-i"
+        },
+        {
+          "da": "ingresso",
+          "a": "parte-q"
+        },
+        {
+          "da": "parte-i",
+          "a": "somma"
+        },
+        {
+          "da": "parte-q",
+          "a": "quadratura"
+        },
+        {
+          "da": "quadratura",
+          "a": "somma"
+        },
+        {
+          "da": "somma",
+          "a": "uscita"
+        }
+      ]
     }
   ],
-  "a_voce": "Rappresento l’oscillazione modulata come la parte reale dell’inviluppo complesso moltiplicato per la portante. Un quadripolo lineare tempo-invariante moltiplica lo spettro di ingresso per la sua funzione di trasferimento. Poiché le bande positiva e negativa sono separate, l’inviluppo si ottiene traslando la banda positiva verso zero e moltiplicandola per due. Applico la stessa operazione all’uscita, sostituisco il prodotto per H e confronto con lo spettro dell’inviluppo di ingresso. Ottengo che l’inviluppo di uscita è quello di ingresso moltiplicato per H traslata della portante: questa è la funzione equivalente passa-basso. È un modello matematico: non necessariamente soddisfa la simmetria coniugata richiesta a un sistema con risposta impulsiva reale. La sola simmetria non basta a garantire anche causalità e stabilità.",
+  "a_voce": "Rappresento ingresso e uscita passa-banda con inviluppi complessi. Il quadripolo lineare moltiplica lo spettro di ingresso per la sua risposta. Con bande disgiunte ricavo gli inviluppi traslando la banda positiva verso zero e moltiplicandola per due. La risposta equivalente è la funzione della rete valutata alla pulsazione traslata: nel supporto utile l’inviluppo di uscita è il prodotto della risposta equivalente per quello di ingresso. Il disegno in quadratura è un modello matematico. In generale la risposta equivalente non ha la simmetria coniugata richiesta a una risposta impulsiva reale. Se il modulo della rete è simmetrico rispetto alla portante e la fase, definita con segno meno rispetto all’argomento, è antisimmetrica e nulla alla portante, la simmetria coniugata vale nella banda utile. Per una rete fisica occorre verificare anche causalità e stabilità.",
   "errori_frequenti": [
     {
       "errore": "Dimenticare il fattore due nella relazione tra spettro positivo e inviluppo.",
@@ -256,13 +673,14 @@
     }
   ],
   "versione_compatta": [
-    "Scrivere ingresso e uscita mediante inviluppi complessi.",
-    "Traslare la banda positiva: $I(\\omega) = 2S(\\omega + \\omega_{0})$.",
-    "Sostituire $S_{r} = HS$ e definire $H_{0}(\\omega) = H(\\omega + \\omega_{0})$.",
-    "Concludere $I_{r} = H_{0}I$ e discutere la simmetria coniugata."
+    "Scrivere gli inviluppi e usare $S_r=HS$ per il quadripolo lineare.",
+    "Traslare la banda positiva: $I(\\omega)=2S(\\omega+\\omega_0)$.",
+    "Definire $H_0(\\omega)=H(\\omega+\\omega_0)$ sul supporto utile e ricavare $I_r=H_0I$.",
+    "In generale manca la simmetria coniugata: il modello non è necessariamente una rete reale.",
+    "Modulo simmetrico e fase $\\beta=-\\arg H$ antisimmetrica rispetto alla portante danno la simmetria coniugata nella banda utile; verificare anche causalità e stabilità."
   ],
   "a_buchi": {
-    "testo": "L’inviluppo si ricava dalla banda ___1___ traslata e moltiplicata per ___2___. La funzione equivalente è $H_{0}(\\omega) = H($___3___). Il prodotto per H è lecito perché il sistema è ___4___.",
+    "testo": "L’inviluppo si ottiene dalla banda ___1___ traslata e moltiplicata per ___2___. La fase della rete è definita come ___3___ dell’argomento di H. La simmetria richiesta alla risposta di una rete reale è detta ___4___.",
     "soluzioni": {
       "1": [
         "positiva"
@@ -272,12 +690,13 @@
         "due"
       ],
       "3": [
-        "ω + ω₀",
-        "ω+ω₀"
+        "opposto",
+        "il meno",
+        "meno"
       ],
       "4": [
-        "lineare tempo-invariante",
-        "LTI"
+        "coniugata",
+        "simmetria coniugata"
       ]
     }
   },
@@ -314,7 +733,8 @@
     "data": "2026-10-29",
     "note": "Passaggi confrontati sulle immagini; file3 usa $H_{0}$ per la funzione equivalente. L’enunciato è riformulato, non una trascrizione del testo del docente.",
     "punti_aperti": [
-      "Confronto con il libro e verifica della realizzabilità fisica completa: NON TROVATO."
+      "La condizione di simmetria è verificata su file1 p. 44 (immagine); il confronto con il libro resta NON TROVATO.",
+      "La causalità e la stabilità dell’equivalente non seguono dalla sola simmetria coniugata e vanno verificate nel caso specifico."
     ]
   }
 }

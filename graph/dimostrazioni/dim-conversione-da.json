@@ -38,52 +38,65 @@
       "canonica": "$\\omega_s=2\\pi/T$",
       "variante": "$f_{0}=\\frac{1}{T}$",
       "fonte": "file3 pp. 7-11"
+    },
+    {
+      "canonica": "$\\varepsilon(t)$",
+      "variante": "$e(t)$",
+      "fonte": "notazione usata nella versione precedente della scheda"
     }
   ],
   "idea": "Decodificare i livelli, costruire il PAM e isolare la replica centrale con equalizzazione.",
   "passi": [
     {
       "n": 1,
-      "testo": "Decodificare ogni parola nel livello corrispondente.",
+      "testo": "Decodificare ciascuna parola nel livello quantizzato corrispondente.",
       "formula": "\\operatorname{dec}(b_n^{(1)},\\ldots,b_n^{(b)})=q_n",
-      "perche": "La mappa di decodifica è l’inversa della codifica sui livelli ammessi."
+      "perche": "La mappa di decodifica è l’inversa della codifica solo sull’insieme dei livelli ammessi."
     },
     {
       "n": 2,
-      "testo": "Costruire il segnale PAM associato.",
+      "testo": "Generare il PAM dai livelli; la catena prosegue poi nel passa-basso e nella rete equalizzatrice.",
       "formula": "s_q(t)=\\sum_{n=-\\infty}^{\\infty}q_n g(t-nT)",
-      "perche": "Ogni livello comanda un impulso traslato all’istante del campione."
+      "perche": "Ogni livello decodificato pesa un impulso traslato all’istante del campione corrispondente.",
+      "figura": "catena"
     },
     {
       "n": 3,
-      "testo": "Trascurare per il calcolo ideale l’errore di quantizzazione.",
+      "testo": "Trascurare la quantizzazione nel calcolo ideale delle repliche.",
       "formula": "s(t)=\\sum_{n=-\\infty}^{\\infty}x(nT)g(t-nT)",
-      "perche": "Ponendo qn uguale al campione ideale si può applicare la formula di campionamento."
+      "perche": "Sostituendo ai livelli i campioni ideali si può applicare la formula di ripetizione spettrale."
     },
     {
       "n": 4,
-      "testo": "Scrivere lo spettro del PAM ideale.",
+      "testo": "Scrivere lo spettro del PAM ideale e osservare le repliche separate.",
       "formula": "S(\\omega)=\\frac{G(\\omega)}{T}\\sum_{k=-\\infty}^{\\infty}X(\\omega-k\\omega_s)",
-      "perche": "Il treno di campioni genera repliche periodiche e la forma d’impulso moltiplica lo spettro."
+      "perche": "Il treno di campioni genera repliche distanziate della pulsazione di campionamento; l’impulso le pesa con la sua trasformata.",
+      "figura": "repliche-pam"
     },
     {
       "n": 5,
-      "testo": "Isolare la replica centrale e compensare la forma d’impulso.",
-      "formula": "X_r(\\omega)=\\frac{T}{G(\\omega)}\\frac{G(\\omega)}{T}X(\\omega)=X(\\omega),\\quad |\\omega|\\le\\omega_m",
-      "perche": "Le repliche non si sovrappongono e G è non nullo nella banda utile.",
+      "testo": "Isolare la replica centrale con il filtro passa-basso.",
+      "formula": "S_b(\\omega)=\\frac{G(\\omega)}{T}X(\\omega),\\qquad |\\omega|\\le\\omega_m",
+      "perche": "Le repliche non si sovrappongono. La scelta canonica del taglio è $\\omega_s/2$, tra la banda utile e la prima replica, non necessariamente $\\omega_m$.",
       "figura": "repliche"
     },
     {
       "n": 6,
-      "testo": "Considerare un impulso rettangolare centrato sufficientemente breve.",
-      "formula": "G(\\omega)=\\tau\\,\\frac{\\sin(\\omega\\tau/2)}{\\omega\\tau/2}\\approx\\tau,\\quad |\\omega|\\le\\omega_m,\\quad \\tau\\ll T",
-      "perche": "Con campionamento sopra Nyquist, nella banda utile il prodotto $\\omega\\tau$ è piccolo; resta un guadagno circa costante."
+      "testo": "Compensare la forma dell’impulso con la rete equalizzatrice.",
+      "formula": "X_r(\\omega)=\\frac{T}{G(\\omega)}S_b(\\omega)=X(\\omega),\\qquad |\\omega|\\le\\omega_m",
+      "perche": "Nella banda utile G non è nullo; il fattore T compensa anche il fattore uno su T introdotto dal campionamento."
     },
     {
       "n": 7,
-      "testo": "Riconoscere l’effetto della quantizzazione.",
-      "formula": "e(t)=x_r(t)-x(t)",
-      "perche": "La decodifica ripristina i livelli quantizzati, non i valori originali perduti."
+      "testo": "Considerare un impulso rettangolare molto breve: con T pari a un millisecondo e durata otto microsecondi il guadagno è circa 42 decibel.",
+      "formula": "\\tau\\ll T,\\quad G(\\omega)\\approx\\tau\\quad\\Longrightarrow\\quad\\frac{T}{G(\\omega)}\\approx\\frac{T}{\\tau}=125",
+      "perche": "La risposta del rettangolo centrato è quasi costante nella banda utile: si può omettere l’equalizzatore solo se è accettabile il guadagno residuo."
+    },
+    {
+      "n": 8,
+      "testo": "Definire la differenza tra ricostruzione e segnale originario.",
+      "formula": "\\varepsilon(t)=x_r(t)-x(t)",
+      "perche": "La decodifica ripristina i livelli quantizzati, non i valori originali perduti durante la quantizzazione."
     }
   ],
   "formula_finale": "S(\\omega)=\\frac{G(\\omega)}{T}\\sum_{k\\in\\mathbb{Z}}X(\\omega-k\\omega_s),\\quad X_r(\\omega)=X(\\omega)\\ \\text{nel caso ideale}",
@@ -92,7 +105,7 @@
       "id": "catena",
       "tipo": "blocchi",
       "titolo": "Conversione digitale-analogica",
-      "descrizione": "Le parole PCM sono decodificate e ricostruite con un filtro passa-basso e una compensazione della risposta dell’impulso.",
+      "descrizione": "La catena presenta decodificatore e generatore PAM, seguiti da passa-basso ed equalizzatore: il nuovo segnale PAM viene costruito prima della ricostruzione.",
       "blocchi": [
         {
           "id": "b0",
@@ -161,10 +174,10 @@
       ]
     },
     {
-      "id": "repliche",
+      "id": "repliche-pam",
       "tipo": "grafico",
-      "titolo": "Replica centrale e repliche laterali",
-      "descrizione": "Esempio schematico di replica centrale isolata e repliche laterali separate quando la pulsazione di campionamento supera il doppio della banda.",
+      "titolo": "Repliche del PAM ideale",
+      "descrizione": "Nuovo stato: si mostrano la replica centrale e le repliche laterali separate dello spettro PAM, prima della selezione con il filtro.",
       "asse_x": {
         "etichetta": "Pulsazione delle repliche ω",
         "min": -8,
@@ -233,9 +246,105 @@
           ]
         }
       ]
+    },
+    {
+      "id": "repliche",
+      "tipo": "grafico",
+      "titolo": "Filtro e replica centrale",
+      "descrizione": "Nuovo rispetto al passo precedente: la finestra del passa-basso ideale, che lascia la replica centrale e scarta le laterali mantenendo la stessa scala.",
+      "asse_x": {
+        "etichetta": "Pulsazione delle repliche ω",
+        "min": -8,
+        "max": 8
+      },
+      "asse_y": {
+        "etichetta": "Modulo indicativo",
+        "min": 0,
+        "max": 1.2
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "Replica centrale",
+          "punti": [
+            [
+              -2,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              2,
+              0
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "Repliche laterali",
+          "punti": [
+            [
+              -7,
+              0
+            ],
+            [
+              -5,
+              1
+            ],
+            [
+              -3,
+              0
+            ],
+            [
+              -2.99,
+              0
+            ],
+            [
+              2.99,
+              0
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              7,
+              0
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "Passa-basso ideale",
+          "punti": [
+            [
+              -2.5,
+              0
+            ],
+            [
+              -2.5,
+              1.1
+            ],
+            [
+              2.5,
+              1.1
+            ],
+            [
+              2.5,
+              0
+            ]
+          ]
+        }
+      ]
     }
   ],
-  "a_voce": "Il decodificatore trasforma ogni parola in un livello quantizzato. I livelli comandano impulsi traslati e producono un segnale PAM. Se considero il caso ideale senza errore di quantizzazione, il suo spettro è il prodotto della trasformata dell’impulso per le repliche periodiche dello spettro originale, con fattore uno su T. Se la frequenza di campionamento è sufficiente, le repliche sono separate e il filtro passa-basso isola quella centrale. Un equalizzatore con risposta T diviso G compensa la forma dell’impulso nella banda utile, a condizione che G non si annulli. In pratica la decodifica restituisce i livelli quantizzati, non i campioni esatti: il segnale ricostruito può quindi differire dall’originale anche con filtro ideale. Per un impulso rettangolare molto breve la sua risposta è quasi costante sulla banda utile: se è sufficiente una ricostruzione a meno di guadagno, l’equalizzatore può essere omesso.",
+  "a_voce": "Il decodificatore restituisce i livelli quantizzati, che comandano gli impulsi del segnale PAM. Per ricavare le repliche considero prima il caso ideale senza quantizzazione: lo spettro del PAM è il prodotto della trasformata dell’impulso per le repliche dello spettro originale, con fattore uno su T. Le repliche sono separate e il passa-basso, con taglio scelto a metà fra origine e frequenza di campionamento, isola quella centrale. La rete equalizzatrice ha risposta T diviso G: annulla il peso dell’impulso e compensa il fattore uno su T, purché G non sia nullo nella banda utile. Se l’impulso rettangolare è molto breve, G è circa la sua durata e l’equalizzazione è un guadagno quasi costante, omissibile solo quando si accetta tale fattore. Infine la quantizzazione lascia una differenza tra segnale ricostruito e segnale originale.",
   "errori_frequenti": [
     {
       "errore": "Ritenere che la decodifica cancelli l’errore di quantizzazione.",
@@ -249,30 +358,28 @@
     }
   ],
   "versione_compatta": [
-    "Decodificare le parole in livelli quantizzati.",
-    "Generare il PAM e isolare la replica centrale.",
-    "Equalizzare con T/G dove G è non nullo.",
-    "Per impulso rettangolare breve G è quasi costante: può bastare il passa-basso.",
-    "La quantizzazione lascia un errore residuo."
+    "Decodificare le parole in livelli e generare il PAM quantizzato.",
+    "Nel caso ideale le repliche sono pesate da $G/T$; il passa-basso con taglio $\\omega_s/2$ isola quella centrale.",
+    "La rete equalizzatrice $T/G$ restituisce $X$ dove $G$ non è nullo.",
+    "Per $\\tau\\ll T$, $T/G\\approx T/\\tau$: il guadagno può essere trascurato solo se ammesso.",
+    "L’errore di quantizzazione è $\\varepsilon=x_r-x$."
   ],
   "a_buchi": {
-    "testo": "La decodifica restituisce i ___1___. Le repliche spettrali sono distanziate di ___2___. Il filtro isola la replica centrale perché non c’è ___3___; l’equalizzatore usa ___4___.",
+    "testo": "La decodifica restituisce i ___1___. Il filtro isola la replica ___2___; la rete ___3___ compensa la forma dell’impulso con T/G. La differenza residua è dovuta alla ___4___.",
     "soluzioni": {
       "1": [
-        "livelli quantizzati",
-        "livelli"
+        "livelli",
+        "livelli quantizzati"
       ],
       "2": [
-        "ωs",
-        "ωₛ"
+        "centrale"
       ],
       "3": [
-        "aliasing",
-        "sovrapposizione"
+        "equalizzatrice",
+        "equalizzatore"
       ],
       "4": [
-        "T/G",
-        "T/G(ω)"
+        "quantizzazione"
       ]
     }
   },
@@ -288,6 +395,10 @@
     {
       "domanda": "Quando T/G è utilizzabile?",
       "risposta": "Quando G non è nullo nella banda utile."
+    },
+    {
+      "domanda": "Con $T=1\\,\\mathrm{ms}$ e $\\tau=8\\,\\mathrm{\\mu s}$ quanto vale il guadagno della rete equalizzatrice?",
+      "risposta": "$T/\\tau=125$, cioè circa $42\\,\\mathrm{dB}$ in ampiezza: è quasi costante e si può omettere se è accettabile il guadagno residuo."
     }
   ],
   "fonti": [
@@ -308,5 +419,9 @@
       "La formula con X vale trascurando l’errore di quantizzazione; la validità dell’approssimazione di G dipende dalla forma dell’impulso.",
       "Confronto del riferimento p. 7.8 con il libro adottato: NON TROVATO."
     ]
-  }
+  },
+  "collegamenti": [
+    "conversione-ad-quantizzazione-pcm",
+    "dim-teorema-campionamento"
+  ]
 }
