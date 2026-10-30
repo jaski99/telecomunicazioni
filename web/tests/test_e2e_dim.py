@@ -300,11 +300,21 @@ def test_pam_schema_e_formula_senza_scroll_interno(browser, server, width, heigh
       const svg = figura?.getBoundingClientRect(), vb = figura?.viewBox.baseVal;
       const dimensioni = figura ? [...figura.querySelectorAll('text')].map(t =>
         parseFloat(getComputedStyle(t).fontSize) * svg.width / vb.width) : [];
-      return {overflow, dimensioni, schema: Boolean(figura), passi: [...document.querySelectorAll('#passo-2.step--rivelato, #passo-4.step--rivelato')].length};
+      const uscita = figura?.querySelector('.blocco.uscita');
+      const lineaUscita = uscita?.querySelector('line');
+      const collegamenti = [...(figura?.querySelectorAll('path[fill="none"]') || [])];
+      const punta = collegamenti[1]?.nextElementSibling?.getAttribute('d')?.match(/^M\\s*(-?[\\d.]+)\\s+(-?[\\d.]+)/);
+      const x = Number(lineaUscita?.getAttribute('x1')), y = Number(lineaUscita?.getAttribute('y1'));
+      const uscitaCollegata = { collegata: Boolean(punta && Math.hypot(Number(punta[1]) - x, Number(punta[2]) - y) < .1),
+        etichetta: uscita?.textContent || '' };
+      return {overflow, dimensioni, schema: Boolean(figura), uscitaCollegata,
+        passi: [...document.querySelectorAll('#passo-2.step--rivelato, #passo-4.step--rivelato')].length};
     }''')
     assert misura['passi'] == 2, (width, misura)
     assert misura['schema'], (width, misura)
     assert misura['overflow'] == [], (width, misura)
+    assert misura['uscitaCollegata']['collegata'], (width, misura['uscitaCollegata'])
+    assert 's(t)' in misura['uscitaCollegata']['etichetta'], (width, misura['uscitaCollegata'])
     assert all(size >= 11 for size in misura['dimensioni']), (width, misura['dimensioni'])
     assert not errori, (width, errori)
     if width == 390:

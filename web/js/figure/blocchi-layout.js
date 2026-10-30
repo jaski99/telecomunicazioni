@@ -97,7 +97,8 @@ export function layoutCollegamenti(nodi, collegamenti, limite = 16) {
     if (!c) continue;
     const da = perId.get(String(c.da)), a = perId.get(String(c.a));
     if (!da || !a || da === a) continue;
-    const inizio = bordo(da, a), fine = bordo(a, da);
+    const inizio = da.forma === 'uscita' ? { x: da.x + da.w / 2, y: da.y } : bordo(da, a);
+    const fine = a.forma === 'uscita' ? { x: a.x - a.w / 2, y: a.y } : bordo(a, da);
     const dx = fine.x - inizio.x, dy = fine.y - inizio.y, lunghezza = Math.hypot(dx, dy) || 1;
     const ux = dx / lunghezza, uy = dy / lunghezza;
     const base = { x: fine.x - ux * 8, y: fine.y - uy * 8 };

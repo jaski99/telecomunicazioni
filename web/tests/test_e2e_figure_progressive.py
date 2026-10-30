@@ -43,19 +43,21 @@ def test_catena_fixture_nuovi_confronto_e_movimento(server, width, height):
               lista.innerHTML = renderPasso(p2, dim, true, 1);
               lista.dataset.fixture = 'progressione'; document.querySelector('#modo-studio').append(lista);
             }''')
-            nuova = page.locator('[data-nuovo="true"]')
-            ereditata = page.locator('[data-ereditato="true"]')
+            fixture = page.locator('[data-fixture="progressione"]')
+            assert fixture.count() == 1
+            nuova = fixture.locator('[data-nuovo="true"]')
+            ereditata = fixture.locator('[data-ereditato="true"]')
             assert nuova.count() >= 1
             assert ereditata.count() >= 1
             assert float(ereditata.first.evaluate('(e) => getComputedStyle(e).opacity')) < 1
-            assert 'Figura 1.2 — nuovo in questo passo: repliche laterali' in page.locator('.figure__caption-title').last.inner_text()
-            pulsante = page.get_by_role('button', name='Confronta con il passo precedente')
+            assert 'Figura 1.2 — nuovo in questo passo: repliche laterali' in fixture.locator('.figure__caption-title').last.inner_text()
+            pulsante = fixture.get_by_role('button', name='Confronta con il passo precedente')
             assert pulsante.count() == 1
             pulsante.click()
             assert pulsante.get_attribute('aria-expanded') == 'true'
-            allineamento = page.locator('.figura-confronto').evaluate('(e) => { const r = [...e.children].map(x => x.getBoundingClientRect()); return r[1].top <= r[0].bottom - 1; }')
+            allineamento = fixture.locator('.figura-confronto').evaluate('(e) => { const r = [...e.children].map(x => x.getBoundingClientRect()); return r[1].top <= r[0].bottom - 1; }')
             assert allineamento is (width >= 768)
-            misura_confronto = page.locator('.figura-confronto').evaluate('''e => ({
+            misura_confronto = fixture.locator('.figura-confronto').evaluate('''e => ({
               overflow: e.scrollWidth > e.clientWidth + 1,
               regions: [...e.querySelectorAll('.scroll-x')].map(x => ({
                 overflow: x.scrollWidth > x.clientWidth + 1,
@@ -65,7 +67,7 @@ def test_catena_fixture_nuovi_confronto_e_movimento(server, width, height):
             })''')
             assert not misura_confronto['overflow'], (width, misura_confronto)
             assert all(not r['overflow'] and r['svg'] <= r['width'] + 1 for r in misura_confronto['regions']), (width, misura_confronto)
-            durata = page.locator('[data-progressivo]').first.evaluate('(e) => getComputedStyle(e).transitionDuration')
+            durata = fixture.locator('[data-progressivo]').first.evaluate('(e) => getComputedStyle(e).transitionDuration')
             assert all(float(x.rstrip('s')) == 0 for x in durata.split(',')), durata
             Path('/tmp/tlc-shots').mkdir(parents=True, exist_ok=True)
             page.screenshot(path=f'/tmp/tlc-shots/figure-progressive-{width}.png', full_page=True)

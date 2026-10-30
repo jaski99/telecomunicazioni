@@ -133,6 +133,12 @@
 
 /* Le motivazioni diventano note marginali su schermi ampi, inline su mobile. */
 .nota-margine { margin: 0; }
+.step__corpo > aside.nota-margine {
+  float: none; width: auto; clear: none; margin: 0; padding: var(--s-4);
+  border-top: 0; font-size: var(--fs-body); line-height: var(--lh-body); color: var(--c-text);
+}
+.step__corpo > aside.nota-margine .callout__title { font-size: var(--fs-body); color: var(--c-text); }
+.step__corpo > aside.nota-margine p { font-size: inherit; color: inherit; }
 @media (min-width: 1200px) {
   .step__corpo {
     display: grid;
