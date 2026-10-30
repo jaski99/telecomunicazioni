@@ -174,3 +174,6 @@
   padding: var(--s-4);
   margin-block: var(--s-3);
 }
+
+.errore-blocco__riga { display: flex; flex-direction: column; gap: var(--s-2); }
+.errore-blocco__riga + .errore-blocco__riga { margin-top: var(--s-3); }

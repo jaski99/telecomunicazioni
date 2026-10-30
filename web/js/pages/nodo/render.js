@@ -5,7 +5,7 @@ import { testoSicuro, escapeHtml } from '../../core/math.js';
 import { nomeArea, etichettaTipo, etichettaPriorita, chipNodoLink, formattaParoleIntere } from '../grafo.js';
 import { etichettaFonte, etichettaUrlFonte } from '../fonti.js';
 import { renderChiave, renderScenario, renderAnalogia } from './chiave.js';
-import { renderLezione, resetContatori } from './sezioni.js';
+import { renderLezione, renderSintesiDim, resetContatori } from './sezioni.js';
 import { blocchi, renderChecklist } from './util.js';
 import { indiceHTML } from '../../layout/indice.js';
 import { navSequenzaHTML } from '../../layout/sequenza.js';
@@ -27,10 +27,10 @@ export function render(ctx, params) {
   const risorse = Array.isArray(nodo.risorse) ? nodo.risorse.filter((r) => r && r.url) : [];
   const lezione = nodo.lezione;
 
-  const chiaveHtml = lezione ? renderChiave(nodo) : '';
+  const chiaveHtml = renderChiave(nodo);
   const scenarioHtml = renderScenario(nodo);
   const analogiaHtml = renderAnalogia(lezione);
-  const lezioneHtml = lezione ? renderLezione(lezione) : '';
+  const lezioneHtml = lezione ? renderLezione(lezione) : renderSintesiDim(nodo.dimostrazione);
 
   // Indice: voci dalle h2 numerate, ancore -> #/nodo/<id>?sezione=<n>
   const indiceVoci = [];

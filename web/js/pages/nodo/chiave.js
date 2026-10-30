@@ -7,10 +7,8 @@ import { tokenizzaMatematica } from '../../core/math.js';
 export function primaFrase(testo) {
   const tokens = tokenizzaMatematica(typeof testo === 'string' ? testo.trim() : '');
   let risultato = '';
-  let formule = 0;
   for (const token of tokens) {
     if (token.type !== 'text') {
-      if (formule++) break;
       const delimitatore = token.type === 'display' ? '$$' : '$';
       risultato += delimitatore + token.body + delimitatore;
       continue;
@@ -19,14 +17,14 @@ export function primaFrase(testo) {
     risultato += fine ? token.body.slice(0, fine.index + 1) : token.body;
     if (fine) break;
   }
-  return risultato.trim().replace(/(?:\s+(?:e|o|è|sono|vale|per|con|di|a|in|=)|[,;:])\s*$/i, '');
+  return risultato.trim();
 }
 
 export function renderChiave(nodo) {
   const lezione = nodo.lezione || {};
-  const testo = primaFrase(lezione.riepilogo || lezione.definizione_esame?.definizione);
+  const testo = primaFrase(lezione.riepilogo || lezione.definizione_esame?.definizione || nodo.dimostrazione?.idea);
   if (!testo) return '';
-  return `<aside class="chiave" aria-labelledby="chiave-${esc(nodo.id)}"><p class="blocco__etichetta" id="chiave-${esc(nodo.id)}">Da ricordare</p>${renderProsaMarkdown(testo)}</aside>`;
+  return `<aside class="chiave" aria-labelledby="chiave-${esc(nodo.id)}"><div class="blocco__etichetta" id="chiave-${esc(nodo.id)}">Da ricordare</div>${renderProsaMarkdown(testo)}</aside>`;
 }
 
 export function renderScenario(nodo) {
@@ -37,5 +35,5 @@ export function renderScenario(nodo) {
 export function renderAnalogia(lezione) {
   if (!lezione || !lezione.analogia || !lezione.analogia.testo) return '';
   const an = lezione.analogia;
-  return `<div class="analogia">${blocchi(an.testo)}${an.limite ? `<p class="analogia__limite"><span class="errore-blocco__label">Limite</span>${blocchi(an.limite)}</p>` : ''}</div>`;
+  return `<div class="analogia">${blocchi(an.testo)}${an.limite ? `<p class="analogia__limite"><span class="blocco__etichetta">Limite</span>${blocchi(an.limite)}</p>` : ''}</div>`;
 }

@@ -26,11 +26,6 @@ a.chip, button.chip { min-height: var(--tap); }
 .blocco__etichetta { font-size: var(--fs-num); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
 
 .chiave { border-left: var(--s-1) solid var(--c-idea); background: var(--c-idea-bg); color: var(--c-text); padding: var(--s-4); border-radius: var(--radius); margin: 0 0 var(--s-5); }
-.chiave.chiave--def { border-left-color: var(--c-def); background: var(--c-def-bg); }
-.chiave.chiave--esempio { border-left-color: var(--c-example); background: var(--c-example-bg); }
-.chiave.chiave--attenzione { border-left-color: var(--c-attenzione); background: var(--c-attenzione-bg); }
-.chiave.chiave--errore { border-left-color: var(--c-errore); background: var(--c-errore-bg); }
-.chiave.chiave--verifica { border-left-color: var(--c-verifica); background: var(--c-verifica-bg); }
 
 .definizione { padding: var(--s-4); border-left: var(--s-5) solid var(--c-def); background: var(--c-def-bg); color: var(--c-text); }
 .esempio { padding: var(--s-4); border-left: var(--s-5) solid var(--c-example); background: var(--c-example-bg); color: var(--c-text); }

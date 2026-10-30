@@ -41,6 +41,7 @@ export function renderLezione(L) {
   const varianti = Array.isArray(L.varianti_notazione) ? L.varianti_notazione : [];
   const puntiAperti = Array.isArray(L.verifica && L.verifica.punti_aperti) ? L.verifica.punti_aperti : [];
   const parti = [];
+  if (L.perche_ti_serve) parti.push(renderSezione(prossimaSezione(), 'Perché ti serve', renderProsaMarkdown(L.perche_ti_serve)));
   if (def.definizione) parti.push(renderSezione(prossimaSezione(), 'Definizione per l’esame', `${blocchi(def.definizione, 'Definizione:')}${blocchi(def.scopo, 'Scopo:')}${blocchi(def.esempio, 'Esempio:')}`, 'definizione'));
   if (L.spiegazione) {
     const numero = prossimaSezione();
@@ -52,12 +53,12 @@ export function renderLezione(L) {
     parti.push(renderSezione(numero, 'Figure', L.figure.map(figuraConNumero).join('')));
   }
   for (const v of varianti) parti.push(notaMargine(`${esc(v.canonica || '')} → ${esc(v.variante || '')}`, esc(v.fonte || 'Variante di notazione')));
-  if (ex.problema) parti.push(renderSezione(prossimaSezione(), 'Esempio svolto', `${blocchi(ex.problema)}${Array.isArray(ex.passi) && ex.passi.length ? `<ol>${ex.passi.map((p) => `<li>${voce(p)}</li>`).join('')}</ol>` : ''}${blocchi(ex.soluzione, 'Soluzione:')}${blocchi(ex.perche_funziona, 'Perché funziona:')}`, 'esempio'));
+  if (ex.problema) parti.push(renderSezione(prossimaSezione(), 'Esempio svolto', `${ex.titolo ? `<h3>${voce(ex.titolo, true)}</h3>` : ''}${blocchi(ex.problema)}${Array.isArray(ex.passi) && ex.passi.length ? `<ol>${ex.passi.map((p) => `<li>${voce(p)}</li>`).join('')}</ol>` : ''}${blocchi(ex.soluzione, 'Soluzione:')}${blocchi(ex.perche_funziona, 'Perché funziona:')}`, 'esempio'));
   const provaTu = [];
-  if (cp.testo) provaTu.push(`${blocchi(cp.testo)}${renderChecklist(cp.passi_mancanti)}${bottoneRivelatore('nodo-cp-sol', 'Mostra soluzione', blocchi(cp.soluzione))}`);
-  if (ea.testo) provaTu.push(`${blocchi(ea.testo)}${blocchi(ea.suggerimento, 'Suggerimento:')}${bottoneRivelatore('nodo-ea-sol', 'Mostra soluzione attesa', blocchi(ea.soluzione_attesa))}`);
+  if (cp.testo) provaTu.push(`${cp.titolo ? `<h3>${voce(cp.titolo, true)}</h3>` : ''}${blocchi(cp.testo)}${renderChecklist(cp.passi_mancanti)}${bottoneRivelatore('nodo-cp-sol', 'Mostra soluzione', blocchi(cp.soluzione))}`);
+  if (ea.testo) provaTu.push(`${ea.titolo ? `<h3>${voce(ea.titolo, true)}</h3>` : ''}${blocchi(ea.testo)}${blocchi(ea.suggerimento, 'Suggerimento:')}${bottoneRivelatore('nodo-ea-sol', 'Mostra soluzione attesa', blocchi(ea.soluzione_attesa))}`);
   if (provaTu.length) parti.push(renderSezione(prossimaSezione(), 'Prova tu', provaTu.join('')));
-  if (errori.length) parti.push(`<section class="nodo-sezione" id="sez-${prossimaSezione()}"><h2><span class="sezione__num">${sezioneNum}</span> Errori da non fare</h2><div class="prose">${errori.map((e) => `<div class="errore errore-blocco"><div class="errore-blocco__riga"><span class="errore-blocco__label">Errore</span>${voce(e.errore, true)}</div><div class="errore-blocco__riga"><span class="errore-blocco__label">Perché è sbagliato</span>${blocchi(e.perche_sbagliato)}</div><div class="errore-blocco__riga"><span class="errore-blocco__label">Correzione</span>${blocchi(e.correzione)}</div></div>`).join('')}</div></section>`);
+  if (errori.length) parti.push(`<section class="nodo-sezione" id="sez-${prossimaSezione()}"><h2><span class="sezione__num">${sezioneNum}</span> Errori da non fare</h2><div class="prose">${errori.map((e) => `<div class="errore errore-blocco"><div class="errore-blocco__riga"><span class="blocco__etichetta">Errore</span>${voce(e.errore, true)}</div><div class="errore-blocco__riga"><span class="blocco__etichetta">Perché è sbagliato</span>${blocchi(e.perche_sbagliato)}</div>${e.correzione ? `<div class="errore-blocco__riga"><span class="blocco__etichetta">Correzione</span>${blocchi(e.correzione)}</div>` : ''}</div>`).join('')}</div></section>`);
   const verificaParti = [];
   if (spiegaTue) verificaParti.push(blocchi(spiegaTue));
   if (domande.length) { verificaParti.push('<h3>Richiamo attivo</h3>'); verificaParti.push(domande.map((r, i) => `<div class="verifica-domanda"><p>${blocchi(r.domanda, `Domanda ${i + 1}:`)}</p>${bottoneRivelatore(`nodo-rich-${i}`, 'Mostra risposta', blocchi(r.risposta))}</div>`).join('')); }
@@ -69,4 +70,11 @@ export function renderLezione(L) {
   if (L.riepilogo) parti.push(renderSezione(prossimaSezione(), 'Riepilogo', blocchi(L.riepilogo)));
   if (L.fonti && L.fonti.length) parti.push(`<section class="nodo-sezione verifica" id="sez-${prossimaSezione()}"><h2><span class="sezione__num">${sezioneNum}</span> Fonti e verifica</h2><div class="prose"><ul>${L.fonti.map((f) => `<li><strong>${esc(etichettaFonte(f.chiave))}</strong>: ${esc(f.rif)}</li>`).join('')}</ul></div></section>`);
   return parti.join('');
+}
+
+export function renderSintesiDim(dim) {
+  if (!dim) return '';
+  resetContatori();
+  return renderSezione(prossimaSezione(), 'Enunciato', blocchi(dim.enunciato)) +
+    renderSezione(prossimaSezione(), 'Ipotesi', renderChecklist(dim.ipotesi));
 }

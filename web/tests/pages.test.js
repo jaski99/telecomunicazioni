@@ -205,5 +205,5 @@ test('La chiave usa la prima frase didattica, non il testo amministrativo', asyn
   assert.match(html, /Una frase/);
   assert.doesNotMatch(html, /Priorità|seconda frase|Altra definizione/);
   assert.match(renderChiave({ id: 'test', lezione: { definizione_esame: { definizione: 'Definizione. Altra.' } } }), /Definizione\./);
-  assert.equal((primaFrase('Primo $x$ e secondo $y$.').match(/\$/g) || []).length, 2);
+  assert.equal(primaFrase('Primo $x$ e secondo $y$. Altra frase.'), 'Primo $x$ e secondo $y$.');
 });

@@ -270,7 +270,7 @@ def test_indice_permalink_e_chiave(server, browser):
     chiave = page.locator('.chiave')
     assert chiave.locator('.blocco__etichetta').text_content() == 'Da ricordare'
     assert chiave.evaluate("e => parseFloat(getComputedStyle(e).paddingLeft)") >= 16
-    assert chiave.locator('.formula-inline, .formula-box').count() <= 1
+    assert chiave.locator('.formula-inline, .formula-box').count() >= 1
     href = page.locator('.indice-pagina a').nth(1).get_attribute('href')
     assert href.startswith('#/nodo/serie-fourier?sezione=')
     page.locator('.indice-pagina a').nth(1).click()
@@ -294,4 +294,95 @@ def test_listener_capitolo_dopo_navigazioni(server, browser):
     assert button.locator('+ .area-soluzione').inner_text()
     button.click()
     assert button.get_attribute('aria-expanded') == 'false'
+    page.close()
+
+
+@pytest.mark.parametrize('nodo', [n for n in GRAFO['nodi'] if n.get('dimostrazione')], ids=lambda n: n['id'])
+def test_nodi_dimostrazione_chiave_e_indice(server, browser, nodo):
+    page = browser.new_page()
+    page.goto(f"{server}/index.html#/nodo/{nodo['id']}", wait_until='load')
+    page.wait_for_selector('.indice-pagina a')
+    assert page.locator('.chiave').count() == 1
+    assert page.locator('.indice-pagina a').count() >= 2
+    assert 'Indice non disponibile.' not in page.locator('#app').inner_text()
+    for href in page.locator('.indice-pagina a').evaluate_all('els => els.map(e => e.getAttribute("href"))'):
+        assert href.startswith(f"#/nodo/{nodo['id']}?sezione=")
+        numero = href.split('=')[-1]
+        assert numero.isdigit() and page.locator(f'#sez-{numero}').count() == 1
+    page.close()
+
+
+@pytest.mark.parametrize('nodo', [n for n in GRAFO['nodi'] if n.get('lezione')], ids=lambda n: n['id'])
+def test_tutti_campi_testuali_lezione(server, browser, nodo):
+    import re
+    page = browser.new_page()
+    page.goto(f"{server}/index.html#/nodo/{nodo['id']}", wait_until='load')
+    page.wait_for_selector('.indice-pagina')
+    page.wait_for_function("() => !document.querySelector('[data-latex]')")
+    testo = page.locator('#app').evaluate("""e => {
+      const c = e.cloneNode(true);
+      c.querySelectorAll('.katex, svg').forEach(x => x.remove());
+      return c.textContent;
+    }""")
+    normalizza = lambda s: re.sub(r'[\W_]+', '', s, flags=re.UNICODE).lower()
+    testo = normalizza(testo)
+    def stringhe(x, path=''):
+        if isinstance(x, dict):
+            for k, v in x.items():
+                if k not in ('id', 'figure'):
+                    yield from stringhe(v, f'{path}.{k}')
+        elif isinstance(x, list):
+            for v in x:
+                yield from stringhe(v, path)
+        elif isinstance(x, str):
+            yield path, x
+    campi = list(stringhe(nodo['lezione']))
+    for figura in nodo['lezione'].get('figure', []):
+        for campo in ('titolo', 'descrizione'):
+            if figura.get(campo):
+                campi.append((f'.figure.{campo}', figura[campo]))
+    for path, value in campi:
+        value = re.sub(r'(?:,\s*di competenza di|\s+da)\s+W[1-6]\b', '', value)
+        # Confronta tutti i frammenti di prosa; le formule sono renderizzate da KaTeX.
+        for parte in re.split(r'\$\$.*?\$\$|\$[^$]*\$|\n+', value, flags=re.S):
+            parte = normalizza(parte)
+            if parte:
+                assert parte in testo, f"{nodo['id']} {path}: {parte[:100]}"
+    blocchi = page.locator('.errore-blocco')
+    assert blocchi.count() == len(nodo['lezione'].get('errori_trappole', []))
+    for i, errore in enumerate(nodo['lezione'].get('errori_trappole', [])):
+        blocco = blocchi.nth(i)
+        labels = blocco.locator('.blocco__etichetta').all_text_contents()
+        assert 'Errore' in labels and 'Perché è sbagliato' in labels
+        assert ('Correzione' in labels) == bool(errore.get('correzione'))
+    page.close()
+
+
+@pytest.mark.parametrize('nodo', [n for n in GRAFO['nodi'] if n.get('lezione') or n.get('dimostrazione')], ids=lambda n: n['id'])
+def test_chiave_corrisponde_a_frase_intera(server, browser, nodo):
+    import re
+    page = browser.new_page()
+    page.goto(f"{server}/index.html#/nodo/{nodo['id']}", wait_until='load')
+    page.wait_for_selector('.chiave')
+    page.wait_for_function("() => !document.querySelector('[data-latex]')")
+    lezione = nodo.get('lezione') or {}
+    fonte = lezione.get('riepilogo') or (lezione.get('definizione_esame') or {}).get('definizione') or nodo.get('dimostrazione', {}).get('idea')
+    frase = page.evaluate("""async fonte => {
+      const { primaFrase } = await import('./js/pages/nodo/chiave.js');
+      return primaFrase(fonte);
+    }""", fonte)
+    assert frase and fonte.startswith(frase) and frase[-1] in '.!?'
+    blocco = page.locator('.chiave')
+    testo = blocco.evaluate("""e => {
+      const c = e.cloneNode(true);
+      c.querySelectorAll('.katex, .blocco__etichetta').forEach(x => x.remove());
+      return c.textContent;
+    }""")
+    normalizza = lambda s: re.sub(r'[\W_]+', '', s, flags=re.UNICODE).lower()
+    parti = re.split(r'\$\$.*?\$\$|\$[^$]*\$', frase, flags=re.S)
+    assert normalizza(''.join(parti)) == normalizza(testo)
+    formule = re.findall(r'\$\$(.*?)\$\$|\$([^$]*?)\$', frase, flags=re.S)
+    attese = [a or b for a, b in formule]
+    trovate = blocco.locator('.katex-mathml annotation[encoding="application/x-tex"]').all_text_contents()
+    assert trovate == attese
     page.close()
