@@ -2,16 +2,13 @@
 #/area/<n> con >= 3 criteri da saper_fare, nav prev/succ, ?sezione=."""
 import json
 import os
-import subprocess
-import sys
-import time
 
 import pytest
 from playwright.sync_api import sync_playwright
 
+from e2e_helpers import static_server
+
 WEB_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
-PORT = 18198
-BASE_URL = f"http://127.0.0.1:{PORT}"
 VIEWPORTS = [(390, 844), (1440, 900)]
 
 
@@ -49,26 +46,12 @@ def registra_listener_js(page, errori):
 
 @pytest.fixture(scope="module")
 def server():
-    proc = subprocess.Popen(
-        [sys.executable, "-m", "http.server", str(PORT)],
-        cwd=WEB_DIR,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
-    deadline = time.time() + 15
-    while time.time() < deadline:
-        try:
-            import urllib.request
-            urllib.request.urlopen(BASE_URL + "/index.html", timeout=1)
-            break
-        except OSError:
-            time.sleep(0.2)
-    yield BASE_URL
-    proc.terminate()
+    srv = static_server()
     try:
-        proc.wait(timeout=5)
-    except subprocess.TimeoutExpired:
-        proc.kill()
+        yield f"http://127.0.0.1:{srv.server_port}"
+    finally:
+        srv.shutdown()
+        srv.server_close()
 
 
 @pytest.fixture(scope="module")
@@ -89,7 +72,7 @@ def test_b13_manuale_niente_scroll_né_errori(server, browser, width, height, ro
         page = context.new_page()
         errori = []
         registra_listener_js(page, errori)
-        url = f"{BASE_URL}/index.html#/{route}" if route else f"{BASE_URL}/index.html#/"
+        url = f"{server}/index.html#/{route}" if route else f"{server}/index.html#/"
         page.goto(url, wait_until="load")
         page.wait_for_timeout(150)
         scroll_ok = page.evaluate("document.documentElement.scrollWidth <= document.documentElement.clientWidth")
@@ -110,7 +93,7 @@ def test_b13_area_criteri_da_saper_fare(server, browser, width, height, narea):
         page = context.new_page()
         errori = []
         registra_listener_js(page, errori)
-        page.goto(f"{BASE_URL}/index.html#/area/{narea}", wait_until="load")
+        page.goto(f"{server}/index.html#/area/{narea}", wait_until="load")
         page.wait_for_timeout(150)
 
         h1 = page.locator("h1").first
@@ -156,7 +139,7 @@ def test_b13_nodo_chiave_indice_figurenumerate(server, browser, width, height):
         page = context.new_page()
         errori = []
         registra_listener_js(page, errori)
-        page.goto(f"{BASE_URL}/index.html#/nodo/{nid}", wait_until="load")
+        page.goto(f"{server}/index.html#/nodo/{nid}", wait_until="load")
         page.wait_for_timeout(150)
 
         # .chiave presente e visibile nel primo viewport
@@ -201,7 +184,7 @@ def test_b13_nav_sequenza_prev_succ(server, browser, width, height):
         page = context.new_page()
         errori = []
         registra_listener_js(page, errori)
-        page.goto(f"{BASE_URL}/index.html#/nodo/{nid}", wait_until="load")
+        page.goto(f"{server}/index.html#/nodo/{nid}", wait_until="load")
         page.wait_for_timeout(150)
 
         nav = page.locator(".nav-sequenza")

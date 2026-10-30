@@ -34,8 +34,6 @@ a.chip, button.chip { min-height: var(--tap); }
 .analogia__limite { font-size: var(--fs-small); color: var(--c-text-muted); margin-top: var(--s-2); }
 .attenzione { border-left: var(--s-5) solid var(--c-attenzione); background: var(--c-attenzione-bg); color: var(--c-text); padding: var(--s-4); border-radius: var(--radius); margin: 0 0 var(--s-5); }
 .errore { border-left: var(--s-5) solid var(--c-errore); background: var(--c-errore-bg); color: var(--c-text); padding: var(--s-4); border-radius: var(--radius); margin: 0 0 var(--s-5); }
-.errore__riga { display: flex; flex-direction: column; gap: var(--s-2); }
-.errore__label { font-size: var(--fs-num); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
 .verifica { border-left: var(--s-5) solid var(--c-verifica); background: var(--c-verifica-bg); color: var(--c-text); padding: var(--s-4); border-radius: var(--radius); margin: 0 0 var(--s-5); font-size: var(--fs-small); }
 .verifica-domanda { border: 1px solid var(--c-border); background: var(--c-surface); border-radius: var(--radius); padding: var(--s-4); margin: 0 0 var(--s-5); }
 

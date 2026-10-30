@@ -2,17 +2,14 @@
 sezioni aperte, nav nascosta, URL dei link stampati."""
 import os
 import re
-import subprocess
-import sys
-import time
 from pathlib import Path
 
 import pytest
 from playwright.sync_api import sync_playwright
 
+from e2e_helpers import static_server
+
 WEB_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
-PORT = 18197
-BASE_URL = f"http://127.0.0.1:{PORT}"
 VIEWPORTS = [(390, 844), (1440, 900)]
 CSS_DIR = Path(WEB_DIR) / "css"
 
@@ -48,26 +45,12 @@ def registra_listener_js(page, errori):
 
 @pytest.fixture(scope="module")
 def server():
-    proc = subprocess.Popen(
-        [sys.executable, "-m", "http.server", str(PORT)],
-        cwd=WEB_DIR,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
-    deadline = time.time() + 15
-    while time.time() < deadline:
-        try:
-            import urllib.request
-            urllib.request.urlopen(BASE_URL + "/index.html", timeout=1)
-            break
-        except OSError:
-            time.sleep(0.2)
-    yield BASE_URL
-    proc.terminate()
+    srv = static_server()
     try:
-        proc.wait(timeout=5)
-    except subprocess.TimeoutExpired:
-        proc.kill()
+        yield f"http://127.0.0.1:{srv.server_port}"
+    finally:
+        srv.shutdown()
+        srv.server_close()
 
 
 @pytest.fixture(scope="module")
@@ -99,7 +82,7 @@ def test_b14_stampa_sezioni_visibili_nav_nascosta(server, browser, width, height
         page = context.new_page()
         errori = []
         registra_listener_js(page, errori)
-        page.goto(f"{BASE_URL}/index.html#/{route}", wait_until="load")
+        page.goto(f"{server}/index.html#/{route}", wait_until="load")
         page.wait_for_timeout(150)
         page.emulate_media(media="print")
         page.wait_for_timeout(100)
