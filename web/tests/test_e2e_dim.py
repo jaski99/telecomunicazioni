@@ -1,0 +1,226 @@
+"""E2E della pagina dimostrazione (D3): criteri A8, A11, A16, A17, A18 sulle 18 dimostrazioni."""
+import json
+import re
+import sys
+from pathlib import Path
+
+import pytest
+from playwright.sync_api import sync_playwright
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from e2e_helpers import WEB, console_errors, font_sizes, katex_report, spacing_values, static_server, tap_targets  # noqa: E402
+
+DIMS = [n['id'] for n in json.loads((WEB / 'graph.json').read_text(encoding='utf-8'))['nodi'] if n.get('dimostrazione')]
+VIEWPORTS = [(360, 780), (390, 844), (768, 1024), (1440, 900)]
+MODALITA = ['studio', 'avocce', 'compatta', 'abuchi', 'recall']
+CHIAVE = 'tlc-kg:dimostrazioni:v1.'
+
+
+@pytest.fixture(scope='module')
+def server():
+    srv = static_server()
+    yield f'http://127.0.0.1:{srv.server_port}'
+    srv.shutdown()
+    srv.server_close()
+
+
+@pytest.fixture(scope='module')
+def browser():
+    with sync_playwright() as p:
+        br = p.chromium.launch()
+        yield br
+        br.close()
+
+
+def apri(browser, base, dim_id, width, height):
+    page = browser.new_page(viewport={'width': width, 'height': height})
+    errori = console_errors(page)
+    page.goto(f'{base}/#/dim/{dim_id}', wait_until='networkidle')
+    page.wait_for_selector('#modo-studio .step')
+    return page, errori
+
+
+def mostra_tutti(page):
+    riepilogo = page.locator('.dim-menu > summary')
+    if riepilogo.is_visible():
+        riepilogo.click()
+    page.get_by_role('button', name='Mostra tutti').click()
+
+
+def tab(page, modo):
+    page.locator(f'[role="tab"][data-modo="{modo}"]').click()
+
+
+def pannelli_visibili(page):
+    return page.evaluate("() => [...document.querySelectorAll('[role=tabpanel]')].filter(e => !e.hidden).map(e => e.id)")
+
+
+@pytest.mark.parametrize('dim_id', DIMS)
+def test_a8_formula_chiave_dopo_mostra_tutti(browser, server, dim_id):
+    page, errori = apri(browser, server, dim_id, 1440, 900)
+    mostra_tutti(page)
+    chiave = page.locator('#modo-studio .formula-box--key')
+    assert chiave.count() == 1, dim_id
+    assert chiave.is_visible(), dim_id
+    assert katex_report(page)['errors'] == 0, dim_id
+    assert not errori
+    page.close()
+
+
+@pytest.mark.parametrize('width,height', VIEWPORTS)
+@pytest.mark.parametrize('dim_id', DIMS)
+def test_a11_padding_gap_sovrapposizioni(browser, server, dim_id, width, height):
+    page, errori = apri(browser, server, dim_id, width, height)
+    mostra_tutti(page)
+    for modo in MODALITA:
+        tab(page, modo)
+        padding = page.evaluate('''() => [...document.querySelectorAll('.card, .step, .callout, .formula-box')]
+          .filter(e => e.getClientRects().length && !e.closest('.katex'))
+          .map(e => { const s = getComputedStyle(e);
+            return {sel: e.className.split(' ')[0], min: Math.min(...['paddingTop','paddingRight','paddingBottom','paddingLeft'].map(p => parseFloat(s[p])))}; })''')
+        for x in padding:
+            limite = 24 if x['sel'] == 'card' and width >= 1440 else 16
+            assert x['min'] >= limite, (dim_id, modo, x)
+        gap = page.evaluate('''() => [...document.querySelectorAll('.dim-pannello, .dim-passi, .dim-errori')].flatMap(p => {
+            const figli = [...p.children].filter(e => e.getClientRects().length && e.matches('.card, .step, .callout, .dim-attesa, .formula, article'));
+            return figli.slice(1).map((b, i) => [figli[i].getBoundingClientRect(), b.getBoundingClientRect()])
+              .filter(([a, c]) => c.top >= a.bottom - 0.5).map(([a, c]) => c.top - a.bottom);
+          })''')
+        assert all(g >= 16 for g in gap), (dim_id, modo, min(gap, default=None))
+        sovrapposti = page.evaluate('''() => {
+          const vis = e => e.getClientRects().length > 0;
+          const ignora = e => e.closest('.katex, svg, .dim-controlli') || e.matches('.dim-controlli');
+          let n = 0;
+          for (const genitore of document.querySelectorAll('main *')) {
+            if (ignora(genitore) || !vis(genitore)) continue;
+            const figli = [...genitore.children].filter(e => vis(e) && !ignora(e));
+            figli.forEach((a, i) => figli.slice(i + 1).forEach(b => {
+              const x = a.getBoundingClientRect(), y = b.getBoundingClientRect();
+              if (x.left < y.right && x.right > y.left && x.top < y.bottom && x.bottom > y.top) n++;
+            }));
+          }
+          return n;
+        }''')
+        assert sovrapposti == 0, (dim_id, modo)
+    spazi = [x for x in spacing_values(page) if min(abs(x['value'] - n) for n in (0, 1, 2)) > .5
+             and abs(x['value'] - round(x['value'] / 4) * 4) > .5]
+    assert not spazi, (dim_id, spazi[:5])
+    sizes = font_sizes(page)
+    assert all(17 <= x['size'] <= 20 and x['line'] >= x['size'] * 1.6 for x in sizes), (dim_id, sizes[:5])
+    tap = [x for x in tap_targets(page) if x['height'] < 44 or x['width'] < 44]
+    assert not tap, (dim_id, tap[:5])
+    assert not errori
+    page.close()
+
+
+@pytest.mark.parametrize('width,height', [(390, 844), (1440, 900)])
+@pytest.mark.parametrize('dim_id', DIMS)
+def test_a16_tabs_nel_primo_viewport_e_pannelli(browser, server, dim_id, width, height):
+    page, errori = apri(browser, server, dim_id, width, height)
+    limite = 844 if width == 390 else 900
+    top = page.locator('.dim-tabs').bounding_box()['y']
+    assert top < limite, (dim_id, top)
+    for modo in MODALITA:
+        tab(page, modo)
+        assert pannelli_visibili(page) == [f'modo-{modo}'], (dim_id, modo)
+        assert page.locator(f'[role="tab"][data-modo="{modo}"]').get_attribute('aria-selected') == 'true'
+    assert not errori
+    page.close()
+
+
+@pytest.mark.parametrize('width,height', [(390, 844), (1440, 900)])
+@pytest.mark.parametrize('dim_id', DIMS)
+def test_a17_avanti_indietro_persistenza(browser, server, dim_id, width, height):
+    page, errori = apri(browser, server, dim_id, width, height)
+    progresso = page.locator('.progress[role="progressbar"]')
+    assert progresso.get_attribute('aria-valuenow') == '0'
+    page.get_by_role('button', name='Prossimo passo').click()
+    assert progresso.get_attribute('aria-valuenow') == '1', dim_id
+    in_vista = page.evaluate('''() => { const r = document.getElementById('passo-1').getBoundingClientRect();
+      return r.bottom > 0 && r.top < innerHeight; }''')
+    assert in_vista, dim_id
+    assert page.evaluate("() => document.activeElement && document.activeElement.id") == 'passo-1'
+    page.keyboard.press('ArrowRight')
+    assert progresso.get_attribute('aria-valuenow') == '2', dim_id
+    page.get_by_role('button', name='Indietro').click()
+    assert progresso.get_attribute('aria-valuenow') == '1', dim_id
+    salvato = page.evaluate(f"() => localStorage.getItem('{CHIAVE}{dim_id}')")
+    assert json.loads(salvato)['passiRivelati'] == 1, dim_id
+    page.reload(wait_until='networkidle')
+    page.wait_for_selector('#modo-studio .step')
+    assert page.locator('.progress[role="progressbar"]').get_attribute('aria-valuenow') == '1', dim_id
+    assert not errori
+    page.close()
+
+
+TESTO_VISIBILE = '''() => { const m = document.querySelector('main').cloneNode(true);
+  m.querySelectorAll('[hidden], .katex-mathml, script, style, svg').forEach(e => e.remove());
+  return m.textContent; }'''
+
+
+@pytest.mark.parametrize('width,height', [(390, 844), (1440, 900)])
+@pytest.mark.parametrize('dim_id', DIMS)
+def test_a18_testo_senza_underscore_ne_badge(browser, server, dim_id, width, height):
+    page, errori = apri(browser, server, dim_id, width, height)
+    mostra_tutti(page)
+    for modo in MODALITA:
+        tab(page, modo)
+        testo = page.evaluate(TESTO_VISIBILE)
+        fuori_formula = re.sub(r'\$[^$]*\$', ' ', testo)
+        assert not re.search(r'[A-Za-zÀ-ÿ0-9]_[A-Za-zÀ-ÿ0-9]', fuori_formula), (dim_id, modo)
+        assert not re.search(r'\bW[1-6]\b', testo), (dim_id, modo)
+        assert not re.search(r'\b(undefined|null|NaN)\b|\[object Object\]', testo), (dim_id, modo)
+    assert katex_report(page)['errors'] == 0, dim_id
+    assert not errori
+    page.close()
+
+
+@pytest.mark.parametrize('width,height', VIEWPORTS)
+@pytest.mark.parametrize('dim_id', DIMS)
+def test_a1_nessuno_scroll_orizzontale_in_nessuna_modalita(browser, server, dim_id, width, height):
+    page, errori = apri(browser, server, dim_id, width, height)
+    for modo in MODALITA:
+        tab(page, modo)
+        misura = page.evaluate('''() => {
+          const fuori = [];
+          const dentroScorrevole = (e) => {
+            for (let a = e.parentElement; a && a !== document.body; a = a.parentElement) {
+              if (/auto|scroll|hidden/.test(getComputedStyle(a).overflowX)) return true;
+            }
+            return false;
+          };
+          for (const e of document.querySelectorAll('body *')) {
+            if (!e.getClientRects().length || e.closest('.katex-mathml') || dentroScorrevole(e)) continue;
+            const r = e.getBoundingClientRect();
+            if (r.right > innerWidth + 1 || r.left < -1) fuori.push(e.tagName + '.' + e.className);
+          }
+          return {scroll: document.scrollingElement.scrollWidth, vw: innerWidth, fuori: fuori.slice(0, 5)};
+        }''')
+        assert misura['scroll'] <= misura['vw'], (dim_id, modo, misura)
+        assert not misura['fuori'], (dim_id, modo, misura)
+    assert not errori
+    page.close()
+
+
+@pytest.mark.parametrize('width,height', VIEWPORTS)
+@pytest.mark.parametrize('dim_id', DIMS)
+def test_progress_visibile_e_notazione_raggiungibile(browser, server, dim_id, width, height):
+    page, errori = apri(browser, server, dim_id, width, height)
+    altezza = page.locator('.progress').bounding_box()['height']
+    assert altezza >= 8, (dim_id, altezza)
+    simboli = page.evaluate('''() => [...document.querySelectorAll('.dim-notazione strong')].filter(e => e.getClientRects().length).map(e => {
+        const eccede = e.scrollWidth > e.clientWidth + 1;
+        const contenitore = e.getBoundingClientRect();
+        const formula = e.querySelector('.katex').getBoundingClientRect();
+        const scorre = getComputedStyle(e).overflowX;
+        e.scrollLeft = e.scrollWidth;
+        const fineRaggiunta = e.querySelector('.katex').getBoundingClientRect().right <= contenitore.right + 1;
+        e.scrollLeft = 0;
+        const inizioRaggiunto = formula.left >= contenitore.left - 1;
+        return {eccede, scorre, fineRaggiunta, inizioRaggiunto, testo: e.textContent.slice(0, 30)};
+      })''')
+    for x in simboli:
+        assert not x['eccede'] or x['scorre'] in ('auto', 'scroll'), (dim_id, x)
+        assert x['fineRaggiunta'] and x['inizioRaggiunto'], (dim_id, x)
+    assert not errori
+    page.close()
