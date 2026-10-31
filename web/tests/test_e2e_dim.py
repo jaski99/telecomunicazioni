@@ -10,7 +10,9 @@ from playwright.sync_api import sync_playwright
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from e2e_helpers import WEB, console_errors, font_sizes, katex_report, spacing_values, static_server, tap_targets  # noqa: E402
 
-DIMS = [n['id'] for n in json.loads((WEB / 'graph.json').read_text(encoding='utf-8'))['nodi'] if n.get('dimostrazione')]
+GRAFO = json.loads((WEB / 'graph.json').read_text(encoding='utf-8'))
+DIMS = [n['id'] for n in GRAFO['nodi'] if n.get('dimostrazione')]
+PASSI = {n['id']: len(n['dimostrazione']['passi']) for n in GRAFO['nodi'] if n.get('dimostrazione')}
 VIEWPORTS = [(360, 780), (390, 844), (768, 1024), (1440, 900)]
 MODALITA = ['studio', 'avocce', 'compatta', 'abuchi', 'recall']
 CHIAVE = 'tlc-kg:dimostrazioni:v1.'
@@ -251,16 +253,48 @@ def test_b13_chiave_e_numerazione_figure(browser, server, dim_id, width, height)
 
 
 @pytest.mark.parametrize('width,height', VIEWPORTS)
+@pytest.mark.parametrize('passo', [1, 2, 6])
 @pytest.mark.parametrize('dim_id', DIMS)
-def test_b8_passo_permalink_e_overflow(browser, server, dim_id, width, height):
-    page, errori = apri(browser, server, dim_id, width, height, '?passo=2')
-    assert page.locator('.progress[role="progressbar"]').get_attribute('aria-valuenow') == '2', dim_id
-    assert page.locator('#passo-2.step--rivelato').count() == 1, dim_id
+def test_b8_passo_permalink_e_overflow(browser, server, dim_id, passo, width, height):
+    n = min(passo, PASSI[dim_id])
+    page, errori = apri(browser, server, dim_id, width, height, f'?passo={n}')
+    assert page.locator('.progress[role="progressbar"]').get_attribute('aria-valuenow') == str(n), dim_id
+    assert page.locator(f'#passo-{n}.step--rivelato').count() == 1, dim_id
     misura = page.evaluate('''() => ({scroll: document.scrollingElement.scrollWidth, client: document.scrollingElement.clientWidth,
       viewport: innerWidth, body: document.body.scrollWidth})''')
     assert misura['scroll'] <= misura['client'], (dim_id, width, misura)
     assert misura['body'] <= misura['client'], (dim_id, width, misura)
     assert not errori, (dim_id, width, errori)
+    page.close()
+
+
+def test_b13_indice_e_nav_sequenza_sulla_dimostrazione(browser, server):
+    """B13: indice di pagina (modulo unico di E1) con ancore vive e nav prev/succ
+    coerente con l'ordine del piano di studio, anche sulla rotta #/dim/."""
+    dim_id = 'dim-teorema-campionamento'
+    page, errori = apri(browser, server, dim_id, 1440, 900)
+    dati = page.evaluate('''() => ({
+      voci: [...document.querySelectorAll('.indice-in-testa .indice-pagina li a')].map(a => a.getAttribute('href')),
+      vivi: [...document.querySelectorAll('.indice-in-testa .indice-pagina li a')].map(a => {
+        const m = /sezione=(\\d+)$/.exec(a.getAttribute('href') || '');
+        return Boolean(m) && document.getElementById('sez-' + m[1]) !== null; }),
+      nav: [...document.querySelectorAll('.nav-sequenza a')].map(a => a.getAttribute('href')),
+    })''')
+    assert len(dati['voci']) >= 2, dati
+    assert all(dati['vivi']), dati
+    assert all(v.startswith(f'#/dim/{dim_id}?sezione=') for v in dati['voci']), dati
+    nodi = {n['id']: n for n in GRAFO['nodi']}
+    assert dati['nav'], dati
+    for href in dati['nav']:
+        tipo, id_dest = href.removeprefix('#/').split('/', 1)
+        assert id_dest in nodi, href
+        assert tipo == ('dim' if nodi[id_dest].get('dimostrazione') else 'nodo'), href
+    page.goto(f'{server}/#/dim/{dim_id}?sezione=4', wait_until='networkidle')
+    page.wait_for_selector('#modo-studio .step')
+    in_vista = page.evaluate('''() => { const r = document.getElementById('sez-4').getBoundingClientRect();
+      return r.top >= -1 && r.top < innerHeight; }''')
+    assert in_vista, dati
+    assert not errori
     page.close()
 
 

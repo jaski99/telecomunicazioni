@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { renderStudio, setupStudio } from '../js/pages/dim/studio.js';
+import { renderStudio, setupStudio, vociIndiceStudio } from '../js/pages/dim/studio.js';
+import { indiceHTML } from '../js/layout/indice.js';
 import { dimostrazioneEsempio, elemento, memoria, documentoFinto } from './dim-fake-dom.js';
 
 const dim = dimostrazioneEsempio();
@@ -8,13 +9,24 @@ const meta = { fonti: {} };
 
 test('Studio contiene nell\'ordine enunciato, passi, formula finale, errori, figure, fonti', () => {
   const html = renderStudio(dim, 0, meta);
-  const ordine = ['titolo-enunciato', 'titolo-ipotesi', 'titolo-notazione', '<h2>Passi</h2>', 'data-finale', 'titolo-errori', 'titolo-figure', 'dim-fonti'];
+  const ordine = ['titolo-enunciato', 'titolo-ipotesi', 'titolo-notazione', '>Passi</h2>', 'data-finale', 'titolo-errori', 'titolo-figure', 'dim-fonti'];
   let ultimo = -1;
   for (const marcatore of ordine) {
     const pos = html.indexOf(marcatore);
     assert.ok(pos > ultimo, `${marcatore} fuori ordine`);
     ultimo = pos;
   }
+});
+
+test('le sezioni di Studio sono ancorabili e l\'indice usa il modulo unico di E1', () => {
+  const html = renderStudio(dim, 3, meta);
+  const numeri = [...html.matchAll(/id="sez-(\d+)"/g)].map((m) => Number(m[1]));
+  assert.deepEqual(numeri, [1, 2, 3, 4, 5, 6, 7]);
+  const voci = vociIndiceStudio(dim, meta, 1, 'dim-test');
+  assert.deepEqual(voci.map((v) => v.id), numeri.map((n) => `sez-${n}`));
+  assert.deepEqual(voci.map((v) => v.href), numeri.map((n) => `#/dim/dim-test?sezione=${n}`));
+  assert.deepEqual(voci.map((v) => v.titolo), ['Enunciato', 'Ipotesi', 'Notazione', 'Passi', 'Errori frequenti', 'Figure generali', 'Fonti, varianti e verifica']);
+  assert.match(indiceHTML(voci), /<nav class="indice-pagina" aria-label="Indice della pagina"><ol><li class="livello-2"><a href="#\/dim\/dim-test\?sezione=1">Enunciato<\/a><\/li>/);
 });
 
 test('la formula finale è nascosta finché non sono rivelati tutti i passi', () => {

@@ -1,15 +1,16 @@
 /** Pagina #/dim/<id>: testata, modalità (tabs sticky) e pannelli. Compone i moduli di dim/. */
 import { escapeHtml } from '../../core/math.js';
+import { indiceHTML } from '../../layout/indice.js';
+import { navSequenzaHTML } from '../../layout/sequenza.js';
 import { passi, trovaDimostrazione } from './dati.js';
 import { renderTestata } from './testata.js';
 import { renderPannello, renderTabs, setupModalita } from './modalita.js';
 import { renderAVoce, renderCompatta } from './testi.js';
 import { renderControlli } from './controlli.js';
-import { renderStudio, setupStudio } from './studio.js';
+import { renderStudio, setupStudio, vociIndiceStudio } from './studio.js';
 import { renderABuchi, setupABuchi } from './abuchi.js';
 import { renderRecall, setupRecall } from './recall.js';
 import { renderIdea } from './sezioni.js';
-import './cache.js';
 import { leggiRivelati, parsePasso } from './stato.js';
 
 function richiestaPasso(totale) {
@@ -30,18 +31,22 @@ export function render(ctx, params) {
   const { nodo, dim } = trovata;
   const richiesto = richiestaPasso(passi(dim).length);
   const rivelati = richiesto == null ? leggiRivelati(ctx.storage, dim.id, passi(dim).length) : richiesto;
+  const meta = ctx.graph && ctx.graph.meta;
+  const indice = `<div class="indice-in-testa">${indiceHTML(vociIndiceStudio(dim, meta, nodo.area, nodo.id))}</div>`;
   return [
     renderTestata(dim, nodo, ctx.graph),
     renderIdea(dim),
     renderTabs(),
+    indice,
     '<div class="dim-corpo dim-corpo--studio">',
     renderControlli(dim, rivelati),
-    renderPannello('studio', renderStudio(dim, rivelati, ctx.graph && ctx.graph.meta, nodo.area )),
+    renderPannello('studio', renderStudio(dim, rivelati, meta, nodo.area)),
     renderPannello('avocce', renderAVoce(dim)),
     renderPannello('compatta', renderCompatta(dim)),
     renderPannello('abuchi', renderABuchi(dim)),
     renderPannello('recall', renderRecall(dim)),
     '</div>',
+    navSequenzaHTML(ctx.graph, nodo.id),
   ].join('');
 }
 

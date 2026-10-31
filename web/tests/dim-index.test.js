@@ -16,6 +16,16 @@ test('render compone testata, tabs, controlli e le cinque modalità', () => {
   }
 });
 
+test('la pagina offre indice in testa e navigazione sequenziale dai moduli di E1', () => {
+  const html = render({ graph: graphEsempio(), storage: memoria() }, { id: 'dim-test' });
+  assert.match(html, /<div class="indice-in-testa"><nav class="indice-pagina" aria-label="Indice della pagina">/);
+  assert.match(html, /href="#\/dim\/dim-test\?sezione=1">Enunciato<\/a>/);
+  assert.ok(html.indexOf('indice-in-testa') > html.indexOf('class="dim-tabs"'), 'indice dopo le tabs sticky');
+  assert.ok(html.indexOf('indice-in-testa') < html.indexOf('dim-corpo dim-corpo--studio'), 'indice prima del corpo');
+  assert.match(html, /<nav class="nav-sequenza" aria-label="Navigazione sequenziale">/);
+  assert.ok(html.indexOf('nav-sequenza') > html.indexOf('dim-corpo dim-corpo--studio'), 'nav a fine pagina');
+});
+
 test('render ripristina i passi rivelati dal localStorage', () => {
   const storage = memoria({ 'tlc-kg:dimostrazioni:v1.dim-test': JSON.stringify({ passiRivelati: 2 }) });
   const html = render({ graph: graphEsempio(), storage }, { id: 'dim-test' });

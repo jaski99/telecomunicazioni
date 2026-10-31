@@ -8,21 +8,50 @@ import { renderFonti } from './fonti.js';
 import { clampRivelati, leggiRivelati, scriviRivelati } from './stato.js';
 import { azioneTasto, descriviBersaglio } from './tastiera.js';
 
-/** HTML del pannello Studio, nell'ordine: enunciato, ipotesi, notazione, idea, passi, formula finale,
- *  errori, figure generali, fonti chiuse. */
-export function renderStudio(dim, rivelati, meta, area = 1) {
+/** Blocchi del pannello Studio, nell'ordine: enunciato, ipotesi, notazione, passi, formula
+ *  finale, errori, figure generali, fonti. I blocchi vuoti si scartano; l'indice di pagina
+ *  usa lo stesso elenco (la formula finale non ha intestazione e resta fuori dall'indice). */
+export function blocchiStudio(dim, rivelati, meta, area = 1) {
   const totale = passi(dim).length;
-  const sezioni = [
-    renderEnunciato(dim),
-    renderIpotesi(dim),
-    renderNotazione(dim),
-    `<h2>Passi</h2>${renderPassi(dim, rivelati, area)}`,
-    renderFormulaFinale(dim, rivelati >= totale),
-    renderErrori(dim),
-    renderFigureGenerali(dim, area),
-    renderFonti(dim, meta),
-  ];
-  return sezioni.filter(Boolean).join('');
+  return [
+    { titolo: 'Enunciato', html: renderEnunciato(dim) },
+    { titolo: 'Ipotesi', html: renderIpotesi(dim) },
+    { titolo: 'Notazione', html: renderNotazione(dim) },
+    { titolo: 'Passi', html: `<h2>Passi</h2>${renderPassi(dim, rivelati, area)}` },
+    { titolo: '', html: renderFormulaFinale(dim, rivelati >= totale), fuoriIndice: true },
+    { titolo: 'Errori frequenti', html: renderErrori(dim) },
+    { titolo: 'Figure generali', html: renderFigureGenerali(dim, area) },
+    { titolo: 'Fonti, varianti e verifica', html: renderFonti(dim, meta) },
+  ].filter((blocco) => blocco.html);
+}
+
+/** Ancorabile: id sez-<n> sul primo tag del blocco, così ?sezione=<n> lo raggiunge. */
+function ancorabile(html, n) {
+  return html.replace(/^<([a-z0-9]+)/, `<$1 id="sez-${n}"`);
+}
+
+/** HTML del pannello Studio, con le sezioni numerate come ancore per l'indice di pagina. */
+export function renderStudio(dim, rivelati, meta, area = 1) {
+  let n = 0;
+  return blocchiStudio(dim, rivelati, meta, area).map((blocco) => {
+    if (blocco.fuoriIndice) return blocco.html;
+    n += 1;
+    return ancorabile(blocco.html, n);
+  }).join('');
+}
+
+/** Voci di indice della dimostrazione, per il modulo indice unico di E1 (layout/indice.js). */
+export function vociIndiceStudio(dim, meta, area = 1, idNodo = '') {
+  let n = 0;
+  return blocchiStudio(dim, 0, meta, area).filter((blocco) => !blocco.fuoriIndice).map((blocco) => {
+    n += 1;
+    return {
+      id: `sez-${n}`,
+      titolo: blocco.titolo,
+      href: `#/dim/${encodeURIComponent(String(idNodo))}?sezione=${n}`,
+      livello: 2,
+    };
+  });
 }
 
 function modificatori(ev) {
