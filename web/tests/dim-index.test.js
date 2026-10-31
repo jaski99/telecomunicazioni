@@ -7,6 +7,8 @@ import { graphEsempio, memoria, elemento, documentoFinto } from './dim-fake-dom.
 test('render compone testata, tabs, controlli e le cinque modalità', () => {
   const html = render({ graph: graphEsempio(), storage: memoria() }, { id: 'dim-test' });
   assert.match(html, /<header class="dim-testata">/);
+  assert.match(html, /class="chiave dim-chiave"/);
+  assert.ok(html.indexOf('class="chiave dim-chiave"') < html.indexOf('class="dim-tabs"'));
   assert.match(html, /<div class="dim-tabs">/);
   assert.match(html, /class="dim-corpo dim-corpo--studio"/);
   for (const modo of ['studio', 'avocce', 'compatta', 'abuchi', 'recall']) {
@@ -14,10 +16,34 @@ test('render compone testata, tabs, controlli e le cinque modalità', () => {
   }
 });
 
+test('la pagina offre indice in testa e navigazione sequenziale dai moduli di E1', () => {
+  const html = render({ graph: graphEsempio(), storage: memoria() }, { id: 'dim-test' });
+  assert.match(html, /<div class="indice-in-testa"><nav class="indice-pagina" aria-label="Indice della pagina">/);
+  assert.match(html, /href="#\/dim\/dim-test\?sezione=1">Enunciato<\/a>/);
+  assert.ok(html.indexOf('indice-in-testa') > html.indexOf('class="dim-tabs"'), 'indice dopo le tabs sticky');
+  assert.ok(html.indexOf('indice-in-testa') < html.indexOf('dim-corpo dim-corpo--studio'), 'indice prima del corpo');
+  assert.match(html, /<nav class="nav-sequenza" aria-label="Navigazione sequenziale">/);
+  assert.ok(html.indexOf('nav-sequenza') > html.indexOf('dim-corpo dim-corpo--studio'), 'nav a fine pagina');
+});
+
 test('render ripristina i passi rivelati dal localStorage', () => {
   const storage = memoria({ 'tlc-kg:dimostrazioni:v1.dim-test': JSON.stringify({ passiRivelati: 2 }) });
   const html = render({ graph: graphEsempio(), storage }, { id: 'dim-test' });
   assert.match(html, /Passo 2 di 3/);
+});
+
+test('?passo=n rivela il passo richiesto senza modificare la memoria salvata', () => {
+  const vecchia = globalThis.location;
+  globalThis.location = { hash: '#/dim/dim-test?passo=2' };
+  const storage = memoria({ 'tlc-kg:dimostrazioni:v1.dim-test': JSON.stringify({ passiRivelati: 1 }) });
+  try {
+    const html = render({ graph: graphEsempio(), storage }, { id: 'dim-test' });
+    assert.match(html, /Passo 2 di 3/);
+    assert.match(html, /id="passo-2" data-passo="2"[\s\S]*?class="step__corpo"/);
+    assert.equal(JSON.parse(storage.dati['tlc-kg:dimostrazioni:v1.dim-test']).passiRivelati, 1);
+  } finally {
+    if (vecchia === undefined) delete globalThis.location; else globalThis.location = vecchia;
+  }
 });
 
 test('una dimostrazione inesistente mostra un messaggio, senza ID grezzi né null', () => {

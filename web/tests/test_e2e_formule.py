@@ -65,7 +65,7 @@ JS_MISURE = """
   const r = { katexError: 0, displayCount: 0, displayAtteso: atteso, svgTooWide: 0, textOutside: 0,
               textTooSmall: 0, textTooBig: 0, inlineTooTall: 0, inlineOverlap: 0 };
   r.katexError = document.querySelectorAll('.katex-error, .katex-err').length;
-  if (typeof atteso === 'number') { r.displayCount = document.querySelectorAll('.formula-box .katex-display').length; }
+  if (typeof atteso === 'number') { r.displayCount = document.querySelectorAll('.formula-box__original .katex-display').length; }
   const svgs = document.querySelectorAll('svg');
   const bodyFont = parseFloat(getComputedStyle(document.body).fontSize) || 16;
   for (const svg of svgs) {
@@ -217,11 +217,11 @@ def test_formula_isolata_e_titoli(server):
               const {renderMath} = await import('./js/core/math.js'); await renderMath(el);
               return {titoli: [...el.querySelectorAll('h1,h2,h3,h4,h5,h6')].map(h =>
                 ({inline: h.querySelectorAll('.formula-inline .katex').length, box: h.querySelectorAll('.formula-box').length})),
-                isolata: el.querySelectorAll('.isolata .formula-box .katex-display').length,
+                isolata: el.querySelectorAll('.isolata .formula-box__original .katex-display').length,
                 prosa: el.querySelectorAll('.prosa .formula-inline .katex').length,
                 boxProsa: el.querySelectorAll('.prosa .formula-box').length,
-                promossa: el.querySelectorAll('.promossa .formula-box .katex-display').length,
-                esplicita: el.querySelectorAll('.esplicita .formula-box .katex-display').length};
+                promossa: el.querySelectorAll('.promossa .formula-box__original .katex-display').length,
+                esplicita: el.querySelectorAll('.esplicita .formula-box__original .katex-display').length};
             }''', html)
             assert all(t == {"inline": 1, "box": 0} for t in misure["titoli"])
             assert misure["isolata"] == misure["prosa"] == misure["promossa"] == misure["esplicita"] == 1
@@ -242,7 +242,8 @@ def test_nuovi_moduli_figura_disponibili_dopo_ricarica_offline(server):
             page.wait_for_function('''async () => {
               await navigator.serviceWorker.ready;
               return !!(await caches.match('./js/figure/blocchi-layout.js')) &&
-                     !!(await caches.match('./js/figure/blocchi-forme.js'));
+                     !!(await caches.match('./js/figure/blocchi-forme.js')) &&
+                     !!(await caches.match('./js/figure/progressione.js'));
             }''')
             context.set_offline(True)
             page.goto(f"{server}/#/dim/dim-conversione-ad", wait_until="load")
@@ -323,16 +324,17 @@ def test_formule_pure_display_e_scorrimento_completo(server, width, height):
             for dim in dimostrazioni:
                 page.goto(f'{server}/#/dim/{dim["id"]}', wait_until="networkidle")
                 attese = sum(bool(passo.get("formula")) for passo in dim["passi"])
-                assert page.locator('.passo-formula .formula-box .katex-display').count() == attese, dim["id"]
-                assert page.locator('.sempre-visibile > .formula .formula-box .katex-display').count() == 1, dim["id"]
+                assert page.locator('.passo-formula .formula-box__original .katex-display').count() == attese, dim["id"]
+                assert page.locator('.sempre-visibile > .formula .formula-box__original .katex-display').count() == 1, dim["id"]
                 problemi = page.evaluate('''() => {
                   const bad = [], body = parseFloat(getComputedStyle(document.body).fontSize);
                   for (const sc of document.querySelectorAll('.formula-box .scroll-x')) {
-                    const display = sc.querySelector('.katex-display'), k = display?.querySelector(':scope > .katex');
+                    const display = [...sc.querySelectorAll('.katex-display')].find(x => x.getClientRects().length),
+                      k = display?.querySelector(':scope > .katex');
                     if (!k || !sc.getBoundingClientRect().height) continue;
                     const r = sc.getBoundingClientRect(), font = parseFloat(getComputedStyle(k).fontSize);
                     if (font + .1 < body * (innerWidth < 600 ? 1.15 : 1.2)) bad.push(['font', font, body]);
-                    const bases = [...sc.querySelectorAll('.katex-html > .base')];
+                    const bases = [...display.querySelectorAll('.katex-html > .base')];
                     if (!bases.length) continue;
                     sc.scrollLeft = 0;
                     if (bases[0].getBoundingClientRect().left < r.left - 1) bad.push(['inizio tagliato']);
@@ -391,5 +393,97 @@ def test_notazione_lunga_scrollabile_e_frazioni_non_tagliate(server, width, heig
                 if idnodo == "dim-filtro-trasversale":
                     assert misure["frazioni"] >= 1, misure
             assert not errori, errori
+        finally:
+            browser.close()
+"""B9: verifica che la punteggiatura adiacente alle inline non migri a una riga nuova."""
+
+@pytest.mark.parametrize("width,height", [(360, 780), (390, 844)])
+def test_riflusso_mobile_relazioni_a_capo_riga_e_box_senza_scroll(server, width, height):
+    """Difetto E2-3: sotto 600px la relazione apre la riga di riflusso e nessun box scorre."""
+    dimostrazioni = [n["dimostrazione"] for n in leggi_grafo()["nodi"] if n.get("dimostrazione")]
+    assert len(dimostrazioni) == 18
+    misura = '''() => [...document.querySelectorAll('.formula-box')].map(box => {
+      const sc = box.querySelector('.scroll-x');
+      const reflow = box.querySelector('.formula-box__reflow');
+      const orig = box.querySelector('.formula-box__original');
+      const mostra = el => el && el.getClientRects().length > 0 && getComputedStyle(el).display !== 'none';
+      const visibile = mostra(reflow) ? reflow : (mostra(orig) ? orig : box);
+      sc.scrollLeft = 0;
+      const r = sc.getBoundingClientRect();
+      const ann = (orig || box).querySelector('annotation');
+      const rels = [...visibile.querySelectorAll('.mrel')].map(m => {
+        const b = m.getBoundingClientRect();
+        return { t: m.textContent, fuori: b.right > r.right + 1 || b.left < r.left - 1 };
+      });
+      return { tex: ann ? ann.textContent : '', variante: mostra(reflow) ? 'reflow' : 'original',
+        scrolla: sc.scrollWidth > sc.clientWidth + 1, sw: sc.scrollWidth, cw: sc.clientWidth,
+        relFuori: rels.filter(x => x.fuori).map(x => x.t) };
+    })'''
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        try:
+            page = browser.new_page(viewport={"width": width, "height": height})
+            errori = console_errors(page)
+            visti = 0
+            for dim in dimostrazioni:
+                page.goto(f'{server}/#/dim/{dim["id"]}', wait_until="networkidle")
+                page.evaluate("""() => document.querySelectorAll('button[data-azione="tutti"]').forEach(b => b.click())""")
+                page.evaluate("() => document.fonts.ready.then(() => true)")
+                page.wait_for_timeout(150)
+                for box in page.evaluate(misura):
+                    if box["variante"] != "reflow":
+                        continue
+                    visti += 1
+                    assert not box["scrolla"], (dim["id"], width, box["tex"][:120], box["sw"], box["cw"])
+                    assert not box["relFuori"], (dim["id"], width, box["tex"][:120], box["relFuori"])
+            assert visti >= 100, f"pochi box di riflusso misurati: {visti}"
+            assert not errori, errori
+        finally:
+            browser.close()
+
+
+R1_DIMS = [
+    'dim-teorema-campionamento',
+    'dim-modulazione-prodotto-qam-errore-fase',
+    'dim-spettri-modulazione-prodotto',
+    'dim-poisson-tempo-residuo',
+    'dim-filtro-trasversale',
+    'dim-quadripoli-passa-basso-equivalente',
+]
+R1_VIEWPORTS = [(360, 780), (390, 844), (768, 1024), (1440, 900)]
+
+
+@pytest.mark.parametrize('width,height', R1_VIEWPORTS)
+@pytest.mark.parametrize('dim_id', R1_DIMS)
+def test_b9_punteggiatura_inline_non_orfana(server, width, height, dim_id):
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        try:
+            page = browser.new_page(viewport={'width': width, 'height': height})
+            errori = console_errors(page)
+            page.goto(f'{server}#/dim/{dim_id}?passo=4', wait_until='networkidle')
+            sommario = page.locator('.dim-menu > summary')
+            if sommario.is_visible() and not page.get_by_role('button', name='Mostra tutti').is_visible():
+                sommario.click()
+            page.get_by_role('button', name='Mostra tutti').click()
+            risultati = page.evaluate('''() => {
+              const orfani = [];
+              for (const formula of document.querySelectorAll('.formula-inline')) {
+                let nodo = formula.nextSibling;
+                while (nodo && nodo.nodeType === Node.TEXT_NODE && !nodo.textContent.trim()) nodo = nodo.nextSibling;
+                if (!nodo || nodo.nodeType !== Node.TEXT_NODE) continue;
+                const match = /^(\\s*)([,.;:)])/.exec(nodo.textContent);
+                if (!match) continue;
+                const range = document.createRange();
+                range.setStart(nodo, match[1].length); range.setEnd(nodo, match[1].length + 1);
+                const a = formula.getBoundingClientRect(), b = range.getBoundingClientRect();
+                    const sogliaRiga = (parseFloat(getComputedStyle(formula.parentElement).fontSize) || 16) * 1.3;
+                    if (Math.abs(a.top - b.top) > sogliaRiga || b.left < a.left - 1) orfani.push({formula: formula.textContent, segno: match[2], y1: a.top, y2: b.top});
+              }
+              return orfani;
+            }''')
+            assert risultati == [], (dim_id, width, risultati)
+            assert not errori, (dim_id, width, errori)
+            page.close()
         finally:
             browser.close()

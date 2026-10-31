@@ -1,4 +1,5 @@
 import katex from '../../vendor/katex/katex.mjs';
+import { righeDisplay } from './riflusso.js';
 
 const RUNTIME_OPTIONS = { throwOnError: false, trust: false, output: 'htmlAndMathml', displayMode: false };
 const MATH_RE = /\$\$(.*?)\$\$|\$(.*?)\$/gs;
@@ -42,21 +43,30 @@ export function devePromuovereInDisplay(corpo) {
 }
 
 /** Formula inline (nessuna aria-hidden: il MathML resta accessibile). */
-export function formulaInline(latex) {
+export function formulaInline(latex, punteggiatura = '') {
   if (typeof latex !== 'string' || !latex.length) return '';
-  return `<span class="formula-inline">${compilaLatexSicuro(latex)}</span>`;
+  return `<span class="formula-inline">${compilaLatexSicuro(latex)}${escapeHtml(punteggiatura)}</span>`;
+}
+
+/** Variante display a righe strette per <600px; vuota se il riflusso non serve o non si può. */
+function formulaDisplayResponsiva(latex) {
+  const righe = righeDisplay(latex);
+  return righe.length ? `\\begin{gathered}${righe.join('\\\\{}')}\\end{gathered}` : '';
 }
 
 /** Formula in display: .formula-box[--key] > .scroll-x con KaTeX displayMode. */
+/** Il riflusso è la stessa formula per schermi stretti: la sorgente TeX non va duplicata
+ *  nell'annotation (il MathML resta, l'accessibilità non cambia). */
+const senzaAnnotationi = (html) => html.replace(/<annotation[^>]*>[\s\S]*?<\/annotation>/gu, '');
+
 export function formulaBlock(latex, opzioni = {}) {
   const chiave = opzioni && opzioni.variante === 'chiave';
   const etichetta = opzioni && opzioni.etichetta != null ? String(opzioni.etichetta) : '';
   const label = etichetta ? `<div class="formula-box__label">${escapeHtml(etichetta)}</div>` : '';
   const corpo = renderLatexSicuro(latex, true);
-  return `<div class="formula-box${chiave ? ' formula-box--key' : ''}">
-${label}
-<div class="scroll-x" tabindex="0" role="region" aria-label="Formula">${corpo}</div>
-</div>`;
+  const responsive = formulaDisplayResponsiva(latex);
+  const varianteMobile = responsive ? `<div class="formula-box__reflow">${senzaAnnotationi(renderLatexSicuro(responsive, true))}</div>` : '';
+  return `<div class="formula-box${chiave ? ' formula-box--key' : ''}${responsive ? ' formula-box--reflow' : ''}">\n${label}\n<div class="scroll-x" tabindex="0" role="region" aria-label="Formula"><div class="formula-box__original">${corpo}</div>${varianteMobile}</div>\n</div>`;
 }
 
 export function escapeHtml(s) {
@@ -92,11 +102,18 @@ export async function renderMath(el) {
     const blocco = /^(DIV|P|LI|SECTION|ARTICLE|BLOCKQUOTE)$/.test(parent.tagName);
     const isolata = !inTitolo && blocco && parent.childNodes.length === 1 && formulaIsolata(tokens);
     const frag = document.createDocumentFragment();
-    for (const t of tokens) {
+    for (let i = 0; i < tokens.length; i++) {
+      const t = tokens[i];
       if (t.type === 'text') { frag.appendChild(document.createTextNode(t.body)); continue; }
       const inDisplay = t.type === 'display' || (!inTitolo && (isolata || devePromuovereInDisplay(t.body)));
+      let punteggiatura = '';
+      const prossimo = tokens[i + 1];
+      if (!inDisplay && t.type === 'inline' && prossimo && prossimo.type === 'text') {
+        const match = /^(\s*[,.;:)]+)/u.exec(prossimo.body);
+        if (match) { punteggiatura = match[1]; prossimo.body = prossimo.body.slice(match[1].length); }
+      }
       const template = document.createElement('template');
-      template.innerHTML = inDisplay ? formulaBlock(t.body) : formulaInline(t.body);
+      template.innerHTML = inDisplay ? formulaBlock(t.body) : formulaInline(t.body, punteggiatura);
       frag.appendChild(template.content);
     }
     parent.replaceChild(frag, textNode);

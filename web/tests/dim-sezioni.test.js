@@ -21,7 +21,7 @@ test('la notazione compila il simbolo in LaTeX e mostra il significato', () => {
   assert.equal(renderNotazione(dimostrazioneEsempio({ notazione: [null] })), '');
 });
 
-test('l\'idea è un callout--tip e manca se non c\'è', () => {
-  assert.match(renderIdea(dimostrazioneEsempio()), /<aside class="callout callout--tip"[^>]*>.*Usare la linearità\./);
+test('l\'idea è la chiave della pagina e manca se non c\'è', () => {
+  assert.match(renderIdea(dimostrazioneEsempio()), /<aside class="chiave dim-chiave"[^>]*>.*Usare la linearità\./);
   assert.equal(renderIdea(dimostrazioneEsempio({ idea: '' })), '');
 });

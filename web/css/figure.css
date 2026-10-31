@@ -25,7 +25,7 @@
 }
 .figure figcaption, .figure .figure__caption { margin: var(--s-3, 12px) var(--s-4, 16px) var(--s-4, 16px); }
 .figure__caption-title { display: block; font-weight: 700; font-size: var(--fs-body, 1.0625rem); color: var(--c-text, #17202e); margin-bottom: var(--s-1, 4px); }
-.figure__caption-desc { display: block; font-size: var(--fs-small, 0.9375rem); color: var(--c-text-muted, #4a5568); line-height: var(--lh-body, 1.7); }
+.figure__caption-desc { display: block; font-size: var(--fs-body, 1.0625rem); color: var(--c-text-muted, #4a5568); line-height: var(--lh-body, 1.7); }
 
 /* La larghezza intrinseca conserva il font leggibile; lo scroll resta nella figura. */
 .figure .figura-svg {
@@ -42,6 +42,19 @@
 }
 .figure__legend-item { display: inline-flex; align-items: center; gap: var(--s-2, 8px); font-size: var(--fs-small, 0.9375rem); color: var(--c-text, #17202e); margin: 0; }
 .figure__legend-sample { display: block; }
+
+/* Stati progressivi: il tratto ereditato resta distinguibile senza dipendere dal colore. */
+.figure [data-ereditato="true"] { opacity: var(--figure-inherited-opacity, 0.38); }
+.figure [data-progressivo] { transition: opacity 250ms ease; }
+.figura-confronta { display: block; min-height: var(--tap, 44px); margin: var(--s-2, 8px) 0; }
+.figura-confronto { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4, 16px); margin-block: var(--s-3, 12px); }
+.figura-confronto[hidden] { display: none; }
+.figura-confronto > div { min-width: 0; }
+.figura-confronto h4 { margin: 0 0 var(--s-2, 8px); font-size: var(--fs-body, 1.0625rem); }
+.figura-confronto .figure { max-width: 100%; margin: 0; }
+.figura-confronto .figure .figura-svg { max-width: 100%; }
+@media (min-width: 768px) { .figura-confronto { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (prefers-reduced-motion: reduce) { .figure [data-progressivo] { transition-duration: 0s; } }
 
 /* Fallback figura non disponibile. */
 .figura-non-disponibile {

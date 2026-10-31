@@ -1,6 +1,9 @@
 import { test } from 'node:test';
+import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import { compilaLatex, compilaLatexSicuro, renderMath, tokenizzaMatematica, testoSicuro, formulaBlock, formulaInline, devePromuovereInDisplay, formulaIsolata } from '../js/core/math.js';
+import { righeDisplay } from '../js/core/riflusso.js';
+import { larghezzaStimata } from '../js/core/larghezza-latex.js';
 
 test('tokenizzaMatematica separa testo, inline $...$ e display $$...$$', () => {
   const toks = tokenizzaMatematica('costo $x=1$ e $$y=2$$ finale');
@@ -52,6 +55,12 @@ test('formulaInline restituisce HTML inline con classe formula-inline (senza ari
   assert.ok(typeof html === 'string' && html.length > 0);
   assert.ok(html.includes('class="formula-inline"')); assert.ok(!/<span[^>]*class="formula-inline"[^>]*aria-hidden/.test(html));
   assert.ok(html.includes('class="katex"'));
+});
+
+test('formulaInline contiene la punteggiatura adiacente nello stesso wrapper nowrap', () => {
+  const html = formulaInline('x=1', ',');
+  assert.ok(html.startsWith('<span class="formula-inline">'));
+  assert.ok(html.endsWith(',</span>'));
 });
 
 test('formulaInline stringa vuota restituisce stringa vuota', () => { assert.strictEqual(formulaInline(''), ''); assert.strictEqual(formulaInline(null), ''); });
@@ -110,6 +119,82 @@ test('formulaBlock compila in display reale, anche per formule brevi', () => {
   assert.doesNotMatch(formulaInline('x'), /katex-display/);
 });
 
+test('formulaBlock crea un riflusso responsivo ai soli separatori LaTeX di primo livello', () => {
+  const formula = 's_m(t) = \\sum_n c_n e^{jnt} \\qquad c_n = \\frac{a_n}{T} G(n)';
+  const html = formulaBlock(formula);
+  assert.match(html, /formula-box--reflow/);
+  assert.match(html, /class="formula-box__reflow"/);
+  assert.equal((html.match(/class="katex-display"/g) || []).length, 2);
+  assert.equal(formula, 's_m(t) = \\sum_n c_n e^{jnt} \\qquad c_n = \\frac{a_n}{T} G(n)');
+  const annidata = formulaBlock('\\operatorname{f(a,b)} + \\left(\\frac{a+b}{c+d}\\right) + \\sum_{n=1}^{N} x_n');
+  assert.doesNotMatch(annidata, /formula-box--reflow/);
+  const parentesiQuadre = formulaBlock('P_y = \\int_0^2 3\\omega^2 d\\omega = [\\omega^3]_0^2 = 8');
+  assert.doesNotMatch(parentesiQuadre, /katex-err/);
+});
+
+test('righeDisplay spezza PRIMA della relazione: nessun segno di relazione chiude una riga', () => {
+  const dirac = String.raw`x(t) = \lim_{\Delta \to 0} \int_{-\infty}^{+\infty} x(\tau) D(t-\tau,\Delta)\, d\tau \;\Longleftrightarrow\; x(t) = \int_{-\infty}^{+\infty} x(\tau) \delta(t-\tau)\, d\tau = x(t) * \delta(t)`;
+  const righe = righeDisplay(dirac);
+  assert.ok(righe.length >= 2, 'la catena deve essere spezzata');
+  const coda = /(?:[=<>]|\\(?:le|ge|leq|geq|Longleftrightarrow|Longrightarrow|Leftrightarrow|to|approx))\\?;?\s*$/u;
+  for (const riga of righe) assert.ok(!coda.test(riga.trim()), `relazione in coda: ${riga}`);
+  assert.ok(righe.some(r => r.startsWith(String.raw`\Longleftrightarrow`)), 'la doppia implicazione apre la riga');
+});
+
+test('ogni riga di riflusso sta nella capacità stimata del box più stretto', () => {
+  const formule = [
+    String.raw`G_x(\omega) = \frac{1}{\pi T} |G(\omega)|^2 \left\{ \langle a_n^2 \rangle - [\langle a_n \rangle]^2 + 2 \sum_{k=1}^{\infty} \left[ \langle a_n a_{n+k} \rangle - [\langle a_n \rangle]^2 \right] \cos k\omega T \right\}`,
+    String.raw`\omega_m \le \omega_s - \omega_m \;\Longrightarrow\; \omega_s \ge 2\omega_m \;\Longleftrightarrow\; f_s \ge 2 f_m \;\Longleftrightarrow\; T \le \frac{1}{2 f_m}`,
+    String.raw`E = \int |x(t)|^2 dt = \frac{1}{2\pi}\int_{-\infty}^{+\infty} |X(\omega)|^2 d\omega, \qquad F[\phi(\tau)] = |X(\omega)|^2,`,
+  ];
+  for (const tex of formule) {
+    const righe = righeDisplay(tex);
+    assert.ok(righe.length >= 2, 'formula lunga non spezzata: ' + tex.slice(0, 40));
+    for (const riga of righe) assert.ok(larghezzaStimata(riga) <= 8.8, `riga troppo larga (${larghezzaStimata(riga).toFixed(2)}): ${riga}`);
+  }
+});
+
+test('eta sliding-window: la condizione intera segue il valore o occupa una riga se', () => {
+  const eta = String.raw`\eta=\begin{cases}\dfrac{WD}{C\,TT}=\dfrac{WD}{D+H+A+2IC},&WF\le C\,TT,\\[4pt]\dfrac{D}{D+H},&WF>C\,TT.\end{cases}`;
+  const righe = righeDisplay(eta);
+  const flat = righe.find(r => r.includes(String.raw`\begin{gathered}`));
+  assert.ok(flat, 'il cases deve diventare un gathered');
+  const corpo = flat.slice(flat.indexOf(String.raw`\begin{gathered}`) + 16, flat.indexOf(String.raw`\end{gathered}`));
+  const righeInterne = corpo.split('\\\\').map(r => r.trim()).filter(Boolean);
+  for (const riga of righeInterne) assert.ok(larghezzaStimata(riga) <= 8.5, `riga gathered larga: ${riga}`);
+  verificaCaso(righeInterne, [String.raw`\dfrac{WD}{C\,TT}`, String.raw`=\dfrac{WD}{D+H+A+2IC}`], String.raw`WF\le C\,TT,`);
+  verificaCaso(righeInterne, [String.raw`\dfrac{D}{D+H}`], String.raw`WF>C\,TT.`);
+  assert.doesNotMatch(formulaBlock(eta), /katex-err/);
+});
+
+test('lo spazio esplicito backslash-spazio non resta solitario in coda a una riga', () => {
+  const qam = String.raw`\Delta=0\ \Longrightarrow\ (\hat{x}_1,\hat{x}_2)=(x_1,x_2)`;
+  const righe = righeDisplay(qam);
+  assert.ok(righe.length >= 1);
+  for (const riga of righe) assert.ok(!riga.trimEnd().endsWith('\\'), `backslash solitario in coda: ${riga}`);
+  assert.doesNotMatch(formulaBlock(qam), /katex-err/);
+});
+
+test('tutte le formule del grafo: riflusso senza errori KaTeX né relazioni in coda', () => {
+  const graph = JSON.parse(fs.readFileSync(new URL('../graph.json', import.meta.url), 'utf8'));
+  const formule = [];
+  const raccogli = (o) => {
+    if (!o || typeof o !== 'object') return;
+    if (Array.isArray(o)) { o.forEach(raccogli); return; }
+    for (const [k, v] of Object.entries(o)) { if (k === 'formula' && typeof v === 'string') formule.push(v); else raccogli(v); }
+  };
+  raccogli(graph.nodi);
+  assert.ok(formule.length >= 100, 'il grafo costruito deve contenere le formule');
+  const coda = /(?:[=<>]|\\(?:le|ge|leq|geq|Longleftrightarrow|Longrightarrow|Leftrightarrow|to|approx|iff|imply))\\?;?\s*$/u;
+  for (const tex of formule) {
+    assert.doesNotMatch(formulaBlock(tex), /katex-error|katex-err/, tex.slice(0, 60));
+    for (const riga of righeDisplay(tex)) {
+      assert.ok(!coda.test(riga.trim()), `relazione in coda in ${tex.slice(0, 50)}: ${riga.slice(-30)}`);
+      if (!riga.includes(String.raw`\begin{gathered}`)) assert.ok(larghezzaStimata(riga) <= 10.4, `riga oltre il box: ${riga.slice(0, 60)}`);
+    }
+  }
+});
+
 test('formula isolata riconosce spazi ma non testo o altre formule', () => {
   assert.ok(formulaIsolata(tokenizzaMatematica('$x$')));
   assert.ok(formulaIsolata(tokenizzaMatematica('  $x$  ')));
@@ -123,4 +208,64 @@ test('formulaBlock segnala il sorgente invalido senza HTML eseguibile', () => {
   assert.match(html, /class="katex-err"/);
   assert.match(html, /&lt;script&gt;/);
   assert.doesNotMatch(html, /<script>/);
+});
+
+function verificaCaso(righe, frammentiValore, condizione) {
+  const conCondizione = righe.map((r, i) => r.includes(condizione) ? i : -1).filter(i => i >= 0);
+  assert.equal(conCondizione.length, 1, `condizione assente o spezzata: ${condizione}\n${righe.join('\n')}`);
+  const posCondizione = conCondizione[0], posizioni = Array(frammentiValore.length);
+  let limite = posCondizione;
+  for (let i = frammentiValore.length - 1; i >= 0; i--) {
+    const pos = righe.findLastIndex((r, indice) => indice <= limite && r.includes(frammentiValore[i]));
+    assert.ok(pos >= 0, `frammento del valore assente: ${frammentiValore[i]}\n${righe.join('\n')}`);
+    posizioni[i] = pos; limite = pos;
+  }
+  const ultimoValore = posizioni.at(-1);
+  assert.ok(ultimoValore <= posCondizione, 'la condizione si e\' inserita fra i frammenti del valore');
+  if (ultimoValore === posCondizione) {
+    const atteso = `${frammentiValore.at(-1)}, \\quad ${condizione}`;
+    assert.ok(righe[ultimoValore].includes(atteso), `condizione non agganciata all'ultimo frammento: ${righe[ultimoValore]}`);
+  } else {
+    assert.equal(posCondizione, ultimoValore + 1, 'la riga se non segue immediatamente il valore');
+    assert.ok(righe[posCondizione].includes(`\\text{se }${condizione}`), `riga se incompleta: ${righe[posCondizione]}`);
+  }
+}
+
+test('quattro cases del grafo: condizioni intere, H0 senza geq orfano e X senza pi/T isolato', () => {
+  const formule = [
+    [String.raw`D(t,\Delta) = \begin{cases} \dfrac{1}{\Delta} & 0 \le t \le \Delta \\ 0 & \text{altrove} \end{cases}`,
+      [[String.raw`\dfrac{1}{\Delta}`], String.raw`0 \le t \le \Delta`, ['0'], String.raw`\text{altrove}`]],
+    [String.raw`X(\omega) = \begin{cases} T\, X_s(\omega) & |\omega| < \dfrac{\omega_s}{2} = \dfrac{\pi}{T} \\ 0 & \text{altrove} \end{cases}`,
+      [[String.raw`T\, X_s(\omega)`], String.raw`|\omega| < \dfrac{\omega_s}{2} = \dfrac{\pi}{T}`, ['0'], String.raw`\text{altrove}`]],
+    [String.raw`\int_{-\infty}^{+\infty} \operatorname{sinc}\frac{t-nT}{T}\, \operatorname{sinc}\frac{t-mT}{T}\, dt = \begin{cases} 0 & m \ne n \\ T & m = n \end{cases}`,
+      [['0'], String.raw`m \ne n`, ['T'], 'm = n']],
+    [String.raw`H_0(\omega)=\begin{cases}H(\omega+\omega_0),&\omega+\omega_0\geq 0,\\0,&\text{altrove}.\end{cases}`,
+      [[String.raw`H(\omega+\omega_0)`], String.raw`\omega+\omega_0\geq 0,`, ['0'], String.raw`\text{altrove}.`]],
+  ];
+  for (const [tex, [v1, c1, v2, c2]] of formule) {
+    const flat = righeDisplay(tex).find(r => r.includes(String.raw`\begin{gathered}`));
+    assert.ok(flat, tex);
+    const righe = flat.split(String.raw`\\`);
+    verificaCaso(righe, v1, c1); verificaCaso(righe, v2, c2);
+    assert.doesNotMatch(formulaBlock(tex), /katex-err/);
+  }
+});
+
+test('sinc e il suo argomento frazionario non vengono separati dal riflusso', () => {
+  const tex = String.raw`\int_{-\infty}^{+\infty} \operatorname{sinc}\frac{t-nT}{T}\, \operatorname{sinc}\frac{t-mT}{T}\, dt = \begin{cases} 0 & m \ne n \\ T & m = n \end{cases}`;
+  const righe = righeDisplay(tex);
+  for (const arg of ['t-nT', 't-mT']) assert.ok(righe.some(r => r.includes(String.raw`\operatorname{sinc}\frac{` + arg + '}')), righe);
+  assert.ok(righe.every(r => !/\\operatorname\{sinc\}\s*$/.test(r)), righe);
+});
+
+test('funzioni con apici e spazi espliciti non si separano dall’argomento', () => {
+  for (const tex of [
+    String.raw`f(x) = a + b + c + d + e + \sin^{2} \frac{x}{T} + g + h`,
+    String.raw`f(x) = a + b + c + d + e + \operatorname{sinc}\, \frac{x}{T} + g + h`,
+  ]) {
+    const righe = righeDisplay(tex);
+    assert.ok(righe.length > 1, tex);
+    assert.ok(righe.some(r => /\\(?:sin\^\{2\}|operatorname\{sinc\})[\s\\,]*\\frac\{x\}\{T\}/u.test(r)), righe);
+    assert.doesNotMatch(formulaBlock(tex), /katex-err/);
+  }
 });

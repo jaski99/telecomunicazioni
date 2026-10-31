@@ -10,7 +10,9 @@ from playwright.sync_api import sync_playwright
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from e2e_helpers import WEB, console_errors, font_sizes, katex_report, spacing_values, static_server, tap_targets  # noqa: E402
 
-DIMS = [n['id'] for n in json.loads((WEB / 'graph.json').read_text(encoding='utf-8'))['nodi'] if n.get('dimostrazione')]
+GRAFO = json.loads((WEB / 'graph.json').read_text(encoding='utf-8'))
+DIMS = [n['id'] for n in GRAFO['nodi'] if n.get('dimostrazione')]
+PASSI = {n['id']: len(n['dimostrazione']['passi']) for n in GRAFO['nodi'] if n.get('dimostrazione')}
 VIEWPORTS = [(360, 780), (390, 844), (768, 1024), (1440, 900)]
 MODALITA = ['studio', 'avocce', 'compatta', 'abuchi', 'recall']
 CHIAVE = 'tlc-kg:dimostrazioni:v1.'
@@ -32,10 +34,10 @@ def browser():
         br.close()
 
 
-def apri(browser, base, dim_id, width, height):
+def apri(browser, base, dim_id, width, height, query=''):
     page = browser.new_page(viewport={'width': width, 'height': height})
     errori = console_errors(page)
-    page.goto(f'{base}/#/dim/{dim_id}', wait_until='networkidle')
+    page.goto(f'{base}/#/dim/{dim_id}{query}', wait_until='networkidle')
     page.wait_for_selector('#modo-studio .step')
     return page, errori
 
@@ -224,3 +226,175 @@ def test_progress_visibile_e_notazione_raggiungibile(browser, server, dim_id, wi
         assert x['fineRaggiunta'] and x['inizioRaggiunto'], (dim_id, x)
     assert not errori
     page.close()
+
+
+@pytest.mark.parametrize('width,height', VIEWPORTS)
+@pytest.mark.parametrize('dim_id', DIMS)
+def test_b13_chiave_e_numerazione_figure(browser, server, dim_id, width, height):
+    page, errori = apri(browser, server, dim_id, width, height)
+    mostra_tutti(page)
+    dati = page.evaluate('''() => ({
+      chiave: document.querySelectorAll('main .chiave').length,
+      didascalie: [...document.querySelectorAll('#modo-studio .figure__caption-title')]
+        .filter(e => !e.closest('.figura-confronto')).map(e => e.textContent.trim()),
+      idDuplicati: [...document.querySelectorAll('[id]')].map(e => e.id)
+        .filter((id, i, ids) => ids.indexOf(id) !== i),
+    })''')
+    assert dati['chiave'] == 1, (dim_id, dati['chiave'])
+    numeri = []
+    for didascalia in dati['didascalie']:
+        match = re.match(r'^Figura (\d+)\.(\d+) — ', didascalia)
+        assert match, (dim_id, didascalia)
+        numeri.append(int(match.group(2)))
+    assert numeri == list(range(1, len(numeri) + 1)), (dim_id, numeri)
+    assert not dati['idDuplicati'], (dim_id, dati['idDuplicati'])
+    assert not errori, (dim_id, errori)
+    page.close()
+
+
+@pytest.mark.parametrize('width,height', VIEWPORTS)
+@pytest.mark.parametrize('passo', [1, 2, 6])
+@pytest.mark.parametrize('dim_id', DIMS)
+def test_b8_passo_permalink_e_overflow(browser, server, dim_id, passo, width, height):
+    n = min(passo, PASSI[dim_id])
+    page, errori = apri(browser, server, dim_id, width, height, f'?passo={n}')
+    assert page.locator('.progress[role="progressbar"]').get_attribute('aria-valuenow') == str(n), dim_id
+    assert page.locator(f'#passo-{n}.step--rivelato').count() == 1, dim_id
+    misura = page.evaluate('''() => ({scroll: document.scrollingElement.scrollWidth, client: document.scrollingElement.clientWidth,
+      viewport: innerWidth, body: document.body.scrollWidth})''')
+    assert misura['scroll'] <= misura['client'], (dim_id, width, misura)
+    assert misura['body'] <= misura['client'], (dim_id, width, misura)
+    assert not errori, (dim_id, width, errori)
+    page.close()
+
+
+def test_b13_indice_e_nav_sequenza_sulla_dimostrazione(browser, server):
+    """B13: indice di pagina (modulo unico di E1) con ancore vive e nav prev/succ
+    coerente con l'ordine del piano di studio, anche sulla rotta #/dim/."""
+    dim_id = 'dim-teorema-campionamento'
+    page, errori = apri(browser, server, dim_id, 1440, 900)
+    dati = page.evaluate('''() => ({
+      voci: [...document.querySelectorAll('.indice-in-testa .indice-pagina li a')].map(a => a.getAttribute('href')),
+      vivi: [...document.querySelectorAll('.indice-in-testa .indice-pagina li a')].map(a => {
+        const m = /sezione=(\\d+)$/.exec(a.getAttribute('href') || '');
+        return Boolean(m) && document.getElementById('sez-' + m[1]) !== null; }),
+      nav: [...document.querySelectorAll('.nav-sequenza a')].map(a => a.getAttribute('href')),
+    })''')
+    assert len(dati['voci']) >= 2, dati
+    assert all(dati['vivi']), dati
+    assert all(v.startswith(f'#/dim/{dim_id}?sezione=') for v in dati['voci']), dati
+    nodi = {n['id']: n for n in GRAFO['nodi']}
+    assert dati['nav'], dati
+    for href in dati['nav']:
+        tipo, id_dest = href.removeprefix('#/').split('/', 1)
+        assert id_dest in nodi, href
+        assert tipo == ('dim' if nodi[id_dest].get('dimostrazione') else 'nodo'), href
+    page.goto(f'{server}/#/dim/{dim_id}?sezione=4', wait_until='networkidle')
+    page.wait_for_selector('#modo-studio .step')
+    in_vista = page.evaluate('''() => { const r = document.getElementById('sez-4').getBoundingClientRect();
+      return r.top >= -1 && r.top < innerHeight; }''')
+    assert in_vista, dati
+    assert not errori
+    page.close()
+
+
+def test_note_marginale_non_restringe_formula_e_figura_a_1440(browser, server):
+    page, errori = apri(browser, server, 'dim-pam-due-spettri', 1440, 900, '?passo=4')
+    misure = page.evaluate('''() => {
+      const corpo = document.querySelector('#passo-4 .step__corpo');
+      const testo = corpo.querySelector('.step__testo').getBoundingClientRect();
+      const nota = corpo.querySelector('.dim-nota').getBoundingClientRect();
+      const formula = corpo.querySelector('.passo-formula').getBoundingClientRect();
+      const figura = corpo.querySelector('.step__figura').getBoundingClientRect();
+      const area = e => getComputedStyle(e).gridArea;
+      return {larghezza: corpo.clientWidth, testo: testo.toJSON(), nota: nota.toJSON(),
+        formula: formula.toJSON(), figura: figura.toJSON(), aree: [area(corpo.querySelector('.step__testo')),
+          area(corpo.querySelector('.dim-nota')), area(corpo.querySelector('.passo-formula')),
+          area(corpo.querySelector('.step__figura'))]};
+    }''')
+    assert misure['aree'] == ['testo', 'nota', 'formula', 'figura'], misure
+    assert misure['testo']['right'] <= misure['nota']['left'], misure
+    assert misure['formula']['width'] >= misure['larghezza'] - 1, misure
+    assert misure['figura']['width'] >= misure['larghezza'] - 1, misure
+    assert not errori
+    page.close()
+
+
+def test_nota_passo_resta_callout_verde_a_1440(browser, server):
+    """La nota del passo usa la classe propria .dim-nota: sopra 1200 px non eredita il
+    filetto grigio da 1 px di .nota-margine (nodo.css) e resta un callout da 4 px verdi."""
+    page, errori = apri(browser, server, 'dim-pam-due-spettri', 1440, 900, '?passo=4')
+    note = page.evaluate('''() => [...document.querySelectorAll('#modo-studio .step__corpo aside')]
+      .filter(e => e.getClientRects().length).map(e => {
+        const s = getComputedStyle(e);
+        return {classi: e.className.split(' '), larghezza: s.borderLeftWidth,
+          stile: s.borderLeftStyle, colore: s.borderLeftColor, corpo: parseFloat(s.fontSize)};
+      })''')
+    assert len(note) == 4, note
+    for nota in note:
+        assert nota['classi'] == ['callout', 'callout--tip', 'dim-nota'], nota
+        assert nota['larghezza'] == '4px', nota
+        assert nota['stile'] == 'solid', nota
+        assert nota['colore'] == 'rgb(21, 128, 61)', nota  # --c-ok
+        assert nota['corpo'] == 19, nota
+    assert not errori
+    page.close()
+
+
+@pytest.mark.parametrize('width,height', [(360, 780), (390, 844)])
+def test_pam_schema_e_formula_senza_scroll_interno(browser, server, width, height):
+    page, errori = apri(browser, server, 'dim-pam-due-spettri', width, height, '?passo=4')
+    misura = page.evaluate('''() => {
+      const selettori = ['#passo-2 .step__figura .scroll-x', '#passo-2 .passo-formula .scroll-x',
+        '#passo-2 .passo-formula .formula-box', '#passo-4 .passo-formula .scroll-x', '#passo-4 .passo-formula .formula-box'];
+      const elementi = [...new Set(selettori.flatMap(s => [...document.querySelectorAll(s)]))]
+        .filter(e => e.getClientRects().length);
+      const overflow = elementi.map(e => ({classe: e.className, scroll: e.scrollWidth, client: e.clientWidth}))
+        .filter(x => x.scroll > x.client + 1);
+      const figura = document.querySelector('#passo-2 .step__figura svg');
+      const svg = figura?.getBoundingClientRect(), vb = figura?.viewBox.baseVal;
+      const dimensioni = figura ? [...figura.querySelectorAll('text')].map(t =>
+        parseFloat(getComputedStyle(t).fontSize) * svg.width / vb.width) : [];
+      const uscita = figura?.querySelector('.blocco.uscita');
+      const lineaUscita = uscita?.querySelector('line');
+      const collegamenti = [...(figura?.querySelectorAll('path[fill="none"]') || [])];
+      const segmenti = collegamenti.map(e => e.getAttribute('d').match(/^M\\s*(-?[\\d.]+)\\s+(-?[\\d.]+)\\s+L\\s*(-?[\\d.]+)\\s+(-?[\\d.]+)/)).filter(Boolean);
+      const x = Number(lineaUscita?.getAttribute('x1')), y = Number(lineaUscita?.getAttribute('y1'));
+      const uscitaCollegata = { collegata: segmenti.some(m => Math.hypot(Number(m[3]) - x, Number(m[4]) - y) < .1),
+        etichetta: uscita?.textContent || '' };
+      return {overflow, dimensioni, schema: Boolean(figura), uscitaCollegata,
+        passi: [...document.querySelectorAll('#passo-2.step--rivelato, #passo-4.step--rivelato')].length};
+    }''')
+    assert misura['passi'] == 2, (width, misura)
+    assert misura['schema'], (width, misura)
+    assert misura['overflow'] == [], (width, misura)
+    assert misura['uscitaCollegata']['collegata'], (width, misura['uscitaCollegata'])
+    assert 's(t)' in misura['uscitaCollegata']['etichetta'], (width, misura['uscitaCollegata'])
+    assert all(size >= 11 for size in misura['dimensioni']), (width, misura['dimensioni'])
+    assert not errori, (width, errori)
+    if width == 390:
+        page.screenshot(path='/tmp/pam-390.png', full_page=True)
+    page.close()
+
+
+@pytest.mark.parametrize('width,height', [(390, 844), (1440, 900)])
+@pytest.mark.parametrize('dim_id', DIMS)
+def test_passo_n_diretto_porta_il_passo_nel_viewport(browser, server, dim_id, width, height):
+    """Difetto E2-1: il carico diretto di ?passo=n rivela il passo E lo porta nel viewport."""
+    for scelta in sorted({1, 4, PASSI[dim_id]}):
+        n = min(scelta, PASSI[dim_id])
+        page, errori = apri(browser, server, dim_id, width, height, query=f'?passo={scelta}')
+        page.wait_for_timeout(200)  # lascia correre il doppio requestAnimationFrame di dopoRender
+        box = page.evaluate("""(n) => {
+          const li = document.querySelector(`#passo-${n}`);
+          if (!li) return null;
+          const b = li.getBoundingClientRect();
+          const sticky = document.querySelector('.dim-tabs').getBoundingClientRect();
+          return { top: b.top, bottom: b.bottom, h: innerHeight, y: scrollY, sticky: sticky.bottom };
+        }""", n)
+        assert box, (dim_id, scelta, 'passo richiesto non presente nel DOM')
+        assert box['top'] >= box['sticky'] and box['top'] < box['h'], (dim_id, scelta, width, box)
+        if n > 1:
+            assert box['y'] > 0, (dim_id, scelta, width, 'pagina rimasta in cima')
+        assert not errori
+        page.close()
