@@ -23,13 +23,16 @@ function figura(nodo) {
     // Il glifo prosegue nel verso del collegamento, anche quando il flusso stretto
     // torna verso sinistra o verso l'alto. Un ingresso innestato (servito) delega
     // tratto e punta al collegamento: restano un solo tratto e una sola punta.
-    if (forma === 'ingresso' && nodo.servito) return '';
+    if (forma === 'ingresso' && nodo.servito)
+      return nodo.diramazione ? `<circle cx="${n(x)}" cy="${n(y)}" r="4" fill="${SCURO}"/>` : '';
+    const giunzione = forma === 'uscita' && nodo.diramazione
+      ? `<circle cx="${n(x)}" cy="${n(y)}" r="4" fill="${SCURO}"/>` : '';
     if (nodo.verticale) {
       const d = nodo.verso === 'su' ? -1 : 1;
-      return `<line x1="${n(x)}" y1="${n(y - 16 * d)}" x2="${n(x)}" y2="${n(y + 9 * d)}" stroke="${SCURO}" stroke-width="2"/><path d="M ${n(x)} ${n(y + 16 * d)} L ${n(x - 5)} ${n(y + 7 * d)} L ${n(x + 5)} ${n(y + 7 * d)} Z" fill="${SCURO}"/>`;
+      return `<line x1="${n(x)}" y1="${n(y - 16 * d)}" x2="${n(x)}" y2="${n(y + 9 * d)}" stroke="${SCURO}" stroke-width="2"/><path d="M ${n(x)} ${n(y + 16 * d)} L ${n(x - 5)} ${n(y + 7 * d)} L ${n(x + 5)} ${n(y + 7 * d)} Z" fill="${SCURO}"/>${giunzione}`;
     }
     const d = nodo.verso === 'sinistra' ? -1 : 1;
-    return `<line x1="${n(x - 16 * d)}" y1="${n(y)}" x2="${n(x + 9 * d)}" y2="${n(y)}" stroke="${SCURO}" stroke-width="2"/><path d="M ${n(x + 16 * d)} ${n(y)} L ${n(x + 7 * d)} ${n(y - 5)} L ${n(x + 7 * d)} ${n(y + 5)} Z" fill="${SCURO}"/>`;
+    return `<line x1="${n(x - 16 * d)}" y1="${n(y)}" x2="${n(x + 9 * d)}" y2="${n(y)}" stroke="${SCURO}" stroke-width="2"/><path d="M ${n(x + 16 * d)} ${n(y)} L ${n(x + 7 * d)} ${n(y - 5)} L ${n(x + 7 * d)} ${n(y + 5)} Z" fill="${SCURO}"/>${giunzione}`;
   }
   if (forma === 'sommatore' || forma === 'moltiplicatore') {
     const segno = forma === 'sommatore'
@@ -52,9 +55,10 @@ export function disegnaBlocco(nodo, opzioni = {}, indice = 0) {
 /** Linea da inizio a base + punta piena; con senzaPunta (innesto sul glifo di uscita)
  *  la linea arriva fino a fine e la punta resta quella del glifo. */
 export function disegnaFreccia(c) {
-  const { inizio: a, base: b, fine: z, ali } = c;
+  const punti = c.punti?.length ? c.punti : [c.inizio, c.fine];
+  const percorso = ps => ps.map((p, i) => `${i ? 'L' : 'M'} ${n(p.x)} ${n(p.y)}`).join(' ');
   const linea = c.senzaPunta
-    ? `<path d="M ${n(a.x)} ${n(a.y)} L ${n(z.x)} ${n(z.y)}" fill="none" stroke="${SCURO}" stroke-width="2"/>`
-    : `<path d="M ${n(a.x)} ${n(a.y)} L ${n(b.x)} ${n(b.y)}" fill="none" stroke="${SCURO}" stroke-width="2"/><path d="M ${n(z.x)} ${n(z.y)} L ${n(ali[0].x)} ${n(ali[0].y)} L ${n(ali[1].x)} ${n(ali[1].y)} Z" fill="${SCURO}"/>`;
+    ? `<path d="${percorso(punti)}" fill="none" stroke="${SCURO}" stroke-width="2"/>`
+    : `<path d="${percorso([...punti.slice(0, -1), c.base])}" fill="none" stroke="${SCURO}" stroke-width="2"/><path d="${percorso([c.fine, ...c.ali])} Z" fill="${SCURO}"/>`;
   return linea;
 }

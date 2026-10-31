@@ -154,20 +154,16 @@ test('ogni riga di riflusso sta nella capacità stimata del box più stretto', (
   }
 });
 
-test('cases largo: virgola esplicita e nessuna riga con la sola condizione', () => {
+test('eta sliding-window: la condizione intera segue il valore o occupa una riga se', () => {
   const eta = String.raw`\eta=\begin{cases}\dfrac{WD}{C\,TT}=\dfrac{WD}{D+H+A+2IC},&WF\le C\,TT,\\[4pt]\dfrac{D}{D+H},&WF>C\,TT.\end{cases}`;
   const righe = righeDisplay(eta);
   const flat = righe.find(r => r.includes(String.raw`\begin{gathered}`));
   assert.ok(flat, 'il cases deve diventare un gathered');
   const corpo = flat.slice(flat.indexOf(String.raw`\begin{gathered}`) + 16, flat.indexOf(String.raw`\end{gathered}`));
   const righeInterne = corpo.split('\\\\').map(r => r.trim()).filter(Boolean);
-  assert.equal(righeInterne.length, 3, 'il primo case usa due righe, il secondo una');
   for (const riga of righeInterne) assert.ok(larghezzaStimata(riga) <= 8.5, `riga gathered larga: ${riga}`);
-  const conCondizione = righeInterne.filter(r => r.includes('WF'));
-  assert.equal(conCondizione.length, 2);
-  assert.ok(conCondizione[0].includes(String.raw`\dfrac{WD}{C\,TT}, \quad WF\le C\,TT,`), conCondizione[0]);
-  assert.ok(conCondizione[1].includes(String.raw`\dfrac{D}{D+H}, \quad WF>C\,TT.`), conCondizione[1]);
-  for (const riga of conCondizione) assert.ok(riga.includes(String.raw`\dfrac{`), `condizione orfana: ${riga}`);
+  verificaCaso(righeInterne, [String.raw`\dfrac{WD}{C\,TT}`, String.raw`=\dfrac{WD}{D+H+A+2IC}`], String.raw`WF\le C\,TT,`);
+  verificaCaso(righeInterne, [String.raw`\dfrac{D}{D+H}`], String.raw`WF>C\,TT.`);
   assert.doesNotMatch(formulaBlock(eta), /katex-err/);
 });
 
@@ -214,21 +210,43 @@ test('formulaBlock segnala il sorgente invalido senza HTML eseguibile', () => {
   assert.doesNotMatch(html, /<script>/);
 });
 
-test('cases del grafo: virgola e quad separano valore e condizione', () => {
+function verificaCaso(righe, frammentiValore, condizione) {
+  const conCondizione = righe.map((r, i) => r.includes(condizione) ? i : -1).filter(i => i >= 0);
+  assert.equal(conCondizione.length, 1, `condizione assente o spezzata: ${condizione}\n${righe.join('\n')}`);
+  const posCondizione = conCondizione[0], posizioni = Array(frammentiValore.length);
+  let limite = posCondizione;
+  for (let i = frammentiValore.length - 1; i >= 0; i--) {
+    const pos = righe.findLastIndex((r, indice) => indice <= limite && r.includes(frammentiValore[i]));
+    assert.ok(pos >= 0, `frammento del valore assente: ${frammentiValore[i]}\n${righe.join('\n')}`);
+    posizioni[i] = pos; limite = pos;
+  }
+  const ultimoValore = posizioni.at(-1);
+  assert.ok(ultimoValore <= posCondizione, 'la condizione si e\' inserita fra i frammenti del valore');
+  if (ultimoValore === posCondizione) {
+    const atteso = `${frammentiValore.at(-1)}, \\quad ${condizione}`;
+    assert.ok(righe[ultimoValore].includes(atteso), `condizione non agganciata all'ultimo frammento: ${righe[ultimoValore]}`);
+  } else {
+    assert.equal(posCondizione, ultimoValore + 1, 'la riga se non segue immediatamente il valore');
+    assert.ok(righe[posCondizione].includes(`\\text{se }${condizione}`), `riga se incompleta: ${righe[posCondizione]}`);
+  }
+}
+
+test('quattro cases del grafo: condizioni intere, H0 senza geq orfano e X senza pi/T isolato', () => {
   const formule = [
-    [String.raw`D(t,\Delta) = \begin{cases} \dfrac{1}{\Delta} & 0 \le t \le \Delta \\ 0 & \text{altrove} \end{cases}`, [String.raw`\dfrac{1}{\Delta}`, String.raw`0 \le t \le \Delta`, '0', String.raw`\text{altrove}`]],
-    [String.raw`X(\omega) = \begin{cases} T\, X_s(\omega) & |\omega| < \dfrac{\omega_s}{2} = \dfrac{\pi}{T} \\ 0 & \text{altrove} \end{cases}`, [String.raw`T\, X_s(\omega)`, String.raw`|\omega| < \dfrac{\omega_s}{2}`, '0', String.raw`\text{altrove}`, String.raw`= \dfrac{\pi}{T}`]],
-    [String.raw`\int_{-\infty}^{+\infty} \operatorname{sinc}\frac{t-nT}{T}\, \operatorname{sinc}\frac{t-mT}{T}\, dt = \begin{cases} 0 & m \ne n \\ T & m = n \end{cases}`, ['0', String.raw`m \ne n`, 'T', 'm = n']],
+    [String.raw`D(t,\Delta) = \begin{cases} \dfrac{1}{\Delta} & 0 \le t \le \Delta \\ 0 & \text{altrove} \end{cases}`,
+      [[String.raw`\dfrac{1}{\Delta}`], String.raw`0 \le t \le \Delta`, ['0'], String.raw`\text{altrove}`]],
+    [String.raw`X(\omega) = \begin{cases} T\, X_s(\omega) & |\omega| < \dfrac{\omega_s}{2} = \dfrac{\pi}{T} \\ 0 & \text{altrove} \end{cases}`,
+      [[String.raw`T\, X_s(\omega)`], String.raw`|\omega| < \dfrac{\omega_s}{2} = \dfrac{\pi}{T}`, ['0'], String.raw`\text{altrove}`]],
+    [String.raw`\int_{-\infty}^{+\infty} \operatorname{sinc}\frac{t-nT}{T}\, \operatorname{sinc}\frac{t-mT}{T}\, dt = \begin{cases} 0 & m \ne n \\ T & m = n \end{cases}`,
+      [['0'], String.raw`m \ne n`, ['T'], 'm = n']],
+    [String.raw`H_0(\omega)=\begin{cases}H(\omega+\omega_0),&\omega+\omega_0\geq 0,\\0,&\text{altrove}.\end{cases}`,
+      [[String.raw`H(\omega+\omega_0)`], String.raw`\omega+\omega_0\geq 0,`, ['0'], String.raw`\text{altrove}.`]],
   ];
-  for (const [tex, [v1, c1, v2, c2, continuazione]] of formule) {
+  for (const [tex, [v1, c1, v2, c2]] of formule) {
     const flat = righeDisplay(tex).find(r => r.includes(String.raw`\begin{gathered}`));
     assert.ok(flat, tex);
-    const righe = flat.split(String.raw`\\`), separatore = String.raw`, \quad `;
-    assert.ok(righe.some(r => r.includes(v1) && r.includes(c1)), flat);
-    assert.ok(righe.some(r => r.includes(v2) && r.includes(c2)), flat);
-    assert.ok(righe.some(r => r.includes(v1 + separatore + c1)), `separatore assente nel primo case: ${flat}`);
-    assert.ok(righe.some(r => r.includes(v2 + separatore + c2)), `separatore assente nel secondo case: ${flat}`);
-    if (continuazione) assert.ok(righe.some(r => r.includes(continuazione)), `continuazione assente: ${flat}`);
+    const righe = flat.split(String.raw`\\`);
+    verificaCaso(righe, v1, c1); verificaCaso(righe, v2, c2);
     assert.doesNotMatch(formulaBlock(tex), /katex-err/);
   }
 });

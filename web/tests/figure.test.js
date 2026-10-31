@@ -255,18 +255,19 @@ test('la punta di ogni uscita prosegue concorde col connettore a 210, 390 e 700'
   let controllate = 0;
   // 318 e' la larghezza CSS disponibile con viewport 390: copre i cinque ritorni a sinistra.
   for (const f of figure) for (const larghezzaMassima of [210, 318, 700]) {
-    const svg = renderBlocchi(f, { larghezzaMassima }).svgInner;
-    const segmenti = [...svg.matchAll(/<path d="M ([-\d.]+) ([-\d.]+) L ([-\d.]+) ([-\d.]+)" fill="none"/g)]
-      .map(m => m.slice(1).map(Number));
-    for (const gruppo of svg.matchAll(/<g id="blocco-([^"]+)" class="blocco uscita"[^>]*>([\s\S]*?)<\/g>/g)) {
-      const linea = /<line x1="([-\d.]+)" y1="([-\d.]+)" x2="([-\d.]+)" y2="([-\d.]+)"/.exec(gruppo[2]);
-      const punta = /<path d="M ([-\d.]+) ([-\d.]+) L/.exec(gruppo[2]);
-      assert.ok(linea && punta, `${f.id}/${gruppo[1]}: glifo di uscita incompleto`);
-      const [x1, y1] = linea.slice(1).map(Number), [xp, yp] = punta.slice(1).map(Number);
-      const connettore = segmenti.find(s => Math.hypot(s[2] - x1, s[3] - y1) < .1);
-      assert.ok(connettore, `${f.id}/${gruppo[1]} ${larghezzaMassima}: connettore non agganciato alla coda`);
-      const prodotto = (connettore[2] - connettore[0]) * (xp - x1) + (connettore[3] - connettore[1]) * (yp - y1);
-      assert.ok(prodotto > 0, `${f.id}/${gruppo[1]} ${larghezzaMassima}: punta discorde dal connettore`);
+    const r = renderBlocchi(f, { larghezzaMassima });
+    for (const c of r.frecce) {
+      const n = r.nodi.find(n => String(n.blocco.id) === String(f.collegamenti[c.indice].a));
+      if (n?.forma !== 'uscita') continue;
+      const d = n.verticale ? (n.verso === 'su' ? -1 : 1) : 0;
+      const orizzontale = n.verticale ? 0 : (n.verso === 'sinistra' ? -1 : 1);
+      const coda = { x: n.x - 16 * orizzontale, y: n.y - 16 * d };
+      const punta = { x: n.x + 16 * orizzontale, y: n.y + 16 * d };
+      assert.ok(Math.hypot(c.fine.x - coda.x, c.fine.y - coda.y) < .1,
+        `${f.id}/${n.blocco.id} ${larghezzaMassima}: connettore non agganciato alla coda`);
+      const punti = c.punti || [c.inizio, c.fine], precedente = punti.at(-2);
+      const prodotto = (c.fine.x - precedente.x) * (punta.x - coda.x) + (c.fine.y - precedente.y) * (punta.y - coda.y);
+      assert.ok(prodotto > 0, `${f.id}/${n.blocco.id} ${larghezzaMassima}: punta discorde dal connettore`);
       controllate++;
     }
   }
@@ -312,4 +313,134 @@ test('nessun rect di etichetta di ingresso copre un connettore o una punta a 210
     }
   }
   assert.ok(controllate >= 18 * 2, `poche etichette di ingresso controllate: ${controllate}`);
+});
+
+const puntiFreccia = c => c.punti?.length ? c.punti : [c.inizio, c.fine];
+const vicini = (a, b) => Math.hypot(a.x - b.x, a.y - b.y) < .1;
+const trattiFreccia = c => puntiFreccia(c).slice(1).map((p, i) => [puntiFreccia(c)[i], p])
+  .filter(([a, b]) => !vicini(a, b));
+const boxTesto = t => [t.x - t.w / 2, t.y - t.h / 2, t.x + t.w / 2, t.y + t.h / 2];
+const boxSovrapposti = (a, b) => a[0] < b[2] - .1 && a[2] > b[0] + .1 && a[1] < b[3] - .1 && a[3] > b[1] + .1;
+
+function incrocioTratti(a, b, c, d) {
+  const rx = b.x - a.x, ry = b.y - a.y, sx = d.x - c.x, sy = d.y - c.y, den = rx * sy - ry * sx;
+  if (Math.abs(den) > 1e-7) {
+    const t = ((c.x - a.x) * sy - (c.y - a.y) * sx) / den;
+    const u = ((c.x - a.x) * ry - (c.y - a.y) * rx) / den;
+    if (t < -1e-7 || t > 1 + 1e-7 || u < -1e-7 || u > 1 + 1e-7) return null;
+    return { x: a.x + t * rx, y: a.y + t * ry };
+  }
+  const croce = p => (b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x);
+  if (Math.abs(croce(c)) > 1e-6 || Math.abs(croce(d)) > 1e-6) return null;
+  const asse = Math.abs(rx) >= Math.abs(ry) ? 'x' : 'y';
+  const valori = [a[asse], b[asse], c[asse], d[asse]];
+  const lo = Math.max(Math.min(valori[0], valori[1]), Math.min(valori[2], valori[3]));
+  const hi = Math.min(Math.max(valori[0], valori[1]), Math.max(valori[2], valori[3]));
+  if (hi < lo - 1e-7) return null;
+  if (hi - lo > 1e-7) return 'tratto';
+  const altro = asse === 'x' ? 'y' : 'x';
+  return { [asse]: lo, [altro]: [a, b, c, d].find(p => Math.abs(p[asse] - lo) < 1e-7)[altro] };
+}
+
+let casiGeometria;
+function geometrieGrafo() {
+  if (casiGeometria) return casiGeometria;
+  const figure = leggiGraph().nodi.flatMap(n => [n.lezione, n.dimostrazione]
+    .flatMap(s => (s?.figure || []).filter(f => f.tipo === 'blocchi')));
+  casiGeometria = figure.flatMap(f => [210, 318, 700].map(larghezzaMassima => ({
+    f, larghezzaMassima, r: renderBlocchi(f, { larghezzaMassima }),
+  })));
+  return casiGeometria;
+}
+
+test('geometria 210/318/700: nessun connettore si incrocia o si sovrappone e le punte entranti sono distinte', () => {
+  let controllati = 0;
+  for (const { f, larghezzaMassima, r } of geometrieGrafo()) {
+    for (let i = 0; i < r.frecce.length; i++) for (let j = i + 1; j < r.frecce.length; j++) {
+      const a = r.frecce[i], b = r.frecce[j], estremiA = puntiFreccia(a), estremiB = puntiFreccia(b);
+      for (const [x, y] of trattiFreccia(a)) for (const [z, w] of trattiFreccia(b)) {
+        const p = incrocioTratti(x, y, z, w);
+        if (!p) continue;
+        const condiviso = p !== 'tratto' && [estremiA[0], estremiA.at(-1)].some(e => vicini(p, e))
+          && [estremiB[0], estremiB.at(-1)].some(e => vicini(p, e));
+        assert.ok(condiviso, `${f.id} ${larghezzaMassima}: incrocio fra collegamenti ${a.indice} e ${b.indice}`);
+      }
+      if (!a.senzaPunta && !b.senzaPunta && f.collegamenti[a.indice].a === f.collegamenti[b.indice].a)
+        assert.ok(!vicini(a.fine, b.fine), `${f.id} ${larghezzaMassima}: punte coincidenti in ${f.collegamenti[a.indice].a}`);
+      controllati++;
+    }
+  }
+  assert.ok(controllati > 17 * 3, `pochi confronti geometrici: ${controllati}`);
+});
+
+test('geometria 210/318/700: nessun connettore attraversa un blocco non proprio', () => {
+  let controllati = 0;
+  for (const { f, larghezzaMassima, r } of geometrieGrafo()) for (const c of r.frecce) {
+    const link = f.collegamenti[c.indice], propri = new Set([String(link.da), String(link.a)]);
+    for (const n of r.nodi) {
+      if (propri.has(String(n.blocco.id))) continue;
+      const box = [n.x - n.w / 2, n.y - n.h / 2, n.x + n.w / 2, n.y + n.h / 2];
+      for (const [a, b] of trattiFreccia(c)) {
+        assert.ok(!trattoIntersecaRettangolo([a.x, a.y], [b.x, b.y], box),
+          `${f.id} ${larghezzaMassima}: ${link.da}>${link.a} attraversa ${n.blocco.id}`);
+        controllati++;
+      }
+    }
+  }
+  assert.ok(controllati > 17 * 3, `pochi controlli sui blocchi: ${controllati}`);
+});
+
+test('geometria 210/318/700: nessun rect opaco copre connettori, punte o altro testo', () => {
+  let controllati = 0;
+  for (const { f, larghezzaMassima, r } of geometrieGrafo()) {
+    const testi = [];
+    for (const n of r.nodi) for (const [i, t] of n.testi.entries()) testi.push({
+      t, n, c: null, opaco: n.forma !== 'rettangolo' && (n.forma !== 'ritardo' || i > 0),
+      nome: `${n.blocco.id}:${t.originale}`,
+    });
+    for (const c of r.frecce) if (c.testo) testi.push({ t: c.testo, n: null, c, opaco: true, nome: `link:${c.testo.originale}` });
+    const punte = r.frecce.filter(c => !c.senzaPunta).map(c => [c.fine, ...c.ali]);
+    for (const n of r.nodi) {
+      if (n.forma !== 'uscita') continue;
+      if (n.verticale) {
+        const d = n.verso === 'su' ? -1 : 1;
+        punte.push([{ x: n.x, y: n.y + 16 * d }, { x: n.x - 5, y: n.y + 7 * d }, { x: n.x + 5, y: n.y + 7 * d }]);
+      } else {
+        const d = n.verso === 'sinistra' ? -1 : 1;
+        punte.push([{ x: n.x + 16 * d, y: n.y }, { x: n.x + 7 * d, y: n.y - 5 }, { x: n.x + 7 * d, y: n.y + 5 }]);
+      }
+    }
+    for (const item of testi) {
+      if (!item.opaco) continue;
+      const box = boxTesto(item.t);
+      for (const c of r.frecce) {
+        if (item.c === c) continue;
+        for (const [a, b] of trattiFreccia(c)) assert.ok(!trattoIntersecaRettangolo([a.x, a.y], [b.x, b.y], box),
+          `${f.id} ${larghezzaMassima}: ${item.nome} copre il collegamento ${c.indice}`);
+      }
+      for (const punti of punte) {
+        const xs = punti.map(p => p.x), ys = punti.map(p => p.y);
+        const coperta = box[0] <= Math.max(...xs) && box[2] >= Math.min(...xs)
+          && box[1] <= Math.max(...ys) && box[3] >= Math.min(...ys);
+        assert.ok(!coperta, `${f.id} ${larghezzaMassima}: ${item.nome} copre una punta`);
+      }
+      for (const altro of testi) if (altro !== item) assert.ok(!boxSovrapposti(box, boxTesto(altro.t)),
+        `${f.id} ${larghezzaMassima}: ${item.nome} copre ${altro.nome}`);
+      controllati++;
+    }
+  }
+  assert.ok(controllati > 17 * 3, `poche etichette controllate: ${controllati}`);
+});
+
+test('geometria 210/318/700: le due diramazioni x(t) partono dal centro comune con punto di giunzione', () => {
+  const figure = leggiGraph().nodi.flatMap(n => [n.lezione, n.dimostrazione]
+    .flatMap(s => (s?.figure || []).filter(f => ['schema-filtro-trasversale', 'linea-ritardo-prese'].includes(f.id))));
+  assert.equal(figure.length, 2);
+  for (const f of figure) for (const larghezzaMassima of [210, 318, 700]) {
+    const r = renderBlocchi(f, { larghezzaMassima }), n = r.nodi.find(n => n.blocco.id === 'in');
+    const uscenti = r.frecce.filter(c => f.collegamenti[c.indice].da === 'in');
+    assert.ok(uscenti.length > 1 && n.diramazione);
+    for (const c of uscenti) assert.ok(vicini(c.inizio, n), `${f.id} ${larghezzaMassima}: ramo fuori dal centro comune`);
+    assert.match(disegnaBlocco(n), /<circle cx="[-\d.]+" cy="[-\d.]+" r="4" fill="#111827"\/>/);
+  }
 });

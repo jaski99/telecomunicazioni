@@ -1,6 +1,7 @@
 /* Geometria pura per gli schemi a blocchi: nessun accesso al DOM. */
 import { testoSicuro } from './helpers.js';
 import { separaRaccordi } from './blocchi-raccordi.js';
+import { risolviVincoli } from './blocchi-collisioni.js';
 
 export const FS_BLOCCHI = 14;
 export const INTERLINEA = 1.2;
@@ -174,8 +175,13 @@ function liberaEtichetteIngressi(frecce, perId) {
 }
 
 /** Gli estremi delle frecce si fermano al bordo delle forme, mai al centro. */
-export function layoutCollegamenti(nodi, collegamenti, limite = 16) {
+export function layoutCollegamenti(nodi, collegamenti, limite = 16, completo = true) {
   const perId = new Map(nodi.map(n => [String(n.blocco.id), n]));
+  const uscenti = new Map(), entranti = new Map();
+  for (const c of collegamenti) if (c) {
+    uscenti.set(String(c.da), (uscenti.get(String(c.da)) || 0) + 1);
+    entranti.set(String(c.a), (entranti.get(String(c.a)) || 0) + 1);
+  }
   const risultato = [];
   for (const [indice, c] of collegamenti.entries()) {
     if (!c) continue;
@@ -185,10 +191,12 @@ export function layoutCollegamenti(nodi, collegamenti, limite = 16) {
       verticalizzaEstremo(a, da);
       a.verso = a.verticale ? (da.y <= a.y ? 'giu' : 'su') : (da.x <= a.x ? 'destra' : 'sinistra');
     }
-    // Ingresso: il collegamento si innesta sulla coda del glifo e lo sostituisce, cosi
-    // restano un solo tratto e una sola punta; nei flussi verticali arriva dall'alto.
-    if (da.forma === 'ingresso') { da.servito = true; verticalizzaEstremo(da, a); }
-    const inizio = da.forma === 'ingresso'
+    // Le diramazioni partono dal medesimo punto, mai da code o punte diverse.
+    if (da.forma === 'ingresso') {
+      da.servito = true; da.diramazione = uscenti.get(String(c.da)) > 1;
+      if (!da.diramazione) verticalizzaEstremo(da, a);
+    } else if (da.forma === 'uscita') da.diramazione = (entranti.get(String(c.da)) || 0) > 0;
+    const inizio = da.diramazione ? { x: da.x, y: da.y } : da.forma === 'ingresso'
       ? (da.verticale ? { x: da.x, y: da.y - META_FRECCIA } : { x: da.x - META_FRECCIA, y: da.y })
       : da.forma === 'uscita' ? { x: da.x + da.w / 2, y: da.y } : bordo(da, a);
     const fine = a.forma === 'uscita' ? codaUscita(a) : bordo(a, da);
@@ -206,5 +214,6 @@ export function layoutCollegamenti(nodi, collegamenti, limite = 16) {
   }
   separaRaccordi(risultato, collegamenti, perId);
   liberaEtichetteIngressi(risultato, perId);
+  risolviVincoli(risultato, collegamenti, perId, completo);
   return risultato;
 }

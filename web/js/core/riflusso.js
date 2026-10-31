@@ -68,14 +68,14 @@ function spezza(s, offset, punti) {
   return righe;
 }
 
-function imballa(seg, capacita = CAPACITA) {
+function imballa(seg) {
   const atomi = spezza(seg.testo, seg.offset, analizza(seg.testo).filter(p => p.tier >= 1));
   if (atomi.length <= 1) return [seg];
   const righe = []; let corrente = atomi[0];
   for (const atomo of atomi.slice(1)) {
     if (SOLO_OPERATORE.test(atomo.testo)) { righe.push(corrente); corrente = atomo; continue; }
     const unito = { testo: `${corrente.testo} ${atomo.testo}`, offset: corrente.offset };
-    if (larghezzaStimata(unito.testo) <= capacita) corrente = unito;
+    if (larghezzaStimata(unito.testo) <= CAPACITA) corrente = unito;
     else { righe.push(corrente); corrente = atomo; }
   }
   righe.push(corrente);
@@ -110,36 +110,14 @@ function spezzaCaso(celle) {
   if (larghezzaStimata(unito) <= CAPACITA) return [unito];
   if (celle.length < 2) return imballa({ testo: unito, offset: 0 }).map((f, i) => (i ? `{}${f.testo}` : f.testo));
   const valore = celle[0].replace(/,\s*$/u, ''), condizione = unisciCelle(celle.slice(1));
-  const frammenti = imballa({ testo: valore, offset: 0 });
-  const ordine = [...new Set([frammenti.length - 1, 0, ...frammenti.keys()])];
-  const componi = (scelto, condizioni) => {
-    const righe = frammenti.map(f => f.testo);
-    righe[scelto] += `, \\quad ${condizioni[0].testo}`;
-    righe.splice(scelto + 1, 0, ...condizioni.slice(1).map(f => f.testo));
-    return righe.map((r, i) => (i ? `{}${r}` : r));
-  };
-  // Preferisce la coda del valore; se non entra, usa il primo frammento piuttosto
-  // che lasciare la condizione sola su una riga (il caso lungo di eta scorre così).
-  for (const i of ordine) {
-    if (larghezzaStimata(`${frammenti[i].testo}, \\quad ${condizione}`) <= CAPACITA)
-      return componi(i, [{ testo: condizione }]);
-  }
-  // Se il valore lascia poco spazio, spezza anche la condizione: il suo inizio resta
-  // accanto al valore e soltanto la continuazione (mai una condizione intera) va a capo.
-  for (const i of ordine) {
-    const disponibile = CAPACITA - larghezzaStimata(`${frammenti[i].testo}, \\quad `);
-    if (disponibile <= 0) continue;
-    const condizioni = imballa({ testo: condizione, offset: 0 }, disponibile);
-    if (condizioni.length > 1 && condizioni.every(f => larghezzaStimata(f.testo) <= disponibile))
-      return componi(i, condizioni);
-  }
-  // Fallback per notazioni atomiche eccezionali: evita comunque la condizione orfana.
-  let scelto = ordine[0], minimo = Infinity;
-  for (const i of ordine) {
-    const larghezza = larghezzaStimata(`${frammenti[i].testo}, \\quad ${condizione}`);
-    if (larghezza < minimo) { scelto = i; minimo = larghezza; }
-  }
-  return componi(scelto, [{ testo: condizione }]);
+  const righe = imballa({ testo: valore, offset: 0 }).map(f => f.testo);
+  const ultimo = righe.length - 1;
+  // La condizione intera segue l'ultimo frammento del valore. Se non entra,
+  // resta intera su una riga propria introdotta da "se", senza spezzarne le relazioni.
+  if (larghezzaStimata(`${righe[ultimo]}, \\quad ${condizione}`) <= CAPACITA)
+    righe[ultimo] += `, \\quad ${condizione}`;
+  else righe.push(`\\text{se }${condizione}`);
+  return righe.map((r, i) => (i ? `{}${r}` : r));
 }
 
 /** Ogni case diventa una o più righe di gathered, senza condizioni orfane. */
