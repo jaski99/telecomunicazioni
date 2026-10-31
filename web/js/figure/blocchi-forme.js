@@ -18,7 +18,7 @@ export function disegnaTesto(t, sfondo = false) {
 
 function figura(nodo) {
   const { x, y, w, h, forma } = nodo;
-  if (forma === 'nodo') return `<circle cx="${n(x)}" cy="${n(y)}" r="6" fill="${SCURO}"/>`;
+  if (forma === 'nodo') return `<circle cx="${n(x)}" cy="${n(y)}" r="${n(w / 2)}" fill="${SCURO}"/>`;
   if (forma === 'ingresso' || forma === 'uscita') {
     // Il glifo prosegue nel verso del collegamento, anche quando il flusso stretto
     // torna verso sinistra o verso l'alto. Un ingresso innestato (servito) delega

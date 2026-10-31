@@ -42,10 +42,10 @@ function profilo(blocco, limite) {
   const rettangolo = !['sommatore', 'moltiplicatore', 'ritardo', 'nodo', 'ingresso', 'uscita'].includes(forma);
   const simboloSolo = forma === 'sommatore' && etichetta.originale.trim() === '+';
   const w = rettangolo ? Math.max(44, etichetta.w + 16) :
-    forma === 'ritardo' ? 48 : forma === 'nodo' ? 12 :
+    forma === 'ritardo' ? 48 : forma === 'nodo' ? 16 :
     forma === 'ingresso' || forma === 'uscita' ? 32 : 36;
   const h = rettangolo ? Math.max(36, etichetta.h + 14) :
-    forma === 'ritardo' ? 32 : forma === 'nodo' ? 12 :
+    forma === 'ritardo' ? 32 : forma === 'nodo' ? 16 :
     forma === 'ingresso' || forma === 'uscita' ? 16 : 36;
   if (!rettangolo) etichetta.y = h / 2 + 7 + etichetta.h / 2;
   const testi = etichetta.righe.length && !simboloSolo ? [etichetta] : [];
@@ -214,6 +214,6 @@ export function layoutCollegamenti(nodi, collegamenti, limite = 16, completo = t
   }
   separaRaccordi(risultato, collegamenti, perId);
   liberaEtichetteIngressi(risultato, perId);
-  risolviVincoli(risultato, collegamenti, perId, completo);
+  risultato.conflitti = risolviVincoli(risultato, collegamenti, perId, completo);
   return risultato;
 }

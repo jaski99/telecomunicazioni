@@ -33,7 +33,75 @@ function costruisci(blocchi, collegamenti, limite, spazio, completo = true) {
   const box = bboxBlocchi(nodi, frecce);
   const left = Math.floor(box.left - PADDING), top = Math.floor(box.top - PADDING);
   const right = Math.ceil(box.right + PADDING), bottom = Math.ceil(box.bottom + PADDING);
-  return { nodi, frecce, left, top, w: right - left, h: bottom - top };
+  return { nodi, frecce, left, top, w: right - left, h: bottom - top, conflitti: frecce.conflitti || 0 };
+}
+
+/** Ordine in una colonna per grafi con retroazione: condensa le componenti
+ *  fortemente connesse e, dentro ciascuna, segue gli archi del ciclo. */
+function ordineConCicli(ordinati, collegamenti, blocchiOriginali) {
+  const perId = new Map(ordinati.map(b => [String(b.id), b]));
+  const rango = new Map(ordinati.map((b, i) => [String(b.id), i]));
+  const successori = new Map([...perId.keys()].map(id => [id, new Set()]));
+  const predecessori = new Map([...perId.keys()].map(id => [id, new Set()]));
+  for (const c of collegamenti) {
+    const da = String(c?.da), a = String(c?.a);
+    if (!c || da === a || !perId.has(da) || !perId.has(a)) continue;
+    successori.get(da).add(a); predecessori.get(a).add(da);
+  }
+  const indici = new Map(), bassi = new Map(), componenteDi = new Map();
+  const pila = [], inPila = new Set(), componenti = [];
+  let contatore = 0;
+  function visita(v) {
+    indici.set(v, contatore); bassi.set(v, contatore); contatore++;
+    pila.push(v); inPila.add(v);
+    for (const w of successori.get(v)) {
+      if (!indici.has(w)) { visita(w); bassi.set(v, Math.min(bassi.get(v), bassi.get(w))); }
+      else if (inPila.has(w)) bassi.set(v, Math.min(bassi.get(v), indici.get(w)));
+    }
+    if (bassi.get(v) === indici.get(v)) {
+      const componente = [];
+      for (;;) { const w = pila.pop(); inPila.delete(w); componenteDi.set(w, componenti.length); componente.push(w); if (w === v) break; }
+      componenti.push(componente);
+    }
+  }
+  for (const id of perId.keys()) if (!indici.has(id)) visita(id);
+  const grado = componenti.map(() => 0), archiComponenti = componenti.map(() => new Set());
+  for (const [da, insieme] of successori) for (const a of insieme) {
+    const cd = componenteDi.get(da), ca = componenteDi.get(a);
+    if (cd !== ca && !archiComponenti[cd].has(ca)) { archiComponenti[cd].add(ca); grado[ca]++; }
+  }
+  const rangoComponente = componenti.map(ids => Math.min(...ids.map(id => rango.get(id))));
+  const usate = new Set(), ordineComponenti = [];
+  while (ordineComponenti.length < componenti.length) {
+    const libera = componenti.keys().find(i => !usate.has(i) && grado[i] === 0
+      && componenti.every((_, j) => usate.has(j) || grado[j] !== 0 || rangoComponente[i] <= rangoComponente[j]));
+    if (libera === undefined) return null;
+    usate.add(libera); ordineComponenti.push(libera);
+    for (const ca of archiComponenti[libera]) grado[ca]--;
+  }
+  const originali = new Map(blocchiOriginali.map(b => [String(b.id), b]));
+  const ordine = [];
+  for (const ci of ordineComponenti) {
+    const ids = componenti[ci];
+    if (ids.length === 1) { ordine.push(perId.get(ids[0])); continue; }
+    const dentro = new Set(ids), visti = new Set();
+    const perOriginale = (x, y) => {
+      const a = originali.get(x) || {}, b = originali.get(y) || {};
+      return (Number(a.riga) || 0) - (Number(b.riga) || 0)
+        || (Number(a.colonna) || 0) - (Number(b.colonna) || 0)
+        || (a.__figuraIndice || 0) - (b.__figuraIndice || 0);
+    };
+    function percorri(id) {
+      if (visti.has(id)) return;
+      visti.add(id); ordine.push(perId.get(id));
+      for (const a of [...successori.get(id)].filter(x => dentro.has(x)).sort(perOriginale)) percorri(a);
+    }
+    const inizi = ids.filter(id => [...predecessori.get(id)].some(p => !dentro.has(p)))
+      .sort((x, y) => rango.get(x) - rango.get(y));
+    for (const id of inizi) percorri(id);
+    for (const id of [...ids].sort((x, y) => rango.get(x) - rango.get(y))) percorri(id);
+  }
+  return ordine.length === ordinati.length ? ordine : null;
 }
 
 function riorganizza(blocchi, colonnePerRiga, collegamenti) {
@@ -60,7 +128,12 @@ function riorganizza(blocchi, colonnePerRiga, collegamenti) {
   const usati = new Set(), ordine = [];
   while (ordine.length < ordinati.length) {
     const libero = ordinati.find(b => !usati.has(String(b.id)) && grado.get(String(b.id)) === 0);
-    if (!libero) return disposizione; // Un ciclo non ha un ordinamento topologico.
+    if (!libero) {
+      const ordineCicli = ordineConCicli(ordinati, collegamenti, blocchi);
+      if (!ordineCicli) return disposizione;
+      const rigaCicli = new Map(ordineCicli.map((b, i) => [String(b.id), i]));
+      return disposizione.map(b => ({ ...b, riga: rigaCicli.get(String(b.id)) }));
+    }
     const id = String(libero.id); usati.add(id); ordine.push(libero);
     for (const a of successori.get(id) || []) grado.set(a, grado.get(a) - 1);
   }
@@ -77,8 +150,10 @@ export function renderBlocchi(spec, opzioni = {}) {
   const cssWidth = Number(opzioni.larghezzaMassima);
   const larghezzaMassima = Number.isFinite(cssWidth) && cssWidth > 0
     ? Math.max(80, Math.floor(cssWidth * FS_BLOCCHI / 15)) : LARGHEZZA_MASSIMA;
-  let disegno;
+  let disegno, riserva = null;
   // Prima si compatta il layout; se non basta, i blocchi rifluiscono in righe.
+  // Una disposizione che entra in larghezza ma conserva conflitti geometrici
+  // resta di riserva: si prova prima un riflusso con meno colonne.
   for (let colonne = Infinity; colonne >= 1;) {
     const layout = Number.isFinite(colonne) ? riorganizza(blocchi, colonne, collegamenti) : blocchi;
     for (let limite = 16; limite >= 1; limite--) {
@@ -86,12 +161,17 @@ export function renderBlocchi(spec, opzioni = {}) {
       disegno = costruisci(layout, collegamenti, limite, spazio, false);
       if (disegno.w <= larghezzaMassima || (colonne === 1 && limite === 1)) {
         disegno = costruisci(layout, collegamenti, limite, spazio, true);
-        if (disegno.w <= larghezzaMassima) break;
+        if (disegno.w <= larghezzaMassima) {
+          if (!disegno.conflitti) { riserva = null; break; }
+          if (!riserva || disegno.conflitti < riserva.conflitti) riserva = disegno;
+          break;
+        }
       }
     }
-    if (disegno.w <= larghezzaMassima || colonne === 1) break;
+    if ((disegno.w <= larghezzaMassima && !disegno.conflitti) || colonne === 1) break;
     colonne = colonne === Infinity ? 6 : colonne - 1;
   }
+  if (riserva && (disegno.w > larghezzaMassima || disegno.conflitti > riserva.conflitti)) disegno = riserva;
 
   const frecce = disegno.frecce.map(c => `<g ${attributiProgressivi(opzioni.progressione, 'collegamento', c.indice)}>${disegnaFreccia(c)}${disegnaTesto(c.testo, true)}</g>`).join('');
   const forme = disegno.nodi.map(n => disegnaBlocco(n, opzioni, n.blocco.__figuraIndice)).join('');

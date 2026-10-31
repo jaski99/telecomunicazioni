@@ -7,10 +7,19 @@ export function separaRaccordi(frecce, collegamenti, perId) {
     else punte.push({ x: nodo.x + (nodo.verso === 'sinistra' ? -16 : 16), y: nodo.y });
   }
   const coincide = (a, b) => Math.hypot(a.x - b.x, a.y - b.y) < 0.1;
+  const entranti = new Map();
+  for (const f of frecce) if (!f.senzaPunta) {
+    const a = String(collegamenti[f.indice].a);
+    entranti.set(a, (entranti.get(a) || 0) + 1);
+  }
   for (const f of frecce) {
     if (!punte.some(p => coincide(p, f.inizio))) continue;
     const nodo = perId.get(String(collegamenti[f.indice].da));
     if (!nodo || nodo.forma === 'ingresso') continue;
+    // Con piu' frecce entranti saranno le punte a distribuirsi attorno
+    // alla partenza naturale: spostare quest'ultima la porterebbe sul
+    // ventaglio di arrivo (es. l'uscita di un sommatore a sette ingressi).
+    if ((entranti.get(String(collegamenti[f.indice].da)) || 0) > 1) continue;
     const candidati = nodo.forma === 'uscita' ? [{ x: nodo.x, y: nodo.y }] : [
       { x: nodo.x - nodo.w / 2, y: nodo.y }, { x: nodo.x + nodo.w / 2, y: nodo.y },
       { x: nodo.x, y: nodo.y - nodo.h / 2 }, { x: nodo.x, y: nodo.y + nodo.h / 2 },

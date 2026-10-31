@@ -444,3 +444,124 @@ test('geometria 210/318/700: le due diramazioni x(t) partono dal centro comune c
     assert.match(disegnaBlocco(n), /<circle cx="[-\d.]+" cy="[-\d.]+" r="4" fill="#111827"\/>/);
   }
 });
+
+const boxForma = n => {
+  if (n.forma === 'ingresso' || n.forma === 'uscita') {
+    if (n.forma === 'ingresso' && n.servito)
+      return n.diramazione ? [n.x - 4, n.y - 4, n.x + 4, n.y + 4] : [n.x, n.y, n.x, n.y];
+    return n.verticale ? [n.x - 5, n.y - 16, n.x + 5, n.y + 16] : [n.x - 16, n.y - 5, n.x + 16, n.y + 5];
+  }
+  return [n.x - n.w / 2, n.y - n.h / 2, n.x + n.w / 2, n.y + n.h / 2];
+};
+
+function paralleliSegmenti([a, b], [c, d]) {
+  const ah = Math.abs(b.y - a.y) < .01, av = Math.abs(b.x - a.x) < .01;
+  const bh = Math.abs(d.y - c.y) < .01, bv = Math.abs(d.x - c.x) < .01;
+  if (ah && bh) {
+    const lo = Math.max(Math.min(a.x, b.x), Math.min(c.x, d.x));
+    const hi = Math.min(Math.max(a.x, b.x), Math.max(c.x, d.x));
+    return { overlap: hi - lo, dist: Math.abs(a.y - c.y) };
+  }
+  if (av && bv) {
+    const lo = Math.max(Math.min(a.y, b.y), Math.min(c.y, d.y));
+    const hi = Math.min(Math.max(a.y, b.y), Math.max(c.y, d.y));
+    return { overlap: hi - lo, dist: Math.abs(a.x - c.x) };
+  }
+  return null;
+}
+
+const latiDi = box => [
+  [{ x: box[0], y: box[1] }, { x: box[2], y: box[1] }],
+  [{ x: box[0], y: box[3] }, { x: box[2], y: box[3] }],
+  [{ x: box[0], y: box[1] }, { x: box[0], y: box[3] }],
+  [{ x: box[2], y: box[1] }, { x: box[2], y: box[3] }],
+];
+
+test('geometria 210/318/700: nessun rect opaco sta sulla forma di un blocco, a cominciare dal proprio', () => {
+  let controllati = 0;
+  for (const { f, larghezzaMassima, r } of geometrieGrafo()) {
+    const testi = [];
+    for (const n of r.nodi) for (const [i, t] of n.testi.entries())
+      if (n.forma !== 'rettangolo' && (n.forma !== 'ritardo' || i > 0))
+        testi.push({ t, nome: `${n.blocco.id}:${t.originale}` });
+    for (const c of r.frecce) if (c.testo) testi.push({ t: c.testo, nome: `link${c.indice}:${c.testo.originale}` });
+    for (const item of testi) {
+      const box = boxTesto(item.t);
+      for (const n of r.nodi) assert.ok(!boxSovrapposti(box, boxForma(n)),
+        `${f.id} ${larghezzaMassima}: ${item.nome} sulla forma di ${n.blocco.id}`);
+      controllati++;
+    }
+  }
+  assert.ok(controllati > 17 * 3, `poche etichette controllate: ${controllati}`);
+});
+
+test('geometria 210/318/700: corsie a >=8 px fra loro e dai blocchi, nessun tratto a <2 px da un lato', () => {
+  let controllati = 0;
+  for (const { f, larghezzaMassima, r } of geometrieGrafo()) {
+    for (let i = 0; i < r.frecce.length; i++) for (let j = i + 1; j < r.frecce.length; j++)
+      for (const s of trattiFreccia(r.frecce[i])) for (const t of trattiFreccia(r.frecce[j])) {
+        const info = paralleliSegmenti(s, t);
+        if (info && info.overlap > .1) assert.ok(info.dist >= 8 - .01,
+          `${f.id} ${larghezzaMassima}: corsie ${r.frecce[i].indice}/${r.frecce[j].indice} a ${info.dist.toFixed(1)} px`);
+      }
+    for (const c of r.frecce) {
+      const link = f.collegamenti[c.indice], tratti = trattiFreccia(c);
+      for (const n of r.nodi) {
+        if (n.forma === 'ingresso' || n.forma === 'uscita') continue;
+        const box = [n.x - n.w / 2, n.y - n.h / 2, n.x + n.w / 2, n.y + n.h / 2];
+        for (const [si, s] of tratti.entries()) {
+          const moncone = (String(n.blocco.id) === String(link.da) && si === 0)
+            || (String(n.blocco.id) === String(link.a) && si === tratti.length - 1);
+          for (const lato of latiDi(box)) {
+            const info = paralleliSegmenti(s, lato);
+            if (!info || info.overlap <= .1) continue;
+            assert.ok(info.dist >= 2 - .01,
+              `${f.id} ${larghezzaMassima}: ${link.da}>${link.a} a ${info.dist.toFixed(1)} px da un lato di ${n.blocco.id}`);
+            if (!moncone) assert.ok(info.dist >= 8 - .01,
+              `${f.id} ${larghezzaMassima}: corsia ${link.da}>${link.a} a ${info.dist.toFixed(1)} px da ${n.blocco.id}`);
+            controllati++;
+          }
+        }
+      }
+    }
+  }
+  assert.ok(controllati > 17 * 3, `pochi controlli sulle corsie: ${controllati}`);
+});
+
+test('geometria 210/318/700: punte sullo stesso blocco a >=14 px e tutto dentro il viewBox', () => {
+  let controllate = 0;
+  for (const { f, larghezzaMassima, r } of geometrieGrafo()) {
+    const perBlocco = new Map();
+    for (const c of r.frecce) {
+      if (c.senzaPunta) continue;
+      const a = String(f.collegamenti[c.indice].a);
+      if (!perBlocco.has(a)) perBlocco.set(a, []);
+      perBlocco.get(a).push(c);
+    }
+    for (const [a, cs] of perBlocco) for (let i = 0; i < cs.length; i++)
+      for (let j = i + 1; j < cs.length; j++) {
+        const d = Math.hypot(cs[i].fine.x - cs[j].fine.x, cs[i].fine.y - cs[j].fine.y);
+        assert.ok(d >= 14 - .01, `${f.id} ${larghezzaMassima}: punte su ${a} a ${d.toFixed(1)} px`);
+        controllate++;
+      }
+    const m = /translate\(([-0-9.]+),([-0-9.]+)\)/.exec(r.svgInner);
+    const dx = Number(m[1]), dy = Number(m[2]);
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    const estendi = (x, y, pad = 0) => {
+      minX = Math.min(minX, x - pad); minY = Math.min(minY, y - pad);
+      maxX = Math.max(maxX, x + pad); maxY = Math.max(maxY, y + pad);
+    };
+    for (const n of r.nodi) {
+      const b = boxForma(n);
+      estendi(b[0] + dx, b[1] + dy); estendi(b[2] + dx, b[3] + dy);
+      for (const t of n.testi) { const tb = boxTesto(t); estendi(tb[0] + dx, tb[1] + dy); estendi(tb[2] + dx, tb[3] + dy); }
+    }
+    for (const c of r.frecce) {
+      for (const p of [...puntiFreccia(c), c.base, ...c.ali]) estendi(p.x + dx, p.y + dy, 1);
+      if (c.testo) { const tb = boxTesto(c.testo); estendi(tb[0] + dx, tb[1] + dy); estendi(tb[2] + dx, tb[3] + dy); }
+    }
+    assert.ok(minX >= -.01 && minY >= -.01 && maxX <= r.viewBox.w + .01 && maxY <= r.viewBox.h + .01,
+      `${f.id} ${larghezzaMassima}: ingombri [${minX.toFixed(1)},${minY.toFixed(1)},${maxX.toFixed(1)},${maxY.toFixed(1)}] fuori da ${r.viewBox.w}x${r.viewBox.h}`);
+  }
+  assert.ok(controllate > 0, 'nessuna coppia di punte controllata');
+});
