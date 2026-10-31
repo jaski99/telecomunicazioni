@@ -68,14 +68,14 @@ function spezza(s, offset, punti) {
   return righe;
 }
 
-function imballa(seg) {
+function imballa(seg, capacita = CAPACITA) {
   const atomi = spezza(seg.testo, seg.offset, analizza(seg.testo).filter(p => p.tier >= 1));
   if (atomi.length <= 1) return [seg];
   const righe = []; let corrente = atomi[0];
   for (const atomo of atomi.slice(1)) {
     if (SOLO_OPERATORE.test(atomo.testo)) { righe.push(corrente); corrente = atomo; continue; }
     const unito = { testo: `${corrente.testo} ${atomo.testo}`, offset: corrente.offset };
-    if (larghezzaStimata(unito.testo) <= CAPACITA) corrente = unito;
+    if (larghezzaStimata(unito.testo) <= capacita) corrente = unito;
     else { righe.push(corrente); corrente = atomo; }
   }
   righe.push(corrente);
@@ -100,15 +100,55 @@ function spezzaTestiLunghi(latex) {
   });
 }
 
-/** Ogni riga di cases (valore e condizione uniti da uno spazio sottile) diventa una riga di gathered. */
+/** Valore e condizione restano distinti da una virgola e da uno spazio leggibile. */
+function unisciCelle(celle) {
+  return celle.map((c, i) => i < celle.length - 1 ? c.replace(/,\s*$/u, '') : c).join(', \\quad ');
+}
+
+function spezzaCaso(celle) {
+  const unito = unisciCelle(celle);
+  if (larghezzaStimata(unito) <= CAPACITA) return [unito];
+  if (celle.length < 2) return imballa({ testo: unito, offset: 0 }).map((f, i) => (i ? `{}${f.testo}` : f.testo));
+  const valore = celle[0].replace(/,\s*$/u, ''), condizione = unisciCelle(celle.slice(1));
+  const frammenti = imballa({ testo: valore, offset: 0 });
+  const ordine = [...new Set([frammenti.length - 1, 0, ...frammenti.keys()])];
+  const componi = (scelto, condizioni) => {
+    const righe = frammenti.map(f => f.testo);
+    righe[scelto] += `, \\quad ${condizioni[0].testo}`;
+    righe.splice(scelto + 1, 0, ...condizioni.slice(1).map(f => f.testo));
+    return righe.map((r, i) => (i ? `{}${r}` : r));
+  };
+  // Preferisce la coda del valore; se non entra, usa il primo frammento piuttosto
+  // che lasciare la condizione sola su una riga (il caso lungo di eta scorre così).
+  for (const i of ordine) {
+    if (larghezzaStimata(`${frammenti[i].testo}, \\quad ${condizione}`) <= CAPACITA)
+      return componi(i, [{ testo: condizione }]);
+  }
+  // Se il valore lascia poco spazio, spezza anche la condizione: il suo inizio resta
+  // accanto al valore e soltanto la continuazione (mai una condizione intera) va a capo.
+  for (const i of ordine) {
+    const disponibile = CAPACITA - larghezzaStimata(`${frammenti[i].testo}, \\quad `);
+    if (disponibile <= 0) continue;
+    const condizioni = imballa({ testo: condizione, offset: 0 }, disponibile);
+    if (condizioni.length > 1 && condizioni.every(f => larghezzaStimata(f.testo) <= disponibile))
+      return componi(i, condizioni);
+  }
+  // Fallback per notazioni atomiche eccezionali: evita comunque la condizione orfana.
+  let scelto = ordine[0], minimo = Infinity;
+  for (const i of ordine) {
+    const larghezza = larghezzaStimata(`${frammenti[i].testo}, \\quad ${condizione}`);
+    if (larghezza < minimo) { scelto = i; minimo = larghezza; }
+  }
+  return componi(scelto, [{ testo: condizione }]);
+}
+
+/** Ogni case diventa una o più righe di gathered, senza condizioni orfane. */
 function appiattisciCasi(latex) {
   const casi = /\\begin\{(cases|dcases)\}([\s\S]*?)\\end\{\1\}/gu;
   if (!casi.test(latex) || larghezzaStimata(latex) <= CAPACITA) return latex;
   return latex.replace(casi, (m, ambiente, corpo) => {
     const righe = corpo.split(/\\\\(?:\[[^\]]*\])?/u).map(r => r.trim()).filter(Boolean)
-      .map(r => r.split('&').map(c => c.trim()).filter(Boolean).join(' \\, '))
-      .flatMap(r => larghezzaStimata(r) <= 10.4 ? [r]
-        : imballa({ testo: r, offset: 0 }).map((f, i) => (i ? `{}${f.testo}` : f.testo)));
+      .flatMap(r => spezzaCaso(r.split('&').map(c => c.trim()).filter(Boolean)));
     if (righe.length < 2) return m;
     return `\\left\\{\\begin{gathered}${righe.join('\\\\{}')}\\end{gathered}\\right.`;
   });

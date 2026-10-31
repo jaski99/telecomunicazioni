@@ -90,9 +90,8 @@ function bordo(da, a) {
   return { x: da.x + dx * fattore, y: da.y + dy * fattore };
 }
 
-/** Nel flusso verticale (una colonna per riga, tipici i riadattamenti stretti) la freccia
- *  arriva all'estremo dall'alto: il glifo va ruotato verso il basso e l'etichetta spostata
- *  di lato, altrimenti la punta indica il vuoto e l'etichetta cade sotto il foglio. */
+/** Nel flusso verticale l'etichetta va inizialmente di lato; dopo aver costruito
+ *  tutti i collegamenti viene spostata se il suo fondo copre un tratto o una punta. */
 const META_FRECCIA = 16;
 
 function verticalizzaEstremo(n, altro) {
@@ -106,6 +105,74 @@ function verticalizzaEstremo(n, altro) {
   }
 }
 
+function codaUscita(n) {
+  if (n.verticale) return { x: n.x, y: n.y + (n.verso === 'su' ? META_FRECCIA : -META_FRECCIA) };
+  return { x: n.x + (n.verso === 'sinistra' ? META_FRECCIA : -META_FRECCIA), y: n.y };
+}
+
+function rettangoloTesto(t) {
+  return { left: t.x - t.w / 2, right: t.x + t.w / 2, top: t.y - t.h / 2, bottom: t.y + t.h / 2 };
+}
+
+/** Intersezione segmento/rettangolo (Liang–Barsky), estremi compresi. */
+function trattoSuRettangolo(a, b, r) {
+  const dx = b.x - a.x, dy = b.y - a.y;
+  const p = [-dx, dx, -dy, dy], q = [a.x - r.left, r.right - a.x, a.y - r.top, r.bottom - a.y];
+  let inizio = 0, fine = 1;
+  for (let i = 0; i < 4; i++) {
+    if (!p[i]) { if (q[i] < 0) return false; continue; }
+    const t = q[i] / p[i];
+    if (p[i] < 0) { if (t > fine) return false; inizio = Math.max(inizio, t); }
+    else { if (t < inizio) return false; fine = Math.min(fine, t); }
+  }
+  return true;
+}
+
+function etichettaCopreFreccia(t, frecce) {
+  const r = rettangoloTesto(t);
+  return frecce.some(c => {
+    if (trattoSuRettangolo(c.inizio, c.senzaPunta ? c.fine : c.base, r)) return true;
+    if (c.senzaPunta) return false;
+    const punti = [c.fine, ...c.ali], xs = punti.map(p => p.x), ys = punti.map(p => p.y);
+    return r.left <= Math.max(...xs) && r.right >= Math.min(...xs)
+      && r.top <= Math.max(...ys) && r.bottom >= Math.min(...ys);
+  });
+}
+
+function aggiornaBoxIngresso(n) {
+  const box = { left: n.x - n.w / 2 - 1, right: n.x + n.w / 2 + 1,
+    top: n.y - n.h / 2 - 1, bottom: n.y + n.h / 2 + 1 };
+  if (n.verticale) {
+    box.top = Math.min(box.top, n.y - META_FRECCIA - 1);
+    box.bottom = Math.max(box.bottom, n.y + META_FRECCIA + 1);
+  }
+  for (const t of n.testi) {
+    const r = rettangoloTesto(t);
+    box.left = Math.min(box.left, r.left); box.right = Math.max(box.right, r.right);
+    box.top = Math.min(box.top, r.top); box.bottom = Math.max(box.bottom, r.bottom);
+  }
+  n.box = box;
+}
+
+/** Un ingresso con diramazioni può avere sia un tratto orizzontale sia uno verticale:
+ *  il fondo opaco dell'etichetta non deve nasconderne uno già disegnato. */
+function liberaEtichetteIngressi(frecce, perId) {
+  for (const n of perId.values()) {
+    if (n.forma !== 'ingresso') continue;
+    for (const t of n.testi) {
+      if (!etichettaCopreFreccia(t, frecce)) continue;
+      const candidati = [
+        { x: n.x, y: n.y - META_FRECCIA - 8 - t.h / 2 },
+        { x: n.x - META_FRECCIA - 8 - t.w / 2, y: n.y },
+        { x: n.x, y: n.y + META_FRECCIA + 8 + t.h / 2 },
+        { x: n.x + META_FRECCIA + 8 + t.w / 2, y: n.y },
+      ];
+      const libero = candidati.find(p => !etichettaCopreFreccia({ ...t, ...p }, frecce));
+      if (libero) { t.x = libero.x; t.y = libero.y; aggiornaBoxIngresso(n); }
+    }
+  }
+}
+
 /** Gli estremi delle frecce si fermano al bordo delle forme, mai al centro. */
 export function layoutCollegamenti(nodi, collegamenti, limite = 16) {
   const perId = new Map(nodi.map(n => [String(n.blocco.id), n]));
@@ -114,16 +181,17 @@ export function layoutCollegamenti(nodi, collegamenti, limite = 16) {
     if (!c) continue;
     const da = perId.get(String(c.da)), a = perId.get(String(c.a));
     if (!da || !a || da === a) continue;
-    if (a.forma === 'uscita') verticalizzaEstremo(a, da);
+    if (a.forma === 'uscita') {
+      verticalizzaEstremo(a, da);
+      a.verso = a.verticale ? (da.y <= a.y ? 'giu' : 'su') : (da.x <= a.x ? 'destra' : 'sinistra');
+    }
     // Ingresso: il collegamento si innesta sulla coda del glifo e lo sostituisce, cosi
     // restano un solo tratto e una sola punta; nei flussi verticali arriva dall'alto.
     if (da.forma === 'ingresso') { da.servito = true; verticalizzaEstremo(da, a); }
     const inizio = da.forma === 'ingresso'
       ? (da.verticale ? { x: da.x, y: da.y - META_FRECCIA } : { x: da.x - META_FRECCIA, y: da.y })
       : da.forma === 'uscita' ? { x: da.x + da.w / 2, y: da.y } : bordo(da, a);
-    const fine = a.forma === 'uscita'
-      ? (a.verticale ? { x: a.x, y: a.y - META_FRECCIA } : { x: a.x - META_FRECCIA, y: a.y })
-      : bordo(a, da);
+    const fine = a.forma === 'uscita' ? codaUscita(a) : bordo(a, da);
     const dx = fine.x - inizio.x, dy = fine.y - inizio.y, lunghezza = Math.hypot(dx, dy) || 1;
     const ux = dx / lunghezza, uy = dy / lunghezza;
     const base = { x: fine.x - ux * 8, y: fine.y - uy * 8 };
@@ -137,5 +205,6 @@ export function layoutCollegamenti(nodi, collegamenti, limite = 16) {
     risultato.push({ inizio, fine, base, ali, senzaPunta: a.forma === 'uscita', testo: et.righe.length ? et : null, indice });
   }
   separaRaccordi(risultato, collegamenti, perId);
+  liberaEtichetteIngressi(risultato, perId);
   return risultato;
 }

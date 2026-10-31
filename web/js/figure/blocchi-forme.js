@@ -20,13 +20,16 @@ function figura(nodo) {
   const { x, y, w, h, forma } = nodo;
   if (forma === 'nodo') return `<circle cx="${n(x)}" cy="${n(y)}" r="6" fill="${SCURO}"/>`;
   if (forma === 'ingresso' || forma === 'uscita') {
-    // Variante verticale (flusso stretto): stesso glifo, ruotato in basso; il tratto
-    // parte da y-16, dove si aggancia il collegamento. Un ingresso innestato (servito)
-    // delega tratto e punta al collegamento: restano un solo tratto e una sola punta.
+    // Il glifo prosegue nel verso del collegamento, anche quando il flusso stretto
+    // torna verso sinistra o verso l'alto. Un ingresso innestato (servito) delega
+    // tratto e punta al collegamento: restano un solo tratto e una sola punta.
     if (forma === 'ingresso' && nodo.servito) return '';
-    return nodo.verticale
-      ? `<line x1="${n(x)}" y1="${n(y - 16)}" x2="${n(x)}" y2="${n(y + 9)}" stroke="${SCURO}" stroke-width="2"/><path d="M ${n(x)} ${n(y + 16)} L ${n(x - 5)} ${n(y + 7)} L ${n(x + 5)} ${n(y + 7)} Z" fill="${SCURO}"/>`
-      : `<line x1="${n(x - 16)}" y1="${n(y)}" x2="${n(x + 9)}" y2="${n(y)}" stroke="${SCURO}" stroke-width="2"/><path d="M ${n(x + 16)} ${n(y)} L ${n(x + 7)} ${n(y - 5)} L ${n(x + 7)} ${n(y + 5)} Z" fill="${SCURO}"/>`;
+    if (nodo.verticale) {
+      const d = nodo.verso === 'su' ? -1 : 1;
+      return `<line x1="${n(x)}" y1="${n(y - 16 * d)}" x2="${n(x)}" y2="${n(y + 9 * d)}" stroke="${SCURO}" stroke-width="2"/><path d="M ${n(x)} ${n(y + 16 * d)} L ${n(x - 5)} ${n(y + 7 * d)} L ${n(x + 5)} ${n(y + 7 * d)} Z" fill="${SCURO}"/>`;
+    }
+    const d = nodo.verso === 'sinistra' ? -1 : 1;
+    return `<line x1="${n(x - 16 * d)}" y1="${n(y)}" x2="${n(x + 9 * d)}" y2="${n(y)}" stroke="${SCURO}" stroke-width="2"/><path d="M ${n(x + 16 * d)} ${n(y)} L ${n(x + 7 * d)} ${n(y - 5)} L ${n(x + 7 * d)} ${n(y + 5)} Z" fill="${SCURO}"/>`;
   }
   if (forma === 'sommatore' || forma === 'moltiplicatore') {
     const segno = forma === 'sommatore'

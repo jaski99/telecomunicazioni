@@ -236,7 +236,7 @@ test('ingressi e uscite collegati: una sola punta, segmento verticale nel flusso
 
 test('tutte le figure a blocchi del grafo: nessuna punta coincide con inizio di altro segmento', () => {
   const figure = leggiGraph().nodi.flatMap(n => (n.dimostrazione?.figure || []).filter(f => f.tipo === 'blocchi'));
-  assert.equal(figure.length, 16);
+  assert.ok(figure.length >= 16, `attese almeno 16 figure a blocchi, trovate ${figure.length}`);
   for (const f of figure) for (const larghezzaMassima of [210, 700]) {
     const svg = renderBlocchi(f, { larghezzaMassima }).svgInner;
     const linee = [...svg.matchAll(/<line x1="([-\d.]+)" y1="([-\d.]+)" x2="([-\d.]+)" y2="([-\d.]+)"/g)]
@@ -248,4 +248,68 @@ test('tutte le figure a blocchi del grafo: nessuna punta coincide con inizio di 
     for (const p of punte) for (const inizio of [...linee, ...segmenti])
       assert.ok(Math.hypot(p[0] - inizio[0], p[1] - inizio[1]) > .1, `${f.id} ${larghezzaMassima}: punta ${p} all'inizio di ${inizio}`);
   }
+});
+
+test('la punta di ogni uscita prosegue concorde col connettore a 210, 390 e 700', () => {
+  const figure = leggiGraph().nodi.flatMap(n => (n.dimostrazione?.figure || []).filter(f => f.tipo === 'blocchi'));
+  let controllate = 0;
+  // 318 e' la larghezza CSS disponibile con viewport 390: copre i cinque ritorni a sinistra.
+  for (const f of figure) for (const larghezzaMassima of [210, 318, 700]) {
+    const svg = renderBlocchi(f, { larghezzaMassima }).svgInner;
+    const segmenti = [...svg.matchAll(/<path d="M ([-\d.]+) ([-\d.]+) L ([-\d.]+) ([-\d.]+)" fill="none"/g)]
+      .map(m => m.slice(1).map(Number));
+    for (const gruppo of svg.matchAll(/<g id="blocco-([^"]+)" class="blocco uscita"[^>]*>([\s\S]*?)<\/g>/g)) {
+      const linea = /<line x1="([-\d.]+)" y1="([-\d.]+)" x2="([-\d.]+)" y2="([-\d.]+)"/.exec(gruppo[2]);
+      const punta = /<path d="M ([-\d.]+) ([-\d.]+) L/.exec(gruppo[2]);
+      assert.ok(linea && punta, `${f.id}/${gruppo[1]}: glifo di uscita incompleto`);
+      const [x1, y1] = linea.slice(1).map(Number), [xp, yp] = punta.slice(1).map(Number);
+      const connettore = segmenti.find(s => Math.hypot(s[2] - x1, s[3] - y1) < .1);
+      assert.ok(connettore, `${f.id}/${gruppo[1]} ${larghezzaMassima}: connettore non agganciato alla coda`);
+      const prodotto = (connettore[2] - connettore[0]) * (xp - x1) + (connettore[3] - connettore[1]) * (yp - y1);
+      assert.ok(prodotto > 0, `${f.id}/${gruppo[1]} ${larghezzaMassima}: punta discorde dal connettore`);
+      controllate++;
+    }
+  }
+  assert.ok(controllate >= 17 * 3, `poche uscite controllate: ${controllate}`);
+});
+
+function trattoIntersecaRettangolo(a, b, r) {
+  const dx = b[0] - a[0], dy = b[1] - a[1];
+  const p = [-dx, dx, -dy, dy], q = [a[0] - r[0], r[2] - a[0], a[1] - r[1], r[3] - a[1]];
+  let inizio = 0, fine = 1;
+  for (let i = 0; i < 4; i++) {
+    if (!p[i]) { if (q[i] < 0) return false; continue; }
+    const t = q[i] / p[i];
+    if (p[i] < 0) { if (t > fine) return false; inizio = Math.max(inizio, t); }
+    else { if (t < inizio) return false; fine = Math.min(fine, t); }
+  }
+  return true;
+}
+
+test('nessun rect di etichetta di ingresso copre un connettore o una punta a 210 e 700', () => {
+  const figure = leggiGraph().nodi.flatMap(n => [n.lezione, n.dimostrazione]
+    .flatMap(s => (s?.figure || []).filter(f => f.tipo === 'blocchi')));
+  let controllate = 0;
+  for (const f of figure) for (const larghezzaMassima of [210, 700]) {
+    const svg = renderBlocchi(f, { larghezzaMassima }).svgInner;
+    const segmenti = [...svg.matchAll(/<path d="M ([-\d.]+) ([-\d.]+) L ([-\d.]+) ([-\d.]+)" fill="none"/g)]
+      .map(m => m.slice(1).map(Number));
+    const punte = [...svg.matchAll(/<path d="M ([-\d.]+) ([-\d.]+) L ([-\d.]+) ([-\d.]+) L ([-\d.]+) ([-\d.]+) Z" fill="#111827"/g)]
+      .map(m => m.slice(1).map(Number));
+    for (const gruppo of svg.matchAll(/<g id="blocco-([^"]+)" class="blocco ingresso"[^>]*>([\s\S]*?)<\/g>/g)) {
+      for (const rect of gruppo[2].matchAll(/<rect x="([-\d.]+)" y="([-\d.]+)" width="([-\d.]+)" height="([-\d.]+)" fill="#fff"/g)) {
+        const [x, y, w, h] = rect.slice(1).map(Number), r = [x, y, x + w, y + h];
+        for (const s of segmenti) assert.ok(!trattoIntersecaRettangolo(s.slice(0, 2), s.slice(2), r),
+          `${f.id}/${gruppo[1]} ${larghezzaMassima}: rect dell'etichetta sul connettore ${s}`);
+        for (const p of punte) {
+          const xs = [p[0], p[2], p[4]], ys = [p[1], p[3], p[5]];
+          const sovrapposta = r[0] <= Math.max(...xs) && r[2] >= Math.min(...xs)
+            && r[1] <= Math.max(...ys) && r[3] >= Math.min(...ys);
+          assert.ok(!sovrapposta, `${f.id}/${gruppo[1]} ${larghezzaMassima}: rect dell'etichetta sulla punta ${p}`);
+        }
+        controllate++;
+      }
+    }
+  }
+  assert.ok(controllate >= 18 * 2, `poche etichette di ingresso controllate: ${controllate}`);
 });

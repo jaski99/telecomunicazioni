@@ -3,7 +3,8 @@ export function separaRaccordi(frecce, collegamenti, perId) {
   const punte = frecce.filter(f => !f.senzaPunta).map(f => f.fine);
   for (const nodo of perId.values()) {
     if (nodo.forma !== 'uscita') continue;
-    punte.push(nodo.verticale ? { x: nodo.x, y: nodo.y + 16 } : { x: nodo.x + 16, y: nodo.y });
+    if (nodo.verticale) punte.push({ x: nodo.x, y: nodo.y + (nodo.verso === 'su' ? -16 : 16) });
+    else punte.push({ x: nodo.x + (nodo.verso === 'sinistra' ? -16 : 16), y: nodo.y });
   }
   const coincide = (a, b) => Math.hypot(a.x - b.x, a.y - b.y) < 0.1;
   for (const f of frecce) {

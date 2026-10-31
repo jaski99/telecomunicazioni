@@ -154,15 +154,20 @@ test('ogni riga di riflusso sta nella capacità stimata del box più stretto', (
   }
 });
 
-test('le celle di cases troppo larghe si appiattiscono in righe gathered strette', () => {
+test('cases largo: virgola esplicita e nessuna riga con la sola condizione', () => {
   const eta = String.raw`\eta=\begin{cases}\dfrac{WD}{C\,TT}=\dfrac{WD}{D+H+A+2IC},&WF\le C\,TT,\\[4pt]\dfrac{D}{D+H},&WF>C\,TT.\end{cases}`;
   const righe = righeDisplay(eta);
   const flat = righe.find(r => r.includes(String.raw`\begin{gathered}`));
   assert.ok(flat, 'il cases deve diventare un gathered');
   const corpo = flat.slice(flat.indexOf(String.raw`\begin{gathered}`) + 16, flat.indexOf(String.raw`\end{gathered}`));
   const righeInterne = corpo.split('\\\\').map(r => r.trim()).filter(Boolean);
-  assert.ok(righeInterne.length >= 4, 'ogni cella deve finire nella propria riga');
+  assert.equal(righeInterne.length, 3, 'il primo case usa due righe, il secondo una');
   for (const riga of righeInterne) assert.ok(larghezzaStimata(riga) <= 8.5, `riga gathered larga: ${riga}`);
+  const conCondizione = righeInterne.filter(r => r.includes('WF'));
+  assert.equal(conCondizione.length, 2);
+  assert.ok(conCondizione[0].includes(String.raw`\dfrac{WD}{C\,TT}, \quad WF\le C\,TT,`), conCondizione[0]);
+  assert.ok(conCondizione[1].includes(String.raw`\dfrac{D}{D+H}, \quad WF>C\,TT.`), conCondizione[1]);
+  for (const riga of conCondizione) assert.ok(riga.includes(String.raw`\dfrac{`), `condizione orfana: ${riga}`);
   assert.doesNotMatch(formulaBlock(eta), /katex-err/);
 });
 
@@ -209,18 +214,21 @@ test('formulaBlock segnala il sorgente invalido senza HTML eseguibile', () => {
   assert.doesNotMatch(html, /<script>/);
 });
 
-test('cases del grafo: ogni valore rimane sulla stessa riga della sua condizione', () => {
+test('cases del grafo: virgola e quad separano valore e condizione', () => {
   const formule = [
     [String.raw`D(t,\Delta) = \begin{cases} \dfrac{1}{\Delta} & 0 \le t \le \Delta \\ 0 & \text{altrove} \end{cases}`, [String.raw`\dfrac{1}{\Delta}`, String.raw`0 \le t \le \Delta`, '0', String.raw`\text{altrove}`]],
-    [String.raw`X(\omega) = \begin{cases} T\, X_s(\omega) & |\omega| < \dfrac{\omega_s}{2} = \dfrac{\pi}{T} \\ 0 & \text{altrove} \end{cases}`, [String.raw`T\, X_s(\omega)`, String.raw`|\omega| < \dfrac{\omega_s}{2} = \dfrac{\pi}{T}`, '0', String.raw`\text{altrove}`]],
+    [String.raw`X(\omega) = \begin{cases} T\, X_s(\omega) & |\omega| < \dfrac{\omega_s}{2} = \dfrac{\pi}{T} \\ 0 & \text{altrove} \end{cases}`, [String.raw`T\, X_s(\omega)`, String.raw`|\omega| < \dfrac{\omega_s}{2}`, '0', String.raw`\text{altrove}`, String.raw`= \dfrac{\pi}{T}`]],
     [String.raw`\int_{-\infty}^{+\infty} \operatorname{sinc}\frac{t-nT}{T}\, \operatorname{sinc}\frac{t-mT}{T}\, dt = \begin{cases} 0 & m \ne n \\ T & m = n \end{cases}`, ['0', String.raw`m \ne n`, 'T', 'm = n']],
   ];
-  for (const [tex, [v1, c1, v2, c2]] of formule) {
+  for (const [tex, [v1, c1, v2, c2, continuazione]] of formule) {
     const flat = righeDisplay(tex).find(r => r.includes(String.raw`\begin{gathered}`));
     assert.ok(flat, tex);
-    const righe = flat.split(String.raw`\\`);
+    const righe = flat.split(String.raw`\\`), separatore = String.raw`, \quad `;
     assert.ok(righe.some(r => r.includes(v1) && r.includes(c1)), flat);
     assert.ok(righe.some(r => r.includes(v2) && r.includes(c2)), flat);
+    assert.ok(righe.some(r => r.includes(v1 + separatore + c1)), `separatore assente nel primo case: ${flat}`);
+    assert.ok(righe.some(r => r.includes(v2 + separatore + c2)), `separatore assente nel secondo case: ${flat}`);
+    if (continuazione) assert.ok(righe.some(r => r.includes(continuazione)), `continuazione assente: ${flat}`);
     assert.doesNotMatch(formulaBlock(tex), /katex-err/);
   }
 });
