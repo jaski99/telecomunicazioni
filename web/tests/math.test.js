@@ -208,3 +208,38 @@ test('formulaBlock segnala il sorgente invalido senza HTML eseguibile', () => {
   assert.match(html, /&lt;script&gt;/);
   assert.doesNotMatch(html, /<script>/);
 });
+
+test('cases del grafo: ogni valore rimane sulla stessa riga della sua condizione', () => {
+  const formule = [
+    [String.raw`D(t,\Delta) = \begin{cases} \dfrac{1}{\Delta} & 0 \le t \le \Delta \\ 0 & \text{altrove} \end{cases}`, [String.raw`\dfrac{1}{\Delta}`, String.raw`0 \le t \le \Delta`, '0', String.raw`\text{altrove}`]],
+    [String.raw`X(\omega) = \begin{cases} T\, X_s(\omega) & |\omega| < \dfrac{\omega_s}{2} = \dfrac{\pi}{T} \\ 0 & \text{altrove} \end{cases}`, [String.raw`T\, X_s(\omega)`, String.raw`|\omega| < \dfrac{\omega_s}{2} = \dfrac{\pi}{T}`, '0', String.raw`\text{altrove}`]],
+    [String.raw`\int_{-\infty}^{+\infty} \operatorname{sinc}\frac{t-nT}{T}\, \operatorname{sinc}\frac{t-mT}{T}\, dt = \begin{cases} 0 & m \ne n \\ T & m = n \end{cases}`, ['0', String.raw`m \ne n`, 'T', 'm = n']],
+  ];
+  for (const [tex, [v1, c1, v2, c2]] of formule) {
+    const flat = righeDisplay(tex).find(r => r.includes(String.raw`\begin{gathered}`));
+    assert.ok(flat, tex);
+    const righe = flat.split(String.raw`\\`);
+    assert.ok(righe.some(r => r.includes(v1) && r.includes(c1)), flat);
+    assert.ok(righe.some(r => r.includes(v2) && r.includes(c2)), flat);
+    assert.doesNotMatch(formulaBlock(tex), /katex-err/);
+  }
+});
+
+test('sinc e il suo argomento frazionario non vengono separati dal riflusso', () => {
+  const tex = String.raw`\int_{-\infty}^{+\infty} \operatorname{sinc}\frac{t-nT}{T}\, \operatorname{sinc}\frac{t-mT}{T}\, dt = \begin{cases} 0 & m \ne n \\ T & m = n \end{cases}`;
+  const righe = righeDisplay(tex);
+  for (const arg of ['t-nT', 't-mT']) assert.ok(righe.some(r => r.includes(String.raw`\operatorname{sinc}\frac{` + arg + '}')), righe);
+  assert.ok(righe.every(r => !/\\operatorname\{sinc\}\s*$/.test(r)), righe);
+});
+
+test('funzioni con apici e spazi espliciti non si separano dall’argomento', () => {
+  for (const tex of [
+    String.raw`f(x) = a + b + c + d + e + \sin^{2} \frac{x}{T} + g + h`,
+    String.raw`f(x) = a + b + c + d + e + \operatorname{sinc}\, \frac{x}{T} + g + h`,
+  ]) {
+    const righe = righeDisplay(tex);
+    assert.ok(righe.length > 1, tex);
+    assert.ok(righe.some(r => /\\(?:sin\^\{2\}|operatorname\{sinc\})[\s\\,]*\\frac\{x\}\{T\}/u.test(r)), righe);
+    assert.doesNotMatch(formulaBlock(tex), /katex-err/);
+  }
+});

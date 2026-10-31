@@ -358,9 +358,9 @@ def test_pam_schema_e_formula_senza_scroll_interno(browser, server, width, heigh
       const uscita = figura?.querySelector('.blocco.uscita');
       const lineaUscita = uscita?.querySelector('line');
       const collegamenti = [...(figura?.querySelectorAll('path[fill="none"]') || [])];
-      const punta = collegamenti[1]?.nextElementSibling?.getAttribute('d')?.match(/^M\\s*(-?[\\d.]+)\\s+(-?[\\d.]+)/);
+      const segmenti = collegamenti.map(e => e.getAttribute('d').match(/^M\\s*(-?[\\d.]+)\\s+(-?[\\d.]+)\\s+L\\s*(-?[\\d.]+)\\s+(-?[\\d.]+)/)).filter(Boolean);
       const x = Number(lineaUscita?.getAttribute('x1')), y = Number(lineaUscita?.getAttribute('y1'));
-      const uscitaCollegata = { collegata: Boolean(punta && Math.hypot(Number(punta[1]) - x, Number(punta[2]) - y) < .1),
+      const uscitaCollegata = { collegata: segmenti.some(m => Math.hypot(Number(m[3]) - x, Number(m[4]) - y) < .1),
         etichetta: uscita?.textContent || '' };
       return {overflow, dimensioni, schema: Boolean(figura), uscitaCollegata,
         passi: [...document.querySelectorAll('#passo-2.step--rivelato, #passo-4.step--rivelato')].length};
@@ -389,10 +389,11 @@ def test_passo_n_diretto_porta_il_passo_nel_viewport(browser, server, dim_id, wi
           const li = document.querySelector(`#passo-${n}`);
           if (!li) return null;
           const b = li.getBoundingClientRect();
-          return { top: b.top, bottom: b.bottom, h: innerHeight, y: scrollY };
+          const sticky = document.querySelector('.dim-tabs').getBoundingClientRect();
+          return { top: b.top, bottom: b.bottom, h: innerHeight, y: scrollY, sticky: sticky.bottom };
         }""", n)
         assert box, (dim_id, scelta, 'passo richiesto non presente nel DOM')
-        assert box['top'] < box['h'] and box['bottom'] > 0, (dim_id, scelta, width, box)
+        assert box['top'] >= box['sticky'] and box['top'] < box['h'], (dim_id, scelta, width, box)
         if n > 1:
             assert box['y'] > 0, (dim_id, scelta, width, 'pagina rimasta in cima')
         assert not errori

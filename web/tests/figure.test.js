@@ -119,7 +119,7 @@ test('forme: una sola etichetta SVG, tspan centrati, interlinea e testo escapato
 test('geometria: colonne cumulative, frecce ai bordi, bbox e input immutato', () => {
   const input = structuredClone(specBlocchi), nodi = layoutBlocchi(input.blocchi), frecce = layoutCollegamenti(nodi, input.collegamenti);
   assert.deepEqual(input, specBlocchi); assert.ok(nodi.every((n, i) => i === 0 || n.x > nodi[i - 1].x)); assert.equal(frecce.length, input.collegamenti.length);
-  assert.ok(frecce[0].inizio.x > nodi[0].x && frecce[0].fine.x < nodi[1].x); assert.match(disegnaBlocco(nodi[0]), /class="blocco ingresso"/); assert.match(disegnaFreccia(frecce[0]), /<path/);
+  assert.ok(frecce[0].inizio.x < nodi[0].x && frecce[0].fine.x < nodi[1].x); assert.match(disegnaBlocco(nodi[0]), /class="blocco ingresso"/); assert.match(disegnaFreccia(frecce[0]), /<path/);
   const box = bboxBlocchi(nodi, frecce); for (const nodo of nodi) assert.ok(nodo.box.left >= box.left && nodo.box.right <= box.right && nodo.box.top >= box.top && nodo.box.bottom <= box.bottom);
 });
 test('tutte le 17 figure blocchi: testi in box, nessun annidamento, colonne crescenti e viewBox non tagliato', () => {
@@ -154,9 +154,9 @@ test('uscita nel flusso verticale: segmento dal centro verso il basso, punta in 
   const punta = /<path d="M ([-\d.]+) ([-\d.]+) L ([-\d.]+) ([-\d.]+) L ([-\d.]+) ([-\d.]+) Z"/
     .exec(verticale.svgInner.slice(mLinea.index)).map(Number); // apice del glifo, dopo il tratto
   assert.equal(punta[1], linea[1]); assert.ok(punta[2] > linea[4] && punta[2] > punta[4] && punta[2] > punta[6]);
-  const apiceFreccia = /<path d="M [-\d.]+ [-\d.]+ L [-\d.]+ [-\d.]+" fill="none"[\s\S]*?<path d="M ([-\d.]+) ([-\d.]+) L/
-    .exec(verticale.svgInner).map(Number); // la freccia si aggancia in cima al segmento
-  assert.equal(apiceFreccia[1], linea[1]); assert.equal(apiceFreccia[2], linea[2]);
+  const tratto = /<path d="M ([-\d.]+) ([-\d.]+) L ([-\d.]+) ([-\d.]+)" fill="none"/.exec(verticale.svgInner).map(Number);
+  assert.equal(tratto[3], linea[1]); assert.equal(tratto[4], linea[2]);
+  assert.equal((verticale.svgInner.match(/ Z" fill="#111827"/g) || []).length, 1);
   const etichetta = /<text x="([-\d.]+)" y="([-\d.]+)"[^>]*aria-label="s\(t\)"/.exec(verticale.svgInner).map(Number);
   assert.ok(etichetta[1] > linea[1]); // a destra del segmento, non sotto la punta
   assert.ok(etichetta[2] >= linea[2] && etichetta[2] <= punta[2]); // allineata in altezza al glifo
@@ -210,4 +210,42 @@ test('grafico e temporale conservano etichette e frecce dentro gli ingombri', ()
   const grafico = renderFigura({ ...specGrafico, asse_y: { ...specGrafico.asse_y, etichetta: 'Throughput ρ (trame riuscite per durata)' } });
   assert.ok(estraiViewBox(grafico).h > 360); const temporale = renderFigura(specTemporale);
   assert.match(temporale, /marker-end="url\(#freccia-temp\)"/); assert.match(temporale, />arrivo<\/text>/); assert.match(temporale, /width="720"/); assert.match(temporale, /font-size="20">t<\/text>/);
+});
+
+test('ingressi e uscite collegati: una sola punta, segmento verticale nel flusso verticale', () => {
+  for (const verticale of [false, true]) {
+    const blocchi = [
+      { id: 'i', forma: 'ingresso', etichetta: 'x(t)', colonna: 0, riga: 0 },
+      { id: 'b', forma: 'rettangolo', etichetta: 'Filtro', colonna: verticale ? 0 : 1, riga: verticale ? 1 : 0 },
+      { id: 'u', forma: 'uscita', etichetta: 'y(t)', colonna: verticale ? 0 : 2, riga: verticale ? 2 : 0 },
+    ];
+    const nodi = layoutBlocchi(blocchi), [entrata, uscita] = layoutCollegamenti(nodi, [{ da: 'i', a: 'b' }, { da: 'b', a: 'u' }]);
+    assert.equal(nodi[0].servito, true);
+    assert.doesNotMatch(disegnaBlocco(nodi[0]), /<line|<path/);
+    assert.equal((disegnaFreccia(entrata).match(/ Z"/g) || []).length, 1);
+    assert.equal((disegnaFreccia(uscita).match(/ Z"/g) || []).length, 0);
+    assert.equal((disegnaBlocco(nodi[2]).match(/ Z"/g) || []).length, 1);
+    if (verticale) {
+      assert.equal(entrata.inizio.x, entrata.fine.x);
+      assert.ok(entrata.inizio.y < entrata.fine.y);
+      assert.equal(uscita.inizio.x, uscita.fine.x);
+      assert.match(disegnaBlocco(nodi[2]), /<line x1="([\d.]+)" y1="[\d.]+" x2="\1"/);
+    }
+  }
+});
+
+test('tutte le figure a blocchi del grafo: nessuna punta coincide con inizio di altro segmento', () => {
+  const figure = leggiGraph().nodi.flatMap(n => (n.dimostrazione?.figure || []).filter(f => f.tipo === 'blocchi'));
+  assert.equal(figure.length, 16);
+  for (const f of figure) for (const larghezzaMassima of [210, 700]) {
+    const svg = renderBlocchi(f, { larghezzaMassima }).svgInner;
+    const linee = [...svg.matchAll(/<line x1="([-\d.]+)" y1="([-\d.]+)" x2="([-\d.]+)" y2="([-\d.]+)"/g)]
+      .map(m => [Number(m[1]), Number(m[2])]);
+    const segmenti = [...svg.matchAll(/<path d="M ([-\d.]+) ([-\d.]+) L ([-\d.]+) ([-\d.]+)" fill="none"/g)]
+      .map(m => [Number(m[1]), Number(m[2])]);
+    const punte = [...svg.matchAll(/<path d="M ([-\d.]+) ([-\d.]+) L [-\d.]+ [-\d.]+ L [-\d.]+ [-\d.]+ Z" fill="#111827"/g)]
+      .map(m => [Number(m[1]), Number(m[2])]);
+    for (const p of punte) for (const inizio of [...linee, ...segmenti])
+      assert.ok(Math.hypot(p[0] - inizio[0], p[1] - inizio[1]) > .1, `${f.id} ${larghezzaMassima}: punta ${p} all'inizio di ${inizio}`);
+  }
 });

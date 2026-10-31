@@ -72,5 +72,10 @@ export function aggiornaPassi(root, dim, rivelati, area = 1) {
 export function portaPassoInVista(root, n) {
   const li = root.querySelector(`.step[data-passo="${Number(n)}"]`);
   if (!li) return;
-  li.scrollIntoView({ block: 'center' }); li.focus({ preventScroll: true });
+  // block 'start' + scroll-margin-top pari alla barra sticky misurata: il titolo del
+  // passo resta leggibile sotto la barra anche nei passi piu alti del viewport.
+  const tabs = li.ownerDocument?.querySelector?.('.dim-tabs');
+  const barra = Math.ceil(tabs?.getBoundingClientRect?.().height || 0) + 1;
+  if (li.style) li.style.scrollMarginTop = `${barra}px`;
+  li.scrollIntoView({ block: 'start' }); li.focus({ preventScroll: true });
 }

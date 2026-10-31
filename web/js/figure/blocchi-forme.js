@@ -20,8 +20,10 @@ function figura(nodo) {
   const { x, y, w, h, forma } = nodo;
   if (forma === 'nodo') return `<circle cx="${n(x)}" cy="${n(y)}" r="6" fill="${SCURO}"/>`;
   if (forma === 'ingresso' || forma === 'uscita') {
-    // Variante verticale (uscita raggiunta dall'alto): stesso glifo, ruotato in basso;
-    // il tratto parte da y-16, dove si aggancia la freccia del collegamento.
+    // Variante verticale (flusso stretto): stesso glifo, ruotato in basso; il tratto
+    // parte da y-16, dove si aggancia il collegamento. Un ingresso innestato (servito)
+    // delega tratto e punta al collegamento: restano un solo tratto e una sola punta.
+    if (forma === 'ingresso' && nodo.servito) return '';
     return nodo.verticale
       ? `<line x1="${n(x)}" y1="${n(y - 16)}" x2="${n(x)}" y2="${n(y + 9)}" stroke="${SCURO}" stroke-width="2"/><path d="M ${n(x)} ${n(y + 16)} L ${n(x - 5)} ${n(y + 7)} L ${n(x + 5)} ${n(y + 7)} Z" fill="${SCURO}"/>`
       : `<line x1="${n(x - 16)}" y1="${n(y)}" x2="${n(x + 9)}" y2="${n(y)}" stroke="${SCURO}" stroke-width="2"/><path d="M ${n(x + 16)} ${n(y)} L ${n(x + 7)} ${n(y - 5)} L ${n(x + 7)} ${n(y + 5)} Z" fill="${SCURO}"/>`;
@@ -44,7 +46,12 @@ export function disegnaBlocco(nodo, opzioni = {}, indice = 0) {
   return `<g${id} class="blocco ${escapeHtml(nodo.forma)}" ${progressivo}>${figura(nodo)}${testi}</g>`;
 }
 
+/** Linea da inizio a base + punta piena; con senzaPunta (innesto sul glifo di uscita)
+ *  la linea arriva fino a fine e la punta resta quella del glifo. */
 export function disegnaFreccia(c) {
   const { inizio: a, base: b, fine: z, ali } = c;
-  return `<path d="M ${n(a.x)} ${n(a.y)} L ${n(b.x)} ${n(b.y)}" fill="none" stroke="${SCURO}" stroke-width="2"/><path d="M ${n(z.x)} ${n(z.y)} L ${n(ali[0].x)} ${n(ali[0].y)} L ${n(ali[1].x)} ${n(ali[1].y)} Z" fill="${SCURO}"/>`;
+  const linea = c.senzaPunta
+    ? `<path d="M ${n(a.x)} ${n(a.y)} L ${n(z.x)} ${n(z.y)}" fill="none" stroke="${SCURO}" stroke-width="2"/>`
+    : `<path d="M ${n(a.x)} ${n(a.y)} L ${n(b.x)} ${n(b.y)}" fill="none" stroke="${SCURO}" stroke-width="2"/><path d="M ${n(z.x)} ${n(z.y)} L ${n(ali[0].x)} ${n(ali[0].y)} L ${n(ali[1].x)} ${n(ali[1].y)} Z" fill="${SCURO}"/>`;
+  return linea;
 }

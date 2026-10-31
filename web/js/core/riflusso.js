@@ -11,7 +11,8 @@ const GRANDI = ['sum', 'prod', 'int', 'iint', 'oint', 'lim', 'frac', 'dfrac', 's
 const LIMITATI = ['sum', 'prod', 'int', 'iint', 'oint', 'lim']; // operatori con limiti: taglio anche dopo pedici/apici
 const RELAZIONI = ['leq', 'geq', 'le', 'ge', 'approx', 'neq', 'equiv', 'sim', 'propto', 'll', 'gg', 'in', 'to', 'mapsto',
   'iff', 'imply', 'rightarrow', 'leftarrow', 'leftrightarrow', 'longrightarrow', 'Longrightarrow', 'Longleftrightarrow', 'Rightarrow', 'Leftarrow', 'Leftrightarrow'];
-const DOPO_OPERATORE = new RegExp(`(?:[=<>+\\-(\\[{]|\\\\(?:${RELAZIONI.join('|')}|quad|qquad|lgroup|lbrace|langle|lvert|lbrack|[,;:! ]|\\{))\\s*$`, 'u');
+const DOPO_OPERATORE = new RegExp(`(?:[=<>+\\-(\\[{]|\\\\(?:${RELAZIONI.join('|')}|quad|qquad|sin|cos|tan|log|ln|exp|max|min|operatorname\\{[^{}]*\\}|lgroup|lbrace|langle|lvert|lbrack|[,;:! ]|\\{))\\s*$`, 'u'),
+  DOPO_FUNZIONE = /\\(?:sin|cos|tan|log|ln|exp|max|min|operatorname\{[^{}]*\})(?:\s*[_^](?:\{[^{}]*\}|\\[A-Za-z]+|.))*\s*(?:\\[,;:!]\s*)*$/u;
 const PRIMA_DI_CHIUSURA = /^\s*(?:[)\]}>]|\\(?:rangle|rvert|rbrack|rgroup|rbrace|right\b|\}))/u;
 const SOLO_OPERATORE = new RegExp(`^(?:[=<>+-]|\\\\(?:${RELAZIONI.join('|')}))(?:\\\\[,;:!])*\\s*$`, 'u');
 
@@ -25,13 +26,13 @@ function analizza(s) {
       if (ambiente) { ambienti += ambiente[1] === 'begin' ? 1 : -1; i += ambiente[0].length - 1; continue; }
       const m = /^\\([A-Za-z]+|.)/u.exec(s.slice(i)), dopo = i + m[0].length;
       // \text{...} è modalità testo: si salta intero; parentesi/virgole interne non sono struttura.
-      if (TESTUALI.includes(m[1])) { i = gruppo(s, dopo)[1] - 1; continue; }
+      if (TESTUALI.includes(m[1])) { if (!chiuso() && i > 0 && GRANDI.includes(m[1]) && !DOPO_FUNZIONE.test(s.slice(0, i))) punti.push({ tier: 3, fineRiga: i, inizioRiga: i }); i = gruppo(s, dopo)[1] - 1; continue; }
       // Il delimitatore dopo \left/\right non protegge: se un taglio lo scavalca, neutralizza lo rende semplice.
       if ((m[1] === 'left' || m[1] === 'right') && '()[]'.includes(s[dopo] ?? '')) { i = dopo; continue; }
       if (!chiuso()) {
-        if (m[1] === 'quad' || m[1] === 'qquad') punti.push({ tier: 0, fineRiga: i, inizioRiga: dopo });
+        if ((m[1] === 'quad' || m[1] === 'qquad') && !DOPO_FUNZIONE.test(s.slice(0, i))) punti.push({ tier: 0, fineRiga: i, inizioRiga: dopo });
         else if (RELAZIONI.includes(m[1])) punti.push({ tier: 1, fineRiga: i, inizioRiga: i });
-        else if (GRANDI.includes(m[1]) && i > 0) {
+        else if (GRANDI.includes(m[1]) && i > 0 && !DOPO_FUNZIONE.test(s.slice(0, i))) {
           punti.push({ tier: 3, fineRiga: i, inizioRiga: i });
           const { fine } = LIMITATI.includes(m[1]) ? apici(s, dopo).fine : dopo; // confine operatore/sommando
           if (fine > dopo) punti.push({ tier: 3, fineRiga: fine, inizioRiga: fine });
@@ -46,7 +47,7 @@ function analizza(s) {
     if (c === ',' && !chiuso()) punti.push({ tier: 0, fineRiga: i + 1, inizioRiga: i + 1 });
     else if (!chiuso() && '=<>'.includes(c)) punti.push({ tier: 1, fineRiga: i, inizioRiga: i });
     else if (!chiuso() && (c === '+' || c === '-') && i > 0 && !(/[(,^[{]\s*$/u.test(s.slice(0, i)) || DOPO_OPERATORE.test(s.slice(0, i)))) punti.push({ tier: 2, fineRiga: i, inizioRiga: i });
-    else if (!chiuso() && /\s/u.test(c) && !DOPO_OPERATORE.test(s.slice(0, i)) && !PRIMA_DI_CHIUSURA.test(s.slice(i))) punti.push({ tier: 4, fineRiga: i, inizioRiga: i + 1 });
+    else if (!chiuso() && /\s/u.test(c) && !DOPO_OPERATORE.test(s.slice(0, i)) && !DOPO_FUNZIONE.test(s.slice(0, i)) && !PRIMA_DI_CHIUSURA.test(s.slice(i))) punti.push({ tier: 4, fineRiga: i, inizioRiga: i + 1 });
     else if (!chiuso() && c === ')' && /[A-Za-z\\(]/u.test(s[i + 1] ?? '')) punti.push({ tier: 5, fineRiga: i + 1, inizioRiga: i + 1 });
   }
   return punti.sort((a, b) => a.fineRiga - b.fineRiga);
@@ -99,17 +100,17 @@ function spezzaTestiLunghi(latex) {
   });
 }
 
-/** Ogni cella di cases diventa una riga di gathered; quelle larghe si spezzano ancora. */
+/** Ogni riga di cases (valore e condizione uniti da uno spazio sottile) diventa una riga di gathered. */
 function appiattisciCasi(latex) {
   const casi = /\\begin\{(cases|dcases)\}([\s\S]*?)\\end\{\1\}/gu;
   if (!casi.test(latex) || larghezzaStimata(latex) <= CAPACITA) return latex;
   return latex.replace(casi, (m, ambiente, corpo) => {
-    const celle = corpo.split(/\\\\(?:\[[^\]]*\])?/u)
-      .flatMap(riga => riga.split('&')).map(c => c.trim()).filter(Boolean)
-      .flatMap(c => larghezzaStimata(c) <= CAPACITA ? [c]
-        : imballa({ testo: c, offset: 0 }).map((f, i) => (i ? `{}${f.testo}` : f.testo)));
-    if (celle.length < 2) return m;
-    return `\\left\\{\\begin{gathered}${celle.join('\\\\{}')}\\end{gathered}\\right.`;
+    const righe = corpo.split(/\\\\(?:\[[^\]]*\])?/u).map(r => r.trim()).filter(Boolean)
+      .map(r => r.split('&').map(c => c.trim()).filter(Boolean).join(' \\, '))
+      .flatMap(r => larghezzaStimata(r) <= 10.4 ? [r]
+        : imballa({ testo: r, offset: 0 }).map((f, i) => (i ? `{}${f.testo}` : f.testo)));
+    if (righe.length < 2) return m;
+    return `\\left\\{\\begin{gathered}${righe.join('\\\\{}')}\\end{gathered}\\right.`;
   });
 }
 
@@ -133,11 +134,9 @@ function neutralizza(latex, tagli) {
   }
   return esito;
 }
-
 /** Righe di riflusso per una formula display; [] se non serve o non si può spezzare. */
 export function righeDisplay(latex) {
-  if (typeof latex !== 'string' || latex.length < 40) return [];
-  if (!analizza(latex).some(p => p.tier <= 1)) return [];
+  if (typeof latex !== 'string' || latex.length < 40 || !analizza(latex).some(p => p.tier <= 1)) return [];
   let corrente = spezzaTestiLunghi(appiattisciCasi(latex));
   for (let giro = 0; giro < 3; giro++) {
     const segmenti = spezzaTutto(corrente);

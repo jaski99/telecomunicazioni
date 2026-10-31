@@ -1,5 +1,6 @@
 /* Geometria pura per gli schemi a blocchi: nessun accesso al DOM. */
 import { testoSicuro } from './helpers.js';
+import { separaRaccordi } from './blocchi-raccordi.js';
 
 export const FS_BLOCCHI = 14;
 export const INTERLINEA = 1.2;
@@ -90,18 +91,18 @@ function bordo(da, a) {
 }
 
 /** Nel flusso verticale (una colonna per riga, tipici i riadattamenti stretti) la freccia
- *  arriva all'uscita dall'alto: il glifo va ruotato verso il basso e l'etichetta spostata
+ *  arriva all'estremo dall'alto: il glifo va ruotato verso il basso e l'etichetta spostata
  *  di lato, altrimenti la punta indica il vuoto e l'etichetta cade sotto il foglio. */
-const META_USCITA = 16;
+const META_FRECCIA = 16;
 
-function verticalizzaUscita(a, da) {
-  if (a.verticale || Math.abs(a.y - da.y) <= Math.abs(a.x - da.x)) return;
-  a.verticale = true;
-  a.box.top = Math.min(a.box.top, a.y - META_USCITA - 1);
-  a.box.bottom = Math.max(a.box.bottom, a.y + META_USCITA + 1);
-  for (const t of a.testi) {
-    t.x = a.x + 8 + t.w / 2; t.y = a.y;
-    a.box.right = Math.max(a.box.right, t.x + t.w / 2);
+function verticalizzaEstremo(n, altro) {
+  if (n.verticale || Math.abs(altro.y - n.y) <= Math.abs(altro.x - n.x)) return;
+  n.verticale = true;
+  n.box.top = Math.min(n.box.top, n.y - META_FRECCIA - 1);
+  n.box.bottom = Math.max(n.box.bottom, n.y + META_FRECCIA + 1);
+  for (const t of n.testi) {
+    t.x = n.x + 8 + t.w / 2; t.y = n.y;
+    n.box.right = Math.max(n.box.right, t.x + t.w / 2);
   }
 }
 
@@ -113,10 +114,15 @@ export function layoutCollegamenti(nodi, collegamenti, limite = 16) {
     if (!c) continue;
     const da = perId.get(String(c.da)), a = perId.get(String(c.a));
     if (!da || !a || da === a) continue;
-    const inizio = da.forma === 'uscita' ? { x: da.x + da.w / 2, y: da.y } : bordo(da, a);
-    if (a.forma === 'uscita') verticalizzaUscita(a, da);
+    if (a.forma === 'uscita') verticalizzaEstremo(a, da);
+    // Ingresso: il collegamento si innesta sulla coda del glifo e lo sostituisce, cosi
+    // restano un solo tratto e una sola punta; nei flussi verticali arriva dall'alto.
+    if (da.forma === 'ingresso') { da.servito = true; verticalizzaEstremo(da, a); }
+    const inizio = da.forma === 'ingresso'
+      ? (da.verticale ? { x: da.x, y: da.y - META_FRECCIA } : { x: da.x - META_FRECCIA, y: da.y })
+      : da.forma === 'uscita' ? { x: da.x + da.w / 2, y: da.y } : bordo(da, a);
     const fine = a.forma === 'uscita'
-      ? (a.verticale ? { x: a.x, y: a.y - META_USCITA } : { x: a.x - META_USCITA, y: a.y })
+      ? (a.verticale ? { x: a.x, y: a.y - META_FRECCIA } : { x: a.x - META_FRECCIA, y: a.y })
       : bordo(a, da);
     const dx = fine.x - inizio.x, dy = fine.y - inizio.y, lunghezza = Math.hypot(dx, dy) || 1;
     const ux = dx / lunghezza, uy = dy / lunghezza;
@@ -128,7 +134,8 @@ export function layoutCollegamenti(nodi, collegamenti, limite = 16) {
       if (Math.abs(dy) > Math.abs(dx)) et.x += et.w / 2 + 8;
       else et.y -= et.h / 2 + 8;
     }
-    risultato.push({ inizio, fine, base, ali, testo: et.righe.length ? et : null, indice });
+    risultato.push({ inizio, fine, base, ali, senzaPunta: a.forma === 'uscita', testo: et.righe.length ? et : null, indice });
   }
+  separaRaccordi(risultato, collegamenti, perId);
   return risultato;
 }

@@ -77,14 +77,16 @@ test('aggiornaPassi non riscrive una figura già presente', () => {
   assert.equal(lis[0].slot.innerHTML, 'GIÀ');
 });
 
-test('portaPassoInVista porta il passo al centro e gli dà il focus', () => {
+test('portaPassoInVista porta il passo sotto la barra sticky e gli dà il focus', () => {
   const calls = [];
   const li = elemento();
+  li.ownerDocument = { querySelector: () => ({ getBoundingClientRect: () => ({ height: 54.2 }) }) };
   li.scrollIntoView = (opz) => calls.push(['scroll', opz.block]);
   li.focus = (opz) => calls.push(['focus', opz.preventScroll]);
   const radice = elemento({ children: { '.step[data-passo="2"]': li } });
   portaPassoInVista(radice, 2);
-  assert.deepEqual(calls, [['scroll', 'center'], ['focus', true]]);
+  assert.deepEqual(calls, [['scroll', 'start'], ['focus', true]]);
+  assert.equal(li.style.scrollMarginTop, '56px');
   portaPassoInVista(radice, 9);
   assert.equal(calls.length, 2);
 });
