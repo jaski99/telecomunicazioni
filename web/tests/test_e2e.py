@@ -8,16 +8,12 @@ funzionamento offline incluso il modulo quiz completo.
 
 import json
 import os
-import subprocess
-import sys
-import time
 
 import pytest
 from playwright.sync_api import sync_playwright
 
 WEB_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
-PORT = 18199
-BASE_URL = f"http://127.0.0.1:{PORT}"
+from e2e_helpers import static_server
 
 VIEWPORTS = [(390, 844), (1440, 900)]
 
@@ -92,27 +88,10 @@ def registra_listener_js(page, errori):
 
 @pytest.fixture(scope="module")
 def server():
-    proc = subprocess.Popen(
-        [sys.executable, "-m", "http.server", str(PORT)],
-        cwd=WEB_DIR,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
-    deadline = time.time() + 15
-    while time.time() < deadline:
-        try:
-            import urllib.request
-
-            urllib.request.urlopen(BASE_URL + "/index.html", timeout=1)
-            break
-        except OSError:
-            time.sleep(0.2)
-    yield BASE_URL
-    proc.terminate()
-    try:
-        proc.wait(timeout=5)
-    except subprocess.TimeoutExpired:
-        proc.kill()
+    srv = static_server()
+    yield f"http://127.0.0.1:{srv.server_port}"
+    srv.shutdown()
+    srv.server_close()
 
 
 @pytest.fixture(scope="module")
@@ -156,7 +135,7 @@ def controlla_pagina(page, errori):
     katex_error = page.locator(".katex-error, .katex-err").count()
     svg = page.locator("svg").count()
     h1_count = page.locator("h1").count()
-    errore_pagina = page.locator(".errore, h1:has-text('Errore di pagina')").count()
+    errore_pagina = page.locator(".errore:not(.errore-blocco), h1:has-text('Errore di pagina')").count()
     return scroll_ok, nessun_vietato, katex, katex_error, svg, errore_pagina, h1_count
 
 
@@ -171,9 +150,9 @@ def test_rota_senza_errori_né_scroll(server, browser, width, height, route):
         errori = []
         registra_listener_js(page, errori)
         url = (
-            f"{BASE_URL}/index.html#/{route}"
+            f"{server}/index.html#/{route}"
             if route
-            else f"{BASE_URL}/index.html#/"
+            else f"{server}/index.html#/"
         )
         page.goto(url, wait_until="load")
         page.wait_for_timeout(150)
@@ -212,7 +191,7 @@ def test_nodo_contenuto_reale(server, browser, width, height, route):
         nodo = next((n for n in GRAFO.get("nodi", []) if n.get("id") == nid), None)
         titolo_atteso = nodo.get("titolo", nid) if nodo else nid
 
-        page.goto(f"{BASE_URL}/index.html#/nodo/{nid}", wait_until="load")
+        page.goto(f"{server}/index.html#/nodo/{nid}", wait_until="load")
         page.wait_for_timeout(150)
 
         h1 = page.locator("h1").first
@@ -259,7 +238,7 @@ def test_dim_contenuto_reale(server, browser, width, height, route):
         registra_listener_js(page, errori)
 
         did = route.split("/", 1)[1]
-        page.goto(f"{BASE_URL}/index.html#/dim/{did}", wait_until="load")
+        page.goto(f"{server}/index.html#/dim/{did}", wait_until="load")
         page.wait_for_timeout(150)
 
         h1 = page.locator("h1").first
@@ -309,7 +288,7 @@ def test_dim_modalita_tutte(server, browser, width, height, route):
         registra_listener_js(page, errori)
 
         did = route.split("/", 1)[1]
-        page.goto(f"{BASE_URL}/index.html#/dim/{did}", wait_until="load")
+        page.goto(f"{server}/index.html#/dim/{did}", wait_until="load")
         page.wait_for_timeout(150)
         for modo in MODALITA:
             btn = page.locator(f'button[data-modo="{modo}"]')
@@ -351,10 +330,10 @@ def test_offline_nodo_dim(server, browser, width, height, route):
         errori = []
         registra_listener_js(page, errori)
 
-        page.goto(f"{BASE_URL}/index.html#/", wait_until="networkidle")
+        page.goto(f"{server}/index.html#/", wait_until="networkidle")
         page.wait_for_function("() => navigator.serviceWorker && navigator.serviceWorker.ready")
         context.set_offline(True)
-        page.goto(f"{BASE_URL}/index.html#/{route}", wait_until="load")
+        page.goto(f"{server}/index.html#/{route}", wait_until="load")
         page.wait_for_timeout(200)
 
         h1 = page.locator("h1").first
@@ -387,7 +366,7 @@ def test_offline_quiz(server, browser, width, height):
         errori = []
         registra_listener_js(page, errori)
 
-        page.goto(f"{BASE_URL}/index.html#/", wait_until="networkidle")
+        page.goto(f"{server}/index.html#/", wait_until="networkidle")
         page.wait_for_function(
             """async () => {
               await navigator.serviceWorker.ready;
@@ -396,10 +375,10 @@ def test_offline_quiz(server, browser, width, height):
             }"""
         )
         context.set_offline(True)
-        page.goto(f"{BASE_URL}/index.html#/quiz", wait_until="load")
+        page.goto(f"{server}/index.html#/quiz", wait_until="load")
         page.wait_for_timeout(200)
 
-        errore_pagina = page.locator(".errore, h1:has-text('Errore di pagina')").count()
+        errore_pagina = page.locator(".errore:not(.errore-blocco), h1:has-text('Errore di pagina')").count()
         assert errore_pagina == 0, "[quiz] offline: pagina in errore"
         assert page.locator(".quiz-form").count() == 1, "[quiz] offline: form quiz non montato"
         (
@@ -417,3 +396,15 @@ def test_offline_quiz(server, browser, width, height):
     assert errori == [], f"[quiz] offline errori JS: {errori}"
     assert scroll_ok is True
     assert nessun_vietato == []
+
+
+def test_distinzione_errore_pagina_da_blocchi_didattici(server, browser):
+    page = browser.new_page()
+    page.goto(f"{server}/index.html#/nodo/serie-fourier", wait_until="load")
+    page.wait_for_selector('.errore-blocco')
+    assert page.locator('.errore.errore-blocco').count() > 0
+    assert controlla_pagina(page, [])[5] == 0
+    page.goto(f"{server}/index.html#/rotta-inesistente", wait_until="load")
+    page.wait_for_selector("h1:has-text('Errore di pagina')")
+    assert controlla_pagina(page, [])[5] > 0
+    page.close()

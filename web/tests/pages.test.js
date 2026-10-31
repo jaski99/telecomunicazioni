@@ -176,3 +176,34 @@ test('tutte le pagine D4 e i 56 nodi non espongono mai null, undefined, NaN o ba
     assert.doesNotMatch(senzaTag, /\b(?:null|undefined|NaN|W[1-6]|tipo_esercizio|LIBRO_CI|LUCIDI_CASONI|ESSE3_2016)\b/);
   }
 });
+
+test('B10: precache contiene tutti i file serviti sotto js/ e css/', () => {
+  const manifestPath = path.join(__dirname, '..', 'precache-manifest.json');
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  const dir = path.join(__dirname, '..');
+  const attesi = [];
+  const cammina = (d) => {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const pp = path.join(d, e.name);
+      if (e.isDirectory()) cammina(pp);
+      else attesi.push(path.relative(dir, pp));
+    }
+  };
+  cammina(path.join(dir, 'js'));
+  cammina(path.join(dir, 'css'));
+  for (const f of attesi) assert.ok(manifest.includes(f), 'mancante in precache: ' + f);
+});
+
+test('La chiave usa la prima frase didattica, non il testo amministrativo', async () => {
+  const { primaFrase, renderChiave } = await import('../js/pages/nodo/chiave.js');
+  assert.equal(primaFrase('Una frase $x$. Una seconda $y$.'), 'Una frase $x$.');
+  const html = renderChiave({ id: 'test', lezione: {
+    riepilogo: 'Una frase $x$. Una seconda frase.', perche_ti_serve: 'Priorità alta e prova T1.',
+    definizione_esame: { definizione: 'Altra definizione.' },
+  } });
+  assert.match(html, /Da ricordare/);
+  assert.match(html, /Una frase/);
+  assert.doesNotMatch(html, /Priorità|seconda frase|Altra definizione/);
+  assert.match(renderChiave({ id: 'test', lezione: { definizione_esame: { definizione: 'Definizione. Altra.' } } }), /Definizione\./);
+  assert.equal(primaFrase('Primo $x$ e secondo $y$. Altra frase.'), 'Primo $x$ e secondo $y$.');
+});

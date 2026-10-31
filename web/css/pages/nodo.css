@@ -143,10 +143,37 @@
   margin-block: var(--s-3);
 }
 
-.formula-gruppo {
-  white-space: nowrap;
+.sezione__num {
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text-muted);
+  font-weight: 700;
+  margin-right: var(--s-2);
 }
 
-.formula-gruppo > .formula-inline {
-  margin-right: 0;
+.figura-numerata { margin: 0 0 var(--s-5); page-break-inside: avoid; }
+.figura-numerata .figure__numero { font-size: var(--fs-num); color: var(--c-text-muted); margin-bottom: var(--s-1); }
+.figura-numerata figcaption { font-size: var(--fs-caption); color: var(--c-text-muted); margin-top: var(--s-2); }
+
+.nota-margine { font-size: var(--fs-caption); color: var(--c-text-muted); border-top: var(--rule); padding-top: var(--s-2); margin: var(--s-3) 0 var(--s-5); page-break-inside: avoid; }
+.nota-margine__titolo { font-weight: 700; font-size: var(--fs-num); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 var(--s-1); }
+
+.indice-in-testa { margin: 0 0 var(--s-6); }
+.indice-in-testa .indice-pagina ol { margin: 0; padding-left: var(--s-5); list-style-type: none; }
+.indice-in-testa .indice-pagina li { margin: 0 0 var(--s-1); }
+.indice-in-testa .indice-pagina li a { display: flex; align-items: center; min-height: var(--tap); min-width: var(--tap); text-decoration: none; color: var(--c-text); }
+.indice-in-testa .indice-pagina li a:hover { color: var(--c-primary); }
+.indice-in-testa .indice-pagina li.attiva a { color: var(--c-primary); font-weight: 700; }
+
+.nav-sequenza { display: flex; gap: var(--s-3); margin: var(--s-7) 0 0; flex-wrap: wrap; }
+
+@media (min-width: 1200px) {
+  .nota-margine { float: right; width: var(--margin-col); clear: right; margin: 0 0 var(--s-5) var(--s-6); border-top: none; border-left: var(--rule); padding-left: var(--s-4); padding-top: 0; }
 }
+
+.chiave .formula-box, .scenario .formula-box, .analogia .formula-box {
+  padding: var(--s-4);
+  margin-block: var(--s-3);
+}
+
+.errore-blocco__riga { display: flex; flex-direction: column; gap: var(--s-2); }
+.errore-blocco__riga + .errore-blocco__riga { margin-top: var(--s-3); }
