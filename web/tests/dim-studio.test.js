@@ -112,6 +112,23 @@ test('senza pannello o controlli setupStudio non fa nulla', () => {
   smonta();
 });
 
+test('?passo=n porta il passo in vista solo al secondo frame, dopo lo scrollTo(0,0) di app.js', () => {
+  const frame = [];
+  globalThis.requestAnimationFrame = (fn) => { frame.push(fn); return frame.length; };
+  const { pannello } = pannelloFinto();
+  const controlli = controlliFinti();
+  const contenitore = elemento({ children: { '#modo-studio': pannello, '.dim-controlli': controlli } });
+  globalThis.document = documentoFinto();
+  setupStudio(contenitore, dim, memoria(), 1, 2);
+  assert.deepEqual(pannello.focalizzati, []); // non in sincrono: app.js deve ancora riportare in cima
+  assert.equal(frame.length, 1);
+  frame.shift()();
+  assert.deepEqual(pannello.focalizzati, []); // primo frame: aggancia soltanto il secondo
+  frame.shift()();
+  assert.deepEqual(pannello.focalizzati, ['2']); // secondo frame: il passo richiesto è in vista
+  delete globalThis.requestAnimationFrame;
+});
+
 test('il menu «Altro» è aperto da 1024 px e la sincronizzazione si rimuove allo smontaggio', () => {
   const ascoltatori = [];
   const media = { matches: true, addEventListener: (t, f) => ascoltatori.push(f), removeEventListener: (t, f) => ascoltatori.splice(ascoltatori.indexOf(f), 1) };

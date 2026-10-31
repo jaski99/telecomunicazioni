@@ -143,6 +143,39 @@ test('layout fit: tredici colonne con etichette lunghe non vengono tagliate', ()
   const r = renderBlocchi({ blocchi, collegamenti: blocchi.slice(1).map((b, i) => ({ da: blocchi[i].id, a: b.id })) });
   assert.ok(r.viewBox.w <= 700); assert.equal((r.svgInner.match(/class="blocco rettangolo"/g) || []).length, 13); assert.ok(r.viewBox.h > 36); assert.doesNotMatch(r.svgInner, /<text\b[^>]*>\s*<text\b/);
 });
+test('uscita nel flusso verticale: segmento dal centro verso il basso, punta in giu, etichetta di lato', () => {
+  const verticale = renderBlocchi({ blocchi: [
+    { id: 'a', etichetta: 'Formatore', forma: 'rettangolo', colonna: 0, riga: 0 },
+    { id: 'u', etichetta: 's(t)', forma: 'uscita', colonna: 0, riga: 1 },
+  ], collegamenti: [{ da: 'a', a: 'u' }] });
+  const mLinea = /<line x1="([-\d.]+)" y1="([-\d.]+)" x2="([-\d.]+)" y2="([-\d.]+)"/.exec(verticale.svgInner);
+  const linea = mLinea.map(Number);
+  assert.equal(linea[1], linea[3]); assert.ok(linea[4] > linea[2]); // segmento verticale, verso il basso
+  const punta = /<path d="M ([-\d.]+) ([-\d.]+) L ([-\d.]+) ([-\d.]+) L ([-\d.]+) ([-\d.]+) Z"/
+    .exec(verticale.svgInner.slice(mLinea.index)).map(Number); // apice del glifo, dopo il tratto
+  assert.equal(punta[1], linea[1]); assert.ok(punta[2] > linea[4] && punta[2] > punta[4] && punta[2] > punta[6]);
+  const apiceFreccia = /<path d="M [-\d.]+ [-\d.]+ L [-\d.]+ [-\d.]+" fill="none"[\s\S]*?<path d="M ([-\d.]+) ([-\d.]+) L/
+    .exec(verticale.svgInner).map(Number); // la freccia si aggancia in cima al segmento
+  assert.equal(apiceFreccia[1], linea[1]); assert.equal(apiceFreccia[2], linea[2]);
+  const etichetta = /<text x="([-\d.]+)" y="([-\d.]+)"[^>]*aria-label="s\(t\)"/.exec(verticale.svgInner).map(Number);
+  assert.ok(etichetta[1] > linea[1]); // a destra del segmento, non sotto la punta
+  assert.ok(etichetta[2] >= linea[2] && etichetta[2] <= punta[2]); // allineata in altezza al glifo
+  assert.ok(etichetta[1] > 0 && etichetta[1] < verticale.viewBox.w && etichetta[2] > 0 && etichetta[2] < verticale.viewBox.h);
+});
+test('uscita nel flusso orizzontale: glifo invariato, punta a destra ed etichetta sotto', () => {
+  const orizzontale = renderBlocchi({ blocchi: [
+    { id: 'a', etichetta: 'Formatore', forma: 'rettangolo', colonna: 0, riga: 0 },
+    { id: 'u', etichetta: 's(t)', forma: 'uscita', colonna: 1, riga: 0 },
+  ], collegamenti: [{ da: 'a', a: 'u' }] });
+  const mLinea = /<line x1="([-\d.]+)" y1="([-\d.]+)" x2="([-\d.]+)" y2="([-\d.]+)"/.exec(orizzontale.svgInner);
+  const linea = mLinea.map(Number);
+  assert.equal(linea[2], linea[4]); assert.ok(linea[3] > linea[1]);
+  const punta = /<path d="M ([-\d.]+) ([-\d.]+) L ([-\d.]+) ([-\d.]+) L ([-\d.]+) ([-\d.]+) Z"/
+    .exec(orizzontale.svgInner.slice(mLinea.index)).map(Number);
+  assert.ok(punta[1] > punta[3] && punta[1] > punta[5]); assert.equal(punta[2], linea[2]); // apice a destra, in asse
+  const etichetta = /<text x="([-\d.]+)" y="([-\d.]+)"[^>]*aria-label="s\(t\)"/.exec(orizzontale.svgInner).map(Number);
+  assert.equal(etichetta[1], linea[1] + 16); assert.ok(etichetta[2] > punta[2]); // centrata sotto il glifo
+});
 test('B12 fixture: gli span delle etichette a blocchi contengono parole intere anche oltre il limite di riga', () => {
   const etichetta = 'TrasformazioneFourier con parole intere';
   const r = renderBlocchi({ blocchi: [

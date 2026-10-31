@@ -1,6 +1,9 @@
 import { test } from 'node:test';
+import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import { compilaLatex, compilaLatexSicuro, renderMath, tokenizzaMatematica, testoSicuro, formulaBlock, formulaInline, devePromuovereInDisplay, formulaIsolata } from '../js/core/math.js';
+import { righeDisplay } from '../js/core/riflusso.js';
+import { larghezzaStimata } from '../js/core/larghezza-latex.js';
 
 test('tokenizzaMatematica separa testo, inline $...$ e display $$...$$', () => {
   const toks = tokenizzaMatematica('costo $x=1$ e $$y=2$$ finale');
@@ -127,6 +130,68 @@ test('formulaBlock crea un riflusso responsivo ai soli separatori LaTeX di primo
   assert.doesNotMatch(annidata, /formula-box--reflow/);
   const parentesiQuadre = formulaBlock('P_y = \\int_0^2 3\\omega^2 d\\omega = [\\omega^3]_0^2 = 8');
   assert.doesNotMatch(parentesiQuadre, /katex-err/);
+});
+
+test('righeDisplay spezza PRIMA della relazione: nessun segno di relazione chiude una riga', () => {
+  const dirac = String.raw`x(t) = \lim_{\Delta \to 0} \int_{-\infty}^{+\infty} x(\tau) D(t-\tau,\Delta)\, d\tau \;\Longleftrightarrow\; x(t) = \int_{-\infty}^{+\infty} x(\tau) \delta(t-\tau)\, d\tau = x(t) * \delta(t)`;
+  const righe = righeDisplay(dirac);
+  assert.ok(righe.length >= 2, 'la catena deve essere spezzata');
+  const coda = /(?:[=<>]|\\(?:le|ge|leq|geq|Longleftrightarrow|Longrightarrow|Leftrightarrow|to|approx))\\?;?\s*$/u;
+  for (const riga of righe) assert.ok(!coda.test(riga.trim()), `relazione in coda: ${riga}`);
+  assert.ok(righe.some(r => r.startsWith(String.raw`\Longleftrightarrow`)), 'la doppia implicazione apre la riga');
+});
+
+test('ogni riga di riflusso sta nella capacità stimata del box più stretto', () => {
+  const formule = [
+    String.raw`G_x(\omega) = \frac{1}{\pi T} |G(\omega)|^2 \left\{ \langle a_n^2 \rangle - [\langle a_n \rangle]^2 + 2 \sum_{k=1}^{\infty} \left[ \langle a_n a_{n+k} \rangle - [\langle a_n \rangle]^2 \right] \cos k\omega T \right\}`,
+    String.raw`\omega_m \le \omega_s - \omega_m \;\Longrightarrow\; \omega_s \ge 2\omega_m \;\Longleftrightarrow\; f_s \ge 2 f_m \;\Longleftrightarrow\; T \le \frac{1}{2 f_m}`,
+    String.raw`E = \int |x(t)|^2 dt = \frac{1}{2\pi}\int_{-\infty}^{+\infty} |X(\omega)|^2 d\omega, \qquad F[\phi(\tau)] = |X(\omega)|^2,`,
+  ];
+  for (const tex of formule) {
+    const righe = righeDisplay(tex);
+    assert.ok(righe.length >= 2, 'formula lunga non spezzata: ' + tex.slice(0, 40));
+    for (const riga of righe) assert.ok(larghezzaStimata(riga) <= 8.8, `riga troppo larga (${larghezzaStimata(riga).toFixed(2)}): ${riga}`);
+  }
+});
+
+test('le celle di cases troppo larghe si appiattiscono in righe gathered strette', () => {
+  const eta = String.raw`\eta=\begin{cases}\dfrac{WD}{C\,TT}=\dfrac{WD}{D+H+A+2IC},&WF\le C\,TT,\\[4pt]\dfrac{D}{D+H},&WF>C\,TT.\end{cases}`;
+  const righe = righeDisplay(eta);
+  const flat = righe.find(r => r.includes(String.raw`\begin{gathered}`));
+  assert.ok(flat, 'il cases deve diventare un gathered');
+  const corpo = flat.slice(flat.indexOf(String.raw`\begin{gathered}`) + 16, flat.indexOf(String.raw`\end{gathered}`));
+  const righeInterne = corpo.split('\\\\').map(r => r.trim()).filter(Boolean);
+  assert.ok(righeInterne.length >= 4, 'ogni cella deve finire nella propria riga');
+  for (const riga of righeInterne) assert.ok(larghezzaStimata(riga) <= 8.5, `riga gathered larga: ${riga}`);
+  assert.doesNotMatch(formulaBlock(eta), /katex-err/);
+});
+
+test('lo spazio esplicito backslash-spazio non resta solitario in coda a una riga', () => {
+  const qam = String.raw`\Delta=0\ \Longrightarrow\ (\hat{x}_1,\hat{x}_2)=(x_1,x_2)`;
+  const righe = righeDisplay(qam);
+  assert.ok(righe.length >= 1);
+  for (const riga of righe) assert.ok(!riga.trimEnd().endsWith('\\'), `backslash solitario in coda: ${riga}`);
+  assert.doesNotMatch(formulaBlock(qam), /katex-err/);
+});
+
+test('tutte le formule del grafo: riflusso senza errori KaTeX né relazioni in coda', () => {
+  const graph = JSON.parse(fs.readFileSync(new URL('../graph.json', import.meta.url), 'utf8'));
+  const formule = [];
+  const raccogli = (o) => {
+    if (!o || typeof o !== 'object') return;
+    if (Array.isArray(o)) { o.forEach(raccogli); return; }
+    for (const [k, v] of Object.entries(o)) { if (k === 'formula' && typeof v === 'string') formule.push(v); else raccogli(v); }
+  };
+  raccogli(graph.nodi);
+  assert.ok(formule.length >= 100, 'il grafo costruito deve contenere le formule');
+  const coda = /(?:[=<>]|\\(?:le|ge|leq|geq|Longleftrightarrow|Longrightarrow|Leftrightarrow|to|approx|iff|imply))\\?;?\s*$/u;
+  for (const tex of formule) {
+    assert.doesNotMatch(formulaBlock(tex), /katex-error|katex-err/, tex.slice(0, 60));
+    for (const riga of righeDisplay(tex)) {
+      assert.ok(!coda.test(riga.trim()), `relazione in coda in ${tex.slice(0, 50)}: ${riga.slice(-30)}`);
+      if (!riga.includes(String.raw`\begin{gathered}`)) assert.ok(larghezzaStimata(riga) <= 10.4, `riga oltre il box: ${riga.slice(0, 60)}`);
+    }
+  }
 });
 
 test('formula isolata riconosce spazi ma non testo o altre formule', () => {

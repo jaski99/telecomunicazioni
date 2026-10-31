@@ -89,6 +89,22 @@ function bordo(da, a) {
   return { x: da.x + dx * fattore, y: da.y + dy * fattore };
 }
 
+/** Nel flusso verticale (una colonna per riga, tipici i riadattamenti stretti) la freccia
+ *  arriva all'uscita dall'alto: il glifo va ruotato verso il basso e l'etichetta spostata
+ *  di lato, altrimenti la punta indica il vuoto e l'etichetta cade sotto il foglio. */
+const META_USCITA = 16;
+
+function verticalizzaUscita(a, da) {
+  if (a.verticale || Math.abs(a.y - da.y) <= Math.abs(a.x - da.x)) return;
+  a.verticale = true;
+  a.box.top = Math.min(a.box.top, a.y - META_USCITA - 1);
+  a.box.bottom = Math.max(a.box.bottom, a.y + META_USCITA + 1);
+  for (const t of a.testi) {
+    t.x = a.x + 8 + t.w / 2; t.y = a.y;
+    a.box.right = Math.max(a.box.right, t.x + t.w / 2);
+  }
+}
+
 /** Gli estremi delle frecce si fermano al bordo delle forme, mai al centro. */
 export function layoutCollegamenti(nodi, collegamenti, limite = 16) {
   const perId = new Map(nodi.map(n => [String(n.blocco.id), n]));
@@ -98,7 +114,10 @@ export function layoutCollegamenti(nodi, collegamenti, limite = 16) {
     const da = perId.get(String(c.da)), a = perId.get(String(c.a));
     if (!da || !a || da === a) continue;
     const inizio = da.forma === 'uscita' ? { x: da.x + da.w / 2, y: da.y } : bordo(da, a);
-    const fine = a.forma === 'uscita' ? { x: a.x - a.w / 2, y: a.y } : bordo(a, da);
+    if (a.forma === 'uscita') verticalizzaUscita(a, da);
+    const fine = a.forma === 'uscita'
+      ? (a.verticale ? { x: a.x, y: a.y - META_USCITA } : { x: a.x - META_USCITA, y: a.y })
+      : bordo(a, da);
     const dx = fine.x - inizio.x, dy = fine.y - inizio.y, lunghezza = Math.hypot(dx, dy) || 1;
     const ux = dx / lunghezza, uy = dy / lunghezza;
     const base = { x: fine.x - ux * 8, y: fine.y - uy * 8 };

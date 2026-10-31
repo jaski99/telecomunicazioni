@@ -375,3 +375,25 @@ def test_pam_schema_e_formula_senza_scroll_interno(browser, server, width, heigh
     if width == 390:
         page.screenshot(path='/tmp/pam-390.png', full_page=True)
     page.close()
+
+
+@pytest.mark.parametrize('width,height', [(390, 844), (1440, 900)])
+@pytest.mark.parametrize('dim_id', DIMS)
+def test_passo_n_diretto_porta_il_passo_nel_viewport(browser, server, dim_id, width, height):
+    """Difetto E2-1: il carico diretto di ?passo=n rivela il passo E lo porta nel viewport."""
+    for scelta in sorted({1, 4, PASSI[dim_id]}):
+        n = min(scelta, PASSI[dim_id])
+        page, errori = apri(browser, server, dim_id, width, height, query=f'?passo={scelta}')
+        page.wait_for_timeout(200)  # lascia correre il doppio requestAnimationFrame di dopoRender
+        box = page.evaluate("""(n) => {
+          const li = document.querySelector(`#passo-${n}`);
+          if (!li) return null;
+          const b = li.getBoundingClientRect();
+          return { top: b.top, bottom: b.bottom, h: innerHeight, y: scrollY };
+        }""", n)
+        assert box, (dim_id, scelta, 'passo richiesto non presente nel DOM')
+        assert box['top'] < box['h'] and box['bottom'] > 0, (dim_id, scelta, width, box)
+        if n > 1:
+            assert box['y'] > 0, (dim_id, scelta, width, 'pagina rimasta in cima')
+        assert not errori
+        page.close()

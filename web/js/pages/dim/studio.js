@@ -58,6 +58,14 @@ function modificatori(ev) {
   return { altKey: ev.altKey, ctrlKey: ev.ctrlKey, metaKey: ev.metaKey };
 }
 
+/** app.js riporta la pagina in cima (scrollTo) dopo setup e renderMath: per ?passo=n lo
+ *  scroll al passo va rimandato al secondo frame, a render completato, senza toccare
+ *  app.js. Il doppio requestAnimationFrame è la prima occasione utile stabile. */
+function dopoRender(fn) {
+  const frame = typeof requestAnimationFrame === 'function' ? requestAnimationFrame : (f) => setTimeout(f, 0);
+  frame(() => frame(fn));
+}
+
 /** Il pannello di confronto va cercato dentro il passo del pulsante, non in tutto il
  *  pannello Studio: lo stesso id può comparire in più istanze della pagina. */
 function pannelloConfronto(bottone) {
@@ -125,7 +133,7 @@ export function setupStudio(container, dim, storage, area = 1, passoRichiesto = 
   const allineaMenu = () => { if (menu && desktop) menu.open = desktop.matches; };
   allineaMenu();
   if (desktop) desktop.addEventListener('change', allineaMenu);
-  if (passoRichiesto != null && rivelati > 0) portaPassoInVista(pannello, rivelati);
+  if (passoRichiesto != null && rivelati > 0) dopoRender(() => portaPassoInVista(pannello, rivelati));
   return () => {
     pannello.removeEventListener('click', confrontoClick);
     document.removeEventListener('keydown', alTasto);

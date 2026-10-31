@@ -397,6 +397,51 @@ def test_notazione_lunga_scrollabile_e_frazioni_non_tagliate(server, width, heig
             browser.close()
 """B9: verifica che la punteggiatura adiacente alle inline non migri a una riga nuova."""
 
+@pytest.mark.parametrize("width,height", [(360, 780), (390, 844)])
+def test_riflusso_mobile_relazioni_a_capo_riga_e_box_senza_scroll(server, width, height):
+    """Difetto E2-3: sotto 600px la relazione apre la riga di riflusso e nessun box scorre."""
+    dimostrazioni = [n["dimostrazione"] for n in leggi_grafo()["nodi"] if n.get("dimostrazione")]
+    assert len(dimostrazioni) == 18
+    misura = '''() => [...document.querySelectorAll('.formula-box')].map(box => {
+      const sc = box.querySelector('.scroll-x');
+      const reflow = box.querySelector('.formula-box__reflow');
+      const orig = box.querySelector('.formula-box__original');
+      const mostra = el => el && el.getClientRects().length > 0 && getComputedStyle(el).display !== 'none';
+      const visibile = mostra(reflow) ? reflow : (mostra(orig) ? orig : box);
+      sc.scrollLeft = 0;
+      const r = sc.getBoundingClientRect();
+      const ann = (orig || box).querySelector('annotation');
+      const rels = [...visibile.querySelectorAll('.mrel')].map(m => {
+        const b = m.getBoundingClientRect();
+        return { t: m.textContent, fuori: b.right > r.right + 1 || b.left < r.left - 1 };
+      });
+      return { tex: ann ? ann.textContent : '', variante: mostra(reflow) ? 'reflow' : 'original',
+        scrolla: sc.scrollWidth > sc.clientWidth + 1, sw: sc.scrollWidth, cw: sc.clientWidth,
+        relFuori: rels.filter(x => x.fuori).map(x => x.t) };
+    })'''
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        try:
+            page = browser.new_page(viewport={"width": width, "height": height})
+            errori = console_errors(page)
+            visti = 0
+            for dim in dimostrazioni:
+                page.goto(f'{server}/#/dim/{dim["id"]}', wait_until="networkidle")
+                page.evaluate("""() => document.querySelectorAll('button[data-azione="tutti"]').forEach(b => b.click())""")
+                page.evaluate("() => document.fonts.ready.then(() => true)")
+                page.wait_for_timeout(150)
+                for box in page.evaluate(misura):
+                    if box["variante"] != "reflow":
+                        continue
+                    visti += 1
+                    assert not box["scrolla"], (dim["id"], width, box["tex"][:120], box["sw"], box["cw"])
+                    assert not box["relFuori"], (dim["id"], width, box["tex"][:120], box["relFuori"])
+            assert visti >= 100, f"pochi box di riflusso misurati: {visti}"
+            assert not errori, errori
+        finally:
+            browser.close()
+
+
 R1_DIMS = [
     'dim-teorema-campionamento',
     'dim-modulazione-prodotto-qam-errore-fase',

@@ -20,7 +20,11 @@ function figura(nodo) {
   const { x, y, w, h, forma } = nodo;
   if (forma === 'nodo') return `<circle cx="${n(x)}" cy="${n(y)}" r="6" fill="${SCURO}"/>`;
   if (forma === 'ingresso' || forma === 'uscita') {
-    return `<line x1="${n(x - 16)}" y1="${n(y)}" x2="${n(x + 9)}" y2="${n(y)}" stroke="${SCURO}" stroke-width="2"/><path d="M ${n(x + 16)} ${n(y)} L ${n(x + 7)} ${n(y - 5)} L ${n(x + 7)} ${n(y + 5)} Z" fill="${SCURO}"/>`;
+    // Variante verticale (uscita raggiunta dall'alto): stesso glifo, ruotato in basso;
+    // il tratto parte da y-16, dove si aggancia la freccia del collegamento.
+    return nodo.verticale
+      ? `<line x1="${n(x)}" y1="${n(y - 16)}" x2="${n(x)}" y2="${n(y + 9)}" stroke="${SCURO}" stroke-width="2"/><path d="M ${n(x)} ${n(y + 16)} L ${n(x - 5)} ${n(y + 7)} L ${n(x + 5)} ${n(y + 7)} Z" fill="${SCURO}"/>`
+      : `<line x1="${n(x - 16)}" y1="${n(y)}" x2="${n(x + 9)}" y2="${n(y)}" stroke="${SCURO}" stroke-width="2"/><path d="M ${n(x + 16)} ${n(y)} L ${n(x + 7)} ${n(y - 5)} L ${n(x + 7)} ${n(y + 5)} Z" fill="${SCURO}"/>`;
   }
   if (forma === 'sommatore' || forma === 'moltiplicatore') {
     const segno = forma === 'sommatore'

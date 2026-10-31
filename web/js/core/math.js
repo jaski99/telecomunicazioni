@@ -1,4 +1,5 @@
 import katex from '../../vendor/katex/katex.mjs';
+import { righeDisplay } from './riflusso.js';
 
 const RUNTIME_OPTIONS = { throwOnError: false, trust: false, output: 'htmlAndMathml', displayMode: false };
 const MATH_RE = /\$\$(.*?)\$\$|\$(.*?)\$/gs;
@@ -47,53 +48,24 @@ export function formulaInline(latex, punteggiatura = '') {
   return `<span class="formula-inline">${compilaLatexSicuro(latex)}${escapeHtml(punteggiatura)}</span>`;
 }
 
-/** Separa virgole e spazi tipografici esterni; usa l'uguaglianza solo come ripiego. */
-function righeDisplay(latex) {
-  if (typeof latex !== 'string' || latex.length < 40) return [];
-  const righe = [], uguaglianze = []; let inizio = 0, graffe = 0, tonde = 0, quadre = 0, ambienti = 0;
-  for (let i = 0; i < latex.length; i++) {
-    if (latex[i] === '\\') {
-      const ambiente = /^\\(begin|end)\s*\{([^}]+)\}/u.exec(latex.slice(i));
-      if (ambiente) { ambienti += ambiente[1] === 'begin' ? 1 : -1; i += ambiente[0].length - 1; continue; }
-      const spazio = /^\\(qquad|quad)\b/u.exec(latex.slice(i));
-      if (spazio && !graffe && !tonde && !quadre && !ambienti) {
-        const riga = latex.slice(inizio, i).trim(); if (riga) righe.push(riga);
-        i += spazio[0].length - 1; inizio = i + 1; continue;
-      }
-      const comando = /^\\(?:[A-Za-z]+|.)/u.exec(latex.slice(i));
-      if (comando) { if (comando[0] === '\\{') graffe++; if (comando[0] === '\\}') graffe = Math.max(0, graffe - 1); i += comando[0].length - 1; continue; }
-    }
-    const c = latex[i];
-    if (c === '{') graffe++; else if (c === '}') graffe = Math.max(0, graffe - 1);
-    else if (c === '(') tonde++; else if (c === ')') tonde = Math.max(0, tonde - 1);
-    else if (c === '[') quadre++; else if (c === ']') quadre = Math.max(0, quadre - 1);
-    else if (c === '=' && !graffe && !tonde && !quadre && !ambienti) uguaglianze.push(i);
-    else if (c === ',' && !graffe && !tonde && !quadre && !ambienti) {
-      const riga = latex.slice(inizio, i + 1).trim(); if (riga) righe.push(riga); inizio = i + 1;
-    }
-  }
-  const ultima = latex.slice(inizio).trim(); if (ultima) righe.push(ultima);
-  if (righe.length <= 1 && uguaglianze.length) {
-    righe.length = 0; inizio = 0;
-    for (const indice of uguaglianze) { const riga = latex.slice(inizio, indice + 1).trim(); if (riga) righe.push(riga); inizio = indice + 1; }
-    const resto = latex.slice(inizio).trim(); if (resto) righe.push(resto);
-  }
-  return righe.length > 1 ? righe : [];
-}
-
+/** Variante display a righe strette per <600px; vuota se il riflusso non serve o non si può. */
 function formulaDisplayResponsiva(latex) {
   const righe = righeDisplay(latex);
   return righe.length ? `\\begin{gathered}${righe.join('\\\\{}')}\\end{gathered}` : '';
 }
 
 /** Formula in display: .formula-box[--key] > .scroll-x con KaTeX displayMode. */
+/** Il riflusso è la stessa formula per schermi stretti: la sorgente TeX non va duplicata
+ *  nell'annotation (il MathML resta, l'accessibilità non cambia). */
+const senzaAnnotationi = (html) => html.replace(/<annotation[^>]*>[\s\S]*?<\/annotation>/gu, '');
+
 export function formulaBlock(latex, opzioni = {}) {
   const chiave = opzioni && opzioni.variante === 'chiave';
   const etichetta = opzioni && opzioni.etichetta != null ? String(opzioni.etichetta) : '';
   const label = etichetta ? `<div class="formula-box__label">${escapeHtml(etichetta)}</div>` : '';
   const corpo = renderLatexSicuro(latex, true);
   const responsive = formulaDisplayResponsiva(latex);
-  const varianteMobile = responsive ? `<div class="formula-box__reflow">${renderLatexSicuro(responsive, true)}</div>` : '';
+  const varianteMobile = responsive ? `<div class="formula-box__reflow">${senzaAnnotationi(renderLatexSicuro(responsive, true))}</div>` : '';
   return `<div class="formula-box${chiave ? ' formula-box--key' : ''}${responsive ? ' formula-box--reflow' : ''}">\n${label}\n<div class="scroll-x" tabindex="0" role="region" aria-label="Formula"><div class="formula-box__original">${corpo}</div>${varianteMobile}</div>\n</div>`;
 }
 
