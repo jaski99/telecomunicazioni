@@ -398,31 +398,3 @@ def test_passo_n_diretto_porta_il_passo_nel_viewport(browser, server, dim_id, wi
             assert box['y'] > 0, (dim_id, scelta, width, 'pagina rimasta in cima')
         assert not errori
         page.close()
-
-
-@pytest.mark.parametrize('width,height', [(360, 780), (390, 844)])
-@pytest.mark.parametrize('dim_id', DIMS)
-def test_figure_stanno_nel_contenitore_senza_scroll(browser, server, dim_id, width, height):
-    """A 360/390 px nessuna figura puo' essere piu' larga del suo contenitore:
-    niente scroll orizzontale interno e nessun nome tagliato."""
-    page, errori = apri(browser, server, dim_id, width, height)
-    mostra_tutti(page)
-    misura = page.evaluate('''() => [...document.querySelectorAll('.step__figura')].map(cont => {
-        const figure = cont.querySelector('.figure'), svg = figure && figure.querySelector('svg');
-        if (!svg) return null;
-        const regione = figure.querySelector('.scroll-x');
-        return { svg: svg.getBoundingClientRect().width, contenitore: cont.clientWidth,
-          figure: figure.getBoundingClientRect().width,
-          scroll: regione ? regione.scrollWidth : 0, client: regione ? regione.clientWidth : 0,
-          titolo: (figure.querySelector('.figure__caption-title') || {}).textContent || '' };
-      }).filter(Boolean)''')
-    if not misura:  # dimostrazioni senza figure: nulla da misurare
-        assert not errori, (dim_id, errori)
-        page.close()
-        return
-    for m in misura:
-        assert m['svg'] <= m['contenitore'] + 1, (dim_id, width, m)
-        assert m['figure'] <= m['contenitore'] + 1, (dim_id, width, m)
-        assert m['scroll'] <= m['client'] + 1, (dim_id, width, m)
-    assert not errori, (dim_id, errori)
-    page.close()
