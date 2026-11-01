@@ -2,7 +2,7 @@
 import { testoARighe, misuraTesto } from './blocchi-layout.js';
 const EPS = 1e-7;
 const DISTANZA_CORSIE = 8;
-const DISTANZA_PUNTE = 14;
+const DISTANZA_PUNTE = 18;
 const MONCONE = 12;
 const copia = p => ({ x: p.x, y: p.y });
 const stesso = (a, b) => Math.hypot(a.x - b.x, a.y - b.y) < 0.1;
@@ -1100,6 +1100,99 @@ function disponiEtichette(frecce, perId, { soloNodi = false, soloConnettori = fa
   return items.reduce((s, item) => s + penalitaEtichetta(item, item.t, contesto), 0);
 }
 
+/** Un nome di blocco non deve restare lontano dalla propria forma solo perche'
+ *  i connettori occupano le bande: se supera la distanza utile lo si riporta
+ *  a contatto, scegliendo la posizione che crea meno altri conflitti. */
+function riavvicinaEtichette(frecce, perId) {
+  const items = raccogliTesti(frecce, perId);
+  if (!items.length) return;
+  const contesto = contestoEtichette(frecce, perId, items, true);
+  // Un'etichetta di connettore deve restare piu' vicina al proprio filo che a
+  // una forma: si cerca con cura lungo il percorso prima di rassegnarsi.
+  for (const item of items) {
+    if (!item.c || item.n) continue;
+    const t = item.t;
+    const box0 = rettangoloTesto(t);
+    const d0 = distanzaPolyBox(item.poly, box0);
+    if (!contesto.nodi.some(n => contesto.forme.get(n)
+      && distanzaBoxBox(box0, contesto.forme.get(n)) < d0 - 0.05)) continue;
+    const punti = vertici(item.c);
+    let scelta = null, costo = penalitaEtichetta(item, t, contesto);
+    for (let i = 1; i < punti.length; i++) {
+      const a = punti[i - 1], b = punti[i];
+      const len = Math.hypot(b.x - a.x, b.y - a.y);
+      if (len < 18) continue;
+      const ux = (b.x - a.x) / len, uy = (b.y - a.y) / len, nx = -uy, ny = ux;
+      const ext = Math.abs(nx) * t.w / 2 + Math.abs(ny) * t.h / 2;
+      for (let f2 = 0.2; f2 <= 0.81; f2 += 0.1) for (let g = 3; g <= 12; g += 1) for (const sgn of [1, -1]) {
+        const x = a.x + (b.x - a.x) * f2 + nx * sgn * (ext + g);
+        const y = a.y + (b.y - a.y) * f2 + ny * sgn * (ext + g);
+        if (x - t.w / 2 < 0.5) continue;
+        const box = { left: x - t.w / 2, right: x + t.w / 2, top: y - t.h / 2, bottom: y + t.h / 2 };
+        const dOwn = distanzaPolyBox(item.poly, box);
+        if (contesto.nodi.some(n => contesto.forme.get(n)
+          && distanzaBoxBox(box, contesto.forme.get(n)) < dOwn - 0.05)) continue;
+        // niente punte coperte e niente altre etichette addosso
+        if (contesto.punte.some(punti => {
+          const xs = punti.map(q => q.x), ys = punti.map(q => q.y);
+          return box.left <= Math.max(...xs) && box.right >= Math.min(...xs)
+            && box.top <= Math.max(...ys) && box.bottom >= Math.min(...ys);
+        })) continue;
+        if (contesto.items.some(altro => altro !== item && sovrapposti(box, rettangoloTesto(altro.t)))) continue;
+        const pen = penalitaEtichetta(item, { ...t, x, y }, contesto);
+        if (!scelta || pen < costo) { costo = pen; scelta = { x, y }; }
+      }
+    }
+    if (scelta) { t.x = scelta.x; t.y = scelta.y; }
+  }
+  for (const item of items) {
+    if (!item.n || !item.forma) continue;
+    const f = item.forma, t = item.t;
+    const attuale = penalitaEtichetta(item, t, contesto);
+    if (distanzaBoxBox(rettangoloTesto(t), f) <= DIST_ETICHETTA) continue;
+    const cx = (f.left + f.right) / 2, cy = (f.top + f.bottom) / 2;
+    let scelta = null, costo = attuale;
+    for (let g = 2; g <= DIST_ETICHETTA; g += 1) {
+      for (const p of [{ x: f.left - g - t.w / 2, y: cy }, { x: f.right + g + t.w / 2, y: cy },
+        { x: f.left - g - t.w / 2, y: f.top + t.h / 2 }, { x: f.left - g - t.w / 2, y: f.bottom - t.h / 2 },
+        { x: f.right + g + t.w / 2, y: f.top + t.h / 2 }, { x: f.right + g + t.w / 2, y: f.bottom - t.h / 2 },
+        { x: cx, y: f.top - g - t.h / 2 }, { x: cx, y: f.bottom + g + t.h / 2 },
+        { x: f.left - g - t.w / 2, y: f.top - g - t.h / 2 }, { x: f.right + g + t.w / 2, y: f.top - g - t.h / 2 },
+        { x: f.left - g - t.w / 2, y: f.bottom + g + t.h / 2 }, { x: f.right + g + t.w / 2, y: f.bottom + g + t.h / 2 }]) {
+        if (p.x - t.w / 2 < 0.5) continue;
+        const box = { left: p.x - t.w / 2, right: p.x + t.w / 2, top: p.y - t.h / 2, bottom: p.y + t.h / 2 };
+        const d = distanzaBoxBox(box, f);
+        if (contesto.nodi.some(n => n !== item.n && contesto.forme.get(n)
+          && distanzaBoxBox(box, contesto.forme.get(n)) < d - 0.05)) continue;
+        const pen = penalitaEtichetta(item, { ...t, x: p.x, y: p.y }, contesto);
+        if (pen < costo) { costo = pen; scelta = p; }
+      }
+    }
+    // Ultima risorsa: un nome tutto attaccato (senza spazi) si spezza in due
+    // righe, cosi' entra nello spazio lasciato dai connettori.
+    if (!scelta && t.righe.length === 1 && t.w > 32) {
+      const lettere = Array.from(t.originale);
+      const meta = Math.ceil(lettere.length / 2);
+      const righe = [lettere.slice(0, meta).join(''), lettere.slice(meta).join('')].filter(Boolean);
+      const misura = misuraTesto(righe);
+      t.righe = righe; t.w = misura.w; t.h = misura.h;
+      for (let g = 2; g <= DIST_ETICHETTA && !scelta; g += 1) {
+        for (const p of [{ x: f.right + g + t.w / 2, y: cy }, { x: f.left - g - t.w / 2, y: cy },
+          { x: cx, y: f.bottom + g + t.h / 2 }, { x: cx, y: f.top - g - t.h / 2 }]) {
+          if (p.x - t.w / 2 < 0.5) continue;
+          const box = { left: p.x - t.w / 2, right: p.x + t.w / 2, top: p.y - t.h / 2, bottom: p.y + t.h / 2 };
+          const d = distanzaBoxBox(box, f);
+          if (contesto.nodi.some(n => n !== item.n && contesto.forme.get(n)
+            && distanzaBoxBox(box, contesto.forme.get(n)) < d - 0.05)) continue;
+          if (penalitaEtichetta(item, { ...t, x: p.x, y: p.y }, contesto) <= attuale) { scelta = p; break; }
+        }
+      }
+      if (!scelta) { t.righe = [t.originale]; const m = misuraTesto(t.righe); t.w = m.w; t.h = m.h; }
+    }
+    if (scelta) { t.x = scelta.x; t.y = scelta.y; }
+  }
+}
+
 function liberaEtichette(frecce, collegamenti, perId) {
   return disponiEtichette(frecce, perId, { giri: 4 });
 }
@@ -1173,6 +1266,7 @@ export function risolviVincoli(frecce, collegamenti, perId, completo = true) {
   }
   raddrizzaPercorsi(frecce, collegamenti, perId);
   const etichette = completo ? liberaEtichette(frecce, collegamenti, perId) : 0;
+  if (completo) riavvicinaEtichette(frecce, perId);
   const percorsi = frecce.reduce((s, c) => s + conflitti(c, vertici(c), frecce, collegamenti, perId).totale, 0);
   aggiornaBox(perId);
   // La geometria pesa mille volte piu' di un'etichetta: a parita' di corsie
