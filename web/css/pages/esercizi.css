@@ -31,14 +31,6 @@
   padding: var(--s-4);
 }
 
-.formula-gruppo {
-  white-space: nowrap;
-}
-
-.formula-gruppo > .formula-inline {
-  margin-right: 0;
-}
-
 .esercizio-card__azioni {
   display: flex;
   flex-wrap: wrap;

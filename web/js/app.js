@@ -4,9 +4,9 @@
  */
 
 import { renderMath, testoSicuro, escapeHtml } from './core/math.js';
-import { creaRouter, parseHash } from './router.js';
+import { creaRouter, parseHashConQuery } from './router.js';
 import { shellHTML } from './layout/shell.js';
-
+import { salvaUltimaPagina } from './core/store.js';
 import * as homePage from './pages/home.js';
 import * as grafoPage from './pages/grafo.js';
 import * as nodoPage from './pages/nodo.js';
@@ -15,9 +15,10 @@ import * as eserciziPage from './pages/esercizi.js';
 import * as quizPage from './pages/quiz.js';
 import * as ripassoPage from './pages/ripasso.js';
 import * as fontiPage from './pages/fonti.js';
-
+import * as areaPage from './pages/area.js';
 const ROUTES = [
   { path: '', page: homePage },
+  { path: 'area/:n', page: areaPage },
   { path: 'grafo', page: grafoPage },
   { path: 'nodo/:id', page: nodoPage },
   { path: 'dim/:id', page: dimPage },
@@ -26,13 +27,10 @@ const ROUTES = [
   { path: 'ripasso', page: ripassoPage },
   { path: 'fonti', page: fontiPage },
 ];
-
 let graph = { versione: 1, meta: {}, nodi: [], esame: [], pendenti: [] };
 let quiz = { versione: 1, descrizione: '', elementi: [] };
 let currentUnmount = null;
-
 const storage = typeof window !== 'undefined' ? window.localStorage : null;
-
 async function caricaJSON(url, fallback) {
   try {
     const risposta = await fetch(url, { cache: 'no-store' });
@@ -42,7 +40,6 @@ async function caricaJSON(url, fallback) {
     return fallback;
   }
 }
-
 function renderErrore(messaggio) {
   return `<section class="errore">
     <h1>Errore di pagina</h1>
@@ -50,9 +47,7 @@ function renderErrore(messaggio) {
     <button class="btn" type="button" onclick="location.reload()">Ricarica</button>
   </section>`;
 }
-
 const router = creaRouter(ROUTES, () => { /* stato gestito da mostraRoute */ });
-
 async function mostraRoute(hash) {
   const main = document.getElementById('app');
   if (!main) return;
@@ -62,12 +57,16 @@ async function mostraRoute(hash) {
   }
   document.getElementById('shell').innerHTML = shellHTML(hash);
   main.innerHTML = '';
-  const stato = router.eseguire(hash.replace(/^#/, ''));
+  const { percorso, query } = parseHashConQuery(hash);
+  const stato = router.eseguire(percorso);
   const route = stato.route;
-  const params = stato.params || {};
+  const params = { ...(stato.params || {}), ...query };
   if (!route) {
     main.innerHTML += renderErrore('Route non riconosciuta.');
     return;
+  }
+  if ((route.path === 'nodo/:id' || route.path === 'dim/:id') && graph.nodi.some((n) => n.id === params.id)) {
+    salvaUltimaPagina(storage, route.path.split('/')[0], params.id);
   }
   const page = route.page;
   const ctx = { graph, quiz, storage, renderMath, testoSicuro };
@@ -99,7 +98,11 @@ async function mostraRoute(hash) {
   } catch (err) {
     console.error('renderMath fallito:', err);
   }
-  window.scrollTo(0, 0);
+  if (params.sezione && /^\d+$/.test(params.sezione)) {
+    document.getElementById(`sez-${params.sezione}`)?.scrollIntoView();
+  } else {
+    window.scrollTo(0, 0);
+  }
 }
 
 function gestoreErroreGlobale(event) {
@@ -127,8 +130,19 @@ async function avvia() {
   graph = await caricaJSON('./graph.json', graph);
   quiz = await caricaJSON('./quiz.json', quiz);
 
-  window.addEventListener('hashchange', () => mostraRoute(parseHash()));
-  mostraRoute(parseHash());
+  window.addEventListener('hashchange', () => mostraRoute(parseHashConQuery().percorso));
+  mostraRoute(parseHashConQuery().percorso);
+
+  // Stampa: apri tutti i <details> prima di stampa, richiudi dopo.
+  let dettagliChiusi = [];
+  window.addEventListener('beforeprint', () => {
+    dettagliChiusi = [...document.querySelectorAll('details:not([open])')];
+    dettagliChiusi.forEach((d) => { d.open = true; });
+  });
+  window.addEventListener('afterprint', () => {
+    dettagliChiusi.forEach((d) => { d.open = false; });
+    dettagliChiusi = [];
+  });
 }
 
 avvia();

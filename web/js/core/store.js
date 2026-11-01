@@ -115,3 +115,14 @@ export function importaChiavi(storage, dati) {
 
 /* Chiavi canoniche (sez. 9.5 del contratto) */
 export { KEY_STATO, KEY_RIPASSO, KEY_DIMOSTRAZIONI, KEY_IMPOSTAZIONI };
+
+/** Ultima pagina di studio aperta, per riprendere dalla home. */
+export function salvaUltimaPagina(storage, tipo, id) {
+  if (!['nodo', 'dim'].includes(tipo) || !id) return false;
+  return scriviChiave(storage, 'tlc-kg:ultima-pagina:v1', { tipo, id: String(id) });
+}
+
+export function leggiUltimaPagina(storage) {
+  const pagina = leggiChiave(storage, 'tlc-kg:ultima-pagina:v1', null);
+  return pagina && ['nodo', 'dim'].includes(pagina.tipo) && typeof pagina.id === 'string' ? pagina : null;
+}

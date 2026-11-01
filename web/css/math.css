@@ -32,6 +32,11 @@ main h1 .formula-inline .katex { font-size: 0.9em; }
 .formula-box__label { font-size: var(--fs-small, 0.9375rem); font-weight: 600; color: var(--c-text-muted, #4a5568); margin-bottom: var(--s-2, 8px); text-align: left; }
 
 .formula-box .scroll-x { overflow-x: auto; }
+.formula-box__reflow { display: none; }
+@media (max-width: 599px) {
+  .formula-box--reflow .formula-box__original { display: none; }
+  .formula-box--reflow .formula-box__reflow { display: block; }
+}
 .formula-box .katex-display { display: block; margin: 0 auto; text-align: center; overflow: visible; }
 .formula-box .katex-display > .katex { overflow: visible; padding-block: 0.4em; font-size: 1.15em; }
 @media (min-width: 600px) { .formula-box .katex-display > .katex { font-size: 1.25em; } }
@@ -44,5 +49,5 @@ main h1 .formula-inline .katex { font-size: 0.9em; }
 .katex-err { color: var(--c-danger, #b42318); background: var(--c-danger-bg, #fef3f2); border: 1px solid var(--c-danger, #b42318); border-radius: var(--radius-sm, 6px); padding: 0 var(--s-1, 4px); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.95em; padding-block: 0; }
 
 /* Formula inline nella prosa: padding-block azzerato, niente aria-hidden. */
-.formula-inline { display: inline-block; margin: 0 var(--s-1, 4px); vertical-align: middle; padding-block: 0; }
+.formula-inline { display: inline-block; margin: 0 var(--s-1, 4px); vertical-align: middle; padding-block: 0; white-space: nowrap; }
 .formula-inline .katex { font-size: 1.1em; }
