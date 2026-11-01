@@ -1,0 +1,4760 @@
+{
+  "commit": "0ef8a4c7e488853798f6410cc45aca5ec3f45c21",
+  "dimostrazioni": {
+    "dim-teorema-campionamento": {
+      "id": "dim-teorema-campionamento",
+      "titolo": "Teorema del campionamento nel dominio dei tempi (T1)",
+      "domande_esame": [
+        "T1"
+      ],
+      "enunciato": "Sia $x(t)$ un segnale passa-basso la cui trasformata $X(\\omega)$ è apprezzabile solo per $|\\omega| \\le \\omega_m$. Se lo si campiona a istanti equispaziati $t_n = nT$ con frequenza di campionamento $f_s = 1/T$ almeno doppia della massima frequenza del segnale, $f_s \\ge 2 f_m$ (cioè $\\omega_s \\ge 2\\omega_m$, $T \\le 1/(2 f_m)$), allora la conoscenza dei soli campioni $x(nT)$ individua in maniera univoca l'intera forma d'onda, che si ricostruisce come $x(t) = \\sum_{n} x(nT)\\, \\operatorname{sinc}\\frac{t-nT}{T}$. Punteggio della prova T1: NON TROVATO.",
+      "ipotesi": [
+        "Il segnale è limitato in banda: esiste una pulsazione massima $\\omega_m$ oltre la quale lo spettro è trascurabile (negli sviluppi si tratta come banda rigorosamente limitata).",
+        "Gli istanti di campionamento sono equispaziati di un intervallo costante $T$ e l'origine dei tempi è posta in uno di essi, così $t_n = nT$.",
+        "Vale la relazione fra trasformata della serie temporale dei campioni e trasformata del segnale (nodo sulle serie temporali), con il fattore $1/T$.",
+        "La ricostruzione usa un filtro passa-basso ideale con banda $\\pi/T$: è un modello matematico, senza pretese di realizzabilità fisica esatta."
+      ],
+      "notazione": [
+        {
+          "simbolo": "x_n = x(nT)",
+          "significato": "campione del segnale all'istante $nT$; la successione dei campioni è la serie temporale"
+        },
+        {
+          "simbolo": "T,\\; f_s = 1/T,\\; \\omega_s = 2\\pi/T",
+          "significato": "intervallo, frequenza e pulsazione di campionamento"
+        },
+        {
+          "simbolo": "X_s(\\omega) = \\sum_{n} x_n e^{-j n \\omega T}",
+          "significato": "trasformata della serie temporale dei campioni, periodica in $\\omega$ di periodo $\\omega_s$"
+        },
+        {
+          "simbolo": "\\omega_m,\\; f_m = \\omega_m/(2\\pi)",
+          "significato": "massima pulsazione (e frequenza) a cui lo spettro del segnale è apprezzabile"
+        },
+        {
+          "simbolo": "\\operatorname{sinc} z = \\frac{\\sin \\pi z}{\\pi z}",
+          "significato": "seno cardinale nella definizione usata in file1; vale 1 in $z=0$ e zero negli altri interi"
+        }
+      ],
+      "varianti_notazione": [
+        {
+          "canonica": "$\\omega_{s} = \\frac{2\\pi}{T}$, $f_{s} = \\frac{1}{T}$",
+          "variante": "$\\omega_{0} = \\frac{2\\pi}{T}$ e $f_{0} = \\frac{1}{T}$ per la pulsazione e la frequenza di campionamento",
+          "fonte": "FILE1 pp. 7-9; FILE3 pp. 1-2 (in file3 anche m al posto di $\\omega$)"
+        },
+        {
+          "canonica": "$\\omega$ per la pulsazione generica",
+          "variante": "m per la pulsazione generica",
+          "fonte": "FILE3 pp. 1-2"
+        }
+      ],
+      "idea": "Campionare ripete lo spettro ogni $\\omega_{s}$: se le copie non si toccano, un passa-basso isola l'originale e antitrasformando nascono i seni cardinali.",
+      "passi": [
+        {
+          "n": 1,
+          "testo": "Si fissano gli istanti di lettura $t_n = nT$ e i valori campionati $x_n = x(nT)$, che formano la serie temporale; senza altre condizioni infinite funzioni passano per gli stessi campioni, quindi serve un'ipotesi in più.",
+          "formula": "x_n = x(nT), \\qquad n = \\dots, -1, 0, 1, \\dots",
+          "perche": "È la definizione di campionamento uniforme; l'origine si può porre in un istante di campionamento senza perdere generalità."
+        },
+        {
+          "n": 2,
+          "testo": "Si richiama la trasformata della serie temporale: conoscere i campioni equivale a conoscere la ripetizione periodica della trasformata del segnale con periodo $\\omega_s = 2\\pi/T$, scalata di $1/T$.",
+          "formula": "X_s(\\omega) = \\frac{1}{T} \\sum_{k=-\\infty}^{+\\infty} X(\\omega + k\\omega_s)",
+          "perche": "È il risultato già dimostrato per le serie temporali a partire dalla rappresentazione del segnale campionato come somma di impulsi pesati.",
+          "figura": "spettro-e-repliche"
+        },
+        {
+          "n": 3,
+          "testo": "Si disegna in modulo lo spettro del segnale, concentrato fra $-\\omega_m$ e $\\omega_m$, e le repliche traslate di multipli di $\\omega_s$: in generale dalla loro somma non si risale allo spettro originario.",
+          "perche": "Se le repliche si sovrappongono, in ogni pulsazione arrivano contributi di più repliche e l'informazione sulle singole è persa (aliasing)."
+        },
+        {
+          "n": 4,
+          "testo": "Si impone che le repliche occupino bande distinte: il bordo destro della replica centrale non deve superare il bordo sinistro della successiva.",
+          "formula": "\\omega_m \\le \\omega_s - \\omega_m \\;\\Longrightarrow\\; \\omega_s \\ge 2\\omega_m \\;\\Longleftrightarrow\\; f_s \\ge 2 f_m \\;\\Longleftrightarrow\\; T \\le \\frac{1}{2 f_m}",
+          "perche": "La replica con $k=-1$ è centrata in $\\omega_s$ e inizia a $\\omega_s - \\omega_m$; la separazione è la condizione geometrica che le due bande non si tocchino.",
+          "figura": "catena-campionamento-ricostruzione"
+        },
+        {
+          "n": 5,
+          "testo": "Con le repliche separate, nella banda centrale la somma periodica coincide con il solo termine $k=0$: si risale così allo spettro originario moltiplicando per $T$ e azzerando fuori banda, con banda di ricostruzione scelta in $\\Omega = \\omega_s/2 = \\pi/T$.",
+          "formula": "X(\\omega) = \\begin{cases} T\\, X_s(\\omega) & |\\omega| < \\dfrac{\\omega_s}{2} = \\dfrac{\\pi}{T} \\\\ 0 & \\text{altrove} \\end{cases}",
+          "perche": "Dentro $(-\\Omega, \\Omega)$, con $\\omega_m \\le \\Omega \\le \\omega_s - \\omega_m$, contribuisce solo la replica centrale; il fattore $T$ compensa esattamente il fattore $1/T$ del passo 2 (punto A3, verificato in file1 p. 9)."
+        },
+        {
+          "n": 6,
+          "testo": "Si antitrasforma sostituendo a $X_s(\\omega)$ la sua definizione come serie di esponenziali e scambiando serie e integrale.",
+          "formula": "x(t) = \\frac{T}{2\\pi} \\int_{-\\pi/T}^{\\pi/T} X_s(\\omega) e^{j\\omega t}\\, d\\omega = \\frac{T}{2\\pi} \\sum_{n} x_n \\int_{-\\pi/T}^{\\pi/T} e^{j\\omega (t-nT)}\\, d\\omega",
+          "perche": "L'antitrasformata è lineare e l'intervallo di integrazione è finito; la definizione di $X_s$ è quella del nodo sulle serie temporali."
+        },
+        {
+          "n": 7,
+          "testo": "L'integrale elementare dà il seno cardinale traslato in $nT$, e si ottiene la formula di ricostruzione; in $t = mT$ tutti i termini con $n \\ne m$ si annullano e resta proprio il campione $x(mT)$, come deve essere.",
+          "formula": "x(t) = \\sum_{n=-\\infty}^{+\\infty} x(nT)\\, \\frac{\\sin \\frac{\\pi}{T}(t-nT)}{\\frac{\\pi}{T}(t-nT)} = \\sum_{n} x(nT)\\, \\operatorname{sinc}\\frac{t-nT}{T}",
+          "perche": "L'antitrasformata di uno spettro rettangolare è il seno cardinale (già calcolata nel nodo sulla trasformata) e $\\operatorname{sinc}(0)=1$, mentre si annulla negli altri multipli interi di $T$.",
+          "figura": "seno-cardinale-ricostruzione"
+        },
+        {
+          "n": 8,
+          "testo": "Chiusura interpretativa, presente in file1: le funzioni seno cardinale traslate sono fra loro ortogonali, quindi la ricostruzione è uno sviluppo in serie di funzioni ortogonali i cui coefficienti sono gli stessi campioni; il campionamento è il primo passo della conversione analogico-numerica.",
+          "formula": "\\int_{-\\infty}^{+\\infty} \\operatorname{sinc}\\frac{t-nT}{T}\\, \\operatorname{sinc}\\frac{t-mT}{T}\\, dt = \\begin{cases} 0 & m \\ne n \\\\ T & m = n \\end{cases}",
+          "perche": "Segue dal teorema di Parseval generalizzato applicato agli spettri rettangolari traslati, come svolto in file1 p. 10; è un commento, non serve alla tesi."
+        }
+      ],
+      "formula_finale": "f_s \\ge 2 f_m, \\qquad x(t) = \\sum_{n=-\\infty}^{+\\infty} x(nT)\\, \\operatorname{sinc}\\frac{t-nT}{T}, \\qquad \\operatorname{sinc} z = \\frac{\\sin \\pi z}{\\pi z}",
+      "figure": [
+        {
+          "id": "spettro-e-repliche",
+          "tipo": "grafico",
+          "titolo": "Spettro del segnale e sue repliche dopo il campionamento",
+          "descrizione": "Grafico in modulo: al centro lo spettro triangolare del segnale, largo da meno omega emme a più omega emme e alto uno; ai lati, tratteggiate, le repliche centrate in più e meno omega esse. Le repliche sono separate perché omega esse vale il triplo di omega emme, più del doppio richiesto.",
+          "asse_x": {
+            "etichetta": "ω (rad/s, unità arbitrarie)",
+            "min": -9,
+            "max": 9,
+            "tacche": [
+              {
+                "valore": -6,
+                "etichetta": "−ωs"
+              },
+              {
+                "valore": -2,
+                "etichetta": "−ωm"
+              },
+              {
+                "valore": 0,
+                "etichetta": "0"
+              },
+              {
+                "valore": 2,
+                "etichetta": "ωm"
+              },
+              {
+                "valore": 6,
+                "etichetta": "ωs"
+              }
+            ]
+          },
+          "asse_y": {
+            "etichetta": "|X(ω)| (unità arbitrarie)",
+            "min": 0,
+            "max": 1.15
+          },
+          "serie": [
+            {
+              "stile": "linea",
+              "punti": [
+                [
+                  -2.0,
+                  0.0
+                ],
+                [
+                  -1.8,
+                  0.1
+                ],
+                [
+                  -1.6,
+                  0.2
+                ],
+                [
+                  -1.4,
+                  0.3
+                ],
+                [
+                  -1.2,
+                  0.4
+                ],
+                [
+                  -1.0,
+                  0.5
+                ],
+                [
+                  -0.8,
+                  0.6
+                ],
+                [
+                  -0.6,
+                  0.7
+                ],
+                [
+                  -0.4,
+                  0.8
+                ],
+                [
+                  -0.2,
+                  0.9
+                ],
+                [
+                  0.0,
+                  1.0
+                ],
+                [
+                  0.2,
+                  0.9
+                ],
+                [
+                  0.4,
+                  0.8
+                ],
+                [
+                  0.6,
+                  0.7
+                ],
+                [
+                  0.8,
+                  0.6
+                ],
+                [
+                  1.0,
+                  0.5
+                ],
+                [
+                  1.2,
+                  0.4
+                ],
+                [
+                  1.4,
+                  0.3
+                ],
+                [
+                  1.6,
+                  0.2
+                ],
+                [
+                  1.8,
+                  0.1
+                ],
+                [
+                  2.0,
+                  0.0
+                ]
+              ],
+              "etichetta": "spettro originario (k = 0)"
+            },
+            {
+              "stile": "tratteggio",
+              "punti": [
+                [
+                  4.0,
+                  0.0
+                ],
+                [
+                  4.2,
+                  0.1
+                ],
+                [
+                  4.4,
+                  0.2
+                ],
+                [
+                  4.6,
+                  0.3
+                ],
+                [
+                  4.8,
+                  0.4
+                ],
+                [
+                  5.0,
+                  0.5
+                ],
+                [
+                  5.2,
+                  0.6
+                ],
+                [
+                  5.4,
+                  0.7
+                ],
+                [
+                  5.6,
+                  0.8
+                ],
+                [
+                  5.8,
+                  0.9
+                ],
+                [
+                  6.0,
+                  1.0
+                ],
+                [
+                  6.2,
+                  0.9
+                ],
+                [
+                  6.4,
+                  0.8
+                ],
+                [
+                  6.6,
+                  0.7
+                ],
+                [
+                  6.8,
+                  0.6
+                ],
+                [
+                  7.0,
+                  0.5
+                ],
+                [
+                  7.2,
+                  0.4
+                ],
+                [
+                  7.4,
+                  0.3
+                ],
+                [
+                  7.6,
+                  0.2
+                ],
+                [
+                  7.8,
+                  0.1
+                ],
+                [
+                  8.0,
+                  0.0
+                ]
+              ],
+              "etichetta": "replica k = −1"
+            },
+            {
+              "stile": "tratteggio",
+              "punti": [
+                [
+                  -8.0,
+                  0.0
+                ],
+                [
+                  -7.8,
+                  0.1
+                ],
+                [
+                  -7.6,
+                  0.2
+                ],
+                [
+                  -7.4,
+                  0.3
+                ],
+                [
+                  -7.2,
+                  0.4
+                ],
+                [
+                  -7.0,
+                  0.5
+                ],
+                [
+                  -6.8,
+                  0.6
+                ],
+                [
+                  -6.6,
+                  0.7
+                ],
+                [
+                  -6.4,
+                  0.8
+                ],
+                [
+                  -6.2,
+                  0.9
+                ],
+                [
+                  -6.0,
+                  1.0
+                ],
+                [
+                  -5.8,
+                  0.9
+                ],
+                [
+                  -5.6,
+                  0.8
+                ],
+                [
+                  -5.4,
+                  0.7
+                ],
+                [
+                  -5.2,
+                  0.6
+                ],
+                [
+                  -5.0,
+                  0.5
+                ],
+                [
+                  -4.8,
+                  0.4
+                ],
+                [
+                  -4.6,
+                  0.3
+                ],
+                [
+                  -4.4,
+                  0.2
+                ],
+                [
+                  -4.2,
+                  0.1
+                ],
+                [
+                  -4.0,
+                  0.0
+                ]
+              ],
+              "etichetta": "replica k = 1"
+            }
+          ],
+          "annotazioni": [
+            {
+              "x": 0,
+              "y": 1.06,
+              "testo": "k = 0"
+            },
+            {
+              "x": 6,
+              "y": 1.06,
+              "testo": "k = −1"
+            },
+            {
+              "x": -6,
+              "y": 1.06,
+              "testo": "k = 1"
+            }
+          ]
+        },
+        {
+          "id": "seno-cardinale-ricostruzione",
+          "tipo": "grafico",
+          "titolo": "Funzione seno cardinale usata nella ricostruzione",
+          "descrizione": "Una funzione seno cardinale centrata in zero: vale uno nell'origine, si annulla in tutti gli altri multipli interi del periodo di campionamento e oscilla con lobi decrescenti. È la forma che, traslata in ogni istante di campionamento e pesata con il campione, ricostruisce il segnale.",
+          "asse_x": {
+            "etichetta": "t (in unità di T)",
+            "min": -3.5,
+            "max": 3.5,
+            "tacche": [
+              {
+                "valore": -2,
+                "etichetta": "−2T"
+              },
+              {
+                "valore": -1,
+                "etichetta": "−T"
+              },
+              {
+                "valore": 0,
+                "etichetta": "0"
+              },
+              {
+                "valore": 1,
+                "etichetta": "T"
+              },
+              {
+                "valore": 2,
+                "etichetta": "2T"
+              }
+            ]
+          },
+          "asse_y": {
+            "etichetta": "sinc(t/T)",
+            "min": -0.35,
+            "max": 1.1
+          },
+          "serie": [
+            {
+              "stile": "linea",
+              "punti": [
+                [
+                  -3.5,
+                  -0.0909
+                ],
+                [
+                  -3.45,
+                  -0.0911
+                ],
+                [
+                  -3.4,
+                  -0.089
+                ],
+                [
+                  -3.35,
+                  -0.0847
+                ],
+                [
+                  -3.3,
+                  -0.078
+                ],
+                [
+                  -3.25,
+                  -0.0693
+                ],
+                [
+                  -3.2,
+                  -0.0585
+                ],
+                [
+                  -3.15,
+                  -0.0459
+                ],
+                [
+                  -3.1,
+                  -0.0317
+                ],
+                [
+                  -3.05,
+                  -0.0163
+                ],
+                [
+                  -3.0,
+                  0.0
+                ],
+                [
+                  -2.95,
+                  0.0169
+                ],
+                [
+                  -2.9,
+                  0.0339
+                ],
+                [
+                  -2.85,
+                  0.0507
+                ],
+                [
+                  -2.8,
+                  0.0668
+                ],
+                [
+                  -2.75,
+                  0.0818
+                ],
+                [
+                  -2.7,
+                  0.0954
+                ],
+                [
+                  -2.65,
+                  0.107
+                ],
+                [
+                  -2.6,
+                  0.1164
+                ],
+                [
+                  -2.55,
+                  0.1233
+                ],
+                [
+                  -2.5,
+                  0.1273
+                ],
+                [
+                  -2.45,
+                  0.1283
+                ],
+                [
+                  -2.4,
+                  0.1261
+                ],
+                [
+                  -2.35,
+                  0.1207
+                ],
+                [
+                  -2.3,
+                  0.112
+                ],
+                [
+                  -2.25,
+                  0.1
+                ],
+                [
+                  -2.2,
+                  0.085
+                ],
+                [
+                  -2.15,
+                  0.0672
+                ],
+                [
+                  -2.1,
+                  0.0468
+                ],
+                [
+                  -2.05,
+                  0.0243
+                ],
+                [
+                  -2.0,
+                  -0.0
+                ],
+                [
+                  -1.95,
+                  -0.0255
+                ],
+                [
+                  -1.9,
+                  -0.0518
+                ],
+                [
+                  -1.85,
+                  -0.0781
+                ],
+                [
+                  -1.8,
+                  -0.1039
+                ],
+                [
+                  -1.75,
+                  -0.1286
+                ],
+                [
+                  -1.7,
+                  -0.1515
+                ],
+                [
+                  -1.65,
+                  -0.1719
+                ],
+                [
+                  -1.6,
+                  -0.1892
+                ],
+                [
+                  -1.55,
+                  -0.2028
+                ],
+                [
+                  -1.5,
+                  -0.2122
+                ],
+                [
+                  -1.45,
+                  -0.2168
+                ],
+                [
+                  -1.4,
+                  -0.2162
+                ],
+                [
+                  -1.35,
+                  -0.2101
+                ],
+                [
+                  -1.3,
+                  -0.1981
+                ],
+                [
+                  -1.25,
+                  -0.1801
+                ],
+                [
+                  -1.2,
+                  -0.1559
+                ],
+                [
+                  -1.15,
+                  -0.1257
+                ],
+                [
+                  -1.1,
+                  -0.0894
+                ],
+                [
+                  -1.05,
+                  -0.0474
+                ],
+                [
+                  -1.0,
+                  0.0
+                ],
+                [
+                  -0.95,
+                  0.0524
+                ],
+                [
+                  -0.9,
+                  0.1093
+                ],
+                [
+                  -0.85,
+                  0.17
+                ],
+                [
+                  -0.8,
+                  0.2339
+                ],
+                [
+                  -0.75,
+                  0.3001
+                ],
+                [
+                  -0.7,
+                  0.3679
+                ],
+                [
+                  -0.65,
+                  0.4363
+                ],
+                [
+                  -0.6,
+                  0.5046
+                ],
+                [
+                  -0.55,
+                  0.5716
+                ],
+                [
+                  -0.5,
+                  0.6366
+                ],
+                [
+                  -0.45,
+                  0.6986
+                ],
+                [
+                  -0.4,
+                  0.7568
+                ],
+                [
+                  -0.35,
+                  0.8103
+                ],
+                [
+                  -0.3,
+                  0.8584
+                ],
+                [
+                  -0.25,
+                  0.9003
+                ],
+                [
+                  -0.2,
+                  0.9355
+                ],
+                [
+                  -0.15,
+                  0.9634
+                ],
+                [
+                  -0.1,
+                  0.9836
+                ],
+                [
+                  -0.05,
+                  0.9959
+                ],
+                [
+                  0.0,
+                  1.0
+                ],
+                [
+                  0.05,
+                  0.9959
+                ],
+                [
+                  0.1,
+                  0.9836
+                ],
+                [
+                  0.15,
+                  0.9634
+                ],
+                [
+                  0.2,
+                  0.9355
+                ],
+                [
+                  0.25,
+                  0.9003
+                ],
+                [
+                  0.3,
+                  0.8584
+                ],
+                [
+                  0.35,
+                  0.8103
+                ],
+                [
+                  0.4,
+                  0.7568
+                ],
+                [
+                  0.45,
+                  0.6986
+                ],
+                [
+                  0.5,
+                  0.6366
+                ],
+                [
+                  0.55,
+                  0.5716
+                ],
+                [
+                  0.6,
+                  0.5046
+                ],
+                [
+                  0.65,
+                  0.4363
+                ],
+                [
+                  0.7,
+                  0.3679
+                ],
+                [
+                  0.75,
+                  0.3001
+                ],
+                [
+                  0.8,
+                  0.2339
+                ],
+                [
+                  0.85,
+                  0.17
+                ],
+                [
+                  0.9,
+                  0.1093
+                ],
+                [
+                  0.95,
+                  0.0524
+                ],
+                [
+                  1.0,
+                  0.0
+                ],
+                [
+                  1.05,
+                  -0.0474
+                ],
+                [
+                  1.1,
+                  -0.0894
+                ],
+                [
+                  1.15,
+                  -0.1257
+                ],
+                [
+                  1.2,
+                  -0.1559
+                ],
+                [
+                  1.25,
+                  -0.1801
+                ],
+                [
+                  1.3,
+                  -0.1981
+                ],
+                [
+                  1.35,
+                  -0.2101
+                ],
+                [
+                  1.4,
+                  -0.2162
+                ],
+                [
+                  1.45,
+                  -0.2168
+                ],
+                [
+                  1.5,
+                  -0.2122
+                ],
+                [
+                  1.55,
+                  -0.2028
+                ],
+                [
+                  1.6,
+                  -0.1892
+                ],
+                [
+                  1.65,
+                  -0.1719
+                ],
+                [
+                  1.7,
+                  -0.1515
+                ],
+                [
+                  1.75,
+                  -0.1286
+                ],
+                [
+                  1.8,
+                  -0.1039
+                ],
+                [
+                  1.85,
+                  -0.0781
+                ],
+                [
+                  1.9,
+                  -0.0518
+                ],
+                [
+                  1.95,
+                  -0.0255
+                ],
+                [
+                  2.0,
+                  -0.0
+                ],
+                [
+                  2.05,
+                  0.0243
+                ],
+                [
+                  2.1,
+                  0.0468
+                ],
+                [
+                  2.15,
+                  0.0672
+                ],
+                [
+                  2.2,
+                  0.085
+                ],
+                [
+                  2.25,
+                  0.1
+                ],
+                [
+                  2.3,
+                  0.112
+                ],
+                [
+                  2.35,
+                  0.1207
+                ],
+                [
+                  2.4,
+                  0.1261
+                ],
+                [
+                  2.45,
+                  0.1283
+                ],
+                [
+                  2.5,
+                  0.1273
+                ],
+                [
+                  2.55,
+                  0.1233
+                ],
+                [
+                  2.6,
+                  0.1164
+                ],
+                [
+                  2.65,
+                  0.107
+                ],
+                [
+                  2.7,
+                  0.0954
+                ],
+                [
+                  2.75,
+                  0.0818
+                ],
+                [
+                  2.8,
+                  0.0668
+                ],
+                [
+                  2.85,
+                  0.0507
+                ],
+                [
+                  2.9,
+                  0.0339
+                ],
+                [
+                  2.95,
+                  0.0169
+                ],
+                [
+                  3.0,
+                  0.0
+                ],
+                [
+                  3.05,
+                  -0.0163
+                ],
+                [
+                  3.1,
+                  -0.0317
+                ],
+                [
+                  3.15,
+                  -0.0459
+                ],
+                [
+                  3.2,
+                  -0.0585
+                ],
+                [
+                  3.25,
+                  -0.0693
+                ],
+                [
+                  3.3,
+                  -0.078
+                ],
+                [
+                  3.35,
+                  -0.0847
+                ],
+                [
+                  3.4,
+                  -0.089
+                ],
+                [
+                  3.45,
+                  -0.0911
+                ],
+                [
+                  3.5,
+                  -0.0909
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "id": "catena-campionamento-ricostruzione",
+          "tipo": "blocchi",
+          "titolo": "Catena di campionamento e ricostruzione ideale",
+          "descrizione": "Schema a blocchi: il segnale tempo-continuo entra in un campionatore ideale di periodo T, che produce la serie dei campioni; un filtro passa-basso ideale con guadagno T e banda pi greco diviso T isola la replica centrale e restituisce il segnale originario.",
+          "blocchi": [
+            {
+              "id": "in",
+              "etichetta": "x(t)",
+              "forma": "ingresso",
+              "colonna": 0,
+              "riga": 2
+            },
+            {
+              "id": "camp",
+              "etichetta": "Campionatore ideale, periodo T",
+              "forma": "rettangolo",
+              "colonna": 3,
+              "riga": 2
+            },
+            {
+              "id": "serie-campioni",
+              "etichetta": "Serie temporale x(nT)",
+              "forma": "rettangolo",
+              "colonna": 6,
+              "riga": 2
+            },
+            {
+              "id": "lpf",
+              "etichetta": "Passa-basso ideale: guadagno T, banda π/T",
+              "forma": "rettangolo",
+              "colonna": 9,
+              "riga": 2
+            },
+            {
+              "id": "out",
+              "etichetta": "x(t) ricostruita",
+              "forma": "uscita",
+              "colonna": 12,
+              "riga": 2
+            }
+          ],
+          "collegamenti": [
+            {
+              "da": "in",
+              "a": "camp"
+            },
+            {
+              "da": "camp",
+              "a": "serie-campioni"
+            },
+            {
+              "da": "serie-campioni",
+              "a": "lpf"
+            },
+            {
+              "da": "lpf",
+              "a": "out"
+            }
+          ]
+        }
+      ],
+      "a_voce": "Parto dai campioni x di nT e ricordo che la loro trasformata è la ripetizione periodica dello spettro del segnale, con periodo omega esse uguale a due pi greco diviso T e fattore uno diviso T. Disegno lo spettro triangolare e le sue copie: se le copie si sovrappongono è finita, perché in ogni pulsazione si sommano contributi diversi e non posso più separarli. La condizione perché stiano separate è che omega emme non superi omega esse meno omega emme, cioè omega esse almeno doppia di omega emme: in frequenza, campionare almeno al doppio della massima frequenza. Quando vale, nella banda centrale resta solo la replica zero, quindi lo spettro vero è T volte la trasformata della serie dentro la banda e zero fuori: il fattore T cancella l'uno diviso T di prima. Antitrasformando, ogni campione produce un seno cardinale centrato nel suo istante, e la somma ricostruisce il segnale; negli istanti di campionamento i seni cardinali degli altri campioni valgono zero, così ritrovo esattamente i campioni. In pratica ho sostituito una funzione tempo-continua con una serie temporale senza perdere informazione.",
+      "errori_frequenti": [
+        {
+          "errore": "Scrivere la condizione come $T \\ge 1/(2 f_m)$ oppure dire che basta campionare alla frequenza massima del segnale.",
+          "perche_sbagliato": "Aumentare $T$ avvicina le repliche e le fa sovrapporre; la separazione richiede $\\omega_s \\ge 2\\omega_m$.",
+          "correzione": "$f_s \\ge 2 f_m$, equivalentemente $T \\le 1/(2 f_m)$: periodo più piccolo, repliche più lontane."
+        },
+        {
+          "errore": "Dimenticare il fattore $T$ nella ricostruzione dello spettro, scrivendo $X(\\omega) = X_s(\\omega)$ in banda.",
+          "perche_sbagliato": "La ripetizione periodica porta il fattore $1/T$; senza compensarlo il segnale ricostruito è scalato in ampiezza.",
+          "correzione": "$X(\\omega) = T X_s(\\omega)$ per $|\\omega| < \\pi/T$ e zero altrove, come in file1 p. 9 (punto A3)."
+        },
+        {
+          "errore": "Usare nella ricostruzione la definizione $\\operatorname{sinc}(z) = \\sin z / z$ senza dirlo, mescolandola con quella degli appunti.",
+          "perche_sbagliato": "Con l'altra definizione gli zeri non cadono più nei multipli di $T$ e la verifica sui campioni fallisce.",
+          "correzione": "Qui $\\operatorname{sinc} z = \\sin(\\pi z)/(\\pi z)$ (file1 p. 9): se si cambia definizione va cambiata anche la scrittura della formula."
+        }
+      ],
+      "versione_compatta": [
+        "Campioni: $x_n = x(nT)$, trasformata della serie $X_s(\\omega) = \\sum_n x_n e^{-jn\\omega T}$.",
+        "Ripetizione: $X_s(\\omega) = \\frac{1}{T}\\sum_k X(\\omega + k\\omega_s)$, $\\omega_s = 2\\pi/T$.",
+        "Separazione repliche: $\\omega_m \\le \\omega_s - \\omega_m$, cioè $f_s \\ge 2 f_m$, $T \\le 1/(2f_m)$.",
+        "In banda resta solo $k=0$: $X(\\omega) = T X_s(\\omega)$ per $|\\omega| < \\pi/T$, zero altrove.",
+        "Antitrasformando: $x(t) = \\sum_n x(nT)\\, \\operatorname{sinc}\\frac{t-nT}{T}$.",
+        "Verifica: in $t = mT$ sopravvive solo il termine $n = m$ e si ritrova $x(mT)$."
+      ],
+      "a_buchi": {
+        "testo": "La trasformata della serie dei campioni è la ripetizione periodica dello spettro con fattore ___1___. Le repliche sono separate se ___2___, cioè se la frequenza di campionamento è almeno ___3___ della massima frequenza del segnale. In banda si ha $X(\\omega) = \\; $___4___$\\; X_s(\\omega)$; antitrasformando ogni campione genera un ___5___ centrato nel suo istante, e la ricostruzione funziona perché tale funzione vale ___6___ negli altri istanti di campionamento.",
+        "soluzioni": {
+          "1": [
+            "1/T",
+            "uno diviso T"
+          ],
+          "2": [
+            "ωm ≤ ωs − ωm",
+            "omega_s >= 2 omega_m",
+            "ωs ≥ 2ωm"
+          ],
+          "3": [
+            "il doppio",
+            "doppia",
+            "2 volte"
+          ],
+          "4": [
+            "T"
+          ],
+          "5": [
+            "seno cardinale",
+            "sinc"
+          ],
+          "6": [
+            "zero",
+            "0"
+          ]
+        }
+      },
+      "richiamo_attivo": [
+        {
+          "domanda": "Perché conoscere i campioni equivale a conoscere una ripetizione dello spettro?",
+          "risposta": "Perché la trasformata della serie temporale dei campioni è $(1/T)\\sum_k X(\\omega + k\\omega_s)$: dai campioni si calcola quella somma, non il singolo $X(\\omega)$."
+        },
+        {
+          "domanda": "Da quale disuguaglianza geometrica nasce la condizione $f_s \\ge 2 f_m$?",
+          "risposta": "Il bordo della replica centrale, $\\omega_m$, non deve superare l'inizio della replica successiva, $\\omega_s - \\omega_m$: quindi $\\omega_s \\ge 2\\omega_m$."
+        },
+        {
+          "domanda": "Che cosa succede se $f_s$ è appena sotto $2 f_m$?",
+          "risposta": "Le repliche si sovrappongono (aliasing): la somma misurata non permette più di separare i contributi e la ricostruzione non è univoca."
+        },
+        {
+          "domanda": "Perché nella ricostruzione compare il fattore $T$ davanti a $X_s$?",
+          "risposta": "Perché la ripetizione periodica è scalata di $1/T$; moltiplicare per $T$ ripristina l'ampiezza corretta dello spettro originario (punto A3)."
+        }
+      ],
+      "collegamenti": [
+        "criterio-nyquist-isi",
+        "serie-temporali-trasformata",
+        "segnali-pam"
+      ],
+      "fonti": [
+        {
+          "chiave": "FILE3",
+          "rif": "file3 pp. 1-2"
+        },
+        {
+          "chiave": "FILE1",
+          "rif": "file1 pp. 7-10 (p. 2.40, rif. dello studente)"
+        }
+      ],
+      "verifica": {
+        "stato": "verificata_file1_file3",
+        "data": "2026-10-29",
+        "note": "Confronto pagina per pagina sulle immagini renderizzate di file1 e file3 (appunti di studenti, non il libro); il testo di Calandrino e Immovilli non è stato consultato direttamente e la sua edizione è NON TROVATO, quindi non si dichiara identità con il testo del docente. La ricostruzione con il seno cardinale e il fattore T sono presenti solo in file1 pp. 9-10; file3 si ferma alla condizione di separazione. Punto A3 risolto sulle immagini: in file1 p. 9 si legge $X(\\omega) = T\\cdot X_{s}(\\omega)$ per $|\\omega| < \\frac{\\omega_{0}}{2} = \\frac{\\pi}{T}$ (con $\\omega_{0}$ variante per $\\omega_{s}$).",
+        "punti_aperti": [
+          "Confronto con il libro di Calandrino e Immovilli non ancora fatto: edizione e pagine effettive NON TROVATO; i riferimenti del tipo p. x.y sono quelli riportati dallo studente in file1 (IPOTESI: capitolo.pagina).",
+          "In file3 la formula di ricostruzione con il seno cardinale è assente: il passo 7 segue il solo file1 pp. 9-10."
+        ]
+      }
+    },
+    "dim-impulso-dirac-trasformata": {
+      "id": "dim-impulso-dirac-trasformata",
+      "titolo": "Funzione impulsiva e sua trasformata di Fourier (T2)",
+      "domande_esame": [
+        "T2"
+      ],
+      "enunciato": "La funzione impulsiva (operatore di Dirac) $\\delta(t)$ è definita, in forma simbolica, dalla proprietà di selezione $x(t) = \\int_{-\\infty}^{+\\infty} x(\\tau) \\delta(t-\\tau)\\, d\\tau = x(t) * \\delta(t)$, ottenuta come limite per $\\Delta \\to 0$ degli impulsi rettangolari $D(t,\\Delta)$ di intensità (area) unitaria, con l'avvertenza di eseguire prima l'integrazione e poi il limite. La sua trasformata di Fourier, con la convenzione adottata, è identicamente uguale a uno: $\\int \\delta(t) e^{-j\\omega t}\\, dt = 1$ per ogni $\\omega$. Punteggio della prova T2: NON TROVATO.",
+      "ipotesi": [
+        "La funzione $x(t)$ su cui si prova la selezione è continua nel punto considerato ($t = a$ negli sviluppi).",
+        "L'impulso ausiliario $D(t,\\Delta)$ vale $1/\\Delta$ fra $0$ e $\\Delta$ e zero altrove: ha intensità (area) unitaria per ogni $\\Delta$.",
+        "Prima si integra rispetto al tempo e solo dopo si fa tendere $\\Delta$ a zero: scambiare l'ordine darebbe zero e non è lecito.",
+        "La trasformata di Fourier è quella con nucleo $e^{-j\\omega t}$ e fattore $1/(2\\pi)$ solo nell'inversa."
+      ],
+      "notazione": [
+        {
+          "simbolo": "D(t,\\Delta)",
+          "significato": "impulso rettangolare ausiliario: vale $1/\\Delta$ per $0 \\le t \\le \\Delta$, zero altrove; area unitaria"
+        },
+        {
+          "simbolo": "\\delta(t)",
+          "significato": "funzione impulsiva o operatore di Dirac, definita dalla proprietà di selezione, non una funzione ordinaria"
+        },
+        {
+          "simbolo": "x(t) * \\delta(t)",
+          "significato": "convoluzione fra $x(t)$ e $\\delta(t)$: restituisce $x(t)$ stessa"
+        },
+        {
+          "simbolo": "F[\\,\\cdot\\,]",
+          "significato": "trasformazione di Fourier con la convenzione del sito"
+        }
+      ],
+      "varianti_notazione": [
+        {
+          "canonica": "F per la trasformata",
+          "variante": "simbolo calligrafico di trasformata (F in corsivo elaborato)",
+          "fonte": "FILE3 pp. 3-4; FILE1 pp. 11-12"
+        },
+        {
+          "canonica": "$\\omega$ per la pulsazione",
+          "variante": "m per la pulsazione, per esempio e alla jmt",
+          "fonte": "FILE3 p. 3"
+        }
+      ],
+      "idea": "Un rettangolo di area uno sempre più stretto seleziona il valore della funzione nel suo istante; la sua trasformata tende a uno, quindi quella del limite simbolico è uno.",
+      "passi": [
+        {
+          "n": 1,
+          "testo": "Si introduce l'impulso rettangolare $D(t,\\Delta)$ di intensità unitaria, disegnato in figura, e una funzione $x(t)$ continua in $t = a$.",
+          "formula": "D(t,\\Delta) = \\begin{cases} \\dfrac{1}{\\Delta} & 0 \\le t \\le \\Delta \\\\ 0 & \\text{altrove} \\end{cases}",
+          "perche": "È una funzione ordinaria e integrabile: permette di costruire il limite in modo controllato invece di postulare un oggetto infinito.",
+          "figura": "impulso-ausiliario-d"
+        },
+        {
+          "n": 2,
+          "testo": "Si calcola l'integrale di $x$ pesata con l'impulso traslato e ribaltato: l'impulso seleziona un intorno destro di $a$ largo $\\Delta$, e l'integrale è la media di $x$ su quell'intervallo.",
+          "formula": "\\lim_{\\Delta \\to 0} \\int_{-\\infty}^{+\\infty} x(t) D(a-t,\\Delta)\\, dt = \\lim_{\\Delta \\to 0} \\int_{-\\infty}^{+\\infty} x(a-t) D(t,\\Delta)\\, dt = \\lim_{\\Delta \\to 0} \\frac{1}{\\Delta} \\int_{0}^{\\Delta} x(a-t)\\, dt",
+          "perche": "Nel primo passaggio si cambia variabile; nel secondo si usa che $D(t,\\Delta)$ è diverso da zero solo fra $0$ e $\\Delta$, dove vale $1/\\Delta$."
+        },
+        {
+          "n": 3,
+          "testo": "Facendo tendere $\\Delta$ a zero la media tende al valore puntuale $x(a)$: è la proprietà di selezione.",
+          "formula": "\\lim_{\\Delta \\to 0} \\frac{1}{\\Delta} \\int_{0}^{\\Delta} x(a-t)\\, dt = x(a)",
+          "perche": "Vale perché $x$ è continua in $a$: su un intervallo sempre più piccolo i suoi valori si avvicinano a $x(a)$."
+        },
+        {
+          "n": 4,
+          "testo": "Chiamando $\\tau$ la variabile di integrazione e ponendo $a = t$ si ottiene la coppia di relazioni che definisce, in forma simbolica, la funzione impulsiva; il significato resta quello del limite dopo l'integrazione, mai prima.",
+          "formula": "x(t) = \\lim_{\\Delta \\to 0} \\int_{-\\infty}^{+\\infty} x(\\tau) D(t-\\tau,\\Delta)\\, d\\tau \\;\\Longleftrightarrow\\; x(t) = \\int_{-\\infty}^{+\\infty} x(\\tau) \\delta(t-\\tau)\\, d\\tau = x(t) * \\delta(t)",
+          "perche": "È la stessa selezione del passo 3 applicata al generico istante $t$; file1 p. 11 avverte che scambiare limite e integrazione darebbe zero."
+        },
+        {
+          "n": 5,
+          "testo": "Interpretazione: per $\\Delta$ piccolo il segnale è approssimato da una somma di impulsi rettangolari di ampiezza $x(n\\Delta)$; formalmente $x(t)$ è una «somma» di funzioni impulsive applicate in $\\tau$ con intensità infinitesima $x(\\tau)\\, d\\tau$.",
+          "formula": "x(t) \\cong \\sum_{n=-\\infty}^{+\\infty} x(n\\Delta) D(t-n\\Delta,\\Delta)\\, \\Delta",
+          "perche": "Si discretizza la variabile di integrazione $\\tau$ a passi $\\Delta$: più $\\Delta$ è piccolo, più l'approssimazione è precisa (figura in file1 p. 11 e file3 p. 4)."
+        },
+        {
+          "n": 6,
+          "testo": "Per calcolare la trasformata si applica la forma simbolica alla funzione $x(t) = e^{j\\omega t}$ nell'istante $t = 0$.",
+          "formula": "\\int_{-\\infty}^{+\\infty} e^{j\\omega\\tau} \\delta(-\\tau)\\, d\\tau = e^{j\\omega \\cdot 0} = 1",
+          "perche": "L'esponenziale è continuo ovunque, quindi la selezione del passo 4 è applicabile; il valore selezionato è quello in zero."
+        },
+        {
+          "n": 7,
+          "testo": "Con la sostituzione $\\tau = -t$ l'integrale diventa esattamente la definizione di trasformata di Fourier di $\\delta(t)$, che vale uno identicamente.",
+          "formula": "F[\\delta(t)] = \\int_{-\\infty}^{+\\infty} \\delta(t) e^{-j\\omega t}\\, dt = 1",
+          "perche": "Il cambio di variabile è una semplice riflessione dell'asse; la definizione di trasformata è quella del nodo sulla trasformata di Fourier."
+        },
+        {
+          "n": 8,
+          "testo": "Conferma indipendente: l'impulso $D(t,\\Delta)$ è centrato in $\\Delta/2$, quindi dalla trasformata dell'impulso rettangolare centrato si ricava la sua, il cui limite per $\\Delta \\to 0$ vale uno.",
+          "formula": "F[D(t,\\Delta)] = \\frac{\\sin \\frac{\\omega\\Delta}{2}}{\\frac{\\omega\\Delta}{2}}\\, e^{-j\\frac{\\omega\\Delta}{2}} \\;\\xrightarrow{\\;\\Delta \\to 0\\;}\\; 1",
+          "perche": "Un impulso rettangolare di ampiezza $A$ e durata $\\tau$ centrato ha trasformata $A\\tau \\sin(\\omega\\tau/2)/(\\omega\\tau/2)$; qui $A\\tau = 1$, il ritardo $\\Delta/2$ dà il fattore di fase e il limite notevole del seno dà uno.",
+          "figura": "trasformata-impulso-ausiliario"
+        }
+      ],
+      "formula_finale": "x(t) = \\int_{-\\infty}^{+\\infty} x(\\tau) \\delta(t-\\tau)\\, d\\tau = x(t) * \\delta(t), \\qquad F[\\delta(t)] = 1 \\;\\; \\forall \\omega",
+      "figure": [
+        {
+          "id": "impulso-ausiliario-d",
+          "tipo": "grafico",
+          "titolo": "Impulso ausiliario di intensità unitaria",
+          "descrizione": "Impulso rettangolare che vale uno diviso delta fra zero e delta e zero altrove; nell'esempio numerico delta vale zero virgola cinque, l'altezza vale due e l'area vale uno. Facendo tendere delta a zero l'impulso si stringe e si alza conservando area unitaria.",
+          "asse_x": {
+            "etichetta": "t (s)",
+            "min": -1,
+            "max": 1.5,
+            "tacche": [
+              {
+                "valore": 0,
+                "etichetta": "0"
+              },
+              {
+                "valore": 0.5,
+                "etichetta": "Δ"
+              },
+              {
+                "valore": 1,
+                "etichetta": "1"
+              }
+            ]
+          },
+          "asse_y": {
+            "etichetta": "D(t, Δ) (1/s)",
+            "min": 0,
+            "max": 2.4,
+            "tacche": [
+              {
+                "valore": 2,
+                "etichetta": "1/Δ"
+              }
+            ]
+          },
+          "serie": [
+            {
+              "stile": "linea",
+              "punti": [
+                [
+                  -1,
+                  0
+                ],
+                [
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  2
+                ],
+                [
+                  0.5,
+                  2
+                ],
+                [
+                  0.5,
+                  0
+                ],
+                [
+                  1.5,
+                  0
+                ]
+              ],
+              "etichetta": "D(t, Δ) con Δ = 0,5 s"
+            }
+          ]
+        },
+        {
+          "id": "trasformata-impulso-ausiliario",
+          "tipo": "grafico",
+          "titolo": "Modulo della trasformata dell'impulso ausiliario",
+          "descrizione": "Modulo della trasformata di Fourier dell'impulso ausiliario con delta uguale a zero virgola cinque: vale uno in zero e scende come un seno diviso il suo argomento. Al tendere di delta a zero la curva si allarga e tende alla costante uno, tratteggiata: è la trasformata della funzione impulsiva.",
+          "asse_x": {
+            "etichetta": "ω (rad/s)",
+            "min": -15,
+            "max": 15,
+            "tacche": [
+              {
+                "valore": -12.5664,
+                "etichetta": "−2π/Δ"
+              },
+              {
+                "valore": 0,
+                "etichetta": "0"
+              },
+              {
+                "valore": 12.5664,
+                "etichetta": "2π/Δ"
+              }
+            ]
+          },
+          "asse_y": {
+            "etichetta": "|F[D(t, Δ)]|",
+            "min": 0,
+            "max": 1.15
+          },
+          "serie": [
+            {
+              "stile": "linea",
+              "punti": [
+                [
+                  -15.0,
+                  0.1524
+                ],
+                [
+                  -14.8,
+                  0.1432
+                ],
+                [
+                  -14.6,
+                  0.1334
+                ],
+                [
+                  -14.4,
+                  0.1229
+                ],
+                [
+                  -14.2,
+                  0.1119
+                ],
+                [
+                  -14.0,
+                  0.1002
+                ],
+                [
+                  -13.8,
+                  0.088
+                ],
+                [
+                  -13.6,
+                  0.0752
+                ],
+                [
+                  -13.4,
+                  0.0618
+                ],
+                [
+                  -13.2,
+                  0.0478
+                ],
+                [
+                  -13.0,
+                  0.0333
+                ],
+                [
+                  -12.8,
+                  0.0182
+                ],
+                [
+                  -12.6,
+                  0.0027
+                ],
+                [
+                  -12.4,
+                  0.0134
+                ],
+                [
+                  -12.2,
+                  0.03
+                ],
+                [
+                  -12.0,
+                  0.047
+                ],
+                [
+                  -11.8,
+                  0.0646
+                ],
+                [
+                  -11.6,
+                  0.0825
+                ],
+                [
+                  -11.4,
+                  0.1009
+                ],
+                [
+                  -11.2,
+                  0.1196
+                ],
+                [
+                  -11.0,
+                  0.1388
+                ],
+                [
+                  -10.8,
+                  0.1583
+                ],
+                [
+                  -10.6,
+                  0.1781
+                ],
+                [
+                  -10.4,
+                  0.1983
+                ],
+                [
+                  -10.2,
+                  0.2187
+                ],
+                [
+                  -10.0,
+                  0.2394
+                ],
+                [
+                  -9.8,
+                  0.2603
+                ],
+                [
+                  -9.6,
+                  0.2814
+                ],
+                [
+                  -9.4,
+                  0.3028
+                ],
+                [
+                  -9.2,
+                  0.3242
+                ],
+                [
+                  -9.0,
+                  0.3458
+                ],
+                [
+                  -8.8,
+                  0.3675
+                ],
+                [
+                  -8.6,
+                  0.3893
+                ],
+                [
+                  -8.4,
+                  0.4111
+                ],
+                [
+                  -8.2,
+                  0.4329
+                ],
+                [
+                  -8.0,
+                  0.4546
+                ],
+                [
+                  -7.8,
+                  0.4764
+                ],
+                [
+                  -7.6,
+                  0.4981
+                ],
+                [
+                  -7.4,
+                  0.5196
+                ],
+                [
+                  -7.2,
+                  0.541
+                ],
+                [
+                  -7.0,
+                  0.5623
+                ],
+                [
+                  -6.8,
+                  0.5833
+                ],
+                [
+                  -6.6,
+                  0.6042
+                ],
+                [
+                  -6.4,
+                  0.6247
+                ],
+                [
+                  -6.2,
+                  0.645
+                ],
+                [
+                  -6.0,
+                  0.665
+                ],
+                [
+                  -5.8,
+                  0.6846
+                ],
+                [
+                  -5.6,
+                  0.7039
+                ],
+                [
+                  -5.4,
+                  0.7228
+                ],
+                [
+                  -5.2,
+                  0.7412
+                ],
+                [
+                  -5.0,
+                  0.7592
+                ],
+                [
+                  -4.8,
+                  0.7767
+                ],
+                [
+                  -4.6,
+                  0.7937
+                ],
+                [
+                  -4.4,
+                  0.8102
+                ],
+                [
+                  -4.2,
+                  0.8261
+                ],
+                [
+                  -4.0,
+                  0.8415
+                ],
+                [
+                  -3.8,
+                  0.8562
+                ],
+                [
+                  -3.6,
+                  0.8704
+                ],
+                [
+                  -3.4,
+                  0.8839
+                ],
+                [
+                  -3.2,
+                  0.8967
+                ],
+                [
+                  -3.0,
+                  0.9089
+                ],
+                [
+                  -2.8,
+                  0.9203
+                ],
+                [
+                  -2.6,
+                  0.9311
+                ],
+                [
+                  -2.4,
+                  0.9411
+                ],
+                [
+                  -2.2,
+                  0.9503
+                ],
+                [
+                  -2.0,
+                  0.9589
+                ],
+                [
+                  -1.8,
+                  0.9666
+                ],
+                [
+                  -1.6,
+                  0.9735
+                ],
+                [
+                  -1.4,
+                  0.9797
+                ],
+                [
+                  -1.2,
+                  0.9851
+                ],
+                [
+                  -1.0,
+                  0.9896
+                ],
+                [
+                  -0.8,
+                  0.9933
+                ],
+                [
+                  -0.6,
+                  0.9963
+                ],
+                [
+                  -0.4,
+                  0.9983
+                ],
+                [
+                  -0.2,
+                  0.9996
+                ],
+                [
+                  0.0,
+                  1.0
+                ],
+                [
+                  0.2,
+                  0.9996
+                ],
+                [
+                  0.4,
+                  0.9983
+                ],
+                [
+                  0.6,
+                  0.9963
+                ],
+                [
+                  0.8,
+                  0.9933
+                ],
+                [
+                  1.0,
+                  0.9896
+                ],
+                [
+                  1.2,
+                  0.9851
+                ],
+                [
+                  1.4,
+                  0.9797
+                ],
+                [
+                  1.6,
+                  0.9735
+                ],
+                [
+                  1.8,
+                  0.9666
+                ],
+                [
+                  2.0,
+                  0.9589
+                ],
+                [
+                  2.2,
+                  0.9503
+                ],
+                [
+                  2.4,
+                  0.9411
+                ],
+                [
+                  2.6,
+                  0.9311
+                ],
+                [
+                  2.8,
+                  0.9203
+                ],
+                [
+                  3.0,
+                  0.9089
+                ],
+                [
+                  3.2,
+                  0.8967
+                ],
+                [
+                  3.4,
+                  0.8839
+                ],
+                [
+                  3.6,
+                  0.8704
+                ],
+                [
+                  3.8,
+                  0.8562
+                ],
+                [
+                  4.0,
+                  0.8415
+                ],
+                [
+                  4.2,
+                  0.8261
+                ],
+                [
+                  4.4,
+                  0.8102
+                ],
+                [
+                  4.6,
+                  0.7937
+                ],
+                [
+                  4.8,
+                  0.7767
+                ],
+                [
+                  5.0,
+                  0.7592
+                ],
+                [
+                  5.2,
+                  0.7412
+                ],
+                [
+                  5.4,
+                  0.7228
+                ],
+                [
+                  5.6,
+                  0.7039
+                ],
+                [
+                  5.8,
+                  0.6846
+                ],
+                [
+                  6.0,
+                  0.665
+                ],
+                [
+                  6.2,
+                  0.645
+                ],
+                [
+                  6.4,
+                  0.6247
+                ],
+                [
+                  6.6,
+                  0.6042
+                ],
+                [
+                  6.8,
+                  0.5833
+                ],
+                [
+                  7.0,
+                  0.5623
+                ],
+                [
+                  7.2,
+                  0.541
+                ],
+                [
+                  7.4,
+                  0.5196
+                ],
+                [
+                  7.6,
+                  0.4981
+                ],
+                [
+                  7.8,
+                  0.4764
+                ],
+                [
+                  8.0,
+                  0.4546
+                ],
+                [
+                  8.2,
+                  0.4329
+                ],
+                [
+                  8.4,
+                  0.4111
+                ],
+                [
+                  8.6,
+                  0.3893
+                ],
+                [
+                  8.8,
+                  0.3675
+                ],
+                [
+                  9.0,
+                  0.3458
+                ],
+                [
+                  9.2,
+                  0.3242
+                ],
+                [
+                  9.4,
+                  0.3028
+                ],
+                [
+                  9.6,
+                  0.2814
+                ],
+                [
+                  9.8,
+                  0.2603
+                ],
+                [
+                  10.0,
+                  0.2394
+                ],
+                [
+                  10.2,
+                  0.2187
+                ],
+                [
+                  10.4,
+                  0.1983
+                ],
+                [
+                  10.6,
+                  0.1781
+                ],
+                [
+                  10.8,
+                  0.1583
+                ],
+                [
+                  11.0,
+                  0.1388
+                ],
+                [
+                  11.2,
+                  0.1196
+                ],
+                [
+                  11.4,
+                  0.1009
+                ],
+                [
+                  11.6,
+                  0.0825
+                ],
+                [
+                  11.8,
+                  0.0646
+                ],
+                [
+                  12.0,
+                  0.047
+                ],
+                [
+                  12.2,
+                  0.03
+                ],
+                [
+                  12.4,
+                  0.0134
+                ],
+                [
+                  12.6,
+                  0.0027
+                ],
+                [
+                  12.8,
+                  0.0182
+                ],
+                [
+                  13.0,
+                  0.0333
+                ],
+                [
+                  13.2,
+                  0.0478
+                ],
+                [
+                  13.4,
+                  0.0618
+                ],
+                [
+                  13.6,
+                  0.0752
+                ],
+                [
+                  13.8,
+                  0.088
+                ],
+                [
+                  14.0,
+                  0.1002
+                ],
+                [
+                  14.2,
+                  0.1119
+                ],
+                [
+                  14.4,
+                  0.1229
+                ],
+                [
+                  14.6,
+                  0.1334
+                ],
+                [
+                  14.8,
+                  0.1432
+                ],
+                [
+                  15.0,
+                  0.1524
+                ]
+              ],
+              "etichetta": "|F[D(t, Δ)]|, Δ = 0,5 s"
+            },
+            {
+              "stile": "tratteggio",
+              "punti": [
+                [
+                  -15,
+                  1
+                ],
+                [
+                  15,
+                  1
+                ]
+              ],
+              "etichetta": "limite per Δ → 0: 1"
+            }
+          ]
+        }
+      ],
+      "a_voce": "Non definisco la delta come una funzione che vale infinito: parto da un rettangolo vero, alto uno diviso delta e largo delta, quindi di area uno. Se peso una funzione continua con questo rettangolo traslato e integro, ottengo la media della funzione su un intervallino largo delta; quando delta tende a zero la media tende al valore nel punto. Questa è la selezione, e scrivendola per il generico istante t ottengo che x di t è l'integrale di x di tau per delta di t meno tau: in forma simbolica la convoluzione con la delta restituisce la funzione stessa. Attenzione all'ordine: prima integro e poi faccio il limite, altrimenti otterrei zero. Per la trasformata applico la selezione all'esponenziale in t uguale a zero e, con il cambio tau uguale a meno t, trovo che la trasformata della delta è uno per ogni pulsazione: tutte le pulsazioni sono presenti con la stessa ampiezza. Lo confermo con il rettangolo: la sua trasformata è un seno diviso il suo argomento, con una fase da ritardo, e al limite tende a uno.",
+      "errori_frequenti": [
+        {
+          "errore": "Definire $\\delta(t)$ come il limite puntuale di $D(t,\\Delta)$ e integrarlo come una funzione ordinaria uguale a zero quasi ovunque.",
+          "perche_sbagliato": "Il limite puntuale è zero per $t \\ne 0$ e non definito in zero: integrarlo darebbe zero, in contraddizione con la selezione; file1 lo segnala esplicitamente.",
+          "correzione": "Prima si integra con $D(t,\\Delta)$ e dopo si fa il limite; la forma con $\\delta$ è solo simbolica e riassume quel procedimento."
+        },
+        {
+          "errore": "Dimenticare il fattore di fase $e^{-j\\omega\\Delta/2}$ nella trasformata di $D(t,\\Delta)$.",
+          "perche_sbagliato": "L'impulso ausiliario non è centrato in zero ma in $\\Delta/2$: la trasformata dell'impulso centrato va corretta con la proprietà del ritardo.",
+          "correzione": "$F[D(t,\\Delta)] = \\frac{\\sin(\\omega\\Delta/2)}{\\omega\\Delta/2} e^{-j\\omega\\Delta/2}$; il fattore non cambia il limite, che resta uno, ma va scritto."
+        },
+        {
+          "errore": "Confondere intensità e ampiezza dell'impulso ausiliario, dicendo che «vale uno».",
+          "perche_sbagliato": "Se l'ampiezza restasse uno, l'area tenderebbe a zero con $\\Delta$ e la selezione darebbe zero invece del valore della funzione.",
+          "correzione": "Ciò che resta uguale a uno al variare di $\\Delta$ è l'area (intensità); l'ampiezza è $1/\\Delta$."
+        }
+      ],
+      "versione_compatta": [
+        "Impulso ausiliario: $D(t,\\Delta) = 1/\\Delta$ fra $0$ e $\\Delta$, area uno.",
+        "Selezione: $\\lim_{\\Delta \\to 0} \\frac{1}{\\Delta}\\int_0^\\Delta x(a-t)\\, dt = x(a)$ per $x$ continua.",
+        "Definizione simbolica: $x(t) = \\int x(\\tau)\\delta(t-\\tau)\\, d\\tau = x(t) * \\delta(t)$; prima integrare, poi il limite.",
+        "Con $x(t) = e^{j\\omega t}$ in $t=0$ e $\\tau = -t$: $\\int \\delta(t) e^{-j\\omega t} dt = 1$.",
+        "Conferma: $F[D(t,\\Delta)] = \\frac{\\sin(\\omega\\Delta/2)}{\\omega\\Delta/2} e^{-j\\omega\\Delta/2} \\to 1$."
+      ],
+      "a_buchi": {
+        "testo": "L'impulso ausiliario $D(t,\\Delta)$ ha area ___1___ perché vale $1/\\Delta$ su un intervallo largo $\\Delta$. La selezione funziona perché la media di $x$ su quell'intervallo tende a $x(a)$ quando $\\Delta \\to 0$, purché $x$ sia ___2___ in $a$. L'ordine corretto è: prima ___3___, poi il limite. Applicando la selezione a $e^{j\\omega t}$ in $t=0$ si ottiene che la trasformata di $\\delta(t)$ vale ___4___ per ogni $\\omega$.",
+        "soluzioni": {
+          "1": [
+            "uno",
+            "1",
+            "unitaria"
+          ],
+          "2": [
+            "continua"
+          ],
+          "3": [
+            "l'integrazione",
+            "integrare"
+          ],
+          "4": [
+            "uno",
+            "1"
+          ]
+        }
+      },
+      "richiamo_attivo": [
+        {
+          "domanda": "Perché l'impulso ausiliario deve avere area costante mentre si stringe?",
+          "risposta": "Perché l'integrale selettivo è una media pesata: solo con area uno la media tende al valore puntuale e non a zero o a un multiplo."
+        },
+        {
+          "domanda": "Che cosa darebbe lo scambio fra limite e integrazione e perché è vietato?",
+          "risposta": "Darebbe zero, perché il limite puntuale dell'impulso è zero per $t \\ne 0$; è vietato perché il significato della forma simbolica è proprio il limite preso dopo l'integrazione (file1 p. 11)."
+        },
+        {
+          "domanda": "Da quale scelta di $x(t)$ si ricava la trasformata della delta?",
+          "risposta": "Da $x(t) = e^{j\\omega t}$ valutata in $t = 0$: la selezione dà uno e il cambio $\\tau = -t$ mostra che quell'integrale è la trasformata di $\\delta$."
+        },
+        {
+          "domanda": "Che significato fisico ha $F[\\delta(t)] = 1$?",
+          "risposta": "Un impulso ideale contiene tutte le pulsazioni con la stessa ampiezza unitaria: per questo è la sollecitazione ideale per caratterizzare una rete a tutte le frequenze in una volta."
+        }
+      ],
+      "collegamenti": [
+        "dim-risposta-impulsiva-h",
+        "trasformata-fourier"
+      ],
+      "fonti": [
+        {
+          "chiave": "FILE3",
+          "rif": "file3 pp. 3-4"
+        },
+        {
+          "chiave": "FILE1",
+          "rif": "file1 pp. 11-12 (p. 2.56, rif. dello studente)"
+        }
+      ],
+      "verifica": {
+        "stato": "verificata_file1_file3",
+        "data": "2026-10-29",
+        "note": "Confronto pagina per pagina sulle immagini renderizzate di file1 e file3 (appunti di studenti, non il libro); il testo di Calandrino e Immovilli non è stato consultato direttamente e la sua edizione è NON TROVATO, quindi non si dichiara identità con il testo del docente. L'avvertenza sullo scambio fra limite e integrazione è esplicita solo in file1 p. 11; file3 contiene gli stessi passaggi in forma più breve.",
+        "punti_aperti": [
+          "Confronto con il libro di Calandrino e Immovilli non ancora fatto: edizione e pagine effettive NON TROVATO; i riferimenti del tipo p. x.y sono quelli riportati dallo studente in file1 (IPOTESI: capitolo.pagina)."
+        ]
+      }
+    },
+    "dim-filtro-trasversale": {
+      "id": "dim-filtro-trasversale",
+      "titolo": "Filtro trasversale: schema a blocchi e $H(\\omega)$ (T3)",
+      "domande_esame": [
+        "T3"
+      ],
+      "enunciato": "Il filtro elettrico generale a linee di ritardo è descritto da $y(t) = \\sum_{k=0}^{N-1} h_k\\, x(t-kT) + \\sum_{k=1}^{M} h'_k\\, y(t-kT)$ e ha funzione di trasferimento $H(\\omega) = \\dfrac{\\sum_{k=0}^{N-1} h_k e^{-jk\\omega T}}{1 - \\sum_{k=1}^{M} h'_k e^{-jk\\omega T}}$, periodica in $\\omega$ di periodo $2\\pi/T$. Il filtro trasversale è il caso con tutti gli $h'_k$ uguali a zero: $H(\\omega) = \\sum_{k=0}^{N-1} h_k e^{-jk\\omega T}$ e il suo schema ha una sola linea di ritardo sull'ingresso, con prese pesate che confluiscono in un sommatore. Punteggio della prova T3: NON TROVATO.",
+      "ipotesi": [
+        "Le linee di ritardo sono ideali e introducono ciascuna il ritardo elementare costante $T$, senza attenuazione né distorsione.",
+        "I moltiplicatori applicano pesi costanti $h_k$ e $h'_k$ (rete lineare e permanente), così vale la sovrapposizione e si può trasformare termine a termine.",
+        "Il numero di prese è finito: $N$ sull'ingresso (indici da $0$ a $N-1$) ed $M$ sull'uscita (indici da $1$ a $M$).",
+        "Ingresso e uscita ammettono trasformata di Fourier, almeno nel senso usato per i segnali del corso."
+      ],
+      "notazione": [
+        {
+          "simbolo": "T",
+          "significato": "ritardo elementare introdotto da ciascuna cella della linea di ritardo"
+        },
+        {
+          "simbolo": "h_k \\;(k = 0, \\dots, N-1)",
+          "significato": "pesi applicati alle prese della linea sull'ingresso: il ramo $k$ vede $x(t-kT)$"
+        },
+        {
+          "simbolo": "h'_k \\;(k = 1, \\dots, M)",
+          "significato": "pesi applicati alle prese della linea sull'uscita: il ramo $k$ vede $y(t-kT)$ e realizza la retroazione"
+        },
+        {
+          "simbolo": "H(\\omega) = \\dfrac{Y(\\omega)}{X(\\omega)}",
+          "significato": "funzione di trasferimento del filtro, periodica in $\\omega$ di periodo $2\\pi/T$"
+        }
+      ],
+      "varianti_notazione": [
+        {
+          "canonica": "h con apice per i pesi di retroazione",
+          "variante": "stessa scrittura con apice, indicata a volte come h primo",
+          "fonte": "FILE1 pp. 15-16; FILE3 pagina del filtro trasversale"
+        }
+      ],
+      "idea": "Si parte dal filtro generale con due linee di ritardo, si trasforma l'equazione ingresso-uscita e poi si spengono i pesi di retroazione: resta una somma finita di esponenziali.",
+      "passi": [
+        {
+          "n": 1,
+          "testo": "Si disegna il filtro ricorrente generale: due linee di ritardo con celle da $T$, prese con moltiplicatori $h_k$ sull'ingresso e $h'_k$ sull'uscita, tutte convergenti in un unico sommatore; l'uscita del sommatore è $y(t)$ e alimenta anche la seconda linea.",
+          "perche": "La domanda chiede lo schema prima della formula: è dallo schema che si legge, ramo per ramo, quali segnali ritardati entrano nel sommatore.",
+          "figura": "schema-filtro-ricorrente-semplificato"
+        },
+        {
+          "n": 2,
+          "testo": "Si scrive l'equazione ingresso-uscita leggendo lo schema: l'uscita è la somma degli ingressi ritardati pesati più la somma delle uscite ritardate pesate.",
+          "formula": "y(t) = \\sum_{k=0}^{N-1} h_k\\, x(t-kT) + \\sum_{k=1}^{M} h'_k\\, y(t-kT)",
+          "perche": "Il sommatore somma esattamente i contributi delle prese; la prima somma parte da $k=0$ perché esiste anche la presa senza ritardo, la seconda da $k=1$ perché l'uscita istantanea non può rientrare senza almeno un ritardo."
+        },
+        {
+          "n": 3,
+          "testo": "Si trasforma secondo Fourier membro a membro: ogni ritardo $kT$ diventa il fattore $e^{-jk\\omega T}$.",
+          "formula": "Y(\\omega) = X(\\omega) \\sum_{k=0}^{N-1} h_k e^{-jk\\omega T} + Y(\\omega) \\sum_{k=1}^{M} h'_k e^{-jk\\omega T}",
+          "perche": "Valgono linearità della trasformata e proprietà del ritardo nel tempo, $F[x(t-t_0)] = e^{-j\\omega t_0} X(\\omega)$, perché pesi e ritardi sono costanti."
+        },
+        {
+          "n": 4,
+          "testo": "Si raccoglie $Y(\\omega)$ a primo membro e si divide per $X(\\omega)$, ottenendo la funzione di trasferimento del filtro ricorrente; essa dipende, oltre che da $T$, dai valori di $N$ ed $M$ e da quelli di $h_k$ e $h'_k$, ed è periodica in $\\omega$ con periodo $2\\pi/T$.",
+          "formula": "H(\\omega) = \\frac{Y(\\omega)}{X(\\omega)} = \\frac{\\sum_{k=0}^{N-1} h_k e^{-jk\\omega T}}{1 - \\sum_{k=1}^{M} h'_k e^{-jk\\omega T}}",
+          "perche": "È algebra elementare sul passo 3; la periodicità segue da $e^{-jk\\omega T}$ che non cambia se $\\omega$ cresce di $2\\pi/T$ (punto A4, verificato in file1 p. 15 e in file3)."
+        },
+        {
+          "n": 5,
+          "testo": "Specializzazione chiesta dalla domanda: filtro trasversale, con tutti gli $h'_k$ uguali a zero. Lo schema perde la linea sull'uscita e la funzione di trasferimento diventa una somma finita di esponenziali complessi.",
+          "formula": "H(\\omega) = \\sum_{k=0}^{N-1} h_k e^{-jk\\omega T}",
+          "perche": "Sostituendo $h'_k = 0$ il denominatore del passo 4 vale uno; nel dominio del tempo resta $y(t) = \\sum_k h_k x(t-kT)$.",
+          "figura": "schema-filtro-trasversale"
+        },
+        {
+          "n": 6,
+          "testo": "Altro caso particolare, da citare a chiusura: filtro puramente ricorrente, con gli $h_k$ uguali a zero per $k \\ge 1$ e $h_0 = 1$; resta il solo denominatore.",
+          "formula": "H(\\omega) = \\frac{1}{1 - \\sum_{k=1}^{M} h'_k e^{-jk\\omega T}}",
+          "perche": "È la sostituzione speculare nel passo 4: al numeratore sopravvive solo il termine diretto $h_0 = 1$."
+        },
+        {
+          "n": 7,
+          "testo": "Lettura in termini di zeri e poli nella variabile $e^{-j\\omega T}$: il numeratore da solo dà solo zeri (filtro trasversale), il denominatore da solo dà solo poli (puramente ricorrente), insieme danno zeri e poli (ricorrente). È lo stesso contenuto dei temi di quiz M16, M17 e M18.",
+          "perche": "Numeratore e denominatore sono polinomi nella stessa variabile complessa $e^{-j\\omega T}$; la classificazione segue da quali dei due restano dopo le specializzazioni dei passi 5 e 6.",
+          "figura": "ampiezza-h-trasversale-esempio"
+        }
+      ],
+      "formula_finale": "H(\\omega) = \\sum_{k=0}^{N-1} h_k e^{-jk\\omega T} \\qquad \\text{(trasversale; in generale } H(\\omega) = \\frac{\\sum_{k=0}^{N-1} h_k e^{-jk\\omega T}}{1 - \\sum_{k=1}^{M} h'_k e^{-jk\\omega T}}\\text{)}",
+      "figure": [
+        {
+          "id": "schema-filtro-trasversale",
+          "tipo": "blocchi",
+          "titolo": "Schema a blocchi del filtro trasversale",
+          "descrizione": "Schema a blocchi del filtro trasversale: l'ingresso percorre una linea di ritardo con celle che ritardano ciascuna di T; da ogni presa il segnale ritardato viene moltiplicato per il peso h con indice corrispondente e tutti i prodotti confluiscono in un unico sommatore che fornisce l'uscita.",
+          "blocchi": [
+            {
+              "id": "in",
+              "etichetta": "x(t)",
+              "forma": "ingresso",
+              "colonna": 0,
+              "riga": 1
+            },
+            {
+              "id": "r1",
+              "etichetta": "Ritardo T (1)",
+              "forma": "ritardo",
+              "colonna": 2,
+              "riga": 1
+            },
+            {
+              "id": "r2",
+              "etichetta": "Ritardo T (2)",
+              "forma": "ritardo",
+              "colonna": 4,
+              "riga": 1
+            },
+            {
+              "id": "puntini",
+              "etichetta": "…",
+              "forma": "nodo",
+              "colonna": 6,
+              "riga": 1
+            },
+            {
+              "id": "rn",
+              "etichetta": "Ritardo T (N−1)",
+              "forma": "ritardo",
+              "colonna": 8,
+              "riga": 1
+            },
+            {
+              "id": "m0",
+              "etichetta": "× h₀",
+              "forma": "moltiplicatore",
+              "colonna": 0,
+              "riga": 3
+            },
+            {
+              "id": "m1",
+              "etichetta": "× h₁",
+              "forma": "moltiplicatore",
+              "colonna": 2,
+              "riga": 3
+            },
+            {
+              "id": "m2",
+              "etichetta": "× h₂",
+              "forma": "moltiplicatore",
+              "colonna": 4,
+              "riga": 3
+            },
+            {
+              "id": "mn",
+              "etichetta": "× hN−1",
+              "forma": "moltiplicatore",
+              "colonna": 8,
+              "riga": 3
+            },
+            {
+              "id": "somma",
+              "etichetta": "Sommatore Σ",
+              "forma": "sommatore",
+              "colonna": 4,
+              "riga": 5
+            },
+            {
+              "id": "out",
+              "etichetta": "y(t)",
+              "forma": "uscita",
+              "colonna": 10,
+              "riga": 5
+            }
+          ],
+          "collegamenti": [
+            {
+              "da": "in",
+              "a": "r1"
+            },
+            {
+              "da": "r1",
+              "a": "r2"
+            },
+            {
+              "da": "r2",
+              "a": "puntini"
+            },
+            {
+              "da": "puntini",
+              "a": "rn"
+            },
+            {
+              "da": "in",
+              "a": "m0",
+              "etichetta": "x(t)"
+            },
+            {
+              "da": "r1",
+              "a": "m1",
+              "etichetta": "x(t−T)"
+            },
+            {
+              "da": "r2",
+              "a": "m2",
+              "etichetta": "x(t−2T)"
+            },
+            {
+              "da": "rn",
+              "a": "mn",
+              "etichetta": "x(t−(N−1)T)"
+            },
+            {
+              "da": "m0",
+              "a": "somma"
+            },
+            {
+              "da": "m1",
+              "a": "somma"
+            },
+            {
+              "da": "m2",
+              "a": "somma"
+            },
+            {
+              "da": "mn",
+              "a": "somma"
+            },
+            {
+              "da": "somma",
+              "a": "out"
+            }
+          ]
+        },
+        {
+          "id": "schema-filtro-ricorrente-semplificato",
+          "tipo": "blocchi",
+          "titolo": "Filtro ricorrente: struttura semplificata con retroazione",
+          "descrizione": "Schema concettuale semplificato del filtro ricorrente: accanto alla parte trasversale che pesa gli ingressi ritardati, una seconda linea ritarda l'uscita e la riporta, pesata dai coefficienti con apice, allo stesso sommatore. È questa retroazione a introdurre il denominatore nella funzione di trasferimento.",
+          "blocchi": [
+            {
+              "id": "in",
+              "etichetta": "x(t)",
+              "forma": "ingresso",
+              "colonna": 0,
+              "riga": 2
+            },
+            {
+              "id": "trasv",
+              "etichetta": "Parte trasversale: pesi hₖ sugli ingressi ritardati",
+              "forma": "rettangolo",
+              "colonna": 3,
+              "riga": 0
+            },
+            {
+              "id": "somma",
+              "etichetta": "Sommatore Σ",
+              "forma": "sommatore",
+              "colonna": 3,
+              "riga": 2
+            },
+            {
+              "id": "out",
+              "etichetta": "y(t)",
+              "forma": "uscita",
+              "colonna": 9,
+              "riga": 2
+            },
+            {
+              "id": "rity",
+              "etichetta": "Linea di ritardo sull'uscita (celle da T)",
+              "forma": "ritardo",
+              "colonna": 7,
+              "riga": 4
+            },
+            {
+              "id": "pesi",
+              "etichetta": "Pesi h′ₖ sulle uscite ritardate",
+              "forma": "moltiplicatore",
+              "colonna": 3,
+              "riga": 4
+            }
+          ],
+          "collegamenti": [
+            {
+              "da": "in",
+              "a": "trasv"
+            },
+            {
+              "da": "trasv",
+              "a": "somma"
+            },
+            {
+              "da": "somma",
+              "a": "out"
+            },
+            {
+              "da": "out",
+              "a": "rity"
+            },
+            {
+              "da": "rity",
+              "a": "pesi"
+            },
+            {
+              "da": "pesi",
+              "a": "somma",
+              "etichetta": "retroazione"
+            }
+          ]
+        },
+        {
+          "id": "ampiezza-h-trasversale-esempio",
+          "tipo": "grafico",
+          "titolo": "Esempio: ampiezza di H(ω) per due soli pesi",
+          "descrizione": "Modulo della funzione di trasferimento di un filtro trasversale con due soli pesi, uno e zero virgola cinque, e ritardo elementare di un secondo: la curva è periodica in pulsazione con periodo due pi greco diviso T, vale uno virgola cinque in continua e zero virgola cinque a metà periodo.",
+          "asse_x": {
+            "etichetta": "ω (rad/s), T = 1 s",
+            "min": 0,
+            "max": 12.5664,
+            "tacche": [
+              {
+                "valore": 0,
+                "etichetta": "0"
+              },
+              {
+                "valore": 3.1416,
+                "etichetta": "π/T"
+              },
+              {
+                "valore": 6.2832,
+                "etichetta": "2π/T"
+              },
+              {
+                "valore": 12.5664,
+                "etichetta": "4π/T"
+              }
+            ]
+          },
+          "asse_y": {
+            "etichetta": "|H(ω)|",
+            "min": 0,
+            "max": 1.7
+          },
+          "serie": [
+            {
+              "stile": "linea",
+              "punti": [
+                [
+                  0.0,
+                  1.5
+                ],
+                [
+                  0.1047,
+                  1.4982
+                ],
+                [
+                  0.2094,
+                  1.4927
+                ],
+                [
+                  0.3142,
+                  1.4836
+                ],
+                [
+                  0.4189,
+                  1.4709
+                ],
+                [
+                  0.5236,
+                  1.4547
+                ],
+                [
+                  0.6283,
+                  1.4349
+                ],
+                [
+                  0.733,
+                  1.4118
+                ],
+                [
+                  0.8378,
+                  1.3853
+                ],
+                [
+                  0.9425,
+                  1.3556
+                ],
+                [
+                  1.0472,
+                  1.3229
+                ],
+                [
+                  1.1519,
+                  1.2871
+                ],
+                [
+                  1.2566,
+                  1.2486
+                ],
+                [
+                  1.3614,
+                  1.2074
+                ],
+                [
+                  1.4661,
+                  1.1638
+                ],
+                [
+                  1.5708,
+                  1.118
+                ],
+                [
+                  1.6755,
+                  1.0703
+                ],
+                [
+                  1.7802,
+                  1.0208
+                ],
+                [
+                  1.885,
+                  0.97
+                ],
+                [
+                  1.9897,
+                  0.9183
+                ],
+                [
+                  2.0944,
+                  0.866
+                ],
+                [
+                  2.1991,
+                  0.8138
+                ],
+                [
+                  2.3038,
+                  0.7621
+                ],
+                [
+                  2.4086,
+                  0.7119
+                ],
+                [
+                  2.5133,
+                  0.6641
+                ],
+                [
+                  2.618,
+                  0.6197
+                ],
+                [
+                  2.7227,
+                  0.58
+                ],
+                [
+                  2.8274,
+                  0.5468
+                ],
+                [
+                  2.9322,
+                  0.5214
+                ],
+                [
+                  3.0369,
+                  0.5054
+                ],
+                [
+                  3.1416,
+                  0.5
+                ],
+                [
+                  3.2463,
+                  0.5054
+                ],
+                [
+                  3.351,
+                  0.5214
+                ],
+                [
+                  3.4558,
+                  0.5468
+                ],
+                [
+                  3.5605,
+                  0.58
+                ],
+                [
+                  3.6652,
+                  0.6197
+                ],
+                [
+                  3.7699,
+                  0.6641
+                ],
+                [
+                  3.8746,
+                  0.7119
+                ],
+                [
+                  3.9794,
+                  0.7622
+                ],
+                [
+                  4.0841,
+                  0.8138
+                ],
+                [
+                  4.1888,
+                  0.866
+                ],
+                [
+                  4.2935,
+                  0.9183
+                ],
+                [
+                  4.3982,
+                  0.97
+                ],
+                [
+                  4.503,
+                  1.0208
+                ],
+                [
+                  4.6077,
+                  1.0703
+                ],
+                [
+                  4.7124,
+                  1.118
+                ],
+                [
+                  4.8171,
+                  1.1638
+                ],
+                [
+                  4.9218,
+                  1.2074
+                ],
+                [
+                  5.0266,
+                  1.2486
+                ],
+                [
+                  5.1313,
+                  1.2871
+                ],
+                [
+                  5.236,
+                  1.3229
+                ],
+                [
+                  5.3407,
+                  1.3557
+                ],
+                [
+                  5.4454,
+                  1.3853
+                ],
+                [
+                  5.5502,
+                  1.4118
+                ],
+                [
+                  5.6549,
+                  1.4349
+                ],
+                [
+                  5.7596,
+                  1.4547
+                ],
+                [
+                  5.8643,
+                  1.4709
+                ],
+                [
+                  5.969,
+                  1.4836
+                ],
+                [
+                  6.0738,
+                  1.4927
+                ],
+                [
+                  6.1785,
+                  1.4982
+                ],
+                [
+                  6.2832,
+                  1.5
+                ],
+                [
+                  6.3879,
+                  1.4982
+                ],
+                [
+                  6.4926,
+                  1.4927
+                ],
+                [
+                  6.5974,
+                  1.4836
+                ],
+                [
+                  6.7021,
+                  1.4709
+                ],
+                [
+                  6.8068,
+                  1.4547
+                ],
+                [
+                  6.9115,
+                  1.4349
+                ],
+                [
+                  7.0162,
+                  1.4118
+                ],
+                [
+                  7.121,
+                  1.3853
+                ],
+                [
+                  7.2257,
+                  1.3556
+                ],
+                [
+                  7.3304,
+                  1.3229
+                ],
+                [
+                  7.4351,
+                  1.2871
+                ],
+                [
+                  7.5398,
+                  1.2486
+                ],
+                [
+                  7.6446,
+                  1.2074
+                ],
+                [
+                  7.7493,
+                  1.1638
+                ],
+                [
+                  7.854,
+                  1.118
+                ],
+                [
+                  7.9587,
+                  1.0703
+                ],
+                [
+                  8.0634,
+                  1.0208
+                ],
+                [
+                  8.1682,
+                  0.97
+                ],
+                [
+                  8.2729,
+                  0.9183
+                ],
+                [
+                  8.3776,
+                  0.866
+                ],
+                [
+                  8.4823,
+                  0.8138
+                ],
+                [
+                  8.587,
+                  0.7621
+                ],
+                [
+                  8.6918,
+                  0.7119
+                ],
+                [
+                  8.7965,
+                  0.6641
+                ],
+                [
+                  8.9012,
+                  0.6196
+                ],
+                [
+                  9.0059,
+                  0.58
+                ],
+                [
+                  9.1106,
+                  0.5468
+                ],
+                [
+                  9.2154,
+                  0.5214
+                ],
+                [
+                  9.3201,
+                  0.5054
+                ],
+                [
+                  9.4248,
+                  0.5
+                ],
+                [
+                  9.5295,
+                  0.5055
+                ],
+                [
+                  9.6342,
+                  0.5214
+                ],
+                [
+                  9.739,
+                  0.5468
+                ],
+                [
+                  9.8437,
+                  0.5801
+                ],
+                [
+                  9.9484,
+                  0.6197
+                ],
+                [
+                  10.0531,
+                  0.6641
+                ],
+                [
+                  10.1578,
+                  0.7119
+                ],
+                [
+                  10.2626,
+                  0.7622
+                ],
+                [
+                  10.3673,
+                  0.8138
+                ],
+                [
+                  10.472,
+                  0.866
+                ],
+                [
+                  10.5767,
+                  0.9183
+                ],
+                [
+                  10.6814,
+                  0.9701
+                ],
+                [
+                  10.7862,
+                  1.0208
+                ],
+                [
+                  10.8909,
+                  1.0703
+                ],
+                [
+                  10.9956,
+                  1.118
+                ],
+                [
+                  11.1003,
+                  1.1639
+                ],
+                [
+                  11.205,
+                  1.2075
+                ],
+                [
+                  11.3098,
+                  1.2486
+                ],
+                [
+                  11.4145,
+                  1.2872
+                ],
+                [
+                  11.5192,
+                  1.3229
+                ],
+                [
+                  11.6239,
+                  1.3557
+                ],
+                [
+                  11.7286,
+                  1.3853
+                ],
+                [
+                  11.8334,
+                  1.4118
+                ],
+                [
+                  11.9381,
+                  1.4349
+                ],
+                [
+                  12.0428,
+                  1.4547
+                ],
+                [
+                  12.1475,
+                  1.4709
+                ],
+                [
+                  12.2522,
+                  1.4836
+                ],
+                [
+                  12.357,
+                  1.4927
+                ],
+                [
+                  12.4617,
+                  1.4982
+                ],
+                [
+                  12.5664,
+                  1.5
+                ]
+              ],
+              "etichetta": "|1 + 0,5·e^(−jωT)|"
+            }
+          ]
+        }
+      ],
+      "a_voce": "Disegno prima il filtro generale: l'ingresso scorre in una linea di ritardo fatta di celle da T, ogni presa viene moltiplicata per un peso h con indice k e tutto finisce in un sommatore; nel filtro ricorrente c'è anche una seconda linea che ritarda l'uscita e la riporta, pesata dagli h con apice, allo stesso sommatore. Leggendo lo schema scrivo l'uscita come somma di ingressi ritardati più somma di uscite ritardate. Trasformo termine a termine: ogni ritardo kT diventa e alla meno j k omega T. Raccolgo Y di omega e divido per X di omega: al numeratore restano i pesi dell'ingresso, al denominatore uno meno i pesi di retroazione, e il tutto è periodico in omega con periodo due pi greco diviso T. Il filtro trasversale si ottiene spegnendo la retroazione: sparisce la seconda linea nello schema e il denominatore diventa uno, quindi H di omega è una somma finita di esponenziali pesati. Per questo il trasversale ha solo zeri, mentre il ricorrente ha zeri e poli e il puramente ricorrente solo poli.",
+      "errori_frequenti": [
+        {
+          "errore": "Far partire entrambe le somme da $k = 1$, perdendo il ramo diretto $h_0 x(t)$.",
+          "perche_sbagliato": "Nello schema la prima presa è sull'ingresso senza alcun ritardo: il termine $k = 0$ esiste ed è spesso il più importante.",
+          "correzione": "Somma sugli ingressi da $k = 0$ a $N-1$; somma sulle uscite da $k = 1$ a $M$, perché l'uscita rientra solo dopo almeno un ritardo."
+        },
+        {
+          "errore": "Scrivere il ritardo in frequenza come $e^{+jk\\omega T}$ con il segno più.",
+          "perche_sbagliato": "Con la convenzione di trasformata adottata il ritardo temporale $t_0$ produce $e^{-j\\omega t_0}$; il segno sbagliato ribalta la fase di $H(\\omega)$.",
+          "correzione": "$F[x(t-kT)] = e^{-jk\\omega T} X(\\omega)$: segno meno per tutti i rami, numeratore e denominatore."
+        },
+        {
+          "errore": "Chiamare trasversale il filtro con la sola retroazione, invertendo i ruoli di $h_k$ e $h'_k$.",
+          "perche_sbagliato": "Il trasversale pesa solo gli ingressi ritardati e ha risposta di durata finita; la sola retroazione definisce invece il puramente ricorrente, con soli poli.",
+          "correzione": "Trasversale: $h'_k$ tutti uguali a zero, solo zeri. Puramente ricorrente: $h_k$ uguali a zero per $k \\ge 1$ con $h_0 = 1$, solo poli. Ricorrente: entrambi, zeri e poli."
+        }
+      ],
+      "versione_compatta": [
+        "Schema generale: linea di ritardo su $x$ (pesi $h_k$) + linea su $y$ (pesi $h'_k$) $\\to$ unico sommatore.",
+        "Tempo: $y(t) = \\sum_{k=0}^{N-1} h_k x(t-kT) + \\sum_{k=1}^{M} h'_k y(t-kT)$.",
+        "Fourier: ritardo $kT \\to e^{-jk\\omega T}$; raccolgo $Y$ e divido per $X$.",
+        "Ricorrente: $H(\\omega) = \\dfrac{\\sum_0^{N-1} h_k e^{-jk\\omega T}}{1 - \\sum_1^{M} h'_k e^{-jk\\omega T}}$, periodica con periodo $2\\pi/T$.",
+        "Trasversale ($h'_k = 0$): $H(\\omega) = \\sum_0^{N-1} h_k e^{-jk\\omega T}$, solo zeri.",
+        "Puramente ricorrente ($h_0 = 1$, altri $h_k = 0$): solo il denominatore, solo poli."
+      ],
+      "a_buchi": {
+        "testo": "Ogni cella della linea introduce un ritardo ___1___, che in frequenza diventa il fattore ___2___. Nel filtro ricorrente $H(\\omega)$ ha al denominatore $1 - \\sum h'_k e^{-jk\\omega T}$ perché l'uscita rientra nel sommatore: è la ___3___. Il filtro trasversale si ottiene ponendo ___4___ e la sua $H(\\omega)$ è una ___5___ finita di esponenziali, periodica in $\\omega$ con periodo ___6___.",
+        "soluzioni": {
+          "1": [
+            "T"
+          ],
+          "2": [
+            "e^{-jkωT}",
+            "e alla -jkωT"
+          ],
+          "3": [
+            "retroazione"
+          ],
+          "4": [
+            "h'_k = 0 per ogni k",
+            "gli h con apice uguali a zero"
+          ],
+          "5": [
+            "somma"
+          ],
+          "6": [
+            "2π/T",
+            "due pi greco diviso T"
+          ]
+        }
+      },
+      "richiamo_attivo": [
+        {
+          "domanda": "Perché la somma sulle uscite ritardate parte da $k = 1$ e non da $k = 0$?",
+          "risposta": "Perché l'uscita può rientrare nel sommatore solo attraverso almeno una cella di ritardo: un ramo con $k = 0$ renderebbe l'uscita definita in funzione di sé stessa allo stesso istante."
+        },
+        {
+          "domanda": "Quale proprietà della trasformata si usa per passare dall'equazione nel tempo a $H(\\omega)$?",
+          "risposta": "Linearità e proprietà del ritardo: $F[x(t-kT)] = e^{-jk\\omega T}X(\\omega)$, applicata a ogni ramo delle due linee."
+        },
+        {
+          "domanda": "Perché $H(\\omega)$ è periodica e con quale periodo?",
+          "risposta": "Perché dipende da $\\omega$ solo tramite $e^{-j\\omega T}$ e le sue potenze: il periodo è $2\\pi/T$, più piccolo se il ritardo elementare cresce."
+        },
+        {
+          "domanda": "Come si classificano i tre filtri rispetto a zeri e poli?",
+          "risposta": "Trasversale: solo zeri (solo numeratore). Puramente ricorrente: solo poli (solo denominatore). Ricorrente: zeri e poli insieme."
+        }
+      ],
+      "collegamenti": [
+        "filtri-ricorrenti-trasversali",
+        "dim-risposta-impulsiva-h"
+      ],
+      "fonti": [
+        {
+          "chiave": "FILE3",
+          "rif": "file3 p. 32 nel sommario di R3 (pagina a stampa 29)"
+        },
+        {
+          "chiave": "FILE1",
+          "rif": "file1 pp. 15-16 (p. 3.20, rif. dello studente)"
+        }
+      ],
+      "verifica": {
+        "stato": "verificata_file1_file3",
+        "data": "2026-10-29",
+        "note": "Confronto pagina per pagina sulle immagini renderizzate di file1 e file3 (appunti di studenti, non il libro); il testo di Calandrino e Immovilli non è stato consultato direttamente e la sua edizione è NON TROVATO, quindi non si dichiara identità con il testo del docente. Punto A4 risolto sulle immagini: numeratore, denominatore e indici delle somme coincidono in file1 p. 15 e nella pagina di file3; la nota sulla periodicità di $H(\\omega)$ è leggibile in entrambe le fonti.",
+        "punti_aperti": [
+          "Confronto con il libro di Calandrino e Immovilli non ancora fatto: edizione e pagine effettive NON TROVATO; i riferimenti del tipo p. x.y sono quelli riportati dallo studente in file1 (IPOTESI: capitolo.pagina)."
+        ]
+      }
+    },
+    "dim-risposta-impulsiva-h": {
+      "id": "dim-risposta-impulsiva-h",
+      "titolo": "Risposta impulsiva e legame con $H(\\omega)$ (T4)",
+      "domande_esame": [
+        "T4"
+      ],
+      "enunciato": "Per una rete lineare permanente si definisce risposta impulsiva $h(t) = \\lim_{\\Delta \\to 0} y(t)$, dove $y(t)$ è la risposta all'impulso rettangolare $D(t,\\Delta)$ di intensità unitaria applicato in ingresso; in forma simbolica $h(t)$ è la risposta alla funzione impulsiva $\\delta(t)$ e per un ingresso generico vale $y(t) = x(t) * h(t)$. Risposta impulsiva e funzione di trasferimento sono legate dalla trasformata di Fourier: $H(\\omega) = F[h(t)]$ e $h(t) = F^{-1}[H(\\omega)]$. Per una rete causale, condizione necessaria per la fisica realizzabilità, $h(t) = 0$ per $t < 0$. Punteggio della prova T4: NON TROVATO.",
+      "ipotesi": [
+        "La rete è un quadripolo lineare e permanente (tempo-invariante): valgono sovrapposizione degli effetti e invarianza per traslazione nel tempo della risposta a un impulso traslato.",
+        "L'impulso ausiliario $D(t,\\Delta)$ ha intensità unitaria e la sua trasformata tende a uno per $\\Delta \\to 0$ (risultato della dimostrazione T2).",
+        "Il limite che definisce $h(t)$ esiste nel senso degli sviluppi del corso; $\\delta(t)$ non va confusa con il limite puntuale di $D(t,\\Delta)$.",
+        "Per la causalità si assume che l'uscita non possa precedere la causa che la produce."
+      ],
+      "notazione": [
+        {
+          "simbolo": "Q",
+          "significato": "quadripolo lineare negli schemi, con una porta di ingresso e una di uscita"
+        },
+        {
+          "simbolo": "h(t)",
+          "significato": "risposta impulsiva della rete: caratterizza il quadripolo nel dominio dei tempi"
+        },
+        {
+          "simbolo": "y(t) = x(t) * h(t)",
+          "significato": "uscita per un ingresso generico, data dalla convoluzione fra ingresso e risposta impulsiva"
+        },
+        {
+          "simbolo": "H(\\omega) = F[h(t)]",
+          "significato": "funzione di trasferimento come trasformata della risposta impulsiva: caratterizza il quadripolo in frequenza"
+        }
+      ],
+      "varianti_notazione": [
+        {
+          "canonica": "F e F alla meno uno per trasformata e antitrasformata",
+          "variante": "simboli calligrafici corrispondenti nelle formule manoscritte",
+          "fonte": "FILE3 p. 6; FILE1 p. 18"
+        }
+      ],
+      "idea": "La rete è sondata con un impulso di area uno sempre più stretto; scomponendo ogni ingresso in impulsi nasce la convoluzione, e in frequenza il limite dell'impulso trasforma la risposta proprio in H.",
+      "passi": [
+        {
+          "n": 1,
+          "testo": "Primo schema chiesto dalla domanda: si sollecita il quadripolo $Q$ con l'impulso rettangolare $x(t) = D(t,\\Delta)$ di intensità unitaria e si osserva la risposta $y(t)$.",
+          "perche": "La funzione di trasferimento caratterizza la rete in frequenza; qui si costruisce la caratterizzazione duale nel dominio dei tempi con una sollecitazione che contiene tutte le pulsazioni.",
+          "figura": "quadripolo-ingresso-generico"
+        },
+        {
+          "n": 2,
+          "testo": "Si definisce la risposta impulsiva come limite della risposta quando la durata dell'impulso tende a zero a parità di intensità.",
+          "formula": "h(t) = \\lim_{\\Delta \\to 0} y(t)",
+          "perche": "È la definizione operativa: usa solo risposte a impulsi ordinari, così il limite è controllato come nella dimostrazione T2."
+        },
+        {
+          "n": 3,
+          "testo": "Secondo schema: la definizione si riscrive in forma simbolica con in ingresso $\\delta(t)$ e in uscita $h(t)$, con l'avvertenza di non confondere $\\delta(t)$ con il limite puntuale di $D(t,\\Delta)$.",
+          "perche": "La forma simbolica è comoda ma il suo significato resta il limite del passo 2, esattamente come avvertono file1 p. 17 e la dimostrazione T2.",
+          "figura": "quadripolo-risposta-impulsiva"
+        },
+        {
+          "n": 4,
+          "testo": "Per una rete causale la risposta impulsiva si annulla per tempi negativi: è la condizione necessaria per la fisica realizzabilità.",
+          "formula": "h(t) \\equiv 0 \\qquad t < 0",
+          "perche": "L'impulso è applicato in $t = 0$; un effetto prima della causa contraddirebbe la causalità fisica (file1 p. 17).",
+          "figura": "risposta-impulsiva-causale-esempio"
+        },
+        {
+          "n": 5,
+          "testo": "Si rappresenta l'ingresso generico come «somma» di funzioni impulsive: la generica è applicata in $\\tau$, ha intensità infinitesima $x(\\tau)\\, d\\tau$ ed è $x(\\tau)\\, d\\tau\\; \\delta(t-\\tau)$.",
+          "formula": "x(t) = \\int_{-\\infty}^{+\\infty} x(\\tau) \\delta(t-\\tau)\\, d\\tau = x(t) * \\delta(t)",
+          "perche": "È la proprietà di selezione della funzione impulsiva dimostrata in T2, con la sua interpretazione a impulsi rettangolari sempre più fitti."
+        },
+        {
+          "n": 6,
+          "testo": "La risposta alla generica funzione impulsiva vale $x(\\tau)\\, d\\tau\\; h(t-\\tau)$; sommando tutti i contributi si ottiene la convoluzione, che per una rete causale si può anche scrivere con integrale fino a $t$.",
+          "formula": "y(t) = \\int_{-\\infty}^{+\\infty} x(\\tau) h(t-\\tau)\\, d\\tau = x(t) * h(t) = \\int_{-\\infty}^{t} x(\\tau) h(t-\\tau)\\, d\\tau",
+          "perche": "Linearità: il fattore $x(\\tau)\\, d\\tau$ scala la risposta. Permanenza: l'impulso è traslato di $\\tau$, quindi la risposta è $h$ traslata di $\\tau$. Causalità: $h(t-\\tau) = 0$ per $\\tau > t$."
+        },
+        {
+          "n": 7,
+          "testo": "Nota $h(t)$ si determina dunque l'uscita per qualunque ingresso operando solo nel dominio dei tempi; ora si cerca il legame con la caratterizzazione in frequenza partendo dal primo schema.",
+          "formula": "F[y(t)] = H(\\omega)\\, F[D(t,\\Delta)]",
+          "perche": "Per definizione di funzione di trasferimento, la trasformata dell'uscita è il prodotto di $H(\\omega)$ per la trasformata dell'ingresso, qui l'impulso ausiliario."
+        },
+        {
+          "n": 8,
+          "testo": "Si passa al limite per $\\Delta \\to 0$ nei due membri: a sinistra $y(t)$ tende a $h(t)$ per definizione, a destra la trasformata dell'impulso tende a uno per la T2. Risulta che $H(\\omega)$ è la trasformata di $h(t)$, e antitrasformando si ottiene la relazione inversa.",
+          "formula": "H(\\omega) = F[h(t)] = \\int_{-\\infty}^{+\\infty} h(t) e^{-j\\omega t}\\, dt, \\qquad h(t) = F^{-1}[H(\\omega)] = \\frac{1}{2\\pi} \\int_{-\\infty}^{+\\infty} H(\\omega) e^{j\\omega t}\\, d\\omega",
+          "perche": "Si usano insieme il passo 2 (definizione di $h$) e il risultato $\\lim_{\\Delta \\to 0} F[D(t,\\Delta)] = 1$ di T2; l'antitrasformata esiste con il fattore $1/(2\\pi)$ della convenzione adottata."
+        }
+      ],
+      "formula_finale": "y(t) = x(t) * h(t), \\qquad H(\\omega) = F[h(t)], \\qquad h(t) = F^{-1}[H(\\omega)], \\qquad h(t) = 0 \\;\\; (t<0) \\text{ se causale}",
+      "figure": [
+        {
+          "id": "quadripolo-risposta-impulsiva",
+          "tipo": "blocchi",
+          "titolo": "Quadripolo sollecitato con la funzione impulsiva",
+          "descrizione": "Schema simbolico della definizione: al quadripolo lineare Q si applica in ingresso la funzione impulsiva delta di t e si osserva in uscita la risposta impulsiva h di t. È il secondo dei due schemi chiesti dalla domanda, dopo quello con l'impulso rettangolare ausiliario.",
+          "blocchi": [
+            {
+              "id": "in",
+              "etichetta": "δ(t)",
+              "forma": "ingresso",
+              "colonna": 0,
+              "riga": 2
+            },
+            {
+              "id": "q",
+              "etichetta": "Quadripolo lineare Q",
+              "forma": "rettangolo",
+              "colonna": 5,
+              "riga": 2
+            },
+            {
+              "id": "out",
+              "etichetta": "h(t)",
+              "forma": "uscita",
+              "colonna": 10,
+              "riga": 2
+            }
+          ],
+          "collegamenti": [
+            {
+              "da": "in",
+              "a": "q"
+            },
+            {
+              "da": "q",
+              "a": "out"
+            }
+          ]
+        },
+        {
+          "id": "quadripolo-ingresso-generico",
+          "tipo": "blocchi",
+          "titolo": "Quadripolo con ingresso generico: uscita come convoluzione",
+          "descrizione": "Schema del quadripolo con un ingresso generico x di t: l'uscita è la convoluzione fra ingresso e risposta impulsiva. Insieme allo schema con ingresso impulsivo mostra che conoscere la sola risposta impulsiva basta a prevedere l'uscita per qualunque ingresso.",
+          "blocchi": [
+            {
+              "id": "in",
+              "etichetta": "x(t) = D(t, Δ) oppure segnale generico",
+              "forma": "ingresso",
+              "colonna": 0,
+              "riga": 2
+            },
+            {
+              "id": "q",
+              "etichetta": "Quadripolo lineare Q",
+              "forma": "rettangolo",
+              "colonna": 5,
+              "riga": 2
+            },
+            {
+              "id": "out",
+              "etichetta": "y(t) = x(t) * h(t)",
+              "forma": "uscita",
+              "colonna": 10,
+              "riga": 2
+            }
+          ],
+          "collegamenti": [
+            {
+              "da": "in",
+              "a": "q"
+            },
+            {
+              "da": "q",
+              "a": "out"
+            }
+          ]
+        },
+        {
+          "id": "risposta-impulsiva-causale-esempio",
+          "tipo": "grafico",
+          "titolo": "Esempio di risposta impulsiva causale",
+          "descrizione": "Esempio di risposta impulsiva di una rete causale stabile del primo ordine: è uguale a zero per tempi negativi, salta a uno nell'origine e decade esponenzialmente. La proprietà che conta per la dimostrazione è l'annullarsi per tempi negativi.",
+          "asse_x": {
+            "etichetta": "t (s)",
+            "min": -1,
+            "max": 4,
+            "tacche": [
+              {
+                "valore": 0,
+                "etichetta": "0"
+              },
+              {
+                "valore": 1,
+                "etichetta": "1"
+              },
+              {
+                "valore": 2,
+                "etichetta": "2"
+              },
+              {
+                "valore": 3,
+                "etichetta": "3"
+              }
+            ]
+          },
+          "asse_y": {
+            "etichetta": "h(t) (esempio)",
+            "min": 0,
+            "max": 1.1
+          },
+          "serie": [
+            {
+              "stile": "linea",
+              "punti": [
+                [
+                  -1.0,
+                  0.0
+                ],
+                [
+                  -0.95,
+                  0.0
+                ],
+                [
+                  -0.9,
+                  0.0
+                ],
+                [
+                  -0.85,
+                  0.0
+                ],
+                [
+                  -0.8,
+                  0.0
+                ],
+                [
+                  -0.75,
+                  0.0
+                ],
+                [
+                  -0.7,
+                  0.0
+                ],
+                [
+                  -0.65,
+                  0.0
+                ],
+                [
+                  -0.6,
+                  0.0
+                ],
+                [
+                  -0.55,
+                  0.0
+                ],
+                [
+                  -0.5,
+                  0.0
+                ],
+                [
+                  -0.45,
+                  0.0
+                ],
+                [
+                  -0.4,
+                  0.0
+                ],
+                [
+                  -0.35,
+                  0.0
+                ],
+                [
+                  -0.3,
+                  0.0
+                ],
+                [
+                  -0.25,
+                  0.0
+                ],
+                [
+                  -0.2,
+                  0.0
+                ],
+                [
+                  -0.15,
+                  0.0
+                ],
+                [
+                  -0.1,
+                  0.0
+                ],
+                [
+                  -0.05,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0
+                ],
+                [
+                  0.05,
+                  0.9512
+                ],
+                [
+                  0.1,
+                  0.9048
+                ],
+                [
+                  0.15,
+                  0.8607
+                ],
+                [
+                  0.2,
+                  0.8187
+                ],
+                [
+                  0.25,
+                  0.7788
+                ],
+                [
+                  0.3,
+                  0.7408
+                ],
+                [
+                  0.35,
+                  0.7047
+                ],
+                [
+                  0.4,
+                  0.6703
+                ],
+                [
+                  0.45,
+                  0.6376
+                ],
+                [
+                  0.5,
+                  0.6065
+                ],
+                [
+                  0.55,
+                  0.5769
+                ],
+                [
+                  0.6,
+                  0.5488
+                ],
+                [
+                  0.65,
+                  0.522
+                ],
+                [
+                  0.7,
+                  0.4966
+                ],
+                [
+                  0.75,
+                  0.4724
+                ],
+                [
+                  0.8,
+                  0.4493
+                ],
+                [
+                  0.85,
+                  0.4274
+                ],
+                [
+                  0.9,
+                  0.4066
+                ],
+                [
+                  0.95,
+                  0.3867
+                ],
+                [
+                  1.0,
+                  0.3679
+                ],
+                [
+                  1.05,
+                  0.3499
+                ],
+                [
+                  1.1,
+                  0.3329
+                ],
+                [
+                  1.15,
+                  0.3166
+                ],
+                [
+                  1.2,
+                  0.3012
+                ],
+                [
+                  1.25,
+                  0.2865
+                ],
+                [
+                  1.3,
+                  0.2725
+                ],
+                [
+                  1.35,
+                  0.2592
+                ],
+                [
+                  1.4,
+                  0.2466
+                ],
+                [
+                  1.45,
+                  0.2346
+                ],
+                [
+                  1.5,
+                  0.2231
+                ],
+                [
+                  1.55,
+                  0.2122
+                ],
+                [
+                  1.6,
+                  0.2019
+                ],
+                [
+                  1.65,
+                  0.192
+                ],
+                [
+                  1.7,
+                  0.1827
+                ],
+                [
+                  1.75,
+                  0.1738
+                ],
+                [
+                  1.8,
+                  0.1653
+                ],
+                [
+                  1.85,
+                  0.1572
+                ],
+                [
+                  1.9,
+                  0.1496
+                ],
+                [
+                  1.95,
+                  0.1423
+                ],
+                [
+                  2.0,
+                  0.1353
+                ],
+                [
+                  2.05,
+                  0.1287
+                ],
+                [
+                  2.1,
+                  0.1225
+                ],
+                [
+                  2.15,
+                  0.1165
+                ],
+                [
+                  2.2,
+                  0.1108
+                ],
+                [
+                  2.25,
+                  0.1054
+                ],
+                [
+                  2.3,
+                  0.1003
+                ],
+                [
+                  2.35,
+                  0.0954
+                ],
+                [
+                  2.4,
+                  0.0907
+                ],
+                [
+                  2.45,
+                  0.0863
+                ],
+                [
+                  2.5,
+                  0.0821
+                ],
+                [
+                  2.55,
+                  0.0781
+                ],
+                [
+                  2.6,
+                  0.0743
+                ],
+                [
+                  2.65,
+                  0.0707
+                ],
+                [
+                  2.7,
+                  0.0672
+                ],
+                [
+                  2.75,
+                  0.0639
+                ],
+                [
+                  2.8,
+                  0.0608
+                ],
+                [
+                  2.85,
+                  0.0578
+                ],
+                [
+                  2.9,
+                  0.055
+                ],
+                [
+                  2.95,
+                  0.0523
+                ],
+                [
+                  3.0,
+                  0.0498
+                ],
+                [
+                  3.05,
+                  0.0474
+                ],
+                [
+                  3.1,
+                  0.045
+                ],
+                [
+                  3.15,
+                  0.0429
+                ],
+                [
+                  3.2,
+                  0.0408
+                ],
+                [
+                  3.25,
+                  0.0388
+                ],
+                [
+                  3.3,
+                  0.0369
+                ],
+                [
+                  3.35,
+                  0.0351
+                ],
+                [
+                  3.4,
+                  0.0334
+                ],
+                [
+                  3.45,
+                  0.0317
+                ],
+                [
+                  3.5,
+                  0.0302
+                ],
+                [
+                  3.55,
+                  0.0287
+                ],
+                [
+                  3.6,
+                  0.0273
+                ],
+                [
+                  3.65,
+                  0.026
+                ],
+                [
+                  3.7,
+                  0.0247
+                ],
+                [
+                  3.75,
+                  0.0235
+                ],
+                [
+                  3.8,
+                  0.0224
+                ],
+                [
+                  3.85,
+                  0.0213
+                ],
+                [
+                  3.9,
+                  0.0202
+                ],
+                [
+                  3.95,
+                  0.0193
+                ],
+                [
+                  4.0,
+                  0.0183
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "a_voce": "La funzione di trasferimento descrive la rete in frequenza; voglio l'equivalente nel tempo. Sollecito il quadripolo con un impulso rettangolare di area uno e chiamo risposta impulsiva il limite della risposta quando la durata tende a zero: in forma simbolica è la risposta alla delta. Se la rete è causale questa risposta è zero per tempi negativi. Ora prendo un ingresso qualunque e lo penso come una somma di impulsi elementari: quello in tau ha peso x di tau per d tau. Per linearità la sua risposta è lo stesso peso per la risposta impulsiva traslata, e per permanenza la traslazione è proprio tau. Sommando tutti i contributi esce la convoluzione: nota h, conosco l'uscita per ogni ingresso. Infine torno in frequenza: con l'impulso ausiliario in ingresso, la trasformata dell'uscita è H per la trasformata dell'impulso; al limite l'uscita tende a h e la trasformata dell'impulso tende a uno, quindi H è esattamente la trasformata di h, e h è l'antitrasformata di H.",
+      "errori_frequenti": [
+        {
+          "errore": "Definire $h(t)$ direttamente come «risposta alla delta» senza il limite sull'impulso rettangolare.",
+          "perche_sbagliato": "La domanda e gli sviluppi verificati costruiscono $h$ come limite di risposte fisiche; saltare il limite nasconde perché in frequenza compare il fattore che tende a uno.",
+          "correzione": "Prima $h(t) = \\lim_{\\Delta \\to 0} y(t)$ con ingresso $D(t,\\Delta)$ di area uno, poi la riscrittura simbolica con $\\delta(t)$."
+        },
+        {
+          "errore": "Nella convoluzione scrivere $h(\\tau - t)$ o dimenticare che la risposta all'impulso in $\\tau$ è traslata.",
+          "perche_sbagliato": "L'impulso elementare è $\\delta(t-\\tau)$: la rete permanente risponde con la stessa forma $h$ spostata in avanti di $\\tau$, cioè $h(t-\\tau)$.",
+          "correzione": "$y(t) = \\int x(\\tau) h(t-\\tau)\\, d\\tau$: l'argomento è il tempo trascorso dall'istante dell'impulso, $t - \\tau$."
+        },
+        {
+          "errore": "Affermare $H(\\omega) = F[h(t)]$ come semplice definizione, senza il passaggio al limite in frequenza.",
+          "perche_sbagliato": "$H$ è già definita come rapporto fra trasformate per ingressi ordinari: il legame con $h$ è un teorema che usa $F[D(t,\\Delta)] \\to 1$.",
+          "correzione": "Si scrive $F[y(t)] = H(\\omega) F[D(t,\\Delta)]$ e si fa $\\Delta \\to 0$: solo allora $F[h(t)] = H(\\omega) \\cdot 1$."
+        }
+      ],
+      "versione_compatta": [
+        "Schema 1: quadripolo $Q$ con ingresso $D(t,\\Delta)$ (area uno) e uscita $y(t)$.",
+        "Definizione: $h(t) = \\lim_{\\Delta \\to 0} y(t)$; schema 2 simbolico: $\\delta(t) \\to Q \\to h(t)$.",
+        "Causale $\\Rightarrow h(t) = 0$ per $t < 0$ (fisica realizzabilità).",
+        "Ingresso generico = somma di impulsi $x(\\tau)\\, d\\tau\\, \\delta(t-\\tau)$ (da T2).",
+        "Linearità + permanenza: $y(t) = \\int x(\\tau) h(t-\\tau)\\, d\\tau = x(t) * h(t)$.",
+        "In frequenza: $F[y] = H(\\omega) F[D(t,\\Delta)]$; con $\\Delta \\to 0$ e $F[D] \\to 1$: $H(\\omega) = F[h(t)]$."
+      ],
+      "a_buchi": {
+        "testo": "La risposta impulsiva è $h(t) = \\lim_{\\Delta \\to 0}$ ___1___, dove l'ingresso è l'impulso di intensità ___2___. La risposta all'impulso elementare applicato in $\\tau$ vale $x(\\tau)\\, d\\tau\\;$ ___3___: il fattore scala viene dalla ___4___, la traslazione dalla permanenza. Sommando si ottiene la ___5___. In frequenza il legame $H(\\omega) = F[h(t)]$ segue facendo tendere $\\Delta$ a zero e usando che la trasformata dell'impulso ausiliario tende a ___6___.",
+        "soluzioni": {
+          "1": [
+            "y(t)"
+          ],
+          "2": [
+            "unitaria",
+            "uno",
+            "1"
+          ],
+          "3": [
+            "h(t−τ)",
+            "h(t-tau)"
+          ],
+          "4": [
+            "linearità"
+          ],
+          "5": [
+            "convoluzione"
+          ],
+          "6": [
+            "uno",
+            "1"
+          ]
+        }
+      },
+      "richiamo_attivo": [
+        {
+          "domanda": "Quali due proprietà della rete rendono possibile il passaggio dalla scomposizione in impulsi alla convoluzione?",
+          "risposta": "Linearità, che scala la risposta con il peso $x(\\tau)\\, d\\tau$, e permanenza (invarianza nel tempo), che trasla la risposta di $\\tau$ quando l'impulso è in $\\tau$."
+        },
+        {
+          "domanda": "Perché per una rete causale l'integrale di convoluzione si può fermare a $t$?",
+          "risposta": "Perché $h(t-\\tau) = 0$ quando $t - \\tau < 0$, cioè per $\\tau > t$: gli impulsi futuri rispetto a $t$ non contribuiscono ancora."
+        },
+        {
+          "domanda": "Quale risultato della dimostrazione T2 chiude il legame $H(\\omega) = F[h(t)]$?",
+          "risposta": "Il limite $\\lim_{\\Delta \\to 0} F[D(t,\\Delta)] = 1$: senza di esso resterebbe un fattore spettrale fra $F[h]$ e $H$."
+        },
+        {
+          "domanda": "Che cosa caratterizza $h(t)$ e che cosa $H(\\omega)$, in una frase ciascuno?",
+          "risposta": "$h(t)$ caratterizza il quadripolo nel dominio dei tempi e dà l'uscita per convoluzione; $H(\\omega)$ lo caratterizza in frequenza e dà l'uscita per prodotto delle trasformate."
+        }
+      ],
+      "collegamenti": [
+        "dim-impulso-dirac-trasformata",
+        "sistemi-lineari-funzione-trasferimento",
+        "dim-filtro-trasversale"
+      ],
+      "fonti": [
+        {
+          "chiave": "FILE3",
+          "rif": "file3 pp. 5-6"
+        },
+        {
+          "chiave": "FILE1",
+          "rif": "file1 pp. 17-18 (p. 3.29, rif. dello studente)"
+        }
+      ],
+      "verifica": {
+        "stato": "verificata_file1_file3",
+        "data": "2026-10-29",
+        "note": "Confronto pagina per pagina sulle immagini renderizzate di file1 e file3 (appunti di studenti, non il libro); il testo di Calandrino e Immovilli non è stato consultato direttamente e la sua edizione è NON TROVATO, quindi non si dichiara identità con il testo del docente. La condizione di causalità e l'avvertenza su delta sono esplicite in file1 p. 17; file3 pp. 5-6 contiene gli stessi schemi e il passaggio al limite in frequenza.",
+        "punti_aperti": [
+          "Confronto con il libro di Calandrino e Immovilli non ancora fatto: edizione e pagine effettive NON TROVATO; i riferimenti del tipo p. x.y sono quelli riportati dallo studente in file1 (IPOTESI: capitolo.pagina)."
+        ]
+      }
+    },
+    "dim-pam-due-spettri": {
+      "id": "dim-pam-due-spettri",
+      "titolo": "Segnali PAM: definizione e calcolo dei due spettri (T5, 10 punti)",
+      "domande_esame": [
+        "T5"
+      ],
+      "enunciato": "Un segnale PAM è la successione di impulsi modulati in ampiezza $s(t) = \\sum_{n} a_n\\, g(t-nT)$, dove $\\{a_n\\}$ è una serie temporale a potenza finita e $g(t)$ un impulso a energia finita. Scomponendo i simboli in valor medio e parte a valor medio zero, $s(t) = s_m(t) + x(t)$, si ottengono due spettri: $s_m(t)$ è periodica e ha uno spettro a righe alle pulsazioni $2\\pi n/T$ con coefficienti $c_n = \\frac{\\langle a_n \\rangle}{T} G\\!\\left(\\frac{2\\pi n}{T}\\right)$; $x(t)$ ha lo spettro di potenza distribuito, nella convenzione unilaterale del sito, $G_x(\\omega) = \\frac{1}{\\pi T} |G(\\omega)|^2 \\left\\{ \\langle a_n^2 \\rangle - [\\langle a_n \\rangle]^2 + 2 \\sum_{k=1}^{\\infty} \\left[ \\langle a_n a_{n+k} \\rangle - [\\langle a_n \\rangle]^2 \\right] \\cos k\\omega T \\right\\}$, che si sovrappone allo spettro a righe. La prova T5 vale 10 punti, uno dei due soli punteggi dichiarati nel materiale raccolto.",
+      "ipotesi": [
+        "La serie temporale $\\{a_n\\}$ ha valor medio temporale $\\langle a_n \\rangle$ in generale diverso da zero e potenza finita: $\\langle a_n^2 \\rangle = \\lim_{N \\to \\infty} \\frac{1}{2N} \\sum_{-N}^{N} a_n^2 < \\infty$.",
+        "L'impulso formatore $g(t)$ ha energia finita, trasformata $G(\\omega)$ e funzione di autocorrelazione $\\phi(\\tau)$ legate da $F[\\phi(\\tau)] = |G(\\omega)|^2$.",
+        "La serie centrata $x_n = a_n - \\langle a_n \\rangle$ è parzialmente coerente: esistono i limiti $C_k = \\langle x_n x_{n+k} \\rangle$ delle medie temporali dei prodotti a distanza $k$.",
+        "Lo spettro di potenza è quello unilaterale in $\\omega$ adottato in NOTAZIONE.md: $G_x(\\omega) = F[C(\\tau)]/\\pi$ per $\\omega \\ge 0$ e $P_x = \\int_0^{\\infty} G_x(\\omega)\\, d\\omega$ (decisione sul punto A2).",
+        "Attenzione al doppio uso della lettera $G$ in file1 e file3: $G(\\omega)$ è la trasformata dell'impulso, $G_x(\\omega)$ è lo spettro di potenza di $x(t)$."
+      ],
+      "notazione": [
+        {
+          "simbolo": "s(t) = \\sum_{-\\infty}^{+\\infty} a_n g(t-nT) = \\{a_n\\} * g(t)",
+          "significato": "segnale PAM: impulsi $g$ traslati di multipli di $T$ e pesati dai simboli; è la convoluzione fra serie temporale e impulso"
+        },
+        {
+          "simbolo": "\\langle a_n \\rangle,\\; \\langle a_n^2 \\rangle,\\; \\langle a_n a_{n+k} \\rangle",
+          "significato": "medie temporali della serie dei simboli: valor medio, potenza e prodotti a distanza $k$"
+        },
+        {
+          "simbolo": "s_m(t),\\; x(t),\\; x_n = a_n - \\langle a_n \\rangle",
+          "significato": "componente periodica legata al valor medio e componente PAM a valor medio zero costruita con i simboli centrati"
+        },
+        {
+          "simbolo": "C(\\tau) = \\langle x(t) x(t+\\tau) \\rangle,\\; C_k = \\langle x_n x_{n+k} \\rangle",
+          "significato": "autocorrelazione temporale di $x(t)$ e autocorrelazione discreta dei simboli centrati"
+        },
+        {
+          "simbolo": "\\phi(\\tau),\\; F[\\phi(\\tau)] = |G(\\omega)|^2",
+          "significato": "autocorrelazione dell'impulso formatore e suo spettro di energia"
+        }
+      ],
+      "varianti_notazione": [
+        {
+          "canonica": "$G_{x}(\\omega) = F[C(\\tau)]/\\pi$, potenza come integrale sulle pulsazioni positive",
+          "variante": "stessa definizione con $G_{x}(\\omega) = F[C(\\tau)]/\\pi$ in file1 p. 21; in file3 p. 13 il divisore è scritto sotto la trasformata",
+          "fonte": "FILE1 pp. 20-22; FILE3 pp. 13-14"
+        },
+        {
+          "canonica": "$\\frac{2\\pi}{T}$ per la spaziatura delle righe",
+          "variante": "$\\omega_{0} = \\frac{2\\pi}{T}$ per la stessa quantità",
+          "fonte": "FILE1 p. 20"
+        }
+      ],
+      "idea": "Si separa il valor medio dei simboli dal resto: il valor medio ripete l'impulso in modo periodico e dà righe; il resto, a media zero, dà uno spettro continuo via autocorrelazione.",
+      "passi": [
+        {
+          "n": 1,
+          "testo": "Si parte dalla serie temporale $\\{a_n\\}$ con valor medio $\\langle a_n \\rangle$ non necessariamente zero e potenza finita, e da un impulso $g(t)$ a energia finita con autocorrelazione $\\phi(\\tau)$ e trasformata $G(\\omega)$.",
+          "formula": "\\langle a_n^2 \\rangle = \\lim_{N \\to \\infty} \\frac{1}{2N} \\sum_{n=-N}^{N} a_n^2 < \\infty, \\qquad F[\\phi(\\tau)] = |G(\\omega)|^2",
+          "perche": "Sono le ipotesi che rendono definite potenza del segnale, spettro a righe e spettro distribuito; la seconda relazione è il legame fra autocorrelazione e spettro di energia dell'impulso."
+        },
+        {
+          "n": 2,
+          "testo": "Si definisce il segnale PAM come successione di impulsi ottenuti da $g(t)$ per traslazioni successive di $T$ e moltiplicati per i simboli; è una convoluzione fra la serie temporale e l'impulso.",
+          "formula": "s(t) = \\sum_{n=-\\infty}^{+\\infty} a_n\\, g(t-nT) = \\{a_n\\} * g(t)",
+          "perche": "La scrittura come convoluzione è la definizione di convoluzione fra serie temporale e funzione tempo-continua richiamata negli sviluppi.",
+          "figura": "generatore-pam"
+        },
+        {
+          "n": 3,
+          "testo": "Per l'analisi armonica generalizzata si introduce la serie centrata $x_n = a_n - \\langle a_n \\rangle$, certamente a valor medio zero, e si scompone il segnale nelle due componenti.",
+          "formula": "s(t) = s_m(t) + x(t), \\qquad s_m(t) = \\langle a_n \\rangle \\sum_{n} g(t-nT), \\qquad x(t) = \\sum_{n} x_n\\, g(t-nT)",
+          "perche": "La scomposizione è un'identità algebrica termine a termine; separa la parte deterministica periodica da quella che va trattata con l'autocorrelazione."
+        },
+        {
+          "n": 4,
+          "testo": "Primo spettro: $s_m(t)$ è la ripetizione periodica di $g(t)$ scalata dal valor medio, quindi si sviluppa in serie di Fourier esponenziale; i coefficienti sono i campioni della trasformata dell'impulso alle pulsazioni $2\\pi n/T$, divisi per $T$ e scalati dal valor medio. Nasce lo spettro a righe disegnato in figura.",
+          "formula": "s_m(t) = \\sum_{n=-\\infty}^{+\\infty} c_n e^{j n \\frac{2\\pi}{T} t}, \\qquad c_n = \\frac{\\langle a_n \\rangle}{T}\\, G\\!\\left(n \\frac{2\\pi}{T}\\right)",
+          "perche": "Un segnale periodico di periodo $T$ ha spettro a righe; il coefficiente si ottiene integrando su un periodo, e l'integrale su tutto l'asse dell'impulso con l'esponenziale è proprio $G$ valutata alla pulsazione della riga.",
+          "figura": "spettro-a-righe-pam"
+        },
+        {
+          "n": 5,
+          "testo": "Secondo spettro: per $x(t)$ si parte dalla funzione di autocorrelazione temporale e dalla definizione unilaterale dello spettro di potenza.",
+          "formula": "C(\\tau) = \\langle x(t) x(t+\\tau) \\rangle, \\qquad G_x(\\omega) = \\frac{F[C(\\tau)]}{\\pi}",
+          "perche": "$x(t)$ è un segnale di potenza a valor medio zero: il suo spettro si definisce trasformando l'autocorrelazione (Wiener-Chinchin); il divisore $\\pi$ è la convenzione unilaterale di file1 p. 21 (punto A2)."
+        },
+        {
+          "n": 6,
+          "testo": "Si sostituiscono le espressioni di $x(t)$ e $x(t+\\tau)$ come doppia somma sugli indici $n$ e $i$ e si scrive la media temporale come limite dell'integrale su $2NT$.",
+          "formula": "C(\\tau) = \\lim_{N \\to \\infty} \\frac{1}{2NT} \\int_{-NT}^{NT} \\sum_{n} \\sum_{i} x_n x_i\\, g(t-nT) g(t+\\tau-iT)\\, dt",
+          "perche": "È la definizione di media temporale applicata al prodotto delle due somme del passo 3; gli indici diversi evitano di confondere i due fattori."
+        },
+        {
+          "n": 7,
+          "testo": "Si scambiano limite, somme e integrale: l'integrale interno dipende solo da $\\tau$ e dalla differenza degli indici, ed è l'autocorrelazione dell'impulso traslata.",
+          "formula": "\\int_{-\\infty}^{+\\infty} g(t-nT) g(t+\\tau-iT)\\, dt = \\phi[\\tau - (i-n)T] \\;\\Longrightarrow\\; C(\\tau) = \\lim_{N \\to \\infty} \\frac{1}{2NT} \\sum_{n=-N}^{N} \\sum_{i} x_n x_i\\, \\phi[\\tau - (i-n)T]",
+          "perche": "Per $N$ grande gli impulsi che contano sono quelli dentro la finestra di osservazione; il cambio di variabile nell'integrale lo riduce alla definizione di $\\phi$."
+        },
+        {
+          "n": 8,
+          "testo": "Si pone $i = n + k$: a $k$ fissato la media interna tende a $C_k = \\langle x_n x_{n+k} \\rangle$, e l'autocorrelazione di $x(t)$ diventa la convoluzione, scalata di $1/T$, fra la serie $\\{C_k\\}$ e $\\phi(\\tau)$.",
+          "formula": "C(\\tau) = \\frac{1}{T} \\sum_{k=-\\infty}^{+\\infty} C_k\\, \\phi(\\tau - kT) = \\frac{1}{T}\\, \\{C_k\\} * \\phi(\\tau)",
+          "perche": "Il limite interno esiste per l'ipotesi di parziale coerenza della serie centrata; resta un fattore $1/T$ perché $2NT = T \\cdot 2N$."
+        },
+        {
+          "n": 9,
+          "testo": "Si trasforma secondo Fourier: la convoluzione diventa prodotto, la trasformata di $\\phi$ è $|G(\\omega)|^2$ e quella della serie $\\{C_k\\}$ si riscrive con i coseni accoppiando $k$ e $-k$.",
+          "formula": "G_x(\\omega) = \\frac{F[C(\\tau)]}{\\pi} = \\frac{1}{\\pi T} |G(\\omega)|^2 \\left[ C_0 + 2 \\sum_{k=1}^{+\\infty} C_k \\cos k\\omega T \\right]",
+          "perche": "Valgono il teorema della convoluzione e $F[\\phi] = |G|^2$; inoltre $C_{-k} = C_k$ perché i simboli sono reali, quindi $e^{-jk\\omega T} + e^{jk\\omega T} = 2\\cos k\\omega T$.",
+          "figura": "spettro-distribuito-pam"
+        },
+        {
+          "n": 10,
+          "testo": "Si torna ai simboli originari con $x_n = a_n - \\langle a_n \\rangle$: per ogni $k$ vale $C_k = \\langle a_n a_{n+k} \\rangle - [\\langle a_n \\rangle]^2$ e in particolare $C_0 = \\langle a_n^2 \\rangle - [\\langle a_n \\rangle]^2$. Si ottiene la formula finale dello spettro distribuito, che si sovrappone allo spettro a righe del passo 4.",
+          "formula": "G_x(\\omega) = \\frac{1}{\\pi T} |G(\\omega)|^2 \\left\\{ \\langle a_n^2 \\rangle - [\\langle a_n \\rangle]^2 + 2 \\sum_{k=1}^{+\\infty} \\left[ \\langle a_n a_{n+k} \\rangle - [\\langle a_n \\rangle]^2 \\right] \\cos k\\omega T \\right\\}",
+          "perche": "Sviluppando il prodotto $(a_n - \\langle a_n \\rangle)(a_{n+k} - \\langle a_n \\rangle)$ e mediando, i termini misti danno ciascuno $[\\langle a_n \\rangle]^2$ e resta la covarianza dei simboli a distanza $k$."
+        }
+      ],
+      "formula_finale": "c_n = \\frac{\\langle a_n \\rangle}{T} G\\!\\left(\\frac{2\\pi n}{T}\\right), \\qquad G_x(\\omega) = \\frac{1}{\\pi T} |G(\\omega)|^2 \\left\\{ \\langle a_n^2 \\rangle - [\\langle a_n \\rangle]^2 + 2 \\sum_{k=1}^{+\\infty} \\left[ \\langle a_n a_{n+k} \\rangle - [\\langle a_n \\rangle]^2 \\right] \\cos k\\omega T \\right\\}",
+      "figure": [
+        {
+          "id": "spettro-a-righe-pam",
+          "tipo": "grafico",
+          "titolo": "Spettro a righe della componente periodica del PAM",
+          "descrizione": "Spettro a righe della componente periodica di un segnale PAM: segmenti verticali alle pulsazioni multiple di due pi greco diviso T, con altezze esemplificative proporzionali al modulo dei coefficienti della serie di Fourier. Le righe esistono solo perché il valor medio dei simboli è diverso da zero e svaniscono con esso.",
+          "asse_x": {
+            "etichetta": "ω (rad/s), T = 1 s",
+            "min": 0,
+            "max": 20,
+            "tacche": [
+              {
+                "valore": 0,
+                "etichetta": "0"
+              },
+              {
+                "valore": 6.2832,
+                "etichetta": "2π/T"
+              },
+              {
+                "valore": 12.5664,
+                "etichetta": "4π/T"
+              },
+              {
+                "valore": 18.8496,
+                "etichetta": "6π/T"
+              }
+            ]
+          },
+          "asse_y": {
+            "etichetta": "ampiezza delle righe (esempio)",
+            "min": 0,
+            "max": 1.15
+          },
+          "serie": [
+            {
+              "stile": "righe",
+              "punti": [
+                [
+                  0,
+                  1
+                ],
+                [
+                  6.2832,
+                  0.8
+                ],
+                [
+                  12.5664,
+                  0.55
+                ],
+                [
+                  18.8496,
+                  0.3
+                ]
+              ],
+              "etichetta": "righe |cₙ| (altezze esemplificative)"
+            }
+          ],
+          "annotazioni": [
+            {
+              "x": 0,
+              "y": 1.05,
+              "testo": "A₀"
+            },
+            {
+              "x": 6.2832,
+              "y": 0.85,
+              "testo": "A₁"
+            },
+            {
+              "x": 12.5664,
+              "y": 0.6,
+              "testo": "A₂"
+            }
+          ]
+        },
+        {
+          "id": "spettro-distribuito-pam",
+          "tipo": "grafico",
+          "titolo": "Spettro distribuito: inviluppo dell'impulso rettangolare",
+          "descrizione": "Andamento normalizzato del fattore di inviluppo dello spettro distribuito per un impulso formatore rettangolare lungo quanto il periodo di simbolo: massimo uno in zero e zeri alle pulsazioni multiple di due pi greco diviso T, dove si annulla il modulo quadro della trasformata dell'impulso.",
+          "asse_x": {
+            "etichetta": "ω (rad/s), T = 1 s",
+            "min": 0,
+            "max": 12.5664,
+            "tacche": [
+              {
+                "valore": 0,
+                "etichetta": "0"
+              },
+              {
+                "valore": 6.2832,
+                "etichetta": "2π/T"
+              },
+              {
+                "valore": 12.5664,
+                "etichetta": "4π/T"
+              }
+            ]
+          },
+          "asse_y": {
+            "etichetta": "|G(ω)|² normalizzato",
+            "min": 0,
+            "max": 1.15
+          },
+          "serie": [
+            {
+              "stile": "linea",
+              "punti": [
+                [
+                  0.0,
+                  1.0
+                ],
+                [
+                  0.0785,
+                  0.9995
+                ],
+                [
+                  0.1571,
+                  0.9979
+                ],
+                [
+                  0.2356,
+                  0.9954
+                ],
+                [
+                  0.3142,
+                  0.9918
+                ],
+                [
+                  0.3927,
+                  0.9872
+                ],
+                [
+                  0.4712,
+                  0.9816
+                ],
+                [
+                  0.5498,
+                  0.9751
+                ],
+                [
+                  0.6283,
+                  0.9675
+                ],
+                [
+                  0.7069,
+                  0.959
+                ],
+                [
+                  0.7854,
+                  0.9496
+                ],
+                [
+                  0.8639,
+                  0.9393
+                ],
+                [
+                  0.9425,
+                  0.9281
+                ],
+                [
+                  1.021,
+                  0.9161
+                ],
+                [
+                  1.0996,
+                  0.9032
+                ],
+                [
+                  1.1781,
+                  0.8896
+                ],
+                [
+                  1.2566,
+                  0.8751
+                ],
+                [
+                  1.3352,
+                  0.86
+                ],
+                [
+                  1.4137,
+                  0.8442
+                ],
+                [
+                  1.4923,
+                  0.8277
+                ],
+                [
+                  1.5708,
+                  0.8106
+                ],
+                [
+                  1.6493,
+                  0.7929
+                ],
+                [
+                  1.7279,
+                  0.7747
+                ],
+                [
+                  1.8064,
+                  0.756
+                ],
+                [
+                  1.885,
+                  0.7368
+                ],
+                [
+                  1.9635,
+                  0.7173
+                ],
+                [
+                  2.042,
+                  0.6974
+                ],
+                [
+                  2.1206,
+                  0.6771
+                ],
+                [
+                  2.1991,
+                  0.6566
+                ],
+                [
+                  2.2777,
+                  0.6359
+                ],
+                [
+                  2.3562,
+                  0.615
+                ],
+                [
+                  2.4347,
+                  0.5939
+                ],
+                [
+                  2.5133,
+                  0.5728
+                ],
+                [
+                  2.5918,
+                  0.5516
+                ],
+                [
+                  2.6704,
+                  0.5304
+                ],
+                [
+                  2.7489,
+                  0.5092
+                ],
+                [
+                  2.8274,
+                  0.4881
+                ],
+                [
+                  2.906,
+                  0.4671
+                ],
+                [
+                  2.9845,
+                  0.4463
+                ],
+                [
+                  3.0631,
+                  0.4257
+                ],
+                [
+                  3.1416,
+                  0.4053
+                ],
+                [
+                  3.2201,
+                  0.3852
+                ],
+                [
+                  3.2987,
+                  0.3653
+                ],
+                [
+                  3.3772,
+                  0.3459
+                ],
+                [
+                  3.4558,
+                  0.3267
+                ],
+                [
+                  3.5343,
+                  0.308
+                ],
+                [
+                  3.6128,
+                  0.2898
+                ],
+                [
+                  3.6914,
+                  0.2719
+                ],
+                [
+                  3.7699,
+                  0.2546
+                ],
+                [
+                  3.8485,
+                  0.2377
+                ],
+                [
+                  3.927,
+                  0.2214
+                ],
+                [
+                  4.0055,
+                  0.2056
+                ],
+                [
+                  4.0841,
+                  0.1904
+                ],
+                [
+                  4.1626,
+                  0.1757
+                ],
+                [
+                  4.2412,
+                  0.1617
+                ],
+                [
+                  4.3197,
+                  0.1482
+                ],
+                [
+                  4.3982,
+                  0.1353
+                ],
+                [
+                  4.4768,
+                  0.1231
+                ],
+                [
+                  4.5553,
+                  0.1115
+                ],
+                [
+                  4.6339,
+                  0.1004
+                ],
+                [
+                  4.7124,
+                  0.0901
+                ],
+                [
+                  4.7909,
+                  0.0803
+                ],
+                [
+                  4.8695,
+                  0.0712
+                ],
+                [
+                  4.948,
+                  0.0626
+                ],
+                [
+                  5.0266,
+                  0.0547
+                ],
+                [
+                  5.1051,
+                  0.0474
+                ],
+                [
+                  5.1836,
+                  0.0406
+                ],
+                [
+                  5.2622,
+                  0.0345
+                ],
+                [
+                  5.3407,
+                  0.0289
+                ],
+                [
+                  5.4193,
+                  0.0239
+                ],
+                [
+                  5.4978,
+                  0.0194
+                ],
+                [
+                  5.5763,
+                  0.0154
+                ],
+                [
+                  5.6549,
+                  0.0119
+                ],
+                [
+                  5.7334,
+                  0.009
+                ],
+                [
+                  5.812,
+                  0.0065
+                ],
+                [
+                  5.8905,
+                  0.0044
+                ],
+                [
+                  5.969,
+                  0.0027
+                ],
+                [
+                  6.0476,
+                  0.0015
+                ],
+                [
+                  6.1261,
+                  0.0007
+                ],
+                [
+                  6.2047,
+                  0.0002
+                ],
+                [
+                  6.2832,
+                  0.0
+                ],
+                [
+                  6.3617,
+                  0.0002
+                ],
+                [
+                  6.4403,
+                  0.0006
+                ],
+                [
+                  6.5188,
+                  0.0013
+                ],
+                [
+                  6.5974,
+                  0.0022
+                ],
+                [
+                  6.6759,
+                  0.0034
+                ],
+                [
+                  6.7544,
+                  0.0048
+                ],
+                [
+                  6.833,
+                  0.0063
+                ],
+                [
+                  6.9115,
+                  0.008
+                ],
+                [
+                  6.9901,
+                  0.0098
+                ],
+                [
+                  7.0686,
+                  0.0117
+                ],
+                [
+                  7.1471,
+                  0.0137
+                ],
+                [
+                  7.2257,
+                  0.0158
+                ],
+                [
+                  7.3042,
+                  0.0179
+                ],
+                [
+                  7.3828,
+                  0.02
+                ],
+                [
+                  7.4613,
+                  0.0222
+                ],
+                [
+                  7.5398,
+                  0.0243
+                ],
+                [
+                  7.6184,
+                  0.0264
+                ],
+                [
+                  7.6969,
+                  0.0285
+                ],
+                [
+                  7.7755,
+                  0.0305
+                ],
+                [
+                  7.854,
+                  0.0324
+                ],
+                [
+                  7.9325,
+                  0.0343
+                ],
+                [
+                  8.0111,
+                  0.036
+                ],
+                [
+                  8.0896,
+                  0.0377
+                ],
+                [
+                  8.1682,
+                  0.0392
+                ],
+                [
+                  8.2467,
+                  0.0407
+                ],
+                [
+                  8.3252,
+                  0.042
+                ],
+                [
+                  8.4038,
+                  0.0431
+                ],
+                [
+                  8.4823,
+                  0.0441
+                ],
+                [
+                  8.5609,
+                  0.045
+                ],
+                [
+                  8.6394,
+                  0.0457
+                ],
+                [
+                  8.7179,
+                  0.0463
+                ],
+                [
+                  8.7965,
+                  0.0468
+                ],
+                [
+                  8.875,
+                  0.047
+                ],
+                [
+                  8.9536,
+                  0.0472
+                ],
+                [
+                  9.0321,
+                  0.0472
+                ],
+                [
+                  9.1106,
+                  0.047
+                ],
+                [
+                  9.1892,
+                  0.0467
+                ],
+                [
+                  9.2677,
+                  0.0463
+                ],
+                [
+                  9.3463,
+                  0.0457
+                ],
+                [
+                  9.4248,
+                  0.045
+                ],
+                [
+                  9.5033,
+                  0.0442
+                ],
+                [
+                  9.5819,
+                  0.0433
+                ],
+                [
+                  9.6604,
+                  0.0423
+                ],
+                [
+                  9.739,
+                  0.0411
+                ],
+                [
+                  9.8175,
+                  0.0399
+                ],
+                [
+                  9.896,
+                  0.0386
+                ],
+                [
+                  9.9746,
+                  0.0372
+                ],
+                [
+                  10.0531,
+                  0.0358
+                ],
+                [
+                  10.1317,
+                  0.0343
+                ],
+                [
+                  10.2102,
+                  0.0328
+                ],
+                [
+                  10.2887,
+                  0.0312
+                ],
+                [
+                  10.3673,
+                  0.0295
+                ],
+                [
+                  10.4458,
+                  0.0279
+                ],
+                [
+                  10.5244,
+                  0.0263
+                ],
+                [
+                  10.6029,
+                  0.0246
+                ],
+                [
+                  10.6814,
+                  0.0229
+                ],
+                [
+                  10.76,
+                  0.0213
+                ],
+                [
+                  10.8385,
+                  0.0197
+                ],
+                [
+                  10.9171,
+                  0.0181
+                ],
+                [
+                  10.9956,
+                  0.0165
+                ],
+                [
+                  11.0741,
+                  0.015
+                ],
+                [
+                  11.1527,
+                  0.0136
+                ],
+                [
+                  11.2312,
+                  0.0122
+                ],
+                [
+                  11.3098,
+                  0.0108
+                ],
+                [
+                  11.3883,
+                  0.0095
+                ],
+                [
+                  11.4668,
+                  0.0083
+                ],
+                [
+                  11.5454,
+                  0.0072
+                ],
+                [
+                  11.6239,
+                  0.0061
+                ],
+                [
+                  11.7025,
+                  0.0051
+                ],
+                [
+                  11.781,
+                  0.0042
+                ],
+                [
+                  11.8595,
+                  0.0034
+                ],
+                [
+                  11.9381,
+                  0.0027
+                ],
+                [
+                  12.0166,
+                  0.002
+                ],
+                [
+                  12.0952,
+                  0.0015
+                ],
+                [
+                  12.1737,
+                  0.001
+                ],
+                [
+                  12.2522,
+                  0.0007
+                ],
+                [
+                  12.3308,
+                  0.0004
+                ],
+                [
+                  12.4093,
+                  0.0002
+                ],
+                [
+                  12.4879,
+                  0.0
+                ],
+                [
+                  12.5664,
+                  0.0
+                ]
+              ],
+              "etichetta": "inviluppo |G(ω)|², impulso rettangolare"
+            }
+          ]
+        },
+        {
+          "id": "generatore-pam",
+          "tipo": "blocchi",
+          "titolo": "Generazione di un segnale PAM",
+          "descrizione": "Schema a blocchi della generazione PAM: la serie temporale dei simboli entra in un formatore che emette, ogni T secondi, una copia dell'impulso g di t scalata dal simbolo corrente; l'uscita è il segnale PAM tempo-continuo.",
+          "blocchi": [
+            {
+              "id": "in",
+              "etichetta": "Serie temporale {aₙ}",
+              "forma": "ingresso",
+              "colonna": 0,
+              "riga": 2
+            },
+            {
+              "id": "form",
+              "etichetta": "Formatore: impulso g(t) ogni T, pesato da aₙ",
+              "forma": "rettangolo",
+              "colonna": 5,
+              "riga": 2
+            },
+            {
+              "id": "out",
+              "etichetta": "s(t) segnale PAM",
+              "forma": "uscita",
+              "colonna": 10,
+              "riga": 2
+            }
+          ],
+          "collegamenti": [
+            {
+              "da": "in",
+              "a": "form"
+            },
+            {
+              "da": "form",
+              "a": "out"
+            }
+          ]
+        }
+      ],
+      "a_voce": "È la domanda da dieci punti e la imposto con calma. Un segnale PAM è una fila di impulsi uguali, uno ogni T, ciascuno scalato dal simbolo corrispondente: lo scrivo come convoluzione fra la serie dei simboli e l'impulso formatore. Poi separo il valor medio: la parte costante dei simboli ripete l'impulso in modo periodico, e un segnale periodico ha spettro a righe; le righe stanno ai multipli di due pi greco diviso T e le loro ampiezze sono la trasformata dell'impulso campionata in quei punti, divisa per T e moltiplicata per il valor medio. La parte che resta ha valor medio zero e va trattata con l'autocorrelazione: calcolo la media temporale del prodotto fra il segnale e la sua copia ritardata, faccio il cambio di indice i uguale a n più k e scopro che l'autocorrelazione è la convoluzione fra l'autocorrelazione dei simboli centrati e quella dell'impulso, divisa per T. Trasformando ottengo il secondo spettro: modulo quadro della trasformata dell'impulso, fattore uno diviso pi greco T per la convenzione unilaterale, e una serie di coseni con le covarianze dei simboli. I due spettri si sovrappongono: righe più continuo.",
+      "errori_frequenti": [
+        {
+          "errore": "Scrivere il fattore dello spettro distribuito come $1/(2\\pi T)$ mescolando le convenzioni, o omettere del tutto il divisore $\\pi$.",
+          "perche_sbagliato": "Con la densità unilaterale in $\\omega$ ($P = \\int_0^{\\infty} G\\, d\\omega$) deve essere $G_x = F[C]/\\pi$; il fattore $1/(2\\pi T)$ appartiene alla densità bilaterale per radiante, diversa.",
+          "correzione": "$G_x(\\omega) = \\frac{1}{\\pi T}|G(\\omega)|^2[\\dots]$ nella convenzione adottata e dichiarata in NOTAZIONE.md (punto A2); se si passa alla bilaterale vanno cambiati anche definizione e integrale della potenza."
+        },
+        {
+          "errore": "Attribuire le righe spettrali anche a un codice con $\\langle a_n \\rangle = 0$.",
+          "perche_sbagliato": "I coefficienti $c_n$ sono proporzionali al valor medio: se è zero, la componente periodica $s_m(t)$ non esiste e resta il solo spettro distribuito.",
+          "correzione": "Le righe ci sono solo se $\\langle a_n \\rangle \\ne 0$; controllare sempre il valor medio del codice prima di disegnarle."
+        },
+        {
+          "errore": "Saltare il cambio di indice $i = n + k$ e scrivere direttamente la serie di coseni.",
+          "perche_sbagliato": "È proprio quel cambio che fa emergere le covarianze $C_k$ a distanza $k$ e la struttura di convoluzione con $\\phi$: senza, la formula finale è un atto di fede e la domanda chiede il calcolo.",
+          "correzione": "Mostrare i passi 6-9: doppia somma, integrale che dà $\\phi[\\tau-(i-n)T]$, cambio $i = n+k$, trasformata e accoppiamento $k$ con $-k$ che produce $2\\cos k\\omega T$."
+        }
+      ],
+      "versione_compatta": [
+        "PAM: $s(t) = \\sum_n a_n g(t-nT) = \\{a_n\\} * g(t)$, $\\langle a_n^2 \\rangle < \\infty$, $F[\\phi] = |G(\\omega)|^2$.",
+        "Centro i simboli: $x_n = a_n - \\langle a_n \\rangle$, $s(t) = s_m(t) + x(t)$.",
+        "Spettro a righe di $s_m$: $c_n = \\frac{\\langle a_n \\rangle}{T} G(2\\pi n/T)$ alle pulsazioni $2\\pi n/T$.",
+        "Autocorrelazione: $C(\\tau) = \\frac{1}{T}\\sum_k C_k \\phi(\\tau-kT)$ (cambio $i = n+k$).",
+        "Trasformo e accoppio $\\pm k$: $G_x(\\omega) = \\frac{1}{\\pi T}|G(\\omega)|^2 [C_0 + 2\\sum_{k \\ge 1} C_k \\cos k\\omega T]$.",
+        "Con $C_k = \\langle a_n a_{n+k} \\rangle - [\\langle a_n \\rangle]^2$: formula finale; continuo sovrapposto alle righe."
+      ],
+      "a_buchi": {
+        "testo": "Il segnale PAM è $s(t) = \\sum_n$ ___1___ $g(t-nT)$. La componente periodica nasce dal ___2___ dei simboli e ha righe a pulsazioni multiple di ___3___. Per la componente a valor medio zero si calcola l'___4___ $C(\\tau)$; con il cambio di indice $i = n + k$ essa diventa $(1/T)\\sum_k C_k \\phi(\\tau - kT)$, dove $\\phi$ è l'autocorrelazione dell'___5___. Trasformando si ottiene il fattore $|G(\\omega)|^2$ e, nella convenzione unilaterale, il fattore complessivo ___6___ davanti alla serie di coseni.",
+        "soluzioni": {
+          "1": [
+            "a_n",
+            "a con pedice n"
+          ],
+          "2": [
+            "valor medio"
+          ],
+          "3": [
+            "2π/T",
+            "due pi greco diviso T"
+          ],
+          "4": [
+            "autocorrelazione"
+          ],
+          "5": [
+            "impulso formatore",
+            "impulso g"
+          ],
+          "6": [
+            "1/(πT)",
+            "uno diviso pi greco T"
+          ]
+        }
+      },
+      "richiamo_attivo": [
+        {
+          "domanda": "Perché si scompone il PAM in $s_m(t) + x(t)$ invece di calcolare subito lo spettro di $s(t)$?",
+          "risposta": "Perché le due parti hanno natura diversa: $s_m$ è deterministica e periodica (serie di Fourier, righe), mentre $x$ è un segnale di potenza a media zero il cui spettro viene dall'autocorrelazione; insieme darebbero una mistura non trattabile con un solo strumento."
+        },
+        {
+          "domanda": "Da dove viene il fattore $1/(\\pi T)$ e a quale convenzione appartiene?",
+          "risposta": "Da $G_x = F[C]/\\pi$ (densità unilaterale in $\\omega$, con $P = \\int_0^{\\infty} G_x\\, d\\omega$) combinato con il fattore $1/T$ dell'autocorrelazione; è la decisione sul punto A2, coerente con file1 pp. 21 e 23."
+        },
+        {
+          "domanda": "Che cosa resta della formula se i simboli sono a valor medio zero e $C_k = 0$ per $k \\ne 0$?",
+          "risposta": "Le righe spariscono e lo spettro distribuito si riduce a $\\frac{1}{\\pi T}|G(\\omega)|^2 \\langle a_n^2 \\rangle$: la forma è decisa solo dall'impulso formatore."
+        },
+        {
+          "domanda": "Quale ruolo ha il fattore $|G(\\omega)|^2$ nel disegno dello spettro distribuito?",
+          "risposta": "È l'inviluppo continuo imposto dall'impulso: i suoi zeri sono zeri di tutto lo spettro distribuito, qualunque sia la statistica dei simboli."
+        }
+      ],
+      "collegamenti": [
+        "segnali-pam",
+        "energia-potenza-spettri",
+        "criterio-nyquist-isi"
+      ],
+      "fonti": [
+        {
+          "chiave": "FILE3",
+          "rif": "file3 pp. 12-15"
+        },
+        {
+          "chiave": "FILE1",
+          "rif": "file1 pp. 19-22 (p. 4.30, rif. dello studente)"
+        }
+      ],
+      "verifica": {
+        "stato": "verificata_file1_file3",
+        "data": "2026-10-29",
+        "note": "Confronto pagina per pagina sulle immagini renderizzate di file1 e file3 (appunti di studenti, non il libro); il testo di Calandrino e Immovilli non è stato consultato direttamente e la sua edizione è NON TROVATO, quindi non si dichiara identità con il testo del docente. Punto A2 deciso e documentato in docs/NOTAZIONE.md: densità unilaterale in $\\omega$ con $G_{x}(\\omega) = F[C(\\tau)]/\\pi$ (leggibile in file1 p. 21) e P = integrale sulle pulsazioni positive (coerente con file1 p. 23, dove P si calcola integrando fra 0 e $\\omega_{m}$ senza fattori aggiuntivi). Il punteggio di 10 punti è quello dichiarato per T5 nel materiale d'esame raccolto in file2 secondo R3.",
+        "punti_aperti": [
+          "Confronto con il libro di Calandrino e Immovilli non ancora fatto: edizione e pagine effettive NON TROVATO; i riferimenti del tipo p. x.y sono quelli riportati dallo studente in file1 (IPOTESI: capitolo.pagina).",
+          "Resta da confermare sul testo del docente che la convenzione unilaterale con il fattore $\\frac{1}{\\pi T}$ sia quella richiesta in sede d'esame; file1 e file3 concordano su questo fattore."
+        ]
+      }
+    }
+  }
+}
