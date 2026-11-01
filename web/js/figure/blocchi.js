@@ -150,49 +150,72 @@ export function renderBlocchi(spec, opzioni = {}) {
   const cssWidth = Number(opzioni.larghezzaMassima);
   const larghezzaMassima = Number.isFinite(cssWidth) && cssWidth > 0
     ? Math.max(80, Math.floor(cssWidth * FS_BLOCCHI / 15)) : LARGHEZZA_MASSIMA;
-  // Le etichette hanno bisogno di spazio ai lati dei blocchi: se il disegno
-  // che entra in larghezza non ne lascia, si tollera un viewBox piu' largo
-  // (il testo scala) purche' qualche corsia non resti bloccata.
-  // Se il disegno stretto non lascia spazio ai nomi si tollera un viewBox piu'
-  // largo (il testo scala) purche' nessuna corsia resti bloccata.
+  // Le etichette hanno bisogno di spazio ai lati dei blocchi: se il disegno che
+  // entra in larghezza non ne lascia, si tollera un viewBox piu' largo (il testo
+  // scala) purche' nessuna corsia resti bloccata.
   const larghezzaTollerata = Math.max(larghezzaMassima, Math.min(700, Math.max(480, Math.round(larghezzaMassima * 1.7))));
   // Prima si compatta il layout; se non basta, i blocchi rifluiscono in righe.
-  // Fra due disposizioni vince quella con meno conflitti (prima la geometria,
-  // poi i nomi); a pari conflitti vince la piu' stretta.
-  const cerca = (tollerata, tentativiMassimi) => {
-    let migliore = null, ultimo = null;
+  const spazio = limite => Math.max(0, 24 - (16 - limite) * 2);
+  const misura = (layout, limite, completo) =>
+    costruisci(layout, collegamenti, limite, spazio(limite), completo);
+  // La larghezza cala col limite (testo piu' stretto): si cerca per bisezione il
+  // limite piu' largo che entra. Il giro e' senza etichette, cosi' costa poco e
+  // serve solo a scegliere le disposizioni da misurare davvero.
+  const candidati = [], misure = new Map();
+  const esplora = tollerata => {
+    let ultimo = null;
     for (let colonne = Infinity; colonne >= 1;) {
       const layout = Number.isFinite(colonne) ? riorganizza(blocchi, colonne, collegamenti) : blocchi;
-      let scelto = null, tentativi = 0;
-      for (let limite = 16; limite >= 1; limite--) {
-        const spazio = Math.max(0, 24 - (16 - limite) * 2);
-        const prova = costruisci(layout, collegamenti, limite, spazio, false);
-        ultimo = prova;
-        if (prova.w > tollerata && !(colonne === 1 && limite === 1)) continue;
-        const completo = prova.w <= tollerata
-          ? costruisci(layout, collegamenti, limite, spazio, true) : prova;
-        ultimo = completo;
-        if (completo.w > tollerata) continue;
-        if (!scelto || completo.conflitti < scelto.conflitti
-          || (completo.conflitti === scelto.conflitti && completo.w < scelto.w)) scelto = completo;
-        if (!completo.conflitti || ++tentativi >= tentativiMassimi) break;
+      const prova = limite => {
+        const chiave = `${colonne}|${limite}`;
+        if (!misure.has(chiave)) misure.set(chiave, misura(layout, limite, false));
+        return misure.get(chiave);
+      };
+      let basso = 1, alto = 16, entra = 0;
+      while (basso <= alto) {
+        const m = (basso + alto) >> 1;
+        if (prova(m).w <= tollerata) { entra = m; basso = m + 1; } else alto = m - 1;
       }
-      const scelta = scelto || ultimo;
-      if (scelta && scelto && (!migliore || scelto.conflitti < migliore.conflitti
-        || (scelto.conflitti === migliore.conflitti && scelto.w < migliore.w))) migliore = scelto;
-      if (migliore && !migliore.conflitti && migliore.w <= tollerata) break;
+      const stretta = prova(1);
+      if (!ultimo || stretta.w < ultimo.w) ultimo = stretta;
+      if (entra) {
+        const p = prova(entra);
+        if (!candidati.some(c => c.chiave === `${colonne}|${entra}`)) {
+          candidati.push({ chiave: `${colonne}|${entra}`, colonne, limite: entra, layout, w: p.w, conflitti: p.conflitti, valutato: null });
+        }
+      }
       if (colonne === 1) break;
       colonne = colonne === Infinity ? 6 : colonne - 1;
     }
-    // Nessuna disposizione e' entrata: resta l'ultima prova, con conflitti
-    // ignoti (il giro senza etichette non li misura).
-    return migliore || (ultimo ? { ...ultimo, conflitti: Infinity } : null);
+    return ultimo;
   };
-  let disegno = cerca(larghezzaMassima, 1);
-  if (!disegno || !Number.isFinite(disegno.conflitti) || disegno.conflitti) {
-    const ampio = cerca(larghezzaTollerata, 4);
+  // Le etichette si misurano solo sui migliori candidati: vince chi ha meno
+  // conflitti, a pari conflitti il disegno piu' stretto (testo piu' grande).
+  const scegli = (tollerata, quanti) => {
+    let migliore = null, tentativi = 0;
+    for (const c of candidati) {
+      if (tentativi >= quanti) break;
+      if (!c.valutato) { c.valutato = misura(c.layout, c.limite, true); tentativi++; }
+      const completo = c.valutato;
+      if (completo.w > tollerata) continue;
+      if (!migliore || completo.conflitti < migliore.conflitti
+        || (completo.conflitti === migliore.conflitti && completo.w < migliore.w)) migliore = completo;
+      if (!completo.conflitti) break;
+    }
+    return migliore;
+  };
+  const ordina = () => candidati.sort((a, b) => a.conflitti - b.conflitti || a.w - b.w);
+  let ultimo = esplora(larghezzaMassima);
+  let disegno = scegli(larghezzaMassima, 3);
+  if (!disegno || disegno.conflitti) {
+    // Serve piu' spazio ai nomi: si tollera un viewBox piu' largo (il testo scala).
+    esplora(larghezzaTollerata);
+    ordina();
+    const ampio = scegli(larghezzaTollerata, 3);
     if (ampio && (!disegno || !Number.isFinite(disegno.conflitti) || ampio.conflitti < disegno.conflitti)) disegno = ampio;
   }
+  if (!disegno) disegno = ultimo ? { ...ultimo, conflitti: Infinity } : null;
+  if (!disegno) throw new Error('disposizione non trovata');
 
   const frecce = disegno.frecce.map(c => `<g ${attributiProgressivi(opzioni.progressione, 'collegamento', c.indice)}>${disegnaFreccia(c)}${disegnaTesto(c.testo, true)}</g>`).join('');
   const forme = disegno.nodi.map(n => disegnaBlocco(n, opzioni, n.blocco.__figuraIndice)).join('');

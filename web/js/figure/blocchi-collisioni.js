@@ -1065,16 +1065,19 @@ function disponiEtichette(frecce, perId, { soloNodi = false, soloConnettori = fa
     const ordine = [...items].sort((a, b) => b.t.w * b.t.h - a.t.w * a.t.h);
     for (const item of ordine) {
       const base = { righe: item.t.righe, w: item.t.w, h: item.t.h };
-      const varianti = [{ ...base, extra: 0 }, ...variantiTesto(item)
+      const varianti = [{ ...base, extra: 0 }, ...variantiTesto(item).slice(0, 3)
         .map(v => ({ ...v, extra: 25 * (v.righe.length - base.righe.length) }))];
       let migliore = null, migliorePen = Infinity, miglioreCosto = 0, miglioreTesto = base;
       for (const variante of varianti) {
         Object.assign(item.t, { righe: variante.righe, w: variante.w, h: variante.h });
         const originale = { x: item.t.x, y: item.t.y };
         let scelta = null, sceltaPen = penalitaEtichetta(item, item.t, contesto) + variante.extra, sceltaCosto = 0;
+        // Le posizioni piu' lontane costano quanto le vicine ma non servono:
+        // si valutano solo le piu' prossime (il disegno resta lo stesso).
         const prova = candidatiEtichetta(item, frecce, contesto)
           .map(p => ({ p, costo: Math.hypot(p.x - originale.x, p.y - originale.y) }))
-          .sort((a, b) => a.costo - b.costo);
+          .sort((a, b) => a.costo - b.costo)
+          .slice(0, 40);
         for (const { p, costo } of prova) {
           const pen = penalitaEtichetta(item, { ...item.t, ...p }, contesto) + variante.extra;
           if (pen < sceltaPen - 1e-9 || (Math.abs(pen - sceltaPen) < 1e-9 && costo < sceltaCosto - 1e-9)) {
@@ -1098,7 +1101,7 @@ function disponiEtichette(frecce, perId, { soloNodi = false, soloConnettori = fa
 }
 
 function liberaEtichette(frecce, collegamenti, perId) {
-  return disponiEtichette(frecce, perId, { giri: 8 });
+  return disponiEtichette(frecce, perId, { giri: 4 });
 }
 
 const inversione = (a, b, c) => (b.x - a.x) * (c.x - b.x) + (b.y - a.y) * (c.y - b.y);
@@ -1170,7 +1173,6 @@ export function risolviVincoli(frecce, collegamenti, perId, completo = true) {
   }
   raddrizzaPercorsi(frecce, collegamenti, perId);
   const etichette = completo ? liberaEtichette(frecce, collegamenti, perId) : 0;
-  if (process.env.DBG_E) console.error('ETICHETTE', etichette, 'frecce', frecce.length, 'completo', completo);
   const percorsi = frecce.reduce((s, c) => s + conflitti(c, vertici(c), frecce, collegamenti, perId).totale, 0);
   aggiornaBox(perId);
   // La geometria pesa mille volte piu' di un'etichetta: a parita' di corsie
