@@ -20,4 +20,25 @@ a.chip, button.chip { min-height: var(--tap); }
 .table { width: 100%; border-collapse: collapse; }
 .table th, .table td { padding: var(--s-2); border: 1px solid var(--c-border); text-align: left; }
 .stack-list { display: grid; gap: var(--s-4); padding: 0; list-style: none; }
+
+/* --- Tassonomia blocchi da manuale (§2.2, owner E1) --- */
+.blocco { display: flex; flex-direction: column; gap: var(--s-2); padding: var(--s-4); border-radius: var(--radius); margin: 0 0 var(--s-5); font-size: var(--fs-body); line-height: var(--lh-body); }
+.blocco__etichetta { font-size: var(--fs-num); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+
+.chiave { border-left: var(--s-1) solid var(--c-idea); background: var(--c-idea-bg); color: var(--c-text); padding: var(--s-4); border-radius: var(--radius); margin: 0 0 var(--s-5); }
+
+.definizione { padding: var(--s-4); border-left: var(--s-5) solid var(--c-def); background: var(--c-def-bg); color: var(--c-text); }
+.esempio { padding: var(--s-4); border-left: var(--s-5) solid var(--c-example); background: var(--c-example-bg); color: var(--c-text); }
+.scenario { font-style: italic; border-left: var(--s-1) solid var(--c-text-muted); padding-left: var(--s-4); margin: 0 0 var(--s-5); color: var(--c-text-muted); }
+.analogia { border-left: var(--s-5) solid var(--c-primary); background: var(--c-primary-weak); color: var(--c-text); padding: var(--s-4); border-radius: var(--radius); margin: 0 0 var(--s-5); }
+.analogia__limite { font-size: var(--fs-small); color: var(--c-text-muted); margin-top: var(--s-2); }
+.attenzione { border-left: var(--s-5) solid var(--c-attenzione); background: var(--c-attenzione-bg); color: var(--c-text); padding: var(--s-4); border-radius: var(--radius); margin: 0 0 var(--s-5); }
+.errore { border-left: var(--s-5) solid var(--c-errore); background: var(--c-errore-bg); color: var(--c-text); padding: var(--s-4); border-radius: var(--radius); margin: 0 0 var(--s-5); }
+.verifica { border-left: var(--s-5) solid var(--c-verifica); background: var(--c-verifica-bg); color: var(--c-text); padding: var(--s-4); border-radius: var(--radius); margin: 0 0 var(--s-5); font-size: var(--fs-small); }
+.verifica-domanda { border: 1px solid var(--c-border); background: var(--c-surface); border-radius: var(--radius); padding: var(--s-4); margin: 0 0 var(--s-5); }
+
+/* .formula-gruppo unico: qui (togli le copie da nodo.css ed esercizi.css) — R-3 / B11 */
+.formula-gruppo { white-space: nowrap; }
+.formula-gruppo > .formula-inline { margin-right: 0; }
+
 @media (min-width: 768px) { .card { padding: var(--s-5); } }

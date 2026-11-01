@@ -12,6 +12,7 @@ VIEWPORTS = [(360, 780), (390, 844), (768, 1024), (1440, 900)]
 def routes():
     graph = json.loads((WEB / 'graph.json').read_text(encoding='utf-8'))
     result = ['', 'grafo', 'esercizi', 'quiz', 'ripasso', 'fonti']
+    result.extend('area/' + str(area['id']) for area in graph.get('aree', []))
     for node in graph['nodi']:
         result.append('nodo/' + node['id'])
         if node.get('dimostrazione'):

@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { renderStudio, setupStudio } from '../js/pages/dim/studio.js';
+import { renderStudio, setupStudio, vociIndiceStudio } from '../js/pages/dim/studio.js';
+import { indiceHTML } from '../js/layout/indice.js';
 import { dimostrazioneEsempio, elemento, memoria, documentoFinto } from './dim-fake-dom.js';
 
 const dim = dimostrazioneEsempio();
@@ -8,13 +9,24 @@ const meta = { fonti: {} };
 
 test('Studio contiene nell\'ordine enunciato, passi, formula finale, errori, figure, fonti', () => {
   const html = renderStudio(dim, 0, meta);
-  const ordine = ['titolo-enunciato', 'titolo-ipotesi', 'titolo-notazione', 'Idea', '<h2>Passi</h2>', 'data-finale', 'titolo-errori', 'titolo-figure', 'dim-fonti'];
+  const ordine = ['titolo-enunciato', 'titolo-ipotesi', 'titolo-notazione', '>Passi</h2>', 'data-finale', 'titolo-errori', 'titolo-figure', 'dim-fonti'];
   let ultimo = -1;
   for (const marcatore of ordine) {
     const pos = html.indexOf(marcatore);
     assert.ok(pos > ultimo, `${marcatore} fuori ordine`);
     ultimo = pos;
   }
+});
+
+test('le sezioni di Studio sono ancorabili e l\'indice usa il modulo unico di E1', () => {
+  const html = renderStudio(dim, 3, meta);
+  const numeri = [...html.matchAll(/id="sez-(\d+)"/g)].map((m) => Number(m[1]));
+  assert.deepEqual(numeri, [1, 2, 3, 4, 5, 6, 7]);
+  const voci = vociIndiceStudio(dim, meta, 1, 'dim-test');
+  assert.deepEqual(voci.map((v) => v.id), numeri.map((n) => `sez-${n}`));
+  assert.deepEqual(voci.map((v) => v.href), numeri.map((n) => `#/dim/dim-test?sezione=${n}`));
+  assert.deepEqual(voci.map((v) => v.titolo), ['Enunciato', 'Ipotesi', 'Notazione', 'Passi', 'Errori frequenti', 'Figure generali', 'Fonti, varianti e verifica']);
+  assert.match(indiceHTML(voci), /<nav class="indice-pagina" aria-label="Indice della pagina"><ol><li class="livello-2"><a href="#\/dim\/dim-test\?sezione=1">Enunciato<\/a><\/li>/);
 });
 
 test('la formula finale è nascosta finché non sono rivelati tutti i passi', () => {
@@ -100,6 +112,23 @@ test('senza pannello o controlli setupStudio non fa nulla', () => {
   smonta();
 });
 
+test('?passo=n porta il passo in vista solo al secondo frame, dopo lo scrollTo(0,0) di app.js', () => {
+  const frame = [];
+  globalThis.requestAnimationFrame = (fn) => { frame.push(fn); return frame.length; };
+  const { pannello } = pannelloFinto();
+  const controlli = controlliFinti();
+  const contenitore = elemento({ children: { '#modo-studio': pannello, '.dim-controlli': controlli } });
+  globalThis.document = documentoFinto();
+  setupStudio(contenitore, dim, memoria(), 1, 2);
+  assert.deepEqual(pannello.focalizzati, []); // non in sincrono: app.js deve ancora riportare in cima
+  assert.equal(frame.length, 1);
+  frame.shift()();
+  assert.deepEqual(pannello.focalizzati, []); // primo frame: aggancia soltanto il secondo
+  frame.shift()();
+  assert.deepEqual(pannello.focalizzati, ['2']); // secondo frame: il passo richiesto è in vista
+  delete globalThis.requestAnimationFrame;
+});
+
 test('il menu «Altro» è aperto da 1024 px e la sincronizzazione si rimuove allo smontaggio', () => {
   const ascoltatori = [];
   const media = { matches: true, addEventListener: (t, f) => ascoltatori.push(f), removeEventListener: (t, f) => ascoltatori.splice(ascoltatori.indexOf(f), 1) };
@@ -119,4 +148,40 @@ test('il menu «Altro» è aperto da 1024 px e la sincronizzazione si rimuove al
   smonta();
   assert.equal(ascoltatori.length, 0);
   delete globalThis.matchMedia;
+});
+
+function pulsanteConfronto(passo, id) {
+  const bottone = elemento({ attrs: { 'aria-controls': id, 'aria-expanded': 'false' } });
+  bottone.closest = (sel) => (sel === '.step' ? passo : (sel.startsWith('.figura-confronta') ? bottone : null));
+  return bottone;
+}
+
+test('il confronto apre il pannello del proprio passo anche con id omonimi nella pagina', () => {
+  const { pannello } = montaStudio(0);
+  const id = 'confronto-passo-2';
+  const fabbrica = () => {
+    const foglio = elemento({ attrs: { id }, hidden: true });
+    const passo = elemento({ children: { '[id]': [foglio] } });
+    return { passo, foglio, bottone: pulsanteConfronto(passo, id) };
+  };
+  const [reale, fixture] = [fabbrica(), fabbrica()];
+  pannello.dispatch('click', { target: fixture.bottone });
+  assert.equal(fixture.foglio.hidden, false);
+  assert.equal(fixture.bottone.getAttribute('aria-expanded'), 'true');
+  assert.equal(reale.foglio.hidden, true);
+  assert.equal(reale.bottone.getAttribute('aria-expanded'), 'false');
+  pannello.dispatch('click', { target: fixture.bottone });
+  assert.equal(fixture.foglio.hidden, true);
+  assert.equal(fixture.bottone.getAttribute('aria-expanded'), 'false');
+});
+
+test('un pulsante di confronto fuori da un passo non apre nulla', () => {
+  const { pannello } = montaStudio(0);
+  const foglio = elemento({ attrs: { id: 'confronto-passo-3' }, hidden: true });
+  const orfano = elemento({ attrs: { 'aria-controls': 'confronto-passo-3' } });
+  orfano.closest = (sel) => (sel.startsWith('.figura-confronta') ? orfano : null);
+  pannello.children['[id]'] = [foglio];
+  pannello.dispatch('click', { target: orfano });
+  assert.equal(foglio.hidden, true);
+  assert.equal(orfano.getAttribute('aria-expanded'), null);
 });

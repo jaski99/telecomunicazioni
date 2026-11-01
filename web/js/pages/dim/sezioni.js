@@ -33,5 +33,5 @@ export function renderNotazione(dim) {
 
 export function renderIdea(dim) {
   if (!dim.idea) return '';
-  return `<aside class="callout callout--tip" aria-labelledby="titolo-idea"><p class="callout__title" id="titolo-idea">Idea</p><p>${escapeHtml(testoSicuro(dim.idea))}</p></aside>`;
+  return `<aside class="chiave dim-chiave" aria-labelledby="titolo-idea"><p class="callout__title" id="titolo-idea">Da ricordare</p><p>${escapeHtml(testoSicuro(dim.idea))}</p></aside>`;
 }

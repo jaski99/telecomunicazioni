@@ -1,0 +1,83 @@
+"""B4/B15: prova Chromium reale con fixture di catena, dato che il grafo base non ne ha ancora."""
+from pathlib import Path
+import sys
+
+import pytest
+from playwright.sync_api import sync_playwright
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from e2e_helpers import console_errors, static_server  # noqa: E402
+
+VIEWPORTS = [(360, 780), (390, 844), (768, 1024), (1440, 900)]
+
+
+@pytest.fixture(scope='module')
+def server():
+    srv = static_server()
+    yield f'http://127.0.0.1:{srv.server_port}'
+    srv.shutdown()
+    srv.server_close()
+
+
+@pytest.mark.parametrize('width,height', VIEWPORTS)
+def test_catena_fixture_nuovi_confronto_e_movimento(server, width, height):
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        try:
+            page = browser.new_page(viewport={'width': width, 'height': height}, reduced_motion='reduce')
+            errori = console_errors(page)
+            page.goto(f'{server}/#/dim/dim-teorema-campionamento?passo=4', wait_until='networkidle')
+            assert page.locator('.progress[role="progressbar"]').get_attribute('aria-valuenow') == '4'
+            # La fixture usa i passi 98 e 99, che nessuna dimostrazione reale raggiunge: così
+            # passo-99 e confronto-passo-99 non collidono con gli id dei passi veri della pagina.
+            page.evaluate('''async () => {
+              const { renderPasso } = await import('./js/pages/dim/passi.js');
+              const assi = { etichetta: 'ω', min: -2, max: 2, tacche: [-2, 0, 2] };
+              const base = { tipo: 'grafico', asse_x: assi, asse_y: { ...assi, etichetta: 'X(ω)' },
+                serie: [{ stile: 'linea', etichetta: 'spettro centrale', punti: [[-1,0],[0,1],[1,0]] }], annotazioni: [] };
+              const finale = { ...base, serie: [...base.serie,
+                { stile: 'linea', etichetta: 'repliche laterali', punti: [[-2,0],[-1,1],[0,0]] }] };
+              const dim = { figure: [{ ...base, id: 'stato-centrale', titolo: 'Spettro centrale', descrizione: 'È presente lo spettro centrale.' },
+                { ...finale, id: 'stato-repliche', titolo: 'Spettro con repliche', descrizione: 'Si aggiungono le repliche laterali.' }],
+                passi: [{ n: 98, figura: 'stato-centrale' }, { n: 99, figura: 'stato-repliche' }] };
+              const passoFinale = { n: 99, figura: 'stato-repliche', testo: 'Il nuovo stato aggiunge le repliche.', formula: '', perche: 'La periodicità dello spettro giustifica le repliche.' };
+              const lista = document.createElement('ol'); lista.className = 'dim-passi';
+              lista.innerHTML = renderPasso(passoFinale, dim, true, 1);
+              lista.dataset.fixture = 'progressione'; document.querySelector('#modo-studio').append(lista);
+            }''')
+            fixture = page.locator('[data-fixture="progressione"]')
+            assert fixture.count() == 1
+            duplicati = page.evaluate('''() => { const ids = [...document.querySelectorAll('[id]')].map(e => e.id);
+              return ids.filter((id, i) => ids.indexOf(id) !== i); }''')
+            assert not duplicati, (width, duplicati)
+            nuova = fixture.locator('[data-nuovo="true"]')
+            ereditata = fixture.locator('[data-ereditato="true"]')
+            assert nuova.count() >= 1
+            assert ereditata.count() >= 1
+            assert float(ereditata.first.evaluate('(e) => getComputedStyle(e).opacity')) < 1
+            assert 'Figura 1.2 — nuovo in questo passo: repliche laterali' in fixture.locator('.figure__caption-title').last.inner_text()
+            pulsante = fixture.get_by_role('button', name='Confronta con il passo precedente')
+            assert pulsante.count() == 1
+            pulsante.click()
+            assert pulsante.get_attribute('aria-expanded') == 'true'
+            allineamento = fixture.locator('.figura-confronto').evaluate('(e) => { const r = [...e.children].map(x => x.getBoundingClientRect()); return r[1].top <= r[0].bottom - 1; }')
+            assert allineamento is (width >= 768)
+            misura_confronto = fixture.locator('.figura-confronto').evaluate('''e => ({
+              overflow: e.scrollWidth > e.clientWidth + 1,
+              regions: [...e.querySelectorAll('.scroll-x')].map(x => ({
+                overflow: x.scrollWidth > x.clientWidth + 1,
+                svg: x.querySelector('svg')?.getBoundingClientRect().width,
+                width: x.clientWidth
+              }))
+            })''')
+            assert not misura_confronto['overflow'], (width, misura_confronto)
+            assert all(not r['overflow'] and r['svg'] <= r['width'] + 1 for r in misura_confronto['regions']), (width, misura_confronto)
+            durata = fixture.locator('[data-progressivo]').first.evaluate('(e) => getComputedStyle(e).transitionDuration')
+            assert all(float(x.rstrip('s')) == 0 for x in durata.split(',')), durata
+            Path('/tmp/tlc-shots').mkdir(parents=True, exist_ok=True)
+            page.screenshot(path=f'/tmp/tlc-shots/figure-progressive-{width}.png', full_page=True)
+            if width == 1440:
+                page.screenshot(path='/tmp/confronto-1440.png', full_page=True)
+            assert not errori, errori
+        finally:
+            browser.close()
