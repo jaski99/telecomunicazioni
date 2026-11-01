@@ -190,9 +190,7 @@ def test_tutte_figure_blocchi_geometria_reale(server, width, height):
                 unavailable: host.querySelectorAll('.figura-non-disponibile').length,
                 pageWidth: document.scrollingElement.scrollWidth, viewport: innerWidth, issues};
             }''')
-            # Il minimo originario resta invariato; gli stati progressivi possono aumentare il totale.
-            assert risultato["count"] >= 17
-            assert risultato["rendered"] == risultato["count"]
+            assert risultato["count"] == risultato["rendered"] == 20
             assert risultato["unavailable"] == 0
             assert risultato["pageWidth"] <= risultato["viewport"]
             assert not risultato["issues"], risultato["issues"]
@@ -306,9 +304,7 @@ def test_testo_dentro_viewbox_per_ogni_figura_del_grafo(server, width, height):
               return {count: specs.length, rendered: host.querySelectorAll('svg.figura-svg').length,
                 issues, scroll: document.scrollingElement.scrollWidth, viewport: innerWidth};
             }''')
-            # Controlla tutte le figure, preservando almeno il totale originario.
-            assert risultato["count"] >= 63
-            assert risultato["rendered"] == risultato["count"]
+            assert risultato["count"] == risultato["rendered"] == 74
             assert risultato["scroll"] <= risultato["viewport"]
             assert not risultato["issues"], risultato["issues"]
             assert not errori, errori

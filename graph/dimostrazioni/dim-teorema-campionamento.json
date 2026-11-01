@@ -77,9 +77,9 @@
     },
     {
       "n": 5,
-      "testo": "Per ricostruire si richiede che le repliche siano separate: il filtro passa basso illustrato agisce sul caso separato, non sul caso con aliasing.",
+      "testo": "Per ricostruire si richiede che le repliche siano separate. La figura conserva il caso con aliasing del passo precedente: il filtro illustrato non può separare contributi già sovrapposti.",
       "formula": "\\omega_m \\le \\omega_s - \\omega_m \\;\\Longrightarrow\\; \\omega_s \\ge 2\\omega_m \\;\\Longleftrightarrow\\; f_s \\ge 2 f_m \\;\\Longleftrightarrow\\; T \\le \\frac{1}{2 f_m}",
-      "perche": "La replica centrata in $\\omega_s$ inizia a $\\omega_s-\\omega_m$. Con separazione stretta il filtro isola la centrale; al bordo di uguaglianza le eventuali componenti esatte di frontiera richiedono attenzione.",
+      "perche": "La replica di ordine uno inizia a $\\omega_s-\\omega_m$. Con separazione stretta un filtro isola la centrale; nel caso mostrato la condizione non è soddisfatta e il filtro non recupera i contributi mescolati. Al bordo di uguaglianza le eventuali componenti esatte di frontiera richiedono attenzione.",
       "figura": "spettro-repliche-filtro"
     },
     {
@@ -115,7 +115,7 @@
       "id": "spettro-e-repliche",
       "tipo": "grafico",
       "titolo": "Spettro del segnale e sue repliche dopo il campionamento",
-      "descrizione": "Novità: un marcatore indica il bordo della replica destra. Si vedono lo spettro centrale e le due repliche separate per una pulsazione di campionamento pari a tre volte la banda del segnale.",
+      "descrizione": "Novità: la guida indica l’inizio della replica di ordine due. Sono ancora mostrate solo le due repliche di quell’ordine, non l’intera somma periodica.",
       "asse_x": {
         "etichetta": "ω (rad/s, unità arbitrarie)",
         "min": -9,
@@ -123,11 +123,15 @@
         "tacche": [
           {
             "valore": -6,
+            "etichetta": "−2ωs"
+          },
+          {
+            "valore": -3,
             "etichetta": "−ωs"
           },
           {
             "valore": -2,
-            "etichetta": "−ωm"
+            "etichetta": "-2"
           },
           {
             "valore": 0,
@@ -135,18 +139,22 @@
           },
           {
             "valore": 2,
-            "etichetta": "ωm"
+            "etichetta": "2"
+          },
+          {
+            "valore": 3,
+            "etichetta": "ωs"
           },
           {
             "valore": 6,
-            "etichetta": "ωs"
+            "etichetta": "2ωs"
           }
         ]
       },
       "asse_y": {
         "etichetta": "|X(ω)| (unità arbitrarie)",
         "min": 0,
-        "max": 1.15
+        "max": 1.5
       },
       "serie": [
         {
@@ -237,7 +245,7 @@
               0.0
             ]
           ],
-          "etichetta": "spettro originario (k = 0)"
+          "etichetta": "spettro originario (k = 0; ωm = 2)"
         },
         {
           "stile": "tratteggio",
@@ -327,7 +335,7 @@
               0.0
             ]
           ],
-          "etichetta": "replica k = −1"
+          "etichetta": "replica k = −2"
         },
         {
           "stile": "tratteggio",
@@ -417,13 +425,27 @@
               0.0
             ]
           ],
-          "etichetta": "replica k = 1"
+          "etichetta": "replica k = 2"
+        },
+        {
+          "stile": "tratteggio",
+          "punti": [
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              1.2
+            ]
+          ],
+          "etichetta": "guida: inizio replica di ordine 2"
         }
       ],
       "annotazioni": [
         {
           "x": 4,
-          "y": 0.12,
+          "y": 1.27,
           "testo": "inizio della replica"
         }
       ]
@@ -1102,7 +1124,7 @@
       "id": "spettro-solo-centrale",
       "tipo": "grafico",
       "titolo": "Campionamento: spettro originario",
-      "descrizione": "Primo stato: lo spettro del segnale è limitato alla banda centrale. Il triangolo è un esempio normalizzato, non la forma obbligatoria di ogni spettro.",
+      "descrizione": "Primo stato: lo spettro del segnale è limitato alla banda centrale, con pulsazione massima due nell’esempio. Il triangolo è normalizzato, non è la forma obbligatoria di ogni spettro.",
       "asse_x": {
         "etichetta": "ω (rad/s, unità arbitrarie)",
         "min": -9,
@@ -1110,11 +1132,15 @@
         "tacche": [
           {
             "valore": -6,
+            "etichetta": "−2ωs"
+          },
+          {
+            "valore": -3,
             "etichetta": "−ωs"
           },
           {
             "valore": -2,
-            "etichetta": "−ωm"
+            "etichetta": "-2"
           },
           {
             "valore": 0,
@@ -1122,18 +1148,22 @@
           },
           {
             "valore": 2,
-            "etichetta": "ωm"
+            "etichetta": "2"
+          },
+          {
+            "valore": 3,
+            "etichetta": "ωs"
           },
           {
             "valore": 6,
-            "etichetta": "ωs"
+            "etichetta": "2ωs"
           }
         ]
       },
       "asse_y": {
         "etichetta": "|X(ω)| (unità arbitrarie)",
         "min": 0,
-        "max": 1.15
+        "max": 1.5
       },
       "serie": [
         {
@@ -1224,7 +1254,7 @@
               0.0
             ]
           ],
-          "etichetta": "spettro originario (k = 0)"
+          "etichetta": "spettro originario (k = 0; ωm = 2)"
         }
       ]
     },
@@ -1232,7 +1262,7 @@
       "id": "spettro-centrale-e-repliche",
       "tipo": "grafico",
       "titolo": "Campionamento: spettro e repliche",
-      "descrizione": "Novità: alle due estremità della banda centrale si aggiungono le repliche spostate, già presenti nella ripetizione periodica. In questo esempio normalizzato le repliche sono separate.",
+      "descrizione": "Novità: si aggiungono due repliche di ordine due. Per leggibilità è mostrato solo questo sottoinsieme, non tutta la somma periodica; la pulsazione di campionamento dell’esempio è tre.",
       "asse_x": {
         "etichetta": "ω (rad/s, unità arbitrarie)",
         "min": -9,
@@ -1240,11 +1270,15 @@
         "tacche": [
           {
             "valore": -6,
+            "etichetta": "−2ωs"
+          },
+          {
+            "valore": -3,
             "etichetta": "−ωs"
           },
           {
             "valore": -2,
-            "etichetta": "−ωm"
+            "etichetta": "-2"
           },
           {
             "valore": 0,
@@ -1252,18 +1286,22 @@
           },
           {
             "valore": 2,
-            "etichetta": "ωm"
+            "etichetta": "2"
+          },
+          {
+            "valore": 3,
+            "etichetta": "ωs"
           },
           {
             "valore": 6,
-            "etichetta": "ωs"
+            "etichetta": "2ωs"
           }
         ]
       },
       "asse_y": {
         "etichetta": "|X(ω)| (unità arbitrarie)",
         "min": 0,
-        "max": 1.15
+        "max": 1.5
       },
       "serie": [
         {
@@ -1354,7 +1392,7 @@
               0.0
             ]
           ],
-          "etichetta": "spettro originario (k = 0)"
+          "etichetta": "spettro originario (k = 0; ωm = 2)"
         },
         {
           "stile": "tratteggio",
@@ -1444,7 +1482,7 @@
               0.0
             ]
           ],
-          "etichetta": "replica k = −1"
+          "etichetta": "replica k = −2"
         },
         {
           "stile": "tratteggio",
@@ -1534,7 +1572,7 @@
               0.0
             ]
           ],
-          "etichetta": "replica k = 1"
+          "etichetta": "replica k = 2"
         }
       ]
     },
@@ -1542,7 +1580,7 @@
       "id": "spettro-aliasing",
       "tipo": "grafico",
       "titolo": "Campionamento: confronto con aliasing",
-      "descrizione": "Novità: una replica e la zona tratteggiata mostrano un secondo esempio, con pulsazione di campionamento più bassa, che si sovrappone alla banda centrale. Le repliche ereditate appartengono invece all’esempio separato: sono due casi alternativi.",
+      "descrizione": "Novità: le repliche di ordine uno e le zone tratteggiate mostrano la sovrapposizione con lo spettro centrale. In tutto l’esempio la pulsazione di campionamento resta tre.",
       "asse_x": {
         "etichetta": "ω (rad/s, unità arbitrarie)",
         "min": -9,
@@ -1550,11 +1588,15 @@
         "tacche": [
           {
             "valore": -6,
+            "etichetta": "−2ωs"
+          },
+          {
+            "valore": -3,
             "etichetta": "−ωs"
           },
           {
             "valore": -2,
-            "etichetta": "−ωm"
+            "etichetta": "-2"
           },
           {
             "valore": 0,
@@ -1562,18 +1604,22 @@
           },
           {
             "valore": 2,
-            "etichetta": "ωm"
+            "etichetta": "2"
+          },
+          {
+            "valore": 3,
+            "etichetta": "ωs"
           },
           {
             "valore": 6,
-            "etichetta": "ωs"
+            "etichetta": "2ωs"
           }
         ]
       },
       "asse_y": {
         "etichetta": "|X(ω)| (unità arbitrarie)",
         "min": 0,
-        "max": 1.15
+        "max": 1.5
       },
       "serie": [
         {
@@ -1664,7 +1710,7 @@
               0.0
             ]
           ],
-          "etichetta": "spettro originario (k = 0)"
+          "etichetta": "spettro originario (k = 0; ωm = 2)"
         },
         {
           "stile": "tratteggio",
@@ -1754,7 +1800,7 @@
               0.0
             ]
           ],
-          "etichetta": "replica k = −1"
+          "etichetta": "replica k = −2"
         },
         {
           "stile": "tratteggio",
@@ -1844,11 +1890,24 @@
               0.0
             ]
           ],
-          "etichetta": "replica k = 1"
+          "etichetta": "replica k = 2"
+        },
+        {
+          "stile": "tratteggio",
+          "punti": [
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              1.2
+            ]
+          ],
+          "etichetta": "guida: inizio replica di ordine 2"
         },
         {
           "stile": "linea",
-          "etichetta": "replica nel caso alias: ωs = 3",
           "punti": [
             [
               1,
@@ -1886,11 +1945,53 @@
               5,
               0
             ]
-          ]
+          ],
+          "etichetta": "replica k = −1 (alias)"
+        },
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -5,
+              0
+            ],
+            [
+              -4.5,
+              0.25
+            ],
+            [
+              -4,
+              0.5
+            ],
+            [
+              -3.5,
+              0.75
+            ],
+            [
+              -3,
+              1
+            ],
+            [
+              -2.5,
+              0.75
+            ],
+            [
+              -2,
+              0.5
+            ],
+            [
+              -1.5,
+              0.25
+            ],
+            [
+              -1,
+              0
+            ]
+          ],
+          "etichetta": "replica k = 1 (alias)"
         },
         {
           "stile": "tratteggio",
-          "etichetta": "zona sovrapposta nel caso alias",
           "punti": [
             [
               1,
@@ -1936,18 +2037,69 @@
               2,
               0
             ]
-          ]
+          ],
+          "etichetta": "sovrapposizione destra"
+        },
+        {
+          "stile": "tratteggio",
+          "punti": [
+            [
+              -2,
+              0
+            ],
+            [
+              -1.9,
+              0.05
+            ],
+            [
+              -1.8,
+              0
+            ],
+            [
+              -1.7,
+              0.15
+            ],
+            [
+              -1.6,
+              0
+            ],
+            [
+              -1.5,
+              0.25
+            ],
+            [
+              -1.4,
+              0
+            ],
+            [
+              -1.3,
+              0.15
+            ],
+            [
+              -1.2,
+              0
+            ],
+            [
+              -1.1,
+              0.05
+            ],
+            [
+              -1,
+              0
+            ]
+          ],
+          "etichetta": "sovrapposizione sinistra"
         }
       ],
       "annotazioni": [
         {
           "x": 4,
-          "y": 0.12,
+          "y": 1.27,
           "testo": "inizio della replica"
         },
         {
-          "x": 1.5,
-          "y": 0.32,
+          "x": -4,
+          "y": 1.27,
           "testo": "ωs − ωm < ωm"
         }
       ]
@@ -1956,7 +2108,7 @@
       "id": "spettro-repliche-filtro",
       "tipo": "grafico",
       "titolo": "Campionamento: filtro di ricostruzione",
-      "descrizione": "Novità: il profilo del filtro passa basso seleziona la banda centrale nell’esempio con repliche separate. La replica sovrapposta resta visibile solo come confronto: il filtro non corregge l’aliasing del secondo caso.",
+      "descrizione": "Novità: si aggiunge il profilo normalizzato del filtro ideale con banda pari a metà della pulsazione di campionamento; l’altezza è solo grafica. In questo esempio le repliche sono già sovrapposte: il filtro non può correggere l’aliasing.",
       "asse_x": {
         "etichetta": "ω (rad/s, unità arbitrarie)",
         "min": -9,
@@ -1964,11 +2116,15 @@
         "tacche": [
           {
             "valore": -6,
+            "etichetta": "−2ωs"
+          },
+          {
+            "valore": -3,
             "etichetta": "−ωs"
           },
           {
             "valore": -2,
-            "etichetta": "−ωm"
+            "etichetta": "-2"
           },
           {
             "valore": 0,
@@ -1976,18 +2132,22 @@
           },
           {
             "valore": 2,
-            "etichetta": "ωm"
+            "etichetta": "2"
+          },
+          {
+            "valore": 3,
+            "etichetta": "ωs"
           },
           {
             "valore": 6,
-            "etichetta": "ωs"
+            "etichetta": "2ωs"
           }
         ]
       },
       "asse_y": {
         "etichetta": "|X(ω)| (unità arbitrarie)",
         "min": 0,
-        "max": 1.15
+        "max": 1.5
       },
       "serie": [
         {
@@ -2078,7 +2238,7 @@
               0.0
             ]
           ],
-          "etichetta": "spettro originario (k = 0)"
+          "etichetta": "spettro originario (k = 0; ωm = 2)"
         },
         {
           "stile": "tratteggio",
@@ -2168,7 +2328,7 @@
               0.0
             ]
           ],
-          "etichetta": "replica k = −1"
+          "etichetta": "replica k = −2"
         },
         {
           "stile": "tratteggio",
@@ -2258,11 +2418,24 @@
               0.0
             ]
           ],
-          "etichetta": "replica k = 1"
+          "etichetta": "replica k = 2"
+        },
+        {
+          "stile": "tratteggio",
+          "punti": [
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              1.2
+            ]
+          ],
+          "etichetta": "guida: inizio replica di ordine 2"
         },
         {
           "stile": "linea",
-          "etichetta": "replica nel caso alias: ωs = 3",
           "punti": [
             [
               1,
@@ -2300,11 +2473,53 @@
               5,
               0
             ]
-          ]
+          ],
+          "etichetta": "replica k = −1 (alias)"
+        },
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -5,
+              0
+            ],
+            [
+              -4.5,
+              0.25
+            ],
+            [
+              -4,
+              0.5
+            ],
+            [
+              -3.5,
+              0.75
+            ],
+            [
+              -3,
+              1
+            ],
+            [
+              -2.5,
+              0.75
+            ],
+            [
+              -2,
+              0.5
+            ],
+            [
+              -1.5,
+              0.25
+            ],
+            [
+              -1,
+              0
+            ]
+          ],
+          "etichetta": "replica k = 1 (alias)"
         },
         {
           "stile": "tratteggio",
-          "etichetta": "zona sovrapposta nel caso alias",
           "punti": [
             [
               1,
@@ -2350,54 +2565,105 @@
               2,
               0
             ]
-          ]
+          ],
+          "etichetta": "sovrapposizione destra"
         },
         {
           "stile": "tratteggio",
-          "etichetta": "filtro ideale (caso separato)",
           "punti": [
             [
-              -3.2,
+              -2,
               0
             ],
             [
-              -3,
+              -1.9,
+              0.05
+            ],
+            [
+              -1.8,
               0
             ],
             [
-              -3,
-              0.92
+              -1.7,
+              0.15
             ],
             [
-              3,
-              0.92
-            ],
-            [
-              3,
+              -1.6,
               0
             ],
             [
-              3.2,
+              -1.5,
+              0.25
+            ],
+            [
+              -1.4,
+              0
+            ],
+            [
+              -1.3,
+              0.15
+            ],
+            [
+              -1.2,
+              0
+            ],
+            [
+              -1.1,
+              0.05
+            ],
+            [
+              -1,
               0
             ]
-          ]
+          ],
+          "etichetta": "sovrapposizione sinistra"
+        },
+        {
+          "stile": "tratteggio",
+          "punti": [
+            [
+              -1.7,
+              0
+            ],
+            [
+              -1.5,
+              0
+            ],
+            [
+              -1.5,
+              0.98
+            ],
+            [
+              1.5,
+              0.98
+            ],
+            [
+              1.5,
+              0
+            ],
+            [
+              1.7,
+              0
+            ]
+          ],
+          "etichetta": "filtro ideale: non elimina l’aliasing"
         }
       ],
       "annotazioni": [
         {
           "x": 4,
-          "y": 0.12,
+          "y": 1.27,
           "testo": "inizio della replica"
         },
         {
-          "x": 1.5,
-          "y": 0.32,
+          "x": -4,
+          "y": 1.27,
           "testo": "ωs − ωm < ωm"
         },
         {
-          "x": -2.9,
-          "y": 1.02,
-          "testo": "banda π/T, guadagno T"
+          "x": -8.4,
+          "y": 1.09,
+          "testo": "banda π/T"
         }
       ]
     }

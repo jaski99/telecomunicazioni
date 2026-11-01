@@ -1001,7 +1001,7 @@
             "id": "impulso-intervallo-sinistro",
             "tipo": "grafico",
             "titolo": "Impulso e intervallo selezionato",
-            "descrizione": "Novità: l’annotazione esplicita che il rettangolo attivo fra zero e delta porta a valutare la funzione nell’intervallo a sinistra del punto a.",
+            "descrizione": "Novità: il segmento con i due estremi mostra l’intervallo della funzione valutata, a sinistra di a. Nell’esempio a vale meno un quarto di secondo e delta mezzo secondo. Il segmento usa la coordinata a meno t sulla stessa scala temporale; la sua altezza è solo grafica.",
             "asse_x": {
               "etichetta": "t (s)",
               "min": -1,
@@ -1062,13 +1062,48 @@
                   ]
                 ],
                 "etichetta": "D(t, Δ) con Δ = 0,5 s"
+              },
+              {
+                "stile": "linea",
+                "punti": [
+                  [
+                    -0.75,
+                    0.38
+                  ],
+                  [
+                    -0.75,
+                    0.62
+                  ],
+                  [
+                    -0.75,
+                    0.5
+                  ],
+                  [
+                    -0.25,
+                    0.5
+                  ],
+                  [
+                    -0.25,
+                    0.62
+                  ],
+                  [
+                    -0.25,
+                    0.38
+                  ]
+                ],
+                "etichetta": "intervallo selezionato di x (a = −0,25 s)"
               }
             ],
             "annotazioni": [
               {
-                "x": 0.5,
-                "y": 2.2,
-                "testo": "x(a−t) su [a−Δ,a]"
+                "x": -0.75,
+                "y": 0.72,
+                "testo": "a−Δ"
+              },
+              {
+                "x": -0.25,
+                "y": 0.72,
+                "testo": "a"
               }
             ]
           }
@@ -12027,7 +12062,7 @@
             "descrizione": "Spettro a righe della componente periodica di un segnale PAM: segmenti verticali alle pulsazioni multiple di due pi greco diviso T, con altezze esemplificative proporzionali al modulo dei coefficienti della serie di Fourier. Le righe esistono solo perché il valor medio dei simboli è diverso da zero e svaniscono con esso.",
             "asse_x": {
               "etichetta": "ω (rad/s), T = 1 s",
-              "min": 0,
+              "min": -2,
               "max": 20,
               "tacche": [
                 {
@@ -12820,10 +12855,10 @@
             "id": "spettro-pam-righe-progressivo",
             "tipo": "grafico",
             "titolo": "PAM: righe e inviluppo",
-            "descrizione": "Novità: le righe della componente periodica e il loro inviluppo, in un esempio con impulso rettangolare di durata metà del periodo e valor medio non nullo. Le altezze delle masse sono normalizzate separatamente dalla densità.",
+            "descrizione": "Novità: le righe della componente periodica e il loro inviluppo, in un esempio con impulso rettangolare di durata metà del periodo e valor medio non nullo. Il margine a sinistra dello zero rende visibile la riga a frequenza zero; le masse sono normalizzate separatamente dalla densità.",
             "asse_x": {
               "etichetta": "ω (rad/s), T = 1 s",
-              "min": 0,
+              "min": -2,
               "max": 20,
               "tacche": [
                 {
@@ -13208,10 +13243,10 @@
             "id": "spettro-pam-righe-continuo",
             "tipo": "grafico",
             "titolo": "PAM: aggiunta della densità continua",
-            "descrizione": "Novità: si aggiunge la densità continua della componente centrata, per simboli centrati incorrelati. In questo esempio coincide, dopo normalizzazione, con l’inviluppo già tratteggiato; masse discrete e densità usano scale indipendenti.",
+            "descrizione": "Novità: si aggiunge la densità continua della componente centrata, per simboli centrati incorrelati. Ha la forma dell’inviluppo ma è tracciata su una scala propria, così le due curve sono distinguibili; le masse discrete non sono altezze di densità.",
             "asse_x": {
               "etichetta": "ω (rad/s), T = 1 s",
-              "min": 0,
+              "min": -2,
               "max": 20,
               "tacche": [
                 {
@@ -13592,331 +13627,331 @@
               },
               {
                 "stile": "linea",
-                "etichetta": "densità continua, scala separata",
+                "etichetta": "densità continua (scala propria)",
                 "punti": [
                   [
                     0.0,
-                    1.0
+                    0.65
                   ],
                   [
                     0.25,
-                    0.9987
+                    0.64916
                   ],
                   [
                     0.5,
-                    0.9948
+                    0.64662
                   ],
                   [
                     0.75,
-                    0.98834
+                    0.64242
                   ],
                   [
                     1.0,
-                    0.97934
+                    0.63657
                   ],
                   [
                     1.25,
-                    0.96787
+                    0.62912
                   ],
                   [
                     1.5,
-                    0.954
+                    0.6201
                   ],
                   [
                     1.75,
-                    0.9378
+                    0.60957
                   ],
                   [
                     2.0,
-                    0.9194
+                    0.59761
                   ],
                   [
                     2.25,
-                    0.89888
+                    0.58427
                   ],
                   [
                     2.5,
-                    0.87639
+                    0.56965
                   ],
                   [
                     2.75,
-                    0.85205
+                    0.55383
                   ],
                   [
                     3.0,
-                    0.82601
+                    0.53691
                   ],
                   [
                     3.25,
-                    0.79843
+                    0.51898
                   ],
                   [
                     3.5,
-                    0.76947
+                    0.50016
                   ],
                   [
                     3.75,
-                    0.73929
+                    0.48054
                   ],
                   [
                     4.0,
-                    0.70807
+                    0.46025
                   ],
                   [
                     4.25,
-                    0.67599
+                    0.43939
                   ],
                   [
                     4.5,
-                    0.64323
+                    0.4181
                   ],
                   [
                     4.75,
-                    0.60996
+                    0.39647
                   ],
                   [
                     5.0,
-                    0.57637
+                    0.37464
                   ],
                   [
                     5.25,
-                    0.54262
+                    0.3527
                   ],
                   [
                     5.5,
-                    0.50891
+                    0.33079
                   ],
                   [
                     5.75,
-                    0.47538
+                    0.309
                   ],
                   [
                     6.0,
-                    0.44222
+                    0.28744
                   ],
                   [
                     6.25,
-                    0.40957
+                    0.26622
                   ],
                   [
                     6.5,
-                    0.37759
+                    0.24543
                   ],
                   [
                     6.75,
-                    0.3464
+                    0.22516
                   ],
                   [
                     7.0,
-                    0.31616
+                    0.2055
                   ],
                   [
                     7.25,
-                    0.28696
+                    0.18652
                   ],
                   [
                     7.5,
-                    0.25892
+                    0.1683
                   ],
                   [
                     7.75,
-                    0.23214
+                    0.15089
                   ],
                   [
                     8.0,
-                    0.20671
+                    0.13436
                   ],
                   [
                     8.25,
-                    0.18268
+                    0.11874
                   ],
                   [
                     8.5,
-                    0.16012
+                    0.10408
                   ],
                   [
                     8.75,
-                    0.13908
+                    0.0904
                   ],
                   [
                     9.0,
-                    0.11958
+                    0.07773
                   ],
                   [
                     9.25,
-                    0.10166
+                    0.06608
                   ],
                   [
                     9.5,
-                    0.08531
+                    0.05545
                   ],
                   [
                     9.75,
-                    0.07053
+                    0.04584
                   ],
                   [
                     10.0,
-                    0.05731
+                    0.03725
                   ],
                   [
                     10.25,
-                    0.04561
+                    0.02965
                   ],
                   [
                     10.5,
-                    0.0354
+                    0.02301
                   ],
                   [
                     10.75,
-                    0.02664
+                    0.01732
                   ],
                   [
                     11.0,
-                    0.01926
+                    0.01252
                   ],
                   [
                     11.25,
-                    0.0132
+                    0.00858
                   ],
                   [
                     11.5,
-                    0.0084
+                    0.00546
                   ],
                   [
                     11.75,
-                    0.00476
+                    0.00309
                   ],
                   [
                     12.0,
-                    0.00221
+                    0.00144
                   ],
                   [
                     12.25,
-                    0.00067
+                    0.00044
                   ],
                   [
                     12.5,
-                    3e-05
+                    2e-05
                   ],
                   [
                     12.75,
-                    0.00021
+                    0.00014
                   ],
                   [
                     13.0,
-                    0.00111
+                    0.00072
                   ],
                   [
                     13.25,
-                    0.00264
+                    0.00172
                   ],
                   [
                     13.5,
-                    0.0047
+                    0.00306
                   ],
                   [
                     13.75,
-                    0.0072
+                    0.00468
                   ],
                   [
                     14.0,
-                    0.01004
+                    0.00653
                   ],
                   [
                     14.25,
-                    0.01315
+                    0.00855
                   ],
                   [
                     14.5,
-                    0.01644
+                    0.01069
                   ],
                   [
                     14.75,
-                    0.01982
+                    0.01288
                   ],
                   [
                     15.0,
-                    0.02323
+                    0.0151
                   ],
                   [
                     15.25,
-                    0.02659
+                    0.01728
                   ],
                   [
                     15.5,
-                    0.02984
+                    0.0194
                   ],
                   [
                     15.75,
-                    0.03293
+                    0.0214
                   ],
                   [
                     16.0,
-                    0.0358
+                    0.02327
                   ],
                   [
                     16.25,
-                    0.03841
+                    0.02497
                   ],
                   [
                     16.5,
-                    0.04072
+                    0.02647
                   ],
                   [
                     16.75,
-                    0.04271
+                    0.02776
                   ],
                   [
                     17.0,
-                    0.04435
+                    0.02883
                   ],
                   [
                     17.25,
-                    0.04562
+                    0.02965
                   ],
                   [
                     17.5,
-                    0.04652
+                    0.03024
                   ],
                   [
                     17.75,
-                    0.04704
+                    0.03058
                   ],
                   [
                     18.0,
-                    0.04719
+                    0.03067
                   ],
                   [
                     18.25,
-                    0.04697
+                    0.03053
                   ],
                   [
                     18.5,
-                    0.04639
+                    0.03015
                   ],
                   [
                     18.75,
-                    0.04548
+                    0.02956
                   ],
                   [
                     19.0,
-                    0.04426
+                    0.02877
                   ],
                   [
                     19.25,
-                    0.04275
+                    0.02779
                   ],
                   [
                     19.5,
-                    0.04097
+                    0.02663
                   ],
                   [
                     19.75,
-                    0.03898
+                    0.02534
                   ],
                   [
                     20.0,
-                    0.03678
+                    0.02391
                   ]
                 ]
               }
@@ -13926,10 +13961,10 @@
             "id": "spettro-pam-totale",
             "tipo": "grafico",
             "titolo": "PAM: sovrapposizione dei due spettri",
-            "descrizione": "Novità: l’annotazione mostra la lettura congiunta dei due contributi. Le righe nascono dal valor medio e il continuo dalla parte a media zero; le masse e la densità sono normalizzate separatamente e non si sommano come altezze.",
+            "descrizione": "Novità: le etichette distinguono la potenza a righe dalla densità continua e le stesse righe sono evidenziate a piena intensità. Non si aggiungono nuove masse: le altezze delle righe e la densità usano scale separate e non si sommano.",
             "asse_x": {
               "etichetta": "ω (rad/s), T = 1 s",
-              "min": 0,
+              "min": -2,
               "max": 20,
               "tacche": [
                 {
@@ -14310,340 +14345,367 @@
               },
               {
                 "stile": "linea",
-                "etichetta": "densità continua, scala separata",
+                "etichetta": "densità continua (scala propria)",
                 "punti": [
                   [
                     0.0,
-                    1.0
+                    0.65
                   ],
                   [
                     0.25,
-                    0.9987
+                    0.64916
                   ],
                   [
                     0.5,
-                    0.9948
+                    0.64662
                   ],
                   [
                     0.75,
-                    0.98834
+                    0.64242
                   ],
                   [
                     1.0,
-                    0.97934
+                    0.63657
                   ],
                   [
                     1.25,
-                    0.96787
+                    0.62912
                   ],
                   [
                     1.5,
-                    0.954
+                    0.6201
                   ],
                   [
                     1.75,
-                    0.9378
+                    0.60957
                   ],
                   [
                     2.0,
-                    0.9194
+                    0.59761
                   ],
                   [
                     2.25,
-                    0.89888
+                    0.58427
                   ],
                   [
                     2.5,
-                    0.87639
+                    0.56965
                   ],
                   [
                     2.75,
-                    0.85205
+                    0.55383
                   ],
                   [
                     3.0,
-                    0.82601
+                    0.53691
                   ],
                   [
                     3.25,
-                    0.79843
+                    0.51898
                   ],
                   [
                     3.5,
-                    0.76947
+                    0.50016
                   ],
                   [
                     3.75,
-                    0.73929
+                    0.48054
                   ],
                   [
                     4.0,
-                    0.70807
+                    0.46025
                   ],
                   [
                     4.25,
-                    0.67599
+                    0.43939
                   ],
                   [
                     4.5,
-                    0.64323
+                    0.4181
                   ],
                   [
                     4.75,
-                    0.60996
+                    0.39647
                   ],
                   [
                     5.0,
-                    0.57637
+                    0.37464
                   ],
                   [
                     5.25,
-                    0.54262
+                    0.3527
                   ],
                   [
                     5.5,
-                    0.50891
+                    0.33079
                   ],
                   [
                     5.75,
-                    0.47538
+                    0.309
                   ],
                   [
                     6.0,
-                    0.44222
+                    0.28744
                   ],
                   [
                     6.25,
-                    0.40957
+                    0.26622
                   ],
                   [
                     6.5,
-                    0.37759
+                    0.24543
                   ],
                   [
                     6.75,
-                    0.3464
+                    0.22516
                   ],
                   [
                     7.0,
-                    0.31616
+                    0.2055
                   ],
                   [
                     7.25,
-                    0.28696
+                    0.18652
                   ],
                   [
                     7.5,
-                    0.25892
+                    0.1683
                   ],
                   [
                     7.75,
-                    0.23214
+                    0.15089
                   ],
                   [
                     8.0,
-                    0.20671
+                    0.13436
                   ],
                   [
                     8.25,
-                    0.18268
+                    0.11874
                   ],
                   [
                     8.5,
-                    0.16012
+                    0.10408
                   ],
                   [
                     8.75,
-                    0.13908
+                    0.0904
                   ],
                   [
                     9.0,
-                    0.11958
+                    0.07773
                   ],
                   [
                     9.25,
-                    0.10166
+                    0.06608
                   ],
                   [
                     9.5,
-                    0.08531
+                    0.05545
                   ],
                   [
                     9.75,
-                    0.07053
+                    0.04584
                   ],
                   [
                     10.0,
-                    0.05731
+                    0.03725
                   ],
                   [
                     10.25,
-                    0.04561
+                    0.02965
                   ],
                   [
                     10.5,
-                    0.0354
+                    0.02301
                   ],
                   [
                     10.75,
-                    0.02664
+                    0.01732
                   ],
                   [
                     11.0,
-                    0.01926
+                    0.01252
                   ],
                   [
                     11.25,
-                    0.0132
+                    0.00858
                   ],
                   [
                     11.5,
-                    0.0084
+                    0.00546
                   ],
                   [
                     11.75,
-                    0.00476
+                    0.00309
                   ],
                   [
                     12.0,
-                    0.00221
+                    0.00144
                   ],
                   [
                     12.25,
-                    0.00067
+                    0.00044
                   ],
                   [
                     12.5,
-                    3e-05
+                    2e-05
                   ],
                   [
                     12.75,
-                    0.00021
+                    0.00014
                   ],
                   [
                     13.0,
-                    0.00111
+                    0.00072
                   ],
                   [
                     13.25,
-                    0.00264
+                    0.00172
                   ],
                   [
                     13.5,
-                    0.0047
+                    0.00306
                   ],
                   [
                     13.75,
-                    0.0072
+                    0.00468
                   ],
                   [
                     14.0,
-                    0.01004
+                    0.00653
                   ],
                   [
                     14.25,
-                    0.01315
+                    0.00855
                   ],
                   [
                     14.5,
-                    0.01644
+                    0.01069
                   ],
                   [
                     14.75,
-                    0.01982
+                    0.01288
                   ],
                   [
                     15.0,
-                    0.02323
+                    0.0151
                   ],
                   [
                     15.25,
-                    0.02659
+                    0.01728
                   ],
                   [
                     15.5,
-                    0.02984
+                    0.0194
                   ],
                   [
                     15.75,
-                    0.03293
+                    0.0214
                   ],
                   [
                     16.0,
-                    0.0358
+                    0.02327
                   ],
                   [
                     16.25,
-                    0.03841
+                    0.02497
                   ],
                   [
                     16.5,
-                    0.04072
+                    0.02647
                   ],
                   [
                     16.75,
-                    0.04271
+                    0.02776
                   ],
                   [
                     17.0,
-                    0.04435
+                    0.02883
                   ],
                   [
                     17.25,
-                    0.04562
+                    0.02965
                   ],
                   [
                     17.5,
-                    0.04652
+                    0.03024
                   ],
                   [
                     17.75,
-                    0.04704
+                    0.03058
                   ],
                   [
                     18.0,
-                    0.04719
+                    0.03067
                   ],
                   [
                     18.25,
-                    0.04697
+                    0.03053
                   ],
                   [
                     18.5,
-                    0.04639
+                    0.03015
                   ],
                   [
                     18.75,
-                    0.04548
+                    0.02956
                   ],
                   [
                     19.0,
-                    0.04426
+                    0.02877
                   ],
                   [
                     19.25,
-                    0.04275
+                    0.02779
                   ],
                   [
                     19.5,
-                    0.04097
+                    0.02663
                   ],
                   [
                     19.75,
-                    0.03898
+                    0.02534
                   ],
                   [
                     20.0,
-                    0.03678
+                    0.02391
+                  ]
+                ]
+              },
+              {
+                "stile": "righe",
+                "etichetta": "stesse righe, evidenziate",
+                "punti": [
+                  [
+                    0,
+                    0.5
+                  ],
+                  [
+                    6.2832,
+                    0.4053
+                  ],
+                  [
+                    12.5664,
+                    0
+                  ],
+                  [
+                    18.8496,
+                    0.045
                   ]
                 ]
               }
             ],
             "annotazioni": [
               {
-                "x": 10,
-                "y": 0.72,
-                "testo": "Righe + continuo"
+                "x": 0.1,
+                "y": 0.42,
+                "testo": "Righe"
+              },
+              {
+                "x": 8.5,
+                "y": 0.22,
+                "testo": "Continuo"
               }
             ]
           }
@@ -14886,9 +14948,9 @@
           },
           {
             "n": 5,
-            "testo": "Per ricostruire si richiede che le repliche siano separate: il filtro passa basso illustrato agisce sul caso separato, non sul caso con aliasing.",
+            "testo": "Per ricostruire si richiede che le repliche siano separate. La figura conserva il caso con aliasing del passo precedente: il filtro illustrato non può separare contributi già sovrapposti.",
             "formula": "\\omega_m \\le \\omega_s - \\omega_m \\;\\Longrightarrow\\; \\omega_s \\ge 2\\omega_m \\;\\Longleftrightarrow\\; f_s \\ge 2 f_m \\;\\Longleftrightarrow\\; T \\le \\frac{1}{2 f_m}",
-            "perche": "La replica centrata in $\\omega_s$ inizia a $\\omega_s-\\omega_m$. Con separazione stretta il filtro isola la centrale; al bordo di uguaglianza le eventuali componenti esatte di frontiera richiedono attenzione.",
+            "perche": "La replica di ordine uno inizia a $\\omega_s-\\omega_m$. Con separazione stretta un filtro isola la centrale; nel caso mostrato la condizione non è soddisfatta e il filtro non recupera i contributi mescolati. Al bordo di uguaglianza le eventuali componenti esatte di frontiera richiedono attenzione.",
             "figura": "spettro-repliche-filtro"
           },
           {
@@ -14924,7 +14986,7 @@
             "id": "spettro-e-repliche",
             "tipo": "grafico",
             "titolo": "Spettro del segnale e sue repliche dopo il campionamento",
-            "descrizione": "Novità: un marcatore indica il bordo della replica destra. Si vedono lo spettro centrale e le due repliche separate per una pulsazione di campionamento pari a tre volte la banda del segnale.",
+            "descrizione": "Novità: la guida indica l’inizio della replica di ordine due. Sono ancora mostrate solo le due repliche di quell’ordine, non l’intera somma periodica.",
             "asse_x": {
               "etichetta": "ω (rad/s, unità arbitrarie)",
               "min": -9,
@@ -14932,11 +14994,15 @@
               "tacche": [
                 {
                   "valore": -6,
+                  "etichetta": "−2ωs"
+                },
+                {
+                  "valore": -3,
                   "etichetta": "−ωs"
                 },
                 {
                   "valore": -2,
-                  "etichetta": "−ωm"
+                  "etichetta": "-2"
                 },
                 {
                   "valore": 0,
@@ -14944,18 +15010,22 @@
                 },
                 {
                   "valore": 2,
-                  "etichetta": "ωm"
+                  "etichetta": "2"
+                },
+                {
+                  "valore": 3,
+                  "etichetta": "ωs"
                 },
                 {
                   "valore": 6,
-                  "etichetta": "ωs"
+                  "etichetta": "2ωs"
                 }
               ]
             },
             "asse_y": {
               "etichetta": "|X(ω)| (unità arbitrarie)",
               "min": 0,
-              "max": 1.15
+              "max": 1.5
             },
             "serie": [
               {
@@ -15046,7 +15116,7 @@
                     0.0
                   ]
                 ],
-                "etichetta": "spettro originario (k = 0)"
+                "etichetta": "spettro originario (k = 0; ωm = 2)"
               },
               {
                 "stile": "tratteggio",
@@ -15136,7 +15206,7 @@
                     0.0
                   ]
                 ],
-                "etichetta": "replica k = −1"
+                "etichetta": "replica k = −2"
               },
               {
                 "stile": "tratteggio",
@@ -15226,13 +15296,27 @@
                     0.0
                   ]
                 ],
-                "etichetta": "replica k = 1"
+                "etichetta": "replica k = 2"
+              },
+              {
+                "stile": "tratteggio",
+                "punti": [
+                  [
+                    4,
+                    0
+                  ],
+                  [
+                    4,
+                    1.2
+                  ]
+                ],
+                "etichetta": "guida: inizio replica di ordine 2"
               }
             ],
             "annotazioni": [
               {
                 "x": 4,
-                "y": 0.12,
+                "y": 1.27,
                 "testo": "inizio della replica"
               }
             ]
@@ -15911,7 +15995,7 @@
             "id": "spettro-solo-centrale",
             "tipo": "grafico",
             "titolo": "Campionamento: spettro originario",
-            "descrizione": "Primo stato: lo spettro del segnale è limitato alla banda centrale. Il triangolo è un esempio normalizzato, non la forma obbligatoria di ogni spettro.",
+            "descrizione": "Primo stato: lo spettro del segnale è limitato alla banda centrale, con pulsazione massima due nell’esempio. Il triangolo è normalizzato, non è la forma obbligatoria di ogni spettro.",
             "asse_x": {
               "etichetta": "ω (rad/s, unità arbitrarie)",
               "min": -9,
@@ -15919,11 +16003,15 @@
               "tacche": [
                 {
                   "valore": -6,
+                  "etichetta": "−2ωs"
+                },
+                {
+                  "valore": -3,
                   "etichetta": "−ωs"
                 },
                 {
                   "valore": -2,
-                  "etichetta": "−ωm"
+                  "etichetta": "-2"
                 },
                 {
                   "valore": 0,
@@ -15931,18 +16019,22 @@
                 },
                 {
                   "valore": 2,
-                  "etichetta": "ωm"
+                  "etichetta": "2"
+                },
+                {
+                  "valore": 3,
+                  "etichetta": "ωs"
                 },
                 {
                   "valore": 6,
-                  "etichetta": "ωs"
+                  "etichetta": "2ωs"
                 }
               ]
             },
             "asse_y": {
               "etichetta": "|X(ω)| (unità arbitrarie)",
               "min": 0,
-              "max": 1.15
+              "max": 1.5
             },
             "serie": [
               {
@@ -16033,7 +16125,7 @@
                     0.0
                   ]
                 ],
-                "etichetta": "spettro originario (k = 0)"
+                "etichetta": "spettro originario (k = 0; ωm = 2)"
               }
             ]
           },
@@ -16041,7 +16133,7 @@
             "id": "spettro-centrale-e-repliche",
             "tipo": "grafico",
             "titolo": "Campionamento: spettro e repliche",
-            "descrizione": "Novità: alle due estremità della banda centrale si aggiungono le repliche spostate, già presenti nella ripetizione periodica. In questo esempio normalizzato le repliche sono separate.",
+            "descrizione": "Novità: si aggiungono due repliche di ordine due. Per leggibilità è mostrato solo questo sottoinsieme, non tutta la somma periodica; la pulsazione di campionamento dell’esempio è tre.",
             "asse_x": {
               "etichetta": "ω (rad/s, unità arbitrarie)",
               "min": -9,
@@ -16049,11 +16141,15 @@
               "tacche": [
                 {
                   "valore": -6,
+                  "etichetta": "−2ωs"
+                },
+                {
+                  "valore": -3,
                   "etichetta": "−ωs"
                 },
                 {
                   "valore": -2,
-                  "etichetta": "−ωm"
+                  "etichetta": "-2"
                 },
                 {
                   "valore": 0,
@@ -16061,18 +16157,22 @@
                 },
                 {
                   "valore": 2,
-                  "etichetta": "ωm"
+                  "etichetta": "2"
+                },
+                {
+                  "valore": 3,
+                  "etichetta": "ωs"
                 },
                 {
                   "valore": 6,
-                  "etichetta": "ωs"
+                  "etichetta": "2ωs"
                 }
               ]
             },
             "asse_y": {
               "etichetta": "|X(ω)| (unità arbitrarie)",
               "min": 0,
-              "max": 1.15
+              "max": 1.5
             },
             "serie": [
               {
@@ -16163,7 +16263,7 @@
                     0.0
                   ]
                 ],
-                "etichetta": "spettro originario (k = 0)"
+                "etichetta": "spettro originario (k = 0; ωm = 2)"
               },
               {
                 "stile": "tratteggio",
@@ -16253,7 +16353,7 @@
                     0.0
                   ]
                 ],
-                "etichetta": "replica k = −1"
+                "etichetta": "replica k = −2"
               },
               {
                 "stile": "tratteggio",
@@ -16343,7 +16443,7 @@
                     0.0
                   ]
                 ],
-                "etichetta": "replica k = 1"
+                "etichetta": "replica k = 2"
               }
             ]
           },
@@ -16351,7 +16451,7 @@
             "id": "spettro-aliasing",
             "tipo": "grafico",
             "titolo": "Campionamento: confronto con aliasing",
-            "descrizione": "Novità: una replica e la zona tratteggiata mostrano un secondo esempio, con pulsazione di campionamento più bassa, che si sovrappone alla banda centrale. Le repliche ereditate appartengono invece all’esempio separato: sono due casi alternativi.",
+            "descrizione": "Novità: le repliche di ordine uno e le zone tratteggiate mostrano la sovrapposizione con lo spettro centrale. In tutto l’esempio la pulsazione di campionamento resta tre.",
             "asse_x": {
               "etichetta": "ω (rad/s, unità arbitrarie)",
               "min": -9,
@@ -16359,11 +16459,15 @@
               "tacche": [
                 {
                   "valore": -6,
+                  "etichetta": "−2ωs"
+                },
+                {
+                  "valore": -3,
                   "etichetta": "−ωs"
                 },
                 {
                   "valore": -2,
-                  "etichetta": "−ωm"
+                  "etichetta": "-2"
                 },
                 {
                   "valore": 0,
@@ -16371,18 +16475,22 @@
                 },
                 {
                   "valore": 2,
-                  "etichetta": "ωm"
+                  "etichetta": "2"
+                },
+                {
+                  "valore": 3,
+                  "etichetta": "ωs"
                 },
                 {
                   "valore": 6,
-                  "etichetta": "ωs"
+                  "etichetta": "2ωs"
                 }
               ]
             },
             "asse_y": {
               "etichetta": "|X(ω)| (unità arbitrarie)",
               "min": 0,
-              "max": 1.15
+              "max": 1.5
             },
             "serie": [
               {
@@ -16473,7 +16581,7 @@
                     0.0
                   ]
                 ],
-                "etichetta": "spettro originario (k = 0)"
+                "etichetta": "spettro originario (k = 0; ωm = 2)"
               },
               {
                 "stile": "tratteggio",
@@ -16563,7 +16671,7 @@
                     0.0
                   ]
                 ],
-                "etichetta": "replica k = −1"
+                "etichetta": "replica k = −2"
               },
               {
                 "stile": "tratteggio",
@@ -16653,11 +16761,24 @@
                     0.0
                   ]
                 ],
-                "etichetta": "replica k = 1"
+                "etichetta": "replica k = 2"
+              },
+              {
+                "stile": "tratteggio",
+                "punti": [
+                  [
+                    4,
+                    0
+                  ],
+                  [
+                    4,
+                    1.2
+                  ]
+                ],
+                "etichetta": "guida: inizio replica di ordine 2"
               },
               {
                 "stile": "linea",
-                "etichetta": "replica nel caso alias: ωs = 3",
                 "punti": [
                   [
                     1,
@@ -16695,11 +16816,53 @@
                     5,
                     0
                   ]
-                ]
+                ],
+                "etichetta": "replica k = −1 (alias)"
+              },
+              {
+                "stile": "linea",
+                "punti": [
+                  [
+                    -5,
+                    0
+                  ],
+                  [
+                    -4.5,
+                    0.25
+                  ],
+                  [
+                    -4,
+                    0.5
+                  ],
+                  [
+                    -3.5,
+                    0.75
+                  ],
+                  [
+                    -3,
+                    1
+                  ],
+                  [
+                    -2.5,
+                    0.75
+                  ],
+                  [
+                    -2,
+                    0.5
+                  ],
+                  [
+                    -1.5,
+                    0.25
+                  ],
+                  [
+                    -1,
+                    0
+                  ]
+                ],
+                "etichetta": "replica k = 1 (alias)"
               },
               {
                 "stile": "tratteggio",
-                "etichetta": "zona sovrapposta nel caso alias",
                 "punti": [
                   [
                     1,
@@ -16745,18 +16908,69 @@
                     2,
                     0
                   ]
-                ]
+                ],
+                "etichetta": "sovrapposizione destra"
+              },
+              {
+                "stile": "tratteggio",
+                "punti": [
+                  [
+                    -2,
+                    0
+                  ],
+                  [
+                    -1.9,
+                    0.05
+                  ],
+                  [
+                    -1.8,
+                    0
+                  ],
+                  [
+                    -1.7,
+                    0.15
+                  ],
+                  [
+                    -1.6,
+                    0
+                  ],
+                  [
+                    -1.5,
+                    0.25
+                  ],
+                  [
+                    -1.4,
+                    0
+                  ],
+                  [
+                    -1.3,
+                    0.15
+                  ],
+                  [
+                    -1.2,
+                    0
+                  ],
+                  [
+                    -1.1,
+                    0.05
+                  ],
+                  [
+                    -1,
+                    0
+                  ]
+                ],
+                "etichetta": "sovrapposizione sinistra"
               }
             ],
             "annotazioni": [
               {
                 "x": 4,
-                "y": 0.12,
+                "y": 1.27,
                 "testo": "inizio della replica"
               },
               {
-                "x": 1.5,
-                "y": 0.32,
+                "x": -4,
+                "y": 1.27,
                 "testo": "ωs − ωm < ωm"
               }
             ]
@@ -16765,7 +16979,7 @@
             "id": "spettro-repliche-filtro",
             "tipo": "grafico",
             "titolo": "Campionamento: filtro di ricostruzione",
-            "descrizione": "Novità: il profilo del filtro passa basso seleziona la banda centrale nell’esempio con repliche separate. La replica sovrapposta resta visibile solo come confronto: il filtro non corregge l’aliasing del secondo caso.",
+            "descrizione": "Novità: si aggiunge il profilo normalizzato del filtro ideale con banda pari a metà della pulsazione di campionamento; l’altezza è solo grafica. In questo esempio le repliche sono già sovrapposte: il filtro non può correggere l’aliasing.",
             "asse_x": {
               "etichetta": "ω (rad/s, unità arbitrarie)",
               "min": -9,
@@ -16773,11 +16987,15 @@
               "tacche": [
                 {
                   "valore": -6,
+                  "etichetta": "−2ωs"
+                },
+                {
+                  "valore": -3,
                   "etichetta": "−ωs"
                 },
                 {
                   "valore": -2,
-                  "etichetta": "−ωm"
+                  "etichetta": "-2"
                 },
                 {
                   "valore": 0,
@@ -16785,18 +17003,22 @@
                 },
                 {
                   "valore": 2,
-                  "etichetta": "ωm"
+                  "etichetta": "2"
+                },
+                {
+                  "valore": 3,
+                  "etichetta": "ωs"
                 },
                 {
                   "valore": 6,
-                  "etichetta": "ωs"
+                  "etichetta": "2ωs"
                 }
               ]
             },
             "asse_y": {
               "etichetta": "|X(ω)| (unità arbitrarie)",
               "min": 0,
-              "max": 1.15
+              "max": 1.5
             },
             "serie": [
               {
@@ -16887,7 +17109,7 @@
                     0.0
                   ]
                 ],
-                "etichetta": "spettro originario (k = 0)"
+                "etichetta": "spettro originario (k = 0; ωm = 2)"
               },
               {
                 "stile": "tratteggio",
@@ -16977,7 +17199,7 @@
                     0.0
                   ]
                 ],
-                "etichetta": "replica k = −1"
+                "etichetta": "replica k = −2"
               },
               {
                 "stile": "tratteggio",
@@ -17067,11 +17289,24 @@
                     0.0
                   ]
                 ],
-                "etichetta": "replica k = 1"
+                "etichetta": "replica k = 2"
+              },
+              {
+                "stile": "tratteggio",
+                "punti": [
+                  [
+                    4,
+                    0
+                  ],
+                  [
+                    4,
+                    1.2
+                  ]
+                ],
+                "etichetta": "guida: inizio replica di ordine 2"
               },
               {
                 "stile": "linea",
-                "etichetta": "replica nel caso alias: ωs = 3",
                 "punti": [
                   [
                     1,
@@ -17109,11 +17344,53 @@
                     5,
                     0
                   ]
-                ]
+                ],
+                "etichetta": "replica k = −1 (alias)"
+              },
+              {
+                "stile": "linea",
+                "punti": [
+                  [
+                    -5,
+                    0
+                  ],
+                  [
+                    -4.5,
+                    0.25
+                  ],
+                  [
+                    -4,
+                    0.5
+                  ],
+                  [
+                    -3.5,
+                    0.75
+                  ],
+                  [
+                    -3,
+                    1
+                  ],
+                  [
+                    -2.5,
+                    0.75
+                  ],
+                  [
+                    -2,
+                    0.5
+                  ],
+                  [
+                    -1.5,
+                    0.25
+                  ],
+                  [
+                    -1,
+                    0
+                  ]
+                ],
+                "etichetta": "replica k = 1 (alias)"
               },
               {
                 "stile": "tratteggio",
-                "etichetta": "zona sovrapposta nel caso alias",
                 "punti": [
                   [
                     1,
@@ -17159,54 +17436,105 @@
                     2,
                     0
                   ]
-                ]
+                ],
+                "etichetta": "sovrapposizione destra"
               },
               {
                 "stile": "tratteggio",
-                "etichetta": "filtro ideale (caso separato)",
                 "punti": [
                   [
-                    -3.2,
+                    -2,
                     0
                   ],
                   [
-                    -3,
+                    -1.9,
+                    0.05
+                  ],
+                  [
+                    -1.8,
                     0
                   ],
                   [
-                    -3,
-                    0.92
+                    -1.7,
+                    0.15
                   ],
                   [
-                    3,
-                    0.92
-                  ],
-                  [
-                    3,
+                    -1.6,
                     0
                   ],
                   [
-                    3.2,
+                    -1.5,
+                    0.25
+                  ],
+                  [
+                    -1.4,
+                    0
+                  ],
+                  [
+                    -1.3,
+                    0.15
+                  ],
+                  [
+                    -1.2,
+                    0
+                  ],
+                  [
+                    -1.1,
+                    0.05
+                  ],
+                  [
+                    -1,
                     0
                   ]
-                ]
+                ],
+                "etichetta": "sovrapposizione sinistra"
+              },
+              {
+                "stile": "tratteggio",
+                "punti": [
+                  [
+                    -1.7,
+                    0
+                  ],
+                  [
+                    -1.5,
+                    0
+                  ],
+                  [
+                    -1.5,
+                    0.98
+                  ],
+                  [
+                    1.5,
+                    0.98
+                  ],
+                  [
+                    1.5,
+                    0
+                  ],
+                  [
+                    1.7,
+                    0
+                  ]
+                ],
+                "etichetta": "filtro ideale: non elimina l’aliasing"
               }
             ],
             "annotazioni": [
               {
                 "x": 4,
-                "y": 0.12,
+                "y": 1.27,
                 "testo": "inizio della replica"
               },
               {
-                "x": 1.5,
-                "y": 0.32,
+                "x": -4,
+                "y": 1.27,
                 "testo": "ωs − ωm < ωm"
               },
               {
-                "x": -2.9,
-                "y": 1.02,
-                "testo": "banda π/T, guadagno T"
+                "x": -8.4,
+                "y": 1.09,
+                "testo": "banda π/T"
               }
             ]
           }

@@ -588,7 +588,7 @@ def test_controlli_numerici_citati_nelle_lezioni():
 ECCEZIONI_E3 = {
     "dim-teorema-campionamento": {
         "passi": "T1-1,T1-2,T1-4,T1-5,C-4,S1-S8",
-        "figure": "T1-3,C-4,S1-S8",
+        "figure": "T1-3,C-4,S1-S8,revisione 3ba8876",
         "richiamo_attivo": "T1-6",
         "a_buchi": "T1-7,G-1,G-5",
         "versione_compatta": "T1-1,T1-2,T1-5,G-5",
@@ -621,7 +621,7 @@ ECCEZIONI_E3 = {
         "ipotesi": "T5-1",
         "varianti_notazione": "T5-1",
         "passi": "T5-1,T5-2,T5-3,T5-4,T5-5,T5-6,S1-S8",
-        "figure": "T5-5,S1-S8",
+        "figure": "T5-5,S1-S8,revisione 3ba8876",
         "errori_frequenti": "T5-7",
         "a_buchi": "G-1,G-5",
         "versione_compatta": "T5-1,T5-2,T5-4,T5-6,G-5",
@@ -658,7 +658,11 @@ def test_e3_b7_campi_non_autorizzati_invariati(id_dim):
     nuove = {f["id"]: f for f in attuale["figure"]}
     assert set(vecchie) <= set(nuove)
     modifiche = {
-        "dim-teorema-campionamento": {"spettro-e-repliche": {"descrizione", "annotazioni"}},
+        # Revisione di 3ba8876: un solo esempio di campionamento coerente e
+        # margine negativo per mostrare la riga DC, anche nella figura originale.
+        "dim-teorema-campionamento": {"spettro-e-repliche": {
+            "descrizione", "annotazioni", "asse_x", "asse_y", "serie"}},
+        "dim-pam-due-spettri": {"spettro-a-righe-pam": {"asse_x"}},
         "dim-filtro-trasversale": {"schema-filtro-ricorrente-semplificato": {
             "titolo", "descrizione", "blocchi", "collegamenti"}},
         "dim-risposta-impulsiva-h": {"quadripolo-ingresso-generico": {"blocchi"}},
@@ -674,6 +678,20 @@ def test_e3_b7_campi_non_autorizzati_invariati(id_dim):
         dopo = nuove["quadripolo-ingresso-generico"]["blocchi"]
         assert dopo[0] == {**prima[0], "etichetta": "x(t)"}
         assert dopo[1:] == prima[1:]
+    if id_dim == "dim-teorema-campionamento":
+        prima, dopo = vecchie["spettro-e-repliche"], nuove["spettro-e-repliche"]
+        assert {k: v for k, v in dopo["asse_x"].items() if k != "tacche"} == {
+            k: v for k, v in prima["asse_x"].items() if k != "tacche"}
+        assert dopo["asse_y"] == {**prima["asse_y"], "max": 1.5}
+        for vecchia, nuova in zip(prima["serie"], dopo["serie"]):
+            assert nuova["punti"] == vecchia["punti"]
+            assert nuova["stile"] == vecchia["stile"]
+        assert len(prima["serie"]) == 3 and len(dopo["serie"]) == 4
+        assert dopo["serie"][3]["punti"] == [[4, 0], [4, 1.2]]
+    if id_dim == "dim-pam-due-spettri":
+        prima = vecchie["spettro-a-righe-pam"]["asse_x"]
+        dopo = nuove["spettro-a-righe-pam"]["asse_x"]
+        assert dopo == {**prima, "min": -2}
 
     if id_dim in ("dim-teorema-campionamento", "dim-filtro-trasversale"):
         assert attuale["richiamo_attivo"][:-1] == originale["richiamo_attivo"]
@@ -778,18 +796,27 @@ def test_e3_b1_campionamento_centrale_repliche_alias_filtro():
     assert [f["id"] for f in stati] == ["spettro-solo-centrale", "spettro-centrale-e-repliche",
         "spettro-e-repliche", "spettro-aliasing", "spettro-repliche-filtro"]
     assert len(stati[0]["serie"]) == 1
-    assert len(stati[1]["serie"]) >= 3  # C-4: centrale e repliche già al passo 2
+    assert len(stati[1]["serie"]) == 3  # C-4: centrale e repliche già al passo 2
+    assert "solo questo sottoinsieme" in stati[1]["descrizione"]
     assert all("alias" not in s.get("etichetta", "").lower() for s in stati[2]["serie"])
-    assert "alias" in stati[3]["serie"][-2]["etichetta"]
     assert all("filtro" not in s.get("etichetta", "").lower() for s in stati[3]["serie"])
     assert "filtro" in stati[4]["serie"][-1]["etichetta"]
-    assert "due casi alternativi" in stati[3]["descrizione"]
-    assert "non corregge" in stati[4]["descrizione"]
-    # La replica nel secondo caso è centrata in 3 e interseca la banda [-2, 2].
-    replica_alias = stati[3]["serie"][-2]["punti"]
-    assert replica_alias[0][0] == 1 and replica_alias[-1][0] == 5
-    assert max(replica_alias, key=lambda p: p[1]) == [3, 1]
-    assert replica_alias[0][0] < max(x for x, _ in stati[0]["serie"][0]["punti"])
+    assert "non può correggere" in stati[4]["descrizione"]
+
+    # Tutti gli stati usano lo stesso esempio: omega_m = 2, omega_s = 3.
+    tacche = {t["etichetta"]: t["valore"] for t in stati[0]["asse_x"]["tacche"]}
+    ws = tacche["ωs"]
+    wm = max(x for x, _ in stati[0]["serie"][0]["punti"])
+    assert (wm, ws, tacche["2ωs"]) == (2, 3, 2 * ws)
+    assert max(stati[1]["serie"][1]["punti"], key=lambda p: p[1]) == [2 * ws, 1]
+    assert max(stati[1]["serie"][2]["punti"], key=lambda p: p[1]) == [-2 * ws, 1]
+    alias = [s for s in stati[3]["serie"] if "alias" in s.get("etichetta", "").lower()]
+    assert len(alias) == 2
+    assert {max(s["punti"], key=lambda p: p[1])[0] for s in alias} == {-ws, ws}
+    assert min(x for x, _ in alias[0]["punti"]) == ws - wm < wm
+    assert ws < 2 * wm  # le repliche di primo ordine si sovrappongono
+    filtro = stati[4]["serie"][-1]["punti"]
+    assert {x for x, y in filtro if y == .98} == {-ws / 2, ws / 2}
 
 
 def test_e3_b1_pam_righe_continuo_sovrapposizione():
@@ -798,9 +825,17 @@ def test_e3_b1_pam_righe_continuo_sovrapposizione():
     assert [a["id"], b["id"], c["id"]] == ["spettro-pam-righe-progressivo",
         "spettro-pam-righe-continuo", "spettro-pam-totale"]
     assert [s["stile"] for s in a["serie"]] == ["righe", "tratteggio"]
+    assert all(f["asse_x"]["min"] < 0 for f in (a, b, c))
+    assert punti_figura(d, "spettro-a-righe-pam")["asse_x"]["min"] < 0
+    assert a["serie"][0]["punti"][0][0] == 0  # DC separata dall'asse y
     assert b["serie"][-1]["stile"] == "linea"
-    assert c["annotazioni"][-1]["testo"] == "Righe + continuo"
-    assert "normalizzate separatamente" in c["descrizione"]
+    inviluppo, continuo = a["serie"][1]["punti"], b["serie"][2]["punti"]
+    assert inviluppo != continuo
+    assert continuo[0][1] == pytest.approx(.65 * inviluppo[0][1])
+    assert [x["testo"] for x in c["annotazioni"]] == ["Righe", "Continuo"]
+    assert c["serie"][-1]["punti"] == a["serie"][0]["punti"]  # le stesse righe, non nuove masse
+    assert c["serie"][-1]["stile"] == "righe"
+    assert "Non si aggiungono nuove masse" in c["descrizione"]
     assert "incorrelati" in b["descrizione"]
     for x, _ in a["serie"][0]["punti"]:
         assert x / (2 * math.pi) == pytest.approx(round(x / (2 * math.pi)), abs=1e-3)
@@ -851,6 +886,11 @@ def test_e3_t2_t3_t4_casi_numerici_e_fonti():
     assert "12{,}57" in t2["passi"][7]["perche"]
     assert "sinistro" in t2["passi"][1]["testo"]
     assert r"\delta(-\tau)=\delta(\tau)" in t2["passi"][5]["perche"]
+    intervallo = punti_figura(t2, "impulso-intervallo-sinistro")
+    segmento = intervallo["serie"][-1]["punti"]
+    assert {x for x, _ in segmento} == {-.75, -.25}  # a = -0.25, delta = 0.5
+    assert [a["testo"] for a in intervallo["annotazioni"]] == ["a−Δ", "a"]
+    assert "altezza è solo grafica" in intervallo["descrizione"]
 
     t3 = DIMOSTRAZIONI["dim-filtro-trasversale"]
     def h(w):
@@ -891,3 +931,149 @@ def test_e3_t5_correzioni_limitate_e_medie():
     assert r"C_0+2\sum" in d["passi"][9]["formula"]
     assert d["passi"][10]["figura"] == "spettro-pam-totale"
     assert "passi 5-10" in d["errori_frequenti"][2]["correzione"]
+
+
+# Regressione della revisione E3: misure nel browser, non stime della sola
+# bounding box dei tracciati (una curva può occupare solo parte della box).
+MISURA_ETICHETTE_E3 = r'''svg => {
+  const annotazioni = [...svg.querySelectorAll('g[data-progressivo="annotazione"] > text')];
+  const serie = [...svg.querySelectorAll('g[data-progressivo="serie"]')];
+  const errori = [];
+  const dentro = (x, y, r) => x >= r.left - .5 && x <= r.right + .5 &&
+                               y >= r.top - .5 && y <= r.bottom + .5;
+  for (const testo of annotazioni) {
+    const r = testo.getBoundingClientRect();
+    for (const [indice, gruppo] of serie.entries()) {
+      for (const elemento of gruppo.querySelectorAll('path, line, circle')) {
+        if (elemento.tagName.toLowerCase() === 'circle') {
+          const c = elemento.getBoundingClientRect();
+          if (c.left < r.right && c.right > r.left && c.top < r.bottom && c.bottom > r.top)
+            errori.push([testo.textContent, indice, 'punto']);
+          continue;
+        }
+        const m = elemento.getScreenCTM(), lunghezza = elemento.getTotalLength();
+        const campioni = Math.max(1, Math.ceil(lunghezza));
+        for (let i = 0; i <= campioni; i++) {
+          const punto = elemento.getPointAtLength(lunghezza * i / campioni).matrixTransform(m);
+          if (dentro(punto.x, punto.y, r)) {
+            errori.push([testo.textContent, indice, 'tratto']); break;
+          }
+        }
+      }
+    }
+  }
+  for (let i = 0; i < annotazioni.length; i++) for (let j = i + 1; j < annotazioni.length; j++) {
+    const a = annotazioni[i].getBoundingClientRect(), b = annotazioni[j].getBoundingClientRect();
+    if (a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top)
+      errori.push([annotazioni[i].textContent, annotazioni[j].textContent, 'annotazioni']);
+  }
+  const yTacche = svg.viewBox.baseVal.height - 65 + 14;
+  const tacche = [...svg.querySelectorAll(':scope > text')]
+    .filter(t => Number(t.getAttribute('y')) === yTacche)
+    .map(t => ({testo:t.textContent, box:t.getBoundingClientRect()}))
+    .sort((a,b) => a.box.left - b.box.left);
+  for (let i = 1; i < tacche.length; i++) if (tacche[i - 1].box.right > tacche[i].box.left)
+    errori.push([tacche[i - 1].testo, tacche[i].testo, 'tacche']);
+  return {annotazioni: annotazioni.map(a => a.textContent), errori};
+}'''
+
+
+@pytest.fixture(scope="module")
+def e3_server_figure():
+    from functools import partial
+    from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+    from threading import Thread
+
+    class QuietHandler(SimpleHTTPRequestHandler):
+        def log_message(self, *args):
+            pass
+
+    server = ThreadingHTTPServer(("0.0.0.0", 0), partial(QuietHandler, directory=str(ROOT / "web")))
+    thread = Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        yield f"http://127.0.0.1:{server.server_port}"
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join()
+
+
+@pytest.fixture(scope="module")
+def e3_browser_figure():
+    from playwright.sync_api import sync_playwright
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        try:
+            yield browser
+        finally:
+            browser.close()
+
+
+@pytest.mark.parametrize("width,height", [(360, 780), (390, 844), (768, 1024), (1440, 900)])
+def test_e3_revisione_figure_in_chromium(e3_server_figure, e3_browser_figure, width, height):
+    page = e3_browser_figure.new_page(viewport={"width": width, "height": height})
+    errori = []
+    page.on("pageerror", lambda e: errori.append(str(e)))
+    page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
+
+    def vai(dim, passo):
+        page.goto(f"{e3_server_figure}/#/dim/dim-{dim}?passo={passo}", wait_until="networkidle")
+        page.locator(f"#passo-{passo} .step__figura > figure svg.figura-svg").first.wait_for()
+        assert page.evaluate("document.scrollingElement.scrollWidth") <= width
+
+    def svg(passo):
+        return page.locator(f"#passo-{passo} .step__figura > figure svg.figura-svg").first
+
+    try:
+        vai("teorema-campionamento", 5)
+        for passo in (3, 4, 5):
+            misura = svg(passo).evaluate(MISURA_ETICHETTE_E3)
+            assert len(misura["annotazioni"]) == passo - 2
+            assert not misura["errori"], (width, passo, misura["errori"])
+
+        vai("pam-due-spettri", 11)
+        for passo in (4, 9, 10, 11):
+            # La riga a zero non deve coincidere con il bordo sinistro del grafico.
+            margine = svg(passo).evaluate('''e => {
+              const grafico = e.querySelector(':scope > rect').getBoundingClientRect();
+              const lineaDC = e.querySelector('g[clip-path] > g > line').getBoundingClientRect();
+              return lineaDC.left - grafico.left;
+            }''')
+            assert margine > 10, (width, passo, margine)
+        curve = svg(10).evaluate('''e => {
+          const inviluppo = e.querySelector('g[data-progressivo="serie"][data-ereditato="true"] path');
+          const continuo = e.querySelector('g[data-progressivo="serie"][data-nuovo="true"] path');
+          return {inviluppo: inviluppo.getAttribute('d'), continuo: continuo.getAttribute('d'),
+                  opacita: getComputedStyle(continuo.parentElement).opacity};
+        }''')
+        assert curve["inviluppo"] != curve["continuo"]
+        assert float(curve["opacita"]) == 1
+        righe = svg(11).evaluate('''e => {
+          const ereditarie = e.querySelector('g[data-progressivo="serie"][data-ereditato="true"]');
+          const evidenziate = e.querySelector('g[data-progressivo="serie"][data-nuovo="true"]');
+          const segmenti = g => [...g.querySelectorAll('line')].map(l =>
+            ['x1','y1','x2','y2'].map(a => l.getAttribute(a)));
+          return {prima: segmenti(ereditarie), dopo: segmenti(evidenziate),
+                  opacita: getComputedStyle(evidenziate).opacity};
+        }''')
+        assert len(righe["prima"]) == 4 and righe["prima"] == righe["dopo"]
+        assert float(righe["opacita"]) == 1
+        misura = svg(11).evaluate(MISURA_ETICHETTE_E3)
+        assert misura["annotazioni"] == ["Righe", "Continuo"]
+        assert not misura["errori"], (width, misura["errori"])
+
+        vai("impulso-dirac-trasformata", 2)
+        misura = svg(2).evaluate(MISURA_ETICHETTE_E3)
+        assert misura["annotazioni"] == ["a−Δ", "a"]
+        assert not misura["errori"], (width, misura["errori"])
+        figura = page.locator("#passo-2 .step__figura > figure").first
+        segmento = figura.locator('g[data-progressivo="serie"][data-nuovo="true"] path').bounding_box()
+        regione = figura.locator(".scroll-x").bounding_box()
+        # Gli estremi dell'intervallo devono essere visibili anche senza scroll laterale.
+        assert segmento["x"] >= regione["x"] - .5
+        assert segmento["x"] + segmento["width"] <= regione["x"] + regione["width"] + .5
+        assert not errori, errori
+    finally:
+        page.close()

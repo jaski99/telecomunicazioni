@@ -825,7 +825,7 @@
       "id": "impulso-intervallo-sinistro",
       "tipo": "grafico",
       "titolo": "Impulso e intervallo selezionato",
-      "descrizione": "Novità: l’annotazione esplicita che il rettangolo attivo fra zero e delta porta a valutare la funzione nell’intervallo a sinistra del punto a.",
+      "descrizione": "Novità: il segmento con i due estremi mostra l’intervallo della funzione valutata, a sinistra di a. Nell’esempio a vale meno un quarto di secondo e delta mezzo secondo. Il segmento usa la coordinata a meno t sulla stessa scala temporale; la sua altezza è solo grafica.",
       "asse_x": {
         "etichetta": "t (s)",
         "min": -1,
@@ -886,13 +886,48 @@
             ]
           ],
           "etichetta": "D(t, Δ) con Δ = 0,5 s"
+        },
+        {
+          "stile": "linea",
+          "punti": [
+            [
+              -0.75,
+              0.38
+            ],
+            [
+              -0.75,
+              0.62
+            ],
+            [
+              -0.75,
+              0.5
+            ],
+            [
+              -0.25,
+              0.5
+            ],
+            [
+              -0.25,
+              0.62
+            ],
+            [
+              -0.25,
+              0.38
+            ]
+          ],
+          "etichetta": "intervallo selezionato di x (a = −0,25 s)"
         }
       ],
       "annotazioni": [
         {
-          "x": 0.5,
-          "y": 2.2,
-          "testo": "x(a−t) su [a−Δ,a]"
+          "x": -0.75,
+          "y": 0.72,
+          "testo": "a−Δ"
+        },
+        {
+          "x": -0.25,
+          "y": 0.72,
+          "testo": "a"
         }
       ]
     }
