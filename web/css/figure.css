@@ -58,7 +58,12 @@
 .figura-confronto h4 { margin: 0 0 var(--s-2, 8px); font-size: var(--fs-body, 1.0625rem); }
 .figura-confronto .figure { max-width: 100%; margin: 0; }
 .figura-confronto .figure .figura-svg { max-width: 100%; }
-@media (min-width: 768px) { .figura-confronto { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 768px) {
+  .figura-confronto { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Gli schemi a blocchi hanno un layout calcolato per il contenitore intero:
+     dimezzarlo qui ridurrebbe testi e punte sotto la dimensione leggibile. */
+  .figura-confronto:has(.figure--blocchi) { grid-template-columns: minmax(0, 1fr); }
+}
 @media (prefers-reduced-motion: reduce) { .figure [data-progressivo] { transition-duration: 0s; } }
 
 /* Fallback figura non disponibile. */

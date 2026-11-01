@@ -1,6 +1,6 @@
 """Le figure a blocchi entrano nel loro contenitore, senza scorrimento.
 
-A 360 e 390 px ogni schema a blocchi (lezione, dimostrazione e ogni passo delle
+A 360, 390, 768 e 1440 px ogni schema a blocchi (lezione, dimostrazione e ogni passo delle
 dimostrazioni progressive) deve stare dentro il riquadro della figura senza
 scorrimento orizzontale, e il testo del disegno non deve scendere sotto 11 px.
 """
@@ -15,17 +15,18 @@ from playwright.sync_api import sync_playwright
 sys.path.insert(0, os.path.dirname(__file__))
 from e2e_helpers import WEB, console_errors, static_server  # noqa: E402
 
-MOBILE = [(360, 780), (390, 844)]
+VIEWPORTS = [(360, 780), (390, 844), (768, 1024), (1440, 900)]
 
 MISURA = """() => [...document.querySelectorAll('figure.figure--blocchi')].map(f => {
   const svg = f.querySelector('svg.figura-svg'), box = f.querySelector('.scroll-x') || f;
+  if (!svg.getClientRects().length) return null; // I confronti chiusi sono nascosti, non hanno dimensioni.
   const w = svg.getBoundingClientRect().width, cw = box.clientWidth;
   const vb = svg.viewBox.baseVal.width || w;
   const testi = [...svg.querySelectorAll('text')].map(t => parseFloat(getComputedStyle(t).fontSize) * w / vb);
   return {id: f.id, larghezza: w, contenitore: cw,
           scorrimento: box.scrollWidth > box.clientWidth + 1,
           minimo: testi.length ? Math.min(...testi) : null};
-})"""
+}).filter(Boolean)"""
 
 
 def _grafo():
@@ -58,7 +59,7 @@ def server():
     srv.server_close()
 
 
-@pytest.mark.parametrize('width,height', MOBILE)
+@pytest.mark.parametrize('width,height', VIEWPORTS)
 @pytest.mark.parametrize('idnodo,passi', CASI, ids=[c[0] for c in CASI])
 def test_figure_a_blocchi_dentro_il_contenitore(server, width, height, idnodo, passi):
     pagine = [f'nodo/{idnodo}']

@@ -2,10 +2,23 @@
 import { FS_BLOCCHI, layoutBlocchi, layoutCollegamenti } from './blocchi-layout.js';
 import { attributiProgressivi } from './helpers.js';
 import { disegnaBlocco, disegnaFreccia, disegnaTesto } from './blocchi-forme.js';
-import { impostaLimiteEtichetta } from './blocchi-collisioni.js';
+import { impostaRicercaRapida, impostaLimiteEtichetta } from './blocchi-collisioni.js';
 
 const PADDING = 10;
 const LARGHEZZA_MASSIMA = 700;
+
+// Il confronto riusa la geometria della stessa figura, ma produce markup con
+// ID e attributi progressivi propri. Il contenuto della specifica partecipa
+// alla chiave, così modifiche ai dati non lasciano in cache disegni obsoleti.
+const cacheGeometria = new WeakMap();
+function disegna(disegno, opzioni) {
+  const frecce = disegno.frecce.map(c => `<g ${attributiProgressivi(opzioni.progressione, 'collegamento', c.indice)}>${disegnaFreccia(c)}${disegnaTesto(c.testo, true)}</g>`).join('');
+  const forme = disegno.nodi.map(n => disegnaBlocco(n, opzioni, n.blocco.__figuraIndice)).join('');
+  return { svgInner: `<g transform="translate(${-disegno.left},${-disegno.top})">${frecce}${forme}</g>`,
+    viewBox: { w: disegno.w, h: disegno.h }, serie: [], fs: FS_BLOCCHI,
+    nodi: disegno.nodi, frecce: disegno.frecce };
+}
+
 
 /** Unione degli ingombri di forme, testi, linee e punte delle frecce. */
 export function bboxBlocchi(nodi, collegamenti) {
@@ -148,6 +161,12 @@ export function renderBlocchi(spec, opzioni = {}) {
     .map((b, indice) => b && typeof b === 'object' ? { ...b, __figuraIndice: indice } : null).filter(Boolean) : [];
   if (blocchi.length < 2) throw new Error('servono almeno due blocchi');
   const collegamenti = Array.isArray(spec.collegamenti) ? spec.collegamenti : [];
+  // La ricerca combinatoria cresce rapidamente con il numero di archi.
+  const chiaveCache = JSON.stringify([blocchi, collegamenti, opzioni.larghezzaMassima, Boolean(opzioni.adattaAlContenitore)]);
+  const cache = cacheGeometria.get(spec);
+  if (cache?.chiave === chiaveCache) return disegna(cache.disegno, opzioni);
+  impostaRicercaRapida(Boolean(opzioni.adattaAlContenitore));
+  try {
   const cssWidth = Number(opzioni.larghezzaMassima);
   const larghezzaMassima = Number.isFinite(cssWidth) && cssWidth > 0
     ? Math.max(80, Math.floor(cssWidth * FS_BLOCCHI / 15)) : LARGHEZZA_MASSIMA;
@@ -200,7 +219,10 @@ export function renderBlocchi(spec, opzioni = {}) {
   // compatte e vince la piu' larga che entra, a parita' di conflitti. Se nessuna
   // entra si prende la piu' stretta, mai un disegno non misurato.
   const scegliStretto = budget => {
-    const ordinati = [...candidati].sort((a, b) => a.w - b.w);
+    // A desktop si preserva per quanto possibile la disposizione originale:
+    // non comprimere in una colonna quando c'è spazio per la sequenza.
+    const ordinati = [...candidati].sort((a, b) => budget >= 600
+      ? b.colonne - a.colonne || b.w - a.w : a.w - b.w);
     let migliore = null, stretto = null;
     for (const c of ordinati) {
       if (!c.valutato) c.valutato = misura(c.layout, c.limite, true);
@@ -231,10 +253,8 @@ export function renderBlocchi(spec, opzioni = {}) {
   if (adatta) {
     const stretto = scegliStretto(larghezzaMassima);
     if (!stretto) throw new Error('disposizione non trovata');
-    const frecceAdattate = stretto.frecce.map(c => `<g ${attributiProgressivi(opzioni.progressione, 'collegamento', c.indice)}>${disegnaFreccia(c)}${disegnaTesto(c.testo, true)}</g>`).join('');
-    const formeAdattate = stretto.nodi.map(n => disegnaBlocco(n, opzioni, n.blocco.__figuraIndice)).join('');
-    return { svgInner: `<g transform="translate(${-stretto.left},${-stretto.top})">${frecceAdattate}${formeAdattate}</g>`,
-      viewBox: { w: stretto.w, h: stretto.h }, serie: [], fs: FS_BLOCCHI, nodi: stretto.nodi, frecce: stretto.frecce };
+    cacheGeometria.set(spec, { chiave: chiaveCache, disegno: stretto });
+    return disegna(stretto, opzioni);
   }
   let disegno = scegli(larghezzaMassima, 3);
   if (!disegno || disegno.conflitti) {
@@ -247,9 +267,9 @@ export function renderBlocchi(spec, opzioni = {}) {
   if (!disegno) disegno = ultimo ? { ...ultimo, conflitti: Infinity } : null;
   if (!disegno) throw new Error('disposizione non trovata');
 
-  const frecce = disegno.frecce.map(c => `<g ${attributiProgressivi(opzioni.progressione, 'collegamento', c.indice)}>${disegnaFreccia(c)}${disegnaTesto(c.testo, true)}</g>`).join('');
-  const forme = disegno.nodi.map(n => disegnaBlocco(n, opzioni, n.blocco.__figuraIndice)).join('');
-  return { svgInner: `<g transform="translate(${-disegno.left},${-disegno.top})">${frecce}${forme}</g>`,
-    viewBox: { w: disegno.w, h: disegno.h }, serie: [], fs: FS_BLOCCHI,
-    nodi: disegno.nodi, frecce: disegno.frecce };
+  cacheGeometria.set(spec, { chiave: chiaveCache, disegno });
+  return disegna(disegno, opzioni);
+  } finally {
+    impostaRicercaRapida(false);
+  }
 }

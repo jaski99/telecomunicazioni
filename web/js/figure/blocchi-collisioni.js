@@ -1,6 +1,10 @@
 /* Vincoli geometrici dei diagrammi: corsie distinte ed etichette opache libere. */
 import { testoARighe, misuraTesto } from './blocchi-layout.js';
 const EPS = 1e-7;
+// Durante la stima responsive dei layout complessi si usa una ricerca più
+// leggera; la versione completa resta disponibile per i layout semplici.
+let ricercaRapida = false;
+export function impostaRicercaRapida(valore) { ricercaRapida = valore; }
 let OSTACOLI_ETICHETTE = [];
 export function impostaOstacoliEtichette(boxes) { OSTACOLI_ETICHETTE = boxes || []; }
 const DISTANZA_CORSIE = 8;
@@ -775,7 +779,8 @@ function scambiaPunte(frecce, collegamenti, perId) {
 }
 
 function instrada(frecce, collegamenti, perId, coppia = true) {
-  for (let giro = 0; giro < 6; giro++) {
+  if (ricercaRapida && frecce.length >= 10) coppia = false;
+  for (let giro = 0; giro < (ricercaRapida && frecce.length >= 18 ? 1 : 6); giro++) {
     let cambiati = 0;
     for (const c of frecce) {
       const attuale = vertici(c).map(copia), prima = conflitti(c, attuale, frecce, collegamenti, perId);
@@ -1076,6 +1081,8 @@ function candidatiEtichetta(item, frecce, contesto = null) {
 function variantiTesto(item) {
   const base = item.t.righe;
   if (!base.length) return [];
+  // Un peso breve come × h₂ va letto come un unico nome, non su due righe.
+  if (ricercaRapida && item.n?.forma === 'moltiplicatore' && Array.from(item.t.originale).length <= 8) return [];
   const spezzabile = /\s/u.test(item.t.originale);
   const out = [], viste = new Set([base.join('|')]);
   const aggiungi = righe => {
@@ -1230,13 +1237,14 @@ export function risolviVincoli(frecce, collegamenti, perId, completo = true) {
   // Le partenze si separano subito; le punte entranti dopo l'instradamento,
   // cosi' l'ordine delle porte segue il lato reale di arrivo delle corsie.
   separaEstremi(frecce, collegamenti, perId, { punte: false });
-  instrada(frecce, collegamenti, perId, completo);
+  const ricerca = completo || !ricercaRapida || frecce.length < 10;
+  if (ricerca) instrada(frecce, collegamenti, perId, completo);
   const firmaEstremi = () => frecce.map(c => `${c.inizio.x},${c.inizio.y},${c.fine.x},${c.fine.y}`).join('|');
   for (let giro = 0; giro < 2; giro++) {
     const prima = firmaEstremi();
     separaEstremi(frecce, collegamenti, perId, { partenze: false });
     if (firmaEstremi() === prima) break;
-    instrada(frecce, collegamenti, perId, completo);
+    if (ricerca) instrada(frecce, collegamenti, perId, completo);
   }
   raddrizzaPercorsi(frecce, collegamenti, perId);
   let etichette = completo ? liberaEtichette(frecce, collegamenti, perId) : 0;
@@ -1247,7 +1255,9 @@ export function risolviVincoli(frecce, collegamenti, perId, completo = true) {
     const ostacoli = ingombriDesiderati(frecce, perId);
     if (ostacoli.length) {
       impostaOstacoliEtichette(ostacoli);
-      instrada(frecce, collegamenti, perId, completo);
+      // Il secondo passaggio è un affinamento: non ripetere la ricerca
+      // combinatoria di coppie e griglia, già eseguita sul primo percorso.
+      instrada(frecce, collegamenti, perId, false);
       raddrizzaPercorsi(frecce, collegamenti, perId);
       const dopo = liberaEtichette(frecce, collegamenti, perId);
       impostaOstacoliEtichette([]);

@@ -211,7 +211,11 @@ export function layoutCollegamenti(nodi, collegamenti, limite = 16, completo = t
     const ux = dx / lunghezza, uy = dy / lunghezza;
     const base = { x: fine.x - ux * 8, y: fine.y - uy * 8 };
     const ali = [{ x: base.x - uy * 4, y: base.y + ux * 4 }, { x: base.x + uy * 4, y: base.y - ux * 4 }];
-    const et = testo(c.etichetta, limite);
+    // Un ramo che ripete il nome dell'ingresso non aggiunge informazione:
+    // il nome è già accanto alla giunzione comune.
+    const duplicatoIngresso = da.forma === 'ingresso' && da.diramazione
+      && testoSicuro(c.etichetta).trim() === testoSicuro(da.blocco.etichetta).trim();
+    const et = testo(duplicatoIngresso ? '' : c.etichetta, limite);
     if (et.righe.length) {
       et.x = (inizio.x + fine.x) / 2; et.y = (inizio.y + fine.y) / 2;
       if (Math.abs(dy) > Math.abs(dx)) et.x += et.w / 2 + 8;
