@@ -450,7 +450,8 @@ def test_numerico_t1_sinc_e_ricostruzione():
     # Condizione numerica: banda telefonica 3400 Hz -> fs minima 6800 Hz.
     assert 2 * 3400 == 6800
     assert 1 / 6800 == pytest.approx(147.06e-6, rel=1e-3)
-    assert "T\\, X_s" in dim["passi"][4]["formula"]
+    # T1-2 inserisce il caso aliasing: la ricostruzione è ora al passo 6.
+    assert "T\\, X_s" in dim["passi"][5]["formula"]
 
 
 def test_numerico_t2_impulso_e_limite():
@@ -575,3 +576,504 @@ def test_controlli_numerici_citati_nelle_lezioni():
     assert "1{,}91" in testo_trasf
     # Banda di Nyquist: ritmo massimo 1/T = Bω/π con Bω = 2π·3000.
     assert 2 * math.pi * 3000 / math.pi == pytest.approx(6000.0)
+
+
+# --------------------------------------------------------------------------
+# Round E, aree 1-3: B1-B3, B6 e B7 (EVOLUTION_PLAN §§3-5, 8)
+# --------------------------------------------------------------------------
+
+# Snapshot completo generato UNA volta da main 0ef8a4c, prima delle modifiche.
+# Per B7 le sole eccezioni ammesse sono associate agli ID del piano; G-1/G-5
+# riguardano le tre rappresentazioni derivate, S1-S8 i nuovi stati e gli agganci.
+ECCEZIONI_E3 = {
+    "dim-teorema-campionamento": {
+        "passi": "T1-1,T1-2,T1-4,T1-5,C-4,S1-S8",
+        "figure": "T1-3,C-4,S1-S8,revisione 3ba8876",
+        "richiamo_attivo": "T1-6",
+        "a_buchi": "T1-7,G-1,G-5",
+        "versione_compatta": "T1-1,T1-2,T1-5,G-5",
+        "a_voce": "T1-1,T1-2,T1-5,G-5",
+    },
+    "dim-impulso-dirac-trasformata": {
+        "passi": "T2-1,T2-2,T2-3,C-1,S1-S8",
+        "figure": "S1-S8",
+        "a_buchi": "C-1,T2-1,G-5",
+        "versione_compatta": "T2-1,T2-3,C-1,G-5",
+        "a_voce": "T2-1,T2-3,C-1,G-5",
+    },
+    "dim-filtro-trasversale": {
+        "passi": "T3-1,T3-2,T3-3,T3-4,S1-S8",
+        "figure": "T3-2,S1-S8",
+        "formula_finale": "T3-5",
+        "richiamo_attivo": "T3-6",
+        "a_buchi": "G-1,G-5",
+        "versione_compatta": "T3-1,T3-4,G-5",
+        "a_voce": "T3-1,T3-2,T3-4,T3-6,G-5",
+    },
+    "dim-risposta-impulsiva-h": {
+        "passi": "T4-1,T4-2,T4-3,T4-4,C-2,S1-S8",
+        "figure": "T4-4,C-2,S1-S8",
+        "a_buchi": "T4-2,T4-3,G-5",
+        "versione_compatta": "T4-2,T4-3,G-5",
+        "a_voce": "T4-1,T4-2,T4-3,C-2,G-5",
+    },
+    "dim-pam-due-spettri": {
+        "ipotesi": "T5-1",
+        "varianti_notazione": "T5-1",
+        "passi": "T5-1,T5-2,T5-3,T5-4,T5-5,T5-6,S1-S8",
+        "figure": "T5-5,S1-S8,revisione 3ba8876",
+        "errori_frequenti": "T5-7",
+        "a_buchi": "G-1,G-5",
+        "versione_compatta": "T5-1,T5-2,T5-4,T5-6,G-5",
+        "a_voce": "T5-1,T5-2,T5-4,T5-5,T5-6,G-5",
+    },
+}
+SNAPSHOT_E3 = ROOT / "tests" / "fixtures" / "invarianti_w3.json"
+
+
+def test_e3_snapshot_proviene_da_main_0ef8a4c():
+    import hashlib
+
+    data = SNAPSHOT_E3.read_bytes()
+    assert hashlib.sha256(data).hexdigest() == "50c3ac37074eda07579319e5c43e7a5ec7933c28f3a7cf6b3b3f4115027db0d7"
+    snap = json.loads(data)
+    assert snap["commit"] == "0ef8a4c7e488853798f6410cc45aca5ec3f45c21"
+    assert set(snap["dimostrazioni"]) == set(DIMOSTRAZIONI) == set(ECCEZIONI_E3)
+
+
+@pytest.mark.parametrize("id_dim", sorted(ECCEZIONI_E3))
+def test_e3_b7_campi_non_autorizzati_invariati(id_dim):
+    originale = carica_json("tests/fixtures/invarianti_w3.json")["dimostrazioni"][id_dim]
+    attuale = DIMOSTRAZIONI[id_dim]
+    assert set(attuale) == set(originale)  # nessun campo aggiunto o rimosso
+    for chiave in originale:
+        if chiave not in ECCEZIONI_E3[id_dim]:
+            assert attuale[chiave] == originale[chiave], (id_dim, chiave)
+    assert attuale["id"] == originale["id"]
+    assert attuale["enunciato"] == originale["enunciato"]
+    assert attuale["domande_esame"] == originale["domande_esame"]
+
+    # Le figure originali restano tutte, con sole modifiche puntuali autorizzate.
+    vecchie = {f["id"]: f for f in originale["figure"]}
+    nuove = {f["id"]: f for f in attuale["figure"]}
+    assert set(vecchie) <= set(nuove)
+    modifiche = {
+        # Revisione di 3ba8876: un solo esempio di campionamento coerente e
+        # margine negativo per mostrare la riga DC, anche nella figura originale.
+        "dim-teorema-campionamento": {"spettro-e-repliche": {
+            "descrizione", "annotazioni", "asse_x", "asse_y", "serie"}},
+        "dim-pam-due-spettri": {"spettro-a-righe-pam": {"asse_x"}},
+        "dim-filtro-trasversale": {"schema-filtro-ricorrente-semplificato": {
+            "titolo", "descrizione", "blocchi", "collegamenti"}},
+        "dim-risposta-impulsiva-h": {"quadripolo-ingresso-generico": {"blocchi"}},
+    }.get(id_dim, {})
+    for nome, prima in vecchie.items():
+        dopo = nuove[nome]
+        permesse = modifiche.get(nome, set())
+        for campo in set(prima) | set(dopo):
+            if campo not in permesse:
+                assert prima.get(campo) == dopo.get(campo), (id_dim, nome, campo)
+    if id_dim == "dim-risposta-impulsiva-h":
+        prima = vecchie["quadripolo-ingresso-generico"]["blocchi"]
+        dopo = nuove["quadripolo-ingresso-generico"]["blocchi"]
+        assert dopo[0] == {**prima[0], "etichetta": "x(t)"}
+        assert dopo[1:] == prima[1:]
+    if id_dim == "dim-teorema-campionamento":
+        prima, dopo = vecchie["spettro-e-repliche"], nuove["spettro-e-repliche"]
+        assert {k: v for k, v in dopo["asse_x"].items() if k != "tacche"} == {
+            k: v for k, v in prima["asse_x"].items() if k != "tacche"}
+        assert dopo["asse_y"] == {**prima["asse_y"], "max": 1.5}
+        for vecchia, nuova in zip(prima["serie"], dopo["serie"]):
+            assert nuova["punti"] == vecchia["punti"]
+            assert nuova["stile"] == vecchia["stile"]
+        assert len(prima["serie"]) == 3 and len(dopo["serie"]) == 4
+        assert dopo["serie"][3]["punti"] == [[4, 0], [4, 1.2]]
+    if id_dim == "dim-pam-due-spettri":
+        prima = vecchie["spettro-a-righe-pam"]["asse_x"]
+        dopo = nuove["spettro-a-righe-pam"]["asse_x"]
+        assert dopo == {**prima, "min": -2}
+
+    if id_dim in ("dim-teorema-campionamento", "dim-filtro-trasversale"):
+        assert attuale["richiamo_attivo"][:-1] == originale["richiamo_attivo"]
+    if id_dim == "dim-pam-due-spettri":
+        assert attuale["ipotesi"][1:] == originale["ipotesi"][1:]
+        assert attuale["varianti_notazione"][:-1] == originale["varianti_notazione"]
+        assert attuale["errori_frequenti"][:2] == originale["errori_frequenti"][:2]
+        assert {k: v for k, v in attuale["errori_frequenti"][2].items() if k != "correzione"} == {
+            k: v for k, v in originale["errori_frequenti"][2].items() if k != "correzione"}
+
+
+def test_e3_b7_passi_originali_con_eccezioni_puntuali():
+    snapshot = carica_json("tests/fixtures/invarianti_w3.json")["dimostrazioni"]
+    # Coppie (indice nel vecchio, indice nel nuovo, soli campi modificabili).
+    corrispondenze = {
+        "dim-teorema-campionamento": [
+            (0, 0, {"testo", "figura"}), (1, 1, {"figura"}),
+            (3, 4, {"n", "testo", "perche", "figura"}), (4, 5, {"n"}),
+            (5, 6, {"n", "testo", "figura"}), (6, 7, {"n"}), (7, 8, {"n"})],
+        "dim-impulso-dirac-trasformata": [
+            (0, 0, set()), (1, 1, {"testo", "perche", "figura"}),
+            (2, 2, set()), (3, 3, set()), (4, 4, set()),
+            (5, 5, {"formula", "perche"}), (6, 6, set()), (7, 7, {"perche"})],
+        "dim-filtro-trasversale": [
+            (0, 0, {"testo", "perche", "figura"}), (1, 1, {"testo", "figura"}),
+            (2, 2, set()), (4, 5, {"n", "perche"}), (5, 6, {"n", "perche"}),
+            (6, 7, {"n", "testo", "formula", "perche"})],
+        "dim-risposta-impulsiva-h": [
+            (0, 0, {"figura"}), (1, 1, {"figura"}), (2, 2, set()),
+            (3, 3, set()), (4, 4, set()), (5, 5, {"figura"}), (6, 6, {"testo"})],
+        "dim-pam-due-spettri": [
+            (0, 0, {"testo", "formula", "perche"}), (1, 1, set()), (2, 2, set()),
+            (3, 3, set()), (7, 7, {"n"}), (9, 10, {"n", "testo", "figura"})],
+    }
+    for id_dim, coppie in corrispondenze.items():
+        for precedente, corrente, permesse in coppie:
+            vecchio = snapshot[id_dim]["passi"][precedente]
+            nuovo = DIMOSTRAZIONI[id_dim]["passi"][corrente]
+            for campo in set(vecchio) | set(nuovo):
+                if campo not in permesse:
+                    assert vecchio.get(campo) == nuovo.get(campo), (id_dim, precedente + 1, campo)
+
+
+@pytest.mark.parametrize("id_dim", sorted(DIMOSTRAZIONI))
+def test_e3_b3_controllo_strutturale_r6(id_dim):
+    d = DIMOSTRAZIONI[id_dim]
+    assert 4 <= len(d["passi"]) <= 12
+    assert [p["n"] for p in d["passi"]] == list(range(1, len(d["passi"]) + 1))
+    figure = [f["id"] for f in d["figure"]]
+    usate = [p["figura"] for p in d["passi"] if p.get("figura")]
+    assert len(figure) == len(set(figure))
+    assert len(usate) == len(set(usate))  # zero figure ripetute
+    assert set(figure) == set(usate)  # zero figure orfane e nessun riferimento ignoto
+    for passo in d["passi"]:
+        assert passo.get("formula") or passo.get("figura")
+        assert len(passo.get("perche", "")) >= 40
+    for varianti in d["a_buchi"]["soluzioni"].values():
+        assert varianti and all(not re.search(r"[\\$^_]", variante) for variante in varianti)
+    assert 300 <= len(d["a_voce"]) <= 1500
+    assert len(d.get("collegamenti", [])) >= 2
+    assert all(i in TUTTI for i in d["collegamenti"])
+
+
+def catena_grafici(d, passi):
+    stati = [punti_figura(d, d["passi"][n - 1]["figura"]) for n in passi]
+    assert passi == list(range(passi[0], passi[-1] + 1))
+    for f in stati:
+        assert f["tipo"] == "grafico"
+        assert not re.search(r"[\u0370-\u03ff\u2070-\u209f\u2200-\u22ff]", f["descrizione"])
+        ax, ay = f["asse_x"], f["asse_y"]
+        for serie in f["serie"]:
+            assert all(ax["min"] <= x <= ax["max"] and ay["min"] <= y <= ay["max"]
+                       for x, y in serie["punti"])
+        for a in f.get("annotazioni", []):
+            assert ax["min"] <= a["x"] <= ax["max"] and ay["min"] <= a["y"] <= ay["max"]
+    for prima, dopo in zip(stati, stati[1:]):
+        assert prima["asse_x"] == dopo["asse_x"] and prima["asse_y"] == dopo["asse_y"]
+        assert dopo["serie"][:len(prima["serie"])] == prima["serie"]
+        annotazioni = prima.get("annotazioni", [])
+        assert all(a in dopo.get("annotazioni", []) for a in annotazioni)
+        assert len(dopo["serie"]) + len(dopo.get("annotazioni", [])) > len(prima["serie"]) + len(annotazioni)
+    return stati
+
+
+def catena_blocchi(d, passi):
+    stati = [punti_figura(d, d["passi"][n - 1]["figura"]) for n in passi]
+    assert passi == list(range(passi[0], passi[-1] + 1))
+    for prima, dopo in zip(stati, stati[1:]):
+        assert prima["tipo"] == dopo["tipo"] == "blocchi"
+        blocchi = {b["id"]: b for b in dopo["blocchi"]}
+        assert all(blocchi[b["id"]] == b for b in prima["blocchi"])
+        assert all(c in dopo["collegamenti"] for c in prima["collegamenti"])
+        assert len(dopo["blocchi"]) + len(dopo["collegamenti"]) > len(prima["blocchi"]) + len(prima["collegamenti"])
+        for f in (prima, dopo):
+            assert not re.search(r"[\u0370-\u03ff\u2070-\u209f\u2200-\u22ff]", f["descrizione"])
+    return stati
+
+
+def test_e3_b1_campionamento_centrale_repliche_alias_filtro():
+    d = DIMOSTRAZIONI["dim-teorema-campionamento"]
+    stati = catena_grafici(d, [1, 2, 3, 4, 5])
+    assert [f["id"] for f in stati] == ["spettro-solo-centrale", "spettro-centrale-e-repliche",
+        "spettro-e-repliche", "spettro-aliasing", "spettro-repliche-filtro"]
+    assert len(stati[0]["serie"]) == 1
+    assert len(stati[1]["serie"]) == 3  # C-4: centrale e repliche già al passo 2
+    assert "solo questo sottoinsieme" in stati[1]["descrizione"]
+    assert all("alias" not in s.get("etichetta", "").lower() for s in stati[2]["serie"])
+    assert all("filtro" not in s.get("etichetta", "").lower() for s in stati[3]["serie"])
+    assert "filtro" in stati[4]["serie"][-1]["etichetta"]
+    assert "non può correggere" in stati[4]["descrizione"]
+
+    # Tutti gli stati usano lo stesso esempio: omega_m = 2, omega_s = 3.
+    tacche = {t["etichetta"]: t["valore"] for t in stati[0]["asse_x"]["tacche"]}
+    ws = tacche["ωs"]
+    wm = max(x for x, _ in stati[0]["serie"][0]["punti"])
+    assert (wm, ws, tacche["2ωs"]) == (2, 3, 2 * ws)
+    assert max(stati[1]["serie"][1]["punti"], key=lambda p: p[1]) == [2 * ws, 1]
+    assert max(stati[1]["serie"][2]["punti"], key=lambda p: p[1]) == [-2 * ws, 1]
+    alias = [s for s in stati[3]["serie"] if "alias" in s.get("etichetta", "").lower()]
+    assert len(alias) == 2
+    assert {max(s["punti"], key=lambda p: p[1])[0] for s in alias} == {-ws, ws}
+    assert min(x for x, _ in alias[0]["punti"]) == ws - wm < wm
+    assert ws < 2 * wm  # le repliche di primo ordine si sovrappongono
+    filtro = stati[4]["serie"][-1]["punti"]
+    assert {x for x, y in filtro if y == .98} == {-ws / 2, ws / 2}
+
+
+def test_e3_b1_pam_righe_continuo_sovrapposizione():
+    d = DIMOSTRAZIONI["dim-pam-due-spettri"]
+    a, b, c = catena_grafici(d, [9, 10, 11])
+    assert [a["id"], b["id"], c["id"]] == ["spettro-pam-righe-progressivo",
+        "spettro-pam-righe-continuo", "spettro-pam-totale"]
+    assert [s["stile"] for s in a["serie"]] == ["righe", "tratteggio"]
+    assert all(f["asse_x"]["min"] < 0 for f in (a, b, c))
+    assert punti_figura(d, "spettro-a-righe-pam")["asse_x"]["min"] < 0
+    assert a["serie"][0]["punti"][0][0] == 0  # DC separata dall'asse y
+    assert b["serie"][-1]["stile"] == "linea"
+    inviluppo, continuo = a["serie"][1]["punti"], b["serie"][2]["punti"]
+    assert inviluppo != continuo
+    assert continuo[0][1] == pytest.approx(.65 * inviluppo[0][1])
+    assert [x["testo"] for x in c["annotazioni"]] == ["Righe", "Continuo"]
+    assert c["serie"][-1]["punti"] == a["serie"][0]["punti"]  # le stesse righe, non nuove masse
+    assert c["serie"][-1]["stile"] == "righe"
+    assert "Non si aggiungono nuove masse" in c["descrizione"]
+    assert "incorrelati" in b["descrizione"]
+    for x, _ in a["serie"][0]["punti"]:
+        assert x / (2 * math.pi) == pytest.approx(round(x / (2 * math.pi)), abs=1e-3)
+    assert a["serie"][0]["punti"][1][1] == pytest.approx((2 / math.pi) ** 2, abs=1e-4)
+
+
+def test_e3_b2_tutte_le_cinque_schede_hanno_una_coppia_progressiva():
+    catena_grafici(DIMOSTRAZIONI["dim-teorema-campionamento"], [1, 2])
+    catena_grafici(DIMOSTRAZIONI["dim-impulso-dirac-trasformata"], [1, 2])
+    catena_blocchi(DIMOSTRAZIONI["dim-filtro-trasversale"], [1, 2])
+    catena_blocchi(DIMOSTRAZIONI["dim-risposta-impulsiva-h"], [1, 2])
+    catena_grafici(DIMOSTRAZIONI["dim-pam-due-spettri"], [9, 10])
+
+
+def test_e3_b6_aliasing_e_separazione():
+    fm, fs = 100, 150
+    fa = abs(fm - fs)
+    assert fa == 50 and fs < 2 * fm
+    for n in range(-5, 6):
+        assert math.cos(2 * math.pi * fm * n / fs) == pytest.approx(
+            math.cos(2 * math.pi * fa * n / fs), abs=1e-12)
+    assert 250 > 2 * fm
+    richiamo = DIMOSTRAZIONI["dim-teorema-campionamento"]["richiamo_attivo"][-1]
+    assert all(n in richiamo["domanda"] + richiamo["risposta"] for n in ("100", "150", "50", "250"))
+
+
+def test_e3_b6_potenza_pam_simboli_equiprobabili():
+    # Rettangolo di durata T e altezza unitaria; per simboli indipendenti ±1,
+    # C0 = E[a²] = 1, media zero, Gx = |G|²/(πT). Integro il semiasse.
+    T = 0.7
+    da = 0.05 / T
+    n = 80000
+    def gx(w):
+        u = w * T / 2
+        return T / math.pi * (1 if u == 0 else (math.sin(u) / u) ** 2)
+    potenza = sum(gx((i + 0.5) * da) for i in range(n)) * da
+    media_quadratica = ((+1) ** 2 + (-1) ** 2) / 2
+    assert potenza == pytest.approx(media_quadratica, abs=4e-4)
+    assert media_quadratica == 1
+    passo = DIMOSTRAZIONI["dim-pam-due-spettri"]["passi"][-1]
+    assert "2\\pi T" in passo["formula"] and "= 1" in passo["formula"]
+    assert "indipendenti" in passo["testo"]
+
+
+def test_e3_t2_t3_t4_casi_numerici_e_fonti():
+    t2 = DIMOSTRAZIONI["dim-impulso-dirac-trasformata"]
+    assert 2 * math.pi / 0.5 == pytest.approx(12.57, abs=0.01)
+    assert "12{,}57" in t2["passi"][7]["perche"]
+    assert "sinistro" in t2["passi"][1]["testo"]
+    assert r"\delta(-\tau)=\delta(\tau)" in t2["passi"][5]["perche"]
+    intervallo = punti_figura(t2, "impulso-intervallo-sinistro")
+    segmento = intervallo["serie"][-1]["punti"]
+    assert {x for x, _ in segmento} == {-.75, -.25}  # a = -0.25, delta = 0.5
+    assert [a["testo"] for a in intervallo["annotazioni"]] == ["a−Δ", "a"]
+    assert "altezza è solo grafica" in intervallo["descrizione"]
+
+    t3 = DIMOSTRAZIONI["dim-filtro-trasversale"]
+    def h(w):
+        return 1 + 0.5 * complex(math.cos(-w), math.sin(-w))
+    assert h(0).real == pytest.approx(1.5)
+    assert h(math.pi).real == pytest.approx(0.5)
+    assert "cerchio unitario" in t3["passi"][-1]["perche"]
+    schema = punti_figura(t3, "schema-filtro-ricorrente-semplificato")
+    assert sum(b["forma"] == "sommatore" for b in schema["blocchi"]) == 1
+    assert sum(b["forma"] == "ritardo" for b in schema["blocchi"]) >= 6
+    assert {"my1", "my2", "mym", "m0", "m1", "m2", "mn"} <= {b["id"] for b in schema["blocchi"]}
+    assert {c["a"] for c in schema["collegamenti"] if c["da"] == "out"} == {"ry1"}
+
+    t4 = DIMOSTRAZIONI["dim-risposta-impulsiva-h"]
+    rettangolo = punti_figura(t4, "quadripolo-ingresso-d")
+    assert [b["etichetta"] for b in rettangolo["blocchi"]] == ["D(t, Δ)", "Q", "y(t)"]
+    assert t4["passi"][0]["figura"] == rettangolo["id"]
+    assert t4["passi"][5]["figura"] == "quadripolo-ingresso-generico"
+    # h(t)=exp(-t)u(t): risposta a un rettangolo unitario per t>Δ.
+    delta, t = 1e-4, 1.0
+    y_delta = math.exp(-t) * math.expm1(delta) / delta
+    assert y_delta == pytest.approx(math.exp(-t), rel=1e-4)
+    assert r"h(t) = \lim_{\Delta \to 0} y(t)" in t4["passi"][1]["formula"]
+    assert r"\lim_{\Delta\to0}F[D(t,\Delta)]=1" == t4["passi"][7]["formula"]
+    assert r"\cdot1" in t4["passi"][8]["formula"]
+
+
+def test_e3_t5_correzioni_limitate_e_medie():
+    d = DIMOSTRAZIONI["dim-pam-due-spettri"]
+    assert d["passi"][0]["formula"] in d["ipotesi"][0]
+    assert "2N+1" in d["passi"][0]["formula"]
+    assert "2N+1" in d["varianti_notazione"][-1]["canonica"]
+    assert "2N" in d["varianti_notazione"][-1]["variante"]
+    assert r"\lim_{N\to\infty}\frac{1}{2NT}" in d["passi"][5]["formula"]
+    assert r"\phi[\tau-(i-n)T]" in d["passi"][6]["formula"]
+    assert "int_" not in d["passi"][6]["formula"]
+    assert r"\{C_k\}*\phi" in d["passi"][8]["formula"]
+    assert r"C_0+2\sum" in d["passi"][9]["formula"]
+    assert d["passi"][10]["figura"] == "spettro-pam-totale"
+    assert "passi 5-10" in d["errori_frequenti"][2]["correzione"]
+
+
+# Regressione della revisione E3: misure nel browser, non stime della sola
+# bounding box dei tracciati (una curva può occupare solo parte della box).
+MISURA_ETICHETTE_E3 = r'''svg => {
+  const annotazioni = [...svg.querySelectorAll('g[data-progressivo="annotazione"] > text')];
+  const serie = [...svg.querySelectorAll('g[data-progressivo="serie"]')];
+  const errori = [];
+  const dentro = (x, y, r) => x >= r.left - .5 && x <= r.right + .5 &&
+                               y >= r.top - .5 && y <= r.bottom + .5;
+  for (const testo of annotazioni) {
+    const r = testo.getBoundingClientRect();
+    for (const [indice, gruppo] of serie.entries()) {
+      for (const elemento of gruppo.querySelectorAll('path, line, circle')) {
+        if (elemento.tagName.toLowerCase() === 'circle') {
+          const c = elemento.getBoundingClientRect();
+          if (c.left < r.right && c.right > r.left && c.top < r.bottom && c.bottom > r.top)
+            errori.push([testo.textContent, indice, 'punto']);
+          continue;
+        }
+        const m = elemento.getScreenCTM(), lunghezza = elemento.getTotalLength();
+        const campioni = Math.max(1, Math.ceil(lunghezza));
+        for (let i = 0; i <= campioni; i++) {
+          const punto = elemento.getPointAtLength(lunghezza * i / campioni).matrixTransform(m);
+          if (dentro(punto.x, punto.y, r)) {
+            errori.push([testo.textContent, indice, 'tratto']); break;
+          }
+        }
+      }
+    }
+  }
+  for (let i = 0; i < annotazioni.length; i++) for (let j = i + 1; j < annotazioni.length; j++) {
+    const a = annotazioni[i].getBoundingClientRect(), b = annotazioni[j].getBoundingClientRect();
+    if (a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top)
+      errori.push([annotazioni[i].textContent, annotazioni[j].textContent, 'annotazioni']);
+  }
+  const yTacche = svg.viewBox.baseVal.height - 65 + 14;
+  const tacche = [...svg.querySelectorAll(':scope > text')]
+    .filter(t => Number(t.getAttribute('y')) === yTacche)
+    .map(t => ({testo:t.textContent, box:t.getBoundingClientRect()}))
+    .sort((a,b) => a.box.left - b.box.left);
+  for (let i = 1; i < tacche.length; i++) if (tacche[i - 1].box.right > tacche[i].box.left)
+    errori.push([tacche[i - 1].testo, tacche[i].testo, 'tacche']);
+  return {annotazioni: annotazioni.map(a => a.textContent), errori};
+}'''
+
+
+@pytest.fixture(scope="module")
+def e3_server_figure():
+    from functools import partial
+    from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+    from threading import Thread
+
+    class QuietHandler(SimpleHTTPRequestHandler):
+        def log_message(self, *args):
+            pass
+
+    server = ThreadingHTTPServer(("0.0.0.0", 0), partial(QuietHandler, directory=str(ROOT / "web")))
+    thread = Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        yield f"http://127.0.0.1:{server.server_port}"
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join()
+
+
+@pytest.fixture(scope="module")
+def e3_browser_figure():
+    from playwright.sync_api import sync_playwright
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        try:
+            yield browser
+        finally:
+            browser.close()
+
+
+@pytest.mark.parametrize("width,height", [(360, 780), (390, 844), (768, 1024), (1440, 900)])
+def test_e3_revisione_figure_in_chromium(e3_server_figure, e3_browser_figure, width, height):
+    page = e3_browser_figure.new_page(viewport={"width": width, "height": height})
+    errori = []
+    page.on("pageerror", lambda e: errori.append(str(e)))
+    page.on("console", lambda m: errori.append(m.text) if m.type == "error" else None)
+
+    def vai(dim, passo):
+        page.goto(f"{e3_server_figure}/#/dim/dim-{dim}?passo={passo}", wait_until="networkidle")
+        page.locator(f"#passo-{passo} .step__figura > figure svg.figura-svg").first.wait_for()
+        assert page.evaluate("document.scrollingElement.scrollWidth") <= width
+
+    def svg(passo):
+        return page.locator(f"#passo-{passo} .step__figura > figure svg.figura-svg").first
+
+    try:
+        vai("teorema-campionamento", 5)
+        for passo in (3, 4, 5):
+            misura = svg(passo).evaluate(MISURA_ETICHETTE_E3)
+            assert len(misura["annotazioni"]) == passo - 2
+            assert not misura["errori"], (width, passo, misura["errori"])
+
+        vai("pam-due-spettri", 11)
+        for passo in (4, 9, 10, 11):
+            # La riga a zero non deve coincidere con il bordo sinistro del grafico.
+            margine = svg(passo).evaluate('''e => {
+              const grafico = e.querySelector(':scope > rect').getBoundingClientRect();
+              const lineaDC = e.querySelector('g[clip-path] > g > line').getBoundingClientRect();
+              return lineaDC.left - grafico.left;
+            }''')
+            assert margine > 10, (width, passo, margine)
+        curve = svg(10).evaluate('''e => {
+          const inviluppo = e.querySelector('g[data-progressivo="serie"][data-ereditato="true"] path');
+          const continuo = e.querySelector('g[data-progressivo="serie"][data-nuovo="true"] path');
+          return {inviluppo: inviluppo.getAttribute('d'), continuo: continuo.getAttribute('d'),
+                  opacita: getComputedStyle(continuo.parentElement).opacity};
+        }''')
+        assert curve["inviluppo"] != curve["continuo"]
+        assert float(curve["opacita"]) == 1
+        righe = svg(11).evaluate('''e => {
+          const ereditarie = e.querySelector('g[data-progressivo="serie"][data-ereditato="true"]');
+          const evidenziate = e.querySelector('g[data-progressivo="serie"][data-nuovo="true"]');
+          const segmenti = g => [...g.querySelectorAll('line')].map(l =>
+            ['x1','y1','x2','y2'].map(a => l.getAttribute(a)));
+          return {prima: segmenti(ereditarie), dopo: segmenti(evidenziate),
+                  opacita: getComputedStyle(evidenziate).opacity};
+        }''')
+        assert len(righe["prima"]) == 4 and righe["prima"] == righe["dopo"]
+        assert float(righe["opacita"]) == 1
+        misura = svg(11).evaluate(MISURA_ETICHETTE_E3)
+        assert misura["annotazioni"] == ["Righe", "Continuo"]
+        assert not misura["errori"], (width, misura["errori"])
+
+        vai("impulso-dirac-trasformata", 2)
+        misura = svg(2).evaluate(MISURA_ETICHETTE_E3)
+        assert misura["annotazioni"] == ["a−Δ", "a"]
+        assert not misura["errori"], (width, misura["errori"])
+        figura = page.locator("#passo-2 .step__figura > figure").first
+        segmento = figura.locator('g[data-progressivo="serie"][data-nuovo="true"] path').bounding_box()
+        regione = figura.locator(".scroll-x").bounding_box()
+        # Gli estremi dell'intervallo devono essere visibili anche senza scroll laterale.
+        assert segmento["x"] >= regione["x"] - .5
+        assert segmento["x"] + segmento["width"] <= regione["x"] + regione["width"] + .5
+        assert not errori, errori
+    finally:
+        page.close()
