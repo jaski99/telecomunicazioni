@@ -155,6 +155,9 @@ def test_rota_senza_errori_né_scroll(server, browser, width, height, route):
             else f"{server}/index.html#/"
         )
         page.goto(url, wait_until="load")
+        # Il caricamento della shell è asincrono; "load" non garantisce che
+        # il router abbia già montato la pagina (specie con CPU condivisa).
+        page.locator("h1").first.wait_for(state="attached", timeout=30000)
         page.wait_for_timeout(150)
         (
             scroll_ok,
@@ -192,6 +195,9 @@ def test_nodo_contenuto_reale(server, browser, width, height, route):
         titolo_atteso = nodo.get("titolo", nid) if nodo else nid
 
         page.goto(f"{server}/index.html#/nodo/{nid}", wait_until="load")
+        # Il caricamento della shell è asincrono; "load" non garantisce che
+        # il router abbia già montato la pagina (specie con CPU condivisa).
+        page.locator("h1").first.wait_for(state="attached", timeout=30000)
         page.wait_for_timeout(150)
 
         h1 = page.locator("h1").first
@@ -239,6 +245,9 @@ def test_dim_contenuto_reale(server, browser, width, height, route):
 
         did = route.split("/", 1)[1]
         page.goto(f"{server}/index.html#/dim/{did}", wait_until="load")
+        # Il caricamento della shell è asincrono; "load" non garantisce che
+        # il router abbia già montato la pagina (specie con CPU condivisa).
+        page.locator("h1").first.wait_for(state="attached", timeout=30000)
         page.wait_for_timeout(150)
 
         h1 = page.locator("h1").first
@@ -289,6 +298,9 @@ def test_dim_modalita_tutte(server, browser, width, height, route):
 
         did = route.split("/", 1)[1]
         page.goto(f"{server}/index.html#/dim/{did}", wait_until="load")
+        # Il caricamento della shell è asincrono; "load" non garantisce che
+        # il router abbia già montato la pagina (specie con CPU condivisa).
+        page.locator("h1").first.wait_for(state="attached", timeout=30000)
         page.wait_for_timeout(150)
         for modo in MODALITA:
             btn = page.locator(f'button[data-modo="{modo}"]')

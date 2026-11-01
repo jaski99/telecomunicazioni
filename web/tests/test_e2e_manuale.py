@@ -74,6 +74,8 @@ def test_b13_manuale_niente_scroll_né_errori(server, browser, width, height, ro
         registra_listener_js(page, errori)
         url = f"{server}/index.html#/{route}" if route else f"{server}/index.html#/"
         page.goto(url, wait_until="load")
+        # Attendere il montaggio della pagina, non soltanto il load della shell.
+        page.locator("h1").first.wait_for(state="attached", timeout=30000)
         page.wait_for_timeout(150)
         scroll_ok = page.evaluate("document.documentElement.scrollWidth <= document.documentElement.clientWidth")
         h1 = page.locator("h1").count()
@@ -94,6 +96,8 @@ def test_b13_area_criteri_da_saper_fare(server, browser, width, height, narea):
         errori = []
         registra_listener_js(page, errori)
         page.goto(f"{server}/index.html#/area/{narea}", wait_until="load")
+        # Attendere il montaggio della pagina, non soltanto il load della shell.
+        page.locator("h1").first.wait_for(state="attached", timeout=30000)
         page.wait_for_timeout(150)
 
         h1 = page.locator("h1").first
@@ -140,6 +144,8 @@ def test_b13_nodo_chiave_indice_figurenumerate(server, browser, width, height):
         errori = []
         registra_listener_js(page, errori)
         page.goto(f"{server}/index.html#/nodo/{nid}", wait_until="load")
+        # Attendere il montaggio della pagina, non soltanto il load della shell.
+        page.locator("h1").first.wait_for(state="attached", timeout=30000)
         page.wait_for_timeout(150)
 
         # .chiave presente e visibile nel primo viewport
@@ -185,6 +191,8 @@ def test_b13_nav_sequenza_prev_succ(server, browser, width, height):
         errori = []
         registra_listener_js(page, errori)
         page.goto(f"{server}/index.html#/nodo/{nid}", wait_until="load")
+        # Attendere il montaggio della pagina, non soltanto il load della shell.
+        page.locator("h1").first.wait_for(state="attached", timeout=30000)
         page.wait_for_timeout(150)
 
         nav = page.locator(".nav-sequenza")

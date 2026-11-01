@@ -921,7 +921,8 @@ function penalitaEtichetta(item, t, contesto) {
   }
   // I connettori valgono piu' di tutto: un rect che li copre nasconde il filo.
   if (contesto.connettori) for (const c of contesto.frecce) {
-    if (item.c === c) continue; // la propria etichetta vive sul proprio filo
+    // Nel layout responsive anche il proprio filo deve restare visibile.
+    if (item.c === c && !ricercaRapida) continue;
     for (const [a, b] of segmenti(vertici(c))) {
       const d = distanzaSegmentoBox(a, b, box);
       if (d < DIST_ETICHETTA_MIN) pen += 400 * (DIST_ETICHETTA_MIN - d + 1);
@@ -1269,4 +1270,67 @@ export function risolviVincoli(frecce, collegamenti, perId, completo = true) {
   // La geometria pesa mille volte piu' di un'etichetta: a parita' di corsie
   // vince il disegno che lascia piu' spazio ai nomi.
   return percorsi * 100000 + etichette;
+}
+
+/** Lunghezza di un tratto effettivamente all'interno di un rettangolo. */
+function lunghezzaNelBox(a, b, r) {
+  const dx = b.x - a.x, dy = b.y - a.y;
+  let lo = 0, hi = 1;
+  for (const [p, q] of [[-dx, a.x - r.left], [dx, r.right - a.x],
+    [-dy, a.y - r.top], [dy, r.bottom - a.y]]) {
+    if (!p) { if (q < 0) return 0; continue; }
+    const t = q / p;
+    if (p < 0) lo = Math.max(lo, t); else hi = Math.min(hi, t);
+    if (lo >= hi) return 0;
+  }
+  return Math.hypot(dx, dy) * (hi - lo);
+}
+
+/** Ultimo controllo sui fili effettivamente disegnati, dopo la scelta del
+ * layout e dei nomi: non accettare una scorciatoia che attraversi una forma
+ * o il fondo opaco di un'etichetta. La ricerca resta limitata alle corsie
+ * semplici e ai soli fili che hanno un'intersezione misurabile. */
+export function rettificaCollisioni(frecce, collegamenti, nodi) {
+  const perId = new Map(nodi.map(n => [String(n.blocco.id), n]));
+  const ostacoli = () => {
+    const out = [];
+    for (const n of nodi) {
+      if (!['ingresso', 'uscita', 'nodo'].includes(n.forma)) {
+        out.push({ left: n.x - n.w / 2 + 2, right: n.x + n.w / 2 - 2,
+          top: n.y - n.h / 2 + 2, bottom: n.y + n.h / 2 - 2 });
+      }
+      for (const t of n.testi) out.push(rettangoloTesto(t));
+    }
+    for (const c of frecce) if (c.testo) out.push(rettangoloTesto(c.testo));
+    return out;
+  };
+  const danno = (punti, boxes) => segmenti(punti).reduce((somma, [a, b]) =>
+    somma + boxes.reduce((s, r) => { const l = lunghezzaNelBox(a, b, r); return s + (l > 3.4 ? l : 0); }, 0), 0);
+  for (let giro = 0; giro < 2; giro++) {
+    let cambiati = 0;
+    for (const c of frecce) {
+      const boxes = ostacoli(), attuale = vertici(c), prima = danno(attuale, boxes);
+      if (!prima) continue;
+      let migliore = null;
+      for (const cand of candidati(c, frecce, collegamenti, perId)) {
+        const punti = ripulisci(cand.punti), danni = danno(punti, boxes);
+        if (danni >= prima - 0.01) continue;
+        const conflitto = conflitti(c, punti, frecce, collegamenti, perId).totale;
+        const lun = lunghezza(punti);
+        if (!migliore || danni < migliore.danni - 0.01 ||
+          (Math.abs(danni - migliore.danni) < 0.01 && (conflitto < migliore.conflitto ||
+           (conflitto === migliore.conflitto && lun < migliore.lun))))
+          migliore = { ...cand, punti, danni, conflitto, lun };
+      }
+      if (migliore) {
+        const posizione = c.testo && { x: c.testo.x, y: c.testo.y };
+        applicaPercorso(c, migliore, collegamenti, perId);
+        if (posizione) Object.assign(c.testo, posizione);
+        cambiati++;
+      }
+    }
+    if (!cambiati) break;
+    if (giro === 0) disponiEtichette(frecce, perId, { giri: 1 });
+  }
+  aggiornaBox(perId);
 }

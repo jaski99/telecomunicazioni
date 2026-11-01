@@ -2,7 +2,7 @@
 import { FS_BLOCCHI, layoutBlocchi, layoutCollegamenti } from './blocchi-layout.js';
 import { attributiProgressivi } from './helpers.js';
 import { disegnaBlocco, disegnaFreccia, disegnaTesto } from './blocchi-forme.js';
-import { impostaRicercaRapida, impostaLimiteEtichetta } from './blocchi-collisioni.js';
+import { impostaRicercaRapida, impostaLimiteEtichetta, rettificaCollisioni } from './blocchi-collisioni.js';
 
 const PADDING = 10;
 const LARGHEZZA_MASSIMA = 700;
@@ -221,11 +221,19 @@ export function renderBlocchi(spec, opzioni = {}) {
   const scegliStretto = budget => {
     // A desktop si preserva per quanto possibile la disposizione originale:
     // non comprimere in una colonna quando c'è spazio per la sequenza.
-    const ordinati = [...candidati].sort((a, b) => budget >= 600
-      ? b.colonne - a.colonne || b.w - a.w : a.w - b.w);
+    const ordinati = [...candidati].sort((a, b) => b.colonne - a.colonne || b.w - a.w);
     let migliore = null, stretto = null;
     for (const c of ordinati) {
       if (!c.valutato) c.valutato = misura(c.layout, c.limite, true);
+      // La stima senza nomi può sottovalutare la larghezza finale. Prima di
+      // spezzare una catena poco densa, compatta la disposizione originale.
+      if (c.colonne === Infinity && collegamenti.length <= 12 && c.valutato.w > budget) {
+        for (let limite = c.limite - 1; limite >= 1; limite--) {
+          const prova = misura(c.layout, limite, true);
+          if (prova.w < c.valutato.w) c.valutato = prova;
+          if (prova.w <= budget) break;
+        }
+      }
       const completo = c.valutato;
       if (!stretto || completo.w < stretto.w) stretto = completo;
       if (completo.w > budget) continue;
@@ -253,6 +261,11 @@ export function renderBlocchi(spec, opzioni = {}) {
   if (adatta) {
     const stretto = scegliStretto(larghezzaMassima);
     if (!stretto) throw new Error('disposizione non trovata');
+    rettificaCollisioni(stretto.frecce, collegamenti, stretto.nodi);
+    const box = bboxBlocchi(stretto.nodi, stretto.frecce);
+    stretto.left = Math.floor(box.left - PADDING); stretto.top = Math.floor(box.top - PADDING);
+    stretto.w = Math.ceil(box.right + PADDING) - stretto.left;
+    stretto.h = Math.ceil(box.bottom + PADDING) - stretto.top;
     cacheGeometria.set(spec, { chiave: chiaveCache, disegno: stretto });
     return disegna(stretto, opzioni);
   }
