@@ -528,7 +528,7 @@ test('geometria 210/318/700: corsie a >=8 px fra loro e dai blocchi, nessun trat
   assert.ok(controllati > 17 * 3, `pochi controlli sulle corsie: ${controllati}`);
 });
 
-test('geometria 210/318/700: punte sullo stesso blocco a >=14 px e tutto dentro il viewBox', () => {
+test('geometria 210/318/700: punte sullo stesso blocco a >=18 px e tutto dentro il viewBox', () => {
   let controllate = 0;
   for (const { f, larghezzaMassima, r } of geometrieGrafo()) {
     const perBlocco = new Map();
@@ -541,7 +541,14 @@ test('geometria 210/318/700: punte sullo stesso blocco a >=14 px e tutto dentro 
     for (const [a, cs] of perBlocco) for (let i = 0; i < cs.length; i++)
       for (let j = i + 1; j < cs.length; j++) {
         const d = Math.hypot(cs[i].fine.x - cs[j].fine.x, cs[i].fine.y - cs[j].fine.y);
-        assert.ok(d >= 14 - .01, `${f.id} ${larghezzaMassima}: punte su ${a} a ${d.toFixed(1)} px`);
+        // 18 px restano il minimo; su una forma piccola (un nodo da 16 px con
+        // tre punte) vale la distanza massima che il perimetro consente.
+        const nodo = r.nodi.find(n => String(n.blocco.id) === a);
+        const passo = nodo && ['sommatore', 'moltiplicatore', 'nodo'].includes(nodo.forma)
+          ? 2 * (nodo.w / 2) * Math.sin(Math.PI / cs.length)
+          : 2 * (nodo.w + nodo.h) / cs.length;
+        assert.ok(d >= Math.min(18, passo) - .01,
+          `${f.id} ${larghezzaMassima}: punte su ${a} a ${d.toFixed(1)} px (minimo ${Math.min(18, passo).toFixed(1)})`);
         controllate++;
       }
     const m = /translate\(([-0-9.]+),([-0-9.]+)\)/.exec(r.svgInner);

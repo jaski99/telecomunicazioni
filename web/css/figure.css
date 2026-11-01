@@ -33,6 +33,11 @@
   margin-inline: 0; border: inherit; border-radius: var(--radius-sm, 6px); overflow: visible;
 }
 
+/* Schemi a blocchi: la disposizione si adatta al contenitore, quindi il disegno
+   non deve mai scorrere. La scala resta cosi' vicina a 1 da tenere il testo
+   sopra gli 11 px anche nel caso limite. */
+.figure.figure--blocchi .figura-svg { max-width: 100%; }
+
 /* Legenda fuori dal disegno, in HTML sotto il grafico. */
 .figure__legend {
   display: flex; flex-wrap: wrap; gap: var(--s-4, 16px);

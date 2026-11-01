@@ -2,7 +2,8 @@
 import { testoARighe, misuraTesto } from './blocchi-layout.js';
 const EPS = 1e-7;
 const DISTANZA_CORSIE = 8;
-const DISTANZA_PUNTE = 14;
+// Punte sullo stesso blocco: la distanza minima tiene leggibili due frecce vicine.
+const DISTANZA_PUNTE = 18;
 const MONCONE = 12;
 const copia = p => ({ x: p.x, y: p.y });
 const stesso = (a, b) => Math.hypot(a.x - b.x, a.y - b.y) < 0.1;
@@ -800,6 +801,10 @@ function instrada(frecce, collegamenti, perId, coppia = true) {
     && scambiaPunte(frecce, collegamenti, perId)) instrada(frecce, collegamenti, perId, false);
 }
 
+// Su un contenitore stretto un nome largo allarga il disegno: si preferiscono
+// le varianti a capo, con un peso che cresce con la larghezza del testo.
+let LIMITE_ETICHETTA = 0;
+export function impostaLimiteEtichetta(valore) { LIMITE_ETICHETTA = valore; }
 const DIST_ETICHETTA = 12;
 const DIST_ETICHETTA_MIN = 4;
 const GAP_ETICHETTA = 8;
@@ -808,6 +813,9 @@ const GAP_ETICHETTA = 8;
  *  innestata e invisibile resta il punto del nodo. */
 function formaEtichetta(n) {
   if (n.forma === 'ingresso' && n.servito && !n.diramazione) return rettangoloNodo({ ...n, w: 0, h: 0 });
+  // Una porta con diramazioni e' il solo punto nero: il nome le sta addosso.
+  if (n.forma === 'ingresso' && n.diramazione)
+    return { left: n.x - 4, right: n.x + 4, top: n.y - 4, bottom: n.y + 4 };
   if (n.forma === 'ingresso' || n.forma === 'uscita')
     return n.verticale ? { left: n.x - 5, right: n.x + 5, top: n.y - 16, bottom: n.y + 16 }
       : { left: n.x - 16, right: n.x + 16, top: n.y - 5, bottom: n.y + 5 };
@@ -890,6 +898,7 @@ function penalitaEtichetta(item, t, contesto) {
   const box = rettangoloTesto(t);
   const dOwn = item.forma ? distanzaBoxBox(box, item.forma) : distanzaPolyBox(item.poly, box);
   let pen = dOwn > DIST_ETICHETTA ? 60 * (dOwn - DIST_ETICHETTA) : 0;
+  if (LIMITE_ETICHETTA) pen += 12 * Math.max(0, t.w - LIMITE_ETICHETTA);
   if (box.left < 0.5) pen += 400;
   // Un nome non sta mai sopra una forma: il testo diventa illeggibile.
   if (item.forma && sovrapposti(box, item.forma)) pen += 1500;
@@ -899,7 +908,8 @@ function penalitaEtichetta(item, t, contesto) {
     if (item.n === n) continue;
     if (sovrapposti(box, forma)) pen += 1500;
     const d = distanzaBoxBox(box, forma);
-    if (d < dOwn + 0.5) pen += 100 + (dOwn - d);
+    // Il nome deve restare piu' vicino alla propria forma che a ogni altra.
+    if (d < dOwn + 0.5) pen += 300 + 4 * (dOwn - d);
   }
   // I connettori valgono piu' di tutto: un rect che li copre nasconde il filo.
   if (contesto.connettori) for (const c of contesto.frecce) {
@@ -1005,6 +1015,10 @@ function posizioniBanda(item, contesto, banda) {
 
 function candidatiEtichetta(item, frecce, contesto = null) {
   const out = [{ x: item.t.x, y: item.t.y }];
+  // Le posizioni appoggiate alla propria forma (o al proprio filo) sono quelle
+  // che rispettano la distanza massima: si valutano tutte, anche se distano
+  // molto dal punto di partenza. Gli spostamenti liberi restano i piu' vicini.
+  const ancorati = [];
   const t = item.t;
   for (const d of [3, 5, 8, 12]) for (const [sx, sy] of [[1, 0], [-1, 0], [0, 1], [0, -1],
     [1, 1], [1, -1], [-1, 1], [-1, -1]]) out.push({ x: t.x + sx * d, y: t.y + sy * d });
@@ -1012,11 +1026,19 @@ function candidatiEtichetta(item, frecce, contesto = null) {
     const f = item.forma;
     for (const g of [3, 5, 7, 9, 11.5]) {
       if (contesto) {
-        out.push(...posizioniBanda(item, contesto, { asse: 'x', top: f.bottom + g, bottom: f.bottom + g + t.h }));
-        out.push(...posizioniBanda(item, contesto, { asse: 'x', top: f.top - g - t.h, bottom: f.top - g }));
-        out.push(...posizioniBanda(item, contesto, { asse: 'y', left: f.right + g, right: f.right + g + t.w }));
-        out.push(...posizioniBanda(item, contesto, { asse: 'y', left: f.left - g - t.w, right: f.left - g }));
+        ancorati.push(...posizioniBanda(item, contesto, { asse: 'x', top: f.bottom + g, bottom: f.bottom + g + t.h }));
+        ancorati.push(...posizioniBanda(item, contesto, { asse: 'x', top: f.top - g - t.h, bottom: f.top - g }));
+        ancorati.push(...posizioniBanda(item, contesto, { asse: 'y', left: f.right + g, right: f.right + g + t.w }));
+        ancorati.push(...posizioniBanda(item, contesto, { asse: 'y', left: f.left - g - t.w, right: f.left - g }));
       }
+    }
+    // Anello di posizioni a distanza utile lungo ogni direzione: su un nodo
+    // circondato da fili resta almeno un verso in cui il nome tocca la forma.
+    const cx = (f.left + f.right) / 2, cy = (f.top + f.bottom) / 2;
+    const sx = (f.right - f.left) / 2, sy = (f.bottom - f.top) / 2;
+    for (const g of [2, 4, 6, 9.5]) for (let k = 0; k < 24; k++) {
+      const a = k * Math.PI / 12, dx = Math.cos(a), dy = Math.sin(a);
+      ancorati.push({ x: cx + dx * (t.w / 2 + g + sx), y: cy + dy * (t.h / 2 + g + sy) });
     }
   } else if (item.c) {
     const pts = vertici(item.c);
@@ -1028,27 +1050,41 @@ function candidatiEtichetta(item, frecce, contesto = null) {
       const ext = Math.abs(nx) * t.w / 2 + Math.abs(ny) * t.h / 2;
       for (const f of [0.5, 0.35, 0.65, 0.2, 0.8, 0.1, 0.9, 0.25, 0.75, 0.4, 0.6]) {
         const px = a.x + (b.x - a.x) * f, py = a.y + (b.y - a.y) * f;
-        for (const g of [GAP_ETICHETTA, 10, 12]) for (const s of [1, -1])
-          out.push({ x: px + nx * s * (ext + g), y: py + ny * s * (ext + g) });
+        for (const g of [5, 6.5, GAP_ETICHETTA, 10, 12]) for (const s of [1, -1])
+          ancorati.push({ x: px + nx * s * (ext + g), y: py + ny * s * (ext + g) });
+      }
+      // Un filo corto non offre posto lungo il proprio tratto: il nome puo'
+      // stare oltre gli estremi, purche' resti agganciato al filo.
+      for (const [estremo, verso] of [[a, -1], [b, 1]]) {
+        for (const g of [GAP_ETICHETTA, 10]) {
+          ancorati.push({ x: estremo.x + ux * verso * (Math.abs(ux) * t.w / 2 + g),
+            y: estremo.y + uy * verso * (Math.abs(uy) * t.h / 2 + g) });
+          for (const s of [1, -1])
+            ancorati.push({ x: estremo.x + ux * verso * (ext + g) + nx * s * (ext + g),
+              y: estremo.y + uy * verso * (ext + g) + ny * s * (ext + g) });
+        }
       }
     }
   }
-  return out;
+  return { ancorati, liberi: out };
 }
 
 /** Testi alternativi piu' stretti: piu' righe per stare accanto alla forma. */
 function variantiTesto(item) {
   const base = item.t.righe;
-  if (!base.length || !/\s/u.test(item.t.originale)) return [];
+  if (!base.length) return [];
+  const spezzabile = /\s/u.test(item.t.originale);
   const out = [], viste = new Set([base.join('|')]);
-  for (const limite of [10, 8, 6, 4, 3, 2, 1]) {
-    const righe = testoARighe(item.t.originale, limite);
+  const aggiungi = righe => {
     const firma = righe.join('|');
-    if (!righe.length || viste.has(firma)) continue;
-    viste.add(firma);
+    if (!righe.length || viste.has(firma)) return;
     const misura = misuraTesto(righe);
-    if (misura.h > 6 * 21) continue;
+    if (misura.h > 6 * 21) return;
+    viste.add(firma);
     out.push({ righe, ...misura });
+  };
+  if (spezzabile) for (const limite of [10, 8, 6, 4, 3, 2, 1]) {
+    aggiungi(testoARighe(item.t.originale, limite));
     if (out.length >= 3) break;
   }
   return out;
@@ -1074,10 +1110,15 @@ function disponiEtichette(frecce, perId, { soloNodi = false, soloConnettori = fa
         let scelta = null, sceltaPen = penalitaEtichetta(item, item.t, contesto) + variante.extra, sceltaCosto = 0;
         // Le posizioni piu' lontane costano quanto le vicine ma non servono:
         // si valutano solo le piu' prossime (il disegno resta lo stesso).
-        const prova = candidatiEtichetta(item, frecce, contesto)
-          .map(p => ({ p, costo: Math.hypot(p.x - originale.x, p.y - originale.y) }))
-          .sort((a, b) => a.costo - b.costo)
-          .slice(0, 40);
+        const { ancorati, liberi } = candidatiEtichetta(item, frecce, contesto);
+        const prova = [...ancorati.map(p => ({ p, costo: Math.hypot(p.x - originale.x, p.y - originale.y) })),
+          ...liberi.map(p => ({ p, costo: Math.hypot(p.x - originale.x, p.y - originale.y) }))
+            .sort((a, b) => a.costo - b.costo).slice(0, 40)];
+        if (globalThis.DBG_LABEL && item.t.originale === globalThis.DBG_LABEL && variante === varianti[0]) {
+          const top = prova.map(({p,costo}) => ({ p, costo, pen: penalitaEtichetta(item, {...item.t, ...p}, contesto) }))
+            .sort((a,b)=>a.pen-b.pen).slice(0,8);
+          console.log('DBG', item.n && item.n.blocco.id, 'pos', item.t.x.toFixed(1), item.t.y.toFixed(1), 'w', item.t.w.toFixed(1), JSON.stringify(top.map(t=>({x:+t.p.x.toFixed(1),y:+t.p.y.toFixed(1),pen:+t.pen.toFixed(1)}))));
+        }
         for (const { p, costo } of prova) {
           const pen = penalitaEtichetta(item, { ...item.t, ...p }, contesto) + variante.extra;
           if (pen < sceltaPen - 1e-9 || (Math.abs(pen - sceltaPen) < 1e-9 && costo < sceltaCosto - 1e-9)) {
@@ -1101,7 +1142,7 @@ function disponiEtichette(frecce, perId, { soloNodi = false, soloConnettori = fa
 }
 
 function liberaEtichette(frecce, collegamenti, perId) {
-  return disponiEtichette(frecce, perId, { giri: 4 });
+  return disponiEtichette(frecce, perId, { giri: 6 });
 }
 
 const inversione = (a, b, c) => (b.x - a.x) * (c.x - b.x) + (b.y - a.y) * (c.y - b.y);
@@ -1177,5 +1218,5 @@ export function risolviVincoli(frecce, collegamenti, perId, completo = true) {
   aggiornaBox(perId);
   // La geometria pesa mille volte piu' di un'etichetta: a parita' di corsie
   // vince il disegno che lascia piu' spazio ai nomi.
-  return percorsi * 1000 + Math.min(999, etichette);
+  return percorsi * 100000 + etichette;
 }

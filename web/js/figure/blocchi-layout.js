@@ -162,12 +162,19 @@ function liberaEtichetteIngressi(frecce, perId) {
     if (n.forma !== 'ingresso') continue;
     for (const t of n.testi) {
       if (!etichettaCopreFreccia(t, frecce)) continue;
+      // Prima le posizioni consuete; se sono tutte occupate si prova piu'
+      // vicino alla porta, purche' il nome non copra il filo.
       const candidati = [
         { x: n.x, y: n.y - META_FRECCIA - 8 - t.h / 2 },
         { x: n.x - META_FRECCIA - 8 - t.w / 2, y: n.y },
         { x: n.x, y: n.y + META_FRECCIA + 8 + t.h / 2 },
         { x: n.x + META_FRECCIA + 8 + t.w / 2, y: n.y },
       ];
+      for (const scarto of [5, 2]) candidati.push(
+        { x: n.x, y: n.y - META_FRECCIA - scarto - t.h / 2 },
+        { x: n.x - META_FRECCIA - scarto - t.w / 2, y: n.y },
+        { x: n.x, y: n.y + META_FRECCIA + scarto + t.h / 2 },
+        { x: n.x + META_FRECCIA + scarto + t.w / 2, y: n.y });
       const libero = candidati.find(p => !etichettaCopreFreccia({ ...t, ...p }, frecce));
       if (libero) { t.x = libero.x; t.y = libero.y; aggiornaBoxIngresso(n); }
     }

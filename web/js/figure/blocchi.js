@@ -2,6 +2,7 @@
 import { FS_BLOCCHI, layoutBlocchi, layoutCollegamenti } from './blocchi-layout.js';
 import { attributiProgressivi } from './helpers.js';
 import { disegnaBlocco, disegnaFreccia, disegnaTesto } from './blocchi-forme.js';
+import { impostaLimiteEtichetta } from './blocchi-collisioni.js';
 
 const PADDING = 10;
 const LARGHEZZA_MASSIMA = 700;
@@ -150,12 +151,16 @@ export function renderBlocchi(spec, opzioni = {}) {
   const cssWidth = Number(opzioni.larghezzaMassima);
   const larghezzaMassima = Number.isFinite(cssWidth) && cssWidth > 0
     ? Math.max(80, Math.floor(cssWidth * FS_BLOCCHI / 15)) : LARGHEZZA_MASSIMA;
+  // Con "adattaAlContenitore" il disegno non supera la larghezza disponibile:
+  // niente scorrimento orizzontale e testo mai rimpicciolito sotto i 15 px.
+  const adatta = Boolean(opzioni.adattaAlContenitore);
+  impostaLimiteEtichetta(adatta ? Math.max(60, Math.round(larghezzaMassima * 0.36)) : 0);
   // Le etichette hanno bisogno di spazio ai lati dei blocchi: se il disegno che
   // entra in larghezza non ne lascia, si tollera un viewBox piu' largo (il testo
   // scala) purche' nessuna corsia resti bloccata.
   const larghezzaTollerata = Math.max(larghezzaMassima, Math.min(700, Math.max(480, Math.round(larghezzaMassima * 1.7))));
   // Prima si compatta il layout; se non basta, i blocchi rifluiscono in righe.
-  const spazio = limite => Math.max(0, 24 - (16 - limite) * 2);
+  const spazio = limite => Math.max(0, 26 - (16 - limite) * 2);
   const misura = (layout, limite, completo) =>
     costruisci(layout, collegamenti, limite, spazio(limite), completo);
   // La larghezza cala col limite (testo piu' stretto): si cerca per bisezione il
@@ -191,6 +196,23 @@ export function renderBlocchi(spec, opzioni = {}) {
   };
   // Le etichette si misurano solo sui migliori candidati: vince chi ha meno
   // conflitti, a pari conflitti il disegno piu' stretto (testo piu' grande).
+  // Scelta per il contenitore stretto: si misurano davvero le disposizioni piu'
+  // compatte e vince la piu' larga che entra, a parita' di conflitti. Se nessuna
+  // entra si prende la piu' stretta, mai un disegno non misurato.
+  const scegliStretto = budget => {
+    const ordinati = [...candidati].sort((a, b) => a.w - b.w);
+    let migliore = null, stretto = null;
+    for (const c of ordinati) {
+      if (!c.valutato) c.valutato = misura(c.layout, c.limite, true);
+      const completo = c.valutato;
+      if (!stretto || completo.w < stretto.w) stretto = completo;
+      if (completo.w > budget) continue;
+      if (!migliore || completo.conflitti < migliore.conflitti
+        || (completo.conflitti === migliore.conflitti && completo.w > migliore.w)) migliore = completo;
+      if (!migliore.conflitti) break;
+    }
+    return migliore || stretto;
+  };
   const scegli = (tollerata, quanti) => {
     let migliore = null, tentativi = 0;
     for (const c of candidati) {
@@ -206,6 +228,14 @@ export function renderBlocchi(spec, opzioni = {}) {
   };
   const ordina = () => candidati.sort((a, b) => a.conflitti - b.conflitti || a.w - b.w);
   let ultimo = esplora(larghezzaMassima);
+  if (adatta) {
+    const stretto = scegliStretto(larghezzaMassima);
+    if (!stretto) throw new Error('disposizione non trovata');
+    const frecceAdattate = stretto.frecce.map(c => `<g ${attributiProgressivi(opzioni.progressione, 'collegamento', c.indice)}>${disegnaFreccia(c)}${disegnaTesto(c.testo, true)}</g>`).join('');
+    const formeAdattate = stretto.nodi.map(n => disegnaBlocco(n, opzioni, n.blocco.__figuraIndice)).join('');
+    return { svgInner: `<g transform="translate(${-stretto.left},${-stretto.top})">${frecceAdattate}${formeAdattate}</g>`,
+      viewBox: { w: stretto.w, h: stretto.h }, serie: [], fs: FS_BLOCCHI, nodi: stretto.nodi, frecce: stretto.frecce };
+  }
   let disegno = scegli(larghezzaMassima, 3);
   if (!disegno || disegno.conflitti) {
     // Serve piu' spazio ai nomi: si tollera un viewBox piu' largo (il testo scala).

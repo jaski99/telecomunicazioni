@@ -8,12 +8,17 @@ import { figuraSVG, figuraSoloTesto, svgBase, fontSize } from './helpers.js';
 
 const RENDERER = { grafico: renderGrafico, blocchi: renderBlocchi, temporale: renderTemporale };
 
+/** Larghezza utile del riquadro della figura: il contenuto di .scroll-x misura
+ *  viewport - 34 px sotto i 600 px, viewport - 50 px fino a 768 px, poi 718 px.
+ *  Si resta sotto di una manciata di pixel per non sfiorare lo scorrimento. */
+export function larghezzaUtileFigura(viewport) {
+  const utile = viewport < 600 ? viewport - 40 : viewport < 768 ? viewport - 56 : 670;
+  return Math.max(80, utile);
+}
+
 function opzioniBlocchiResponsive(opzioni) {
   if (opzioni.larghezzaMassima != null || typeof window === 'undefined') return opzioni;
-  const viewport = window.innerWidth;
-  const larghezzaMassima = viewport < 600 ? viewport - 72 : viewport < 1024 ? viewport - 96
-    : viewport < 1200 ? viewport - 404 : 750;
-  return { ...opzioni, larghezzaMassima: Math.max(80, larghezzaMassima) };
+  return { ...opzioni, larghezzaMassima: larghezzaUtileFigura(window.innerWidth), adattaAlContenitore: true };
 }
 
 export function renderFigura(specOId, figureDisponibili = [], opzioni = {}) {

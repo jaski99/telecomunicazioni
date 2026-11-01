@@ -47,7 +47,8 @@ export function figuraSVG(spec, svg, serie, opzioni = {}) {
   const idAttr = spec && spec.id && !opzioni.senzaId ? ` id="${escapeHtml(String(spec.id))}"` : '';
   const legenda = renderLegenda(serie);
   const didascalia = opzioni.didascalia || titolo;
-  return `<figure${idAttr} role="img" aria-label="${escapeHtml(titolo)}" class="figure">
+  const classe = spec && spec.tipo === 'blocchi' ? 'figure figure--blocchi' : 'figure';
+  return `<figure${idAttr} role="img" aria-label="${escapeHtml(titolo)}" class="${classe}">
 <div class="scroll-x" tabindex="0" role="region" aria-label="Figura">${svg}${legenda}</div>
 <figcaption class="figure__caption"><span class="figure__caption-title">${escapeHtml(didascalia)}</span>${descrizione ? `<span class="figure__caption-desc">${escapeHtml(descrizione)}</span>` : ''}</figcaption>
 </figure>`;
