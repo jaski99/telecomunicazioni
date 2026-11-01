@@ -1,6 +1,8 @@
 /* Vincoli geometrici dei diagrammi: corsie distinte ed etichette opache libere. */
 import { testoARighe, misuraTesto } from './blocchi-layout.js';
 const EPS = 1e-7;
+let OSTACOLI_ETICHETTE = [];
+export function impostaOstacoliEtichette(boxes) { OSTACOLI_ETICHETTE = boxes || []; }
 const DISTANZA_CORSIE = 8;
 // Punte sullo stesso blocco: la distanza minima tiene leggibili due frecce vicine.
 const DISTANZA_PUNTE = 18;
@@ -319,6 +321,7 @@ function conflitti(c, punti, frecce, collegamenti, perId) {
     .flatMap(altro => segmenti(vertici(altro)).map(tratto => ({ altro, tratto })));
   const tratti = segmenti(punti);
   for (const [indiceTratto, [a, b]] of tratti.entries()) {
+    for (const r of OSTACOLI_ETICHETTE) if (trattoRettangolo(a, b, r)) { blocchi++; break; }
     for (const info of infoNodi) {
       if (!info.proprio && trattoRettangolo(a, b, info.rect)) blocchi++;
       if (info.proprio && formaConBordo(info.n) && attraversaInterno(a, b, info.n)) blocchi++;
@@ -1141,6 +1144,29 @@ function disponiEtichette(frecce, perId, { soloNodi = false, soloConnettori = fa
   return items.reduce((s, item) => s + penalitaEtichetta(item, item.t, contesto), 0);
 }
 
+/** Ingombri in cui un nome vorrebbe stare (a 12 px dalla propria forma) ma che
+ *  oggi sono attraversati da un filo: servono al secondo giro di instradamento. */
+function ingombriDesiderati(frecce, perId) {
+  const out = [];
+  for (const n of perId.values()) for (const [i, t] of n.testi.entries()) {
+    const opaco = n.forma !== 'rettangolo' && (n.forma !== 'ritardo' || i > 0);
+    if (!opaco) continue;
+    const forma = formaEtichetta(n);
+    if (distanzaBoxBox(rettangoloTesto(t), forma) <= DIST_ETICHETTA) continue;
+    let scelta = null;
+    const cx = (forma.left + forma.right) / 2, cy = (forma.top + forma.bottom) / 2;
+    const sx = (forma.right - forma.left) / 2, sy = (forma.bottom - forma.top) / 2;
+    for (const g of [9.5, 6, 11.5]) for (let k = 0; k < 16 && !scelta; k++) {
+      const a = k * Math.PI / 8, dx = Math.cos(a), dy = Math.sin(a);
+      const box = rettangoloTesto({ ...t, x: cx + dx * (t.w / 2 + g + sx), y: cy + dy * (t.h / 2 + g + sy) });
+      const libero = [...perId.values()].every(o => o === n || !sovrapposti(box, formaDisegnata(o) || { left: 0, right: 0, top: 0, bottom: 0 }));
+      if (libero) scelta = box;
+    }
+    if (scelta) out.push(scelta);
+  }
+  return out;
+}
+
 function liberaEtichette(frecce, collegamenti, perId) {
   return disponiEtichette(frecce, perId, { giri: 6 });
 }
@@ -1213,7 +1239,21 @@ export function risolviVincoli(frecce, collegamenti, perId, completo = true) {
     instrada(frecce, collegamenti, perId, completo);
   }
   raddrizzaPercorsi(frecce, collegamenti, perId);
-  const etichette = completo ? liberaEtichette(frecce, collegamenti, perId) : 0;
+  let etichette = completo ? liberaEtichette(frecce, collegamenti, perId) : 0;
+  if (completo && etichette > 0) {
+    // Un nome che non riesce a stare addosso alla propria forma di solito ha
+    // una corsia che gli passa davanti: si instrada di nuovo evitando il suo
+    // ingombro e si ricollocano le etichette una volta sola.
+    const ostacoli = ingombriDesiderati(frecce, perId);
+    if (ostacoli.length) {
+      impostaOstacoliEtichette(ostacoli);
+      instrada(frecce, collegamenti, perId, completo);
+      raddrizzaPercorsi(frecce, collegamenti, perId);
+      const dopo = liberaEtichette(frecce, collegamenti, perId);
+      impostaOstacoliEtichette([]);
+      if (dopo < etichette) etichette = dopo;
+    }
+  }
   const percorsi = frecce.reduce((s, c) => s + conflitti(c, vertici(c), frecce, collegamenti, perId).totale, 0);
   aggiornaBox(perId);
   // La geometria pesa mille volte piu' di un'etichetta: a parita' di corsie
