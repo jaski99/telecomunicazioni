@@ -31,6 +31,38 @@
     {
       "simbolo": "X(\\omega)",
       "significato": "Trasformata del segnale originale."
+    },
+    {
+      "simbolo": "T",
+      "significato": "Periodo di campionamento."
+    },
+    {
+      "simbolo": "\\omega_m",
+      "significato": "Massima pulsazione del segnale originale limitato in banda."
+    },
+    {
+      "simbolo": "s_q(t)",
+      "significato": "Segnale PAM ottenuto dai livelli quantizzati decodificati."
+    },
+    {
+      "simbolo": "s(t),S(\\omega)",
+      "significato": "PAM ideale e suo spettro quando si trascura la quantizzazione."
+    },
+    {
+      "simbolo": "S_b(\\omega)",
+      "significato": "Spettro all’uscita del passa-basso prima dell’equalizzazione."
+    },
+    {
+      "simbolo": "x_r(t),X_r(\\omega)",
+      "significato": "Segnale ricostruito e suo spettro dopo l’equalizzazione."
+    },
+    {
+      "simbolo": "\\varepsilon(t)",
+      "significato": "Errore di ricostruzione rispetto al segnale originale: $x_r(t)-x(t)$."
+    },
+    {
+      "simbolo": "\\tau",
+      "significato": "Durata dell’impulso rettangolare considerato nell’approssimazione."
     }
   ],
   "varianti_notazione": [

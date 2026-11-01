@@ -125,7 +125,7 @@
       "id": "ordine-significativo-carson",
       "tipo": "grafico",
       "titolo": "Ordine significativo stimato",
-      "descrizione": "Nuove rispetto al passo precedente: le annotazioni dell’ordine significativo stimato nell’esempio con indice due. Le righe restano schematiche e la scala non cambia.",
+      "descrizione": "Nuovi rispetto al passo precedente: i marcatori degli ordini significativi stimati nell’esempio con indice due. Le righe restano schematiche e la scala non cambia.",
       "asse_x": {
         "etichetta": "Scostamento dalla portante (unità di ωm)",
         "min": -4,
@@ -170,18 +170,20 @@
             ]
           ],
           "etichetta": "Righe indicative"
-        }
-      ],
-      "annotazioni": [
-        {
-          "x": -3,
-          "y": 0.1,
-          "testo": "n ≈ −3"
         },
         {
-          "x": 3,
-          "y": 0.1,
-          "testo": "n ≈ 3"
+          "stile": "punti",
+          "punti": [
+            [
+              -3,
+              0.1
+            ],
+            [
+              3,
+              0.1
+            ]
+          ],
+          "etichetta": "Ordini stimati: n = −3 e n = 3"
         }
       ]
     },
@@ -236,6 +238,20 @@
           "etichetta": "Righe indicative"
         },
         {
+          "stile": "punti",
+          "punti": [
+            [
+              -3,
+              0.1
+            ],
+            [
+              3,
+              0.1
+            ]
+          ],
+          "etichetta": "Ordini stimati: n = −3 e n = 3"
+        },
+        {
           "stile": "linea",
           "etichetta": "Banda stimata",
           "punti": [
@@ -256,18 +272,6 @@
               0.82
             ]
           ]
-        }
-      ],
-      "annotazioni": [
-        {
-          "x": -3,
-          "y": 0.1,
-          "testo": "n ≈ −3"
-        },
-        {
-          "x": 3,
-          "y": 0.1,
-          "testo": "n ≈ 3"
         }
       ]
     }

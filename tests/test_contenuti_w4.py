@@ -264,11 +264,13 @@ R6_EXCEPTIONS = {
         'T7-1': {'passi'}, 'T7-2': {'notazione'}, 'T7-3': {'passi', 'figure'},
         'T7-4': {'passi'}, 'T7-5': {'passi', 'figure'}, 'T7-6': {'passi'},
         'T7-7': {'verifica'}, 'S1-S8': {'passi', 'figure'},
+        'REVISIONE-T7-SOGLIA': {'enunciato', 'ipotesi', 'errori_frequenti'},
         'G-5': {'a_voce', 'versione_compatta', 'a_buchi'}, 'G-6': {'collegamenti'},
     },
     'dim-conversione-da': {
         'T8-1': {'passi'}, 'T8-2': {'passi'}, 'T8-3': {'passi', 'varianti_notazione'},
         'T8-4': {'passi', 'figure'}, 'T8-5': {'passi'}, 'T8-6': {'richiamo_attivo'},
+        'REVISIONE-T8-NOTAZIONE': {'notazione'},
         'S1-S8': {'passi', 'figure'},
         'G-5': {'a_voce', 'versione_compatta', 'a_buchi'}, 'G-6': {'collegamenti'},
     },
@@ -281,6 +283,7 @@ R6_EXCEPTIONS = {
     'dim-modulazione-prodotto-qam-errore-fase': {
         'T10-1': {'passi'}, 'T10-2': {'passi'}, 'T10-3': {'passi', 'figure'},
         'T10-4': {'richiamo_attivo'}, 'T10-5': {'passi'}, 'T10-6': {'errori_frequenti'},
+        'REVISIONE-T10-VERIFICA': {'verifica'},
         'S1-S8': {'passi', 'figure'},
         'G-5': {'a_voce', 'versione_compatta', 'a_buchi'}, 'G-6': {'collegamenti'},
     },
@@ -333,8 +336,22 @@ def test_e4_b7_snapshot_e_campi_invarianti():
         for field in set(before) | set(after):
             if field not in allowed:
                 assert after.get(field) == before.get(field), (id, field)
-        for field in ('id', 'domande_esame', 'enunciato'):
+        for field in ('id', 'domande_esame'):
             assert after[field] == before[field], (id, field)
+        if id == 'dim-conversione-ad':
+            # Deroga puntuale richiesta in revisione: solo > diventa >=.
+            assert after['enunciato'] == before['enunciato'].replace(
+                r'\omega_s>2\omega_m', r'\omega_s\ge 2\omega_m')
+            expected_hypotheses = before['ipotesi'].copy()
+            expected_hypotheses[0] = expected_hypotheses[0].replace(
+                r'\omega_{s} > 2\omega_{m}', r'\omega_{s} \ge 2\omega_{m}')
+            assert after['ipotesi'] == expected_hypotheses
+            expected_errors = [error.copy() for error in before['errori_frequenti']]
+            expected_errors[0]['correzione'] = ('Usare una frequenza almeno doppia della massima, '
+                                               'rispettando le condizioni aggiuntive al limite di uguaglianza.')
+            assert after['errori_frequenti'] == expected_errors
+        else:
+            assert after['enunciato'] == before['enunciato'], id
         assert after['verifica']['stato'] != 'verificata_testo_prof'
         assert {f['id'] for f in before['figure']} <= {f['id'] for f in after['figure']}
 
@@ -350,7 +367,7 @@ def test_e4_b7_sottocampi_e_figure_non_oggetto_delle_correzioni():
         ('dim-formula-carson', 'righe-carson'): {'titolo', 'descrizione'},
     }
     unchanged = {
-        'dim-modulazione-prodotto-qam-errore-fase': {'catena', 'modulatore-qam', 'demodulatore-qam'},
+        'dim-modulazione-prodotto-qam-errore-fase': {'modulatore-qam', 'demodulatore-qam'},
         'dim-pm-fm-trasformazione': {'pm-verso-fm', 'fm-verso-pm'},
     }
     for (id, fig_id), allowed in description_only.items():
@@ -364,11 +381,25 @@ def test_e4_b7_sottocampi_e_figure_non_oggetto_delle_correzioni():
             old = next(f for f in before[id]['figure'] if f['id'] == fig_id)
             new = next(f for f in after['figure'] if f['id'] == fig_id)
             assert old == new, (id, fig_id)
+    id = 'dim-modulazione-prodotto-qam-errore-fase'
+    old = next(f for f in before[id]['figure'] if f['id'] == 'catena')
+    after = load(f'graph/dimostrazioni/{id}.json')
+    new = next(f for f in after['figure'] if f['id'] == 'catena')
+    assert {k: v for k, v in old.items() if k not in {'titolo', 'descrizione', 'blocchi'}} == {
+        k: v for k, v in new.items() if k not in {'titolo', 'descrizione', 'blocchi'}}
+    for previous, current in zip(old['blocchi'], new['blocchi']):
+        assert {k: v for k, v in previous.items() if k != 'etichetta'} == {
+            k: v for k, v in current.items() if k != 'etichetta'}
+    assert old['blocchi'][0] == new['blocchi'][0]
+    assert len(old['blocchi']) == len(new['blocchi'])
+    assert after['verifica']['stato'] == before[id]['verifica']['stato']
+    assert after['verifica']['data'] == before[id]['verifica']['data']
+    assert after['verifica']['punti_aperti'][1:] == before[id]['verifica']['punti_aperti'][1:]
     for id in ('dim-conversione-ad', 'dim-quadripoli-passa-basso-equivalente'):
         after = load(f'graph/dimostrazioni/{id}.json')
         for field in ('stato', 'data', 'note'):
             assert after['verifica'][field] == before[id]['verifica'][field], (id, field)
-    for id in ('dim-conversione-ad', 'dim-pm-fm-trasformazione',
+    for id in ('dim-conversione-ad', 'dim-conversione-da', 'dim-pm-fm-trasformazione',
                'dim-quadripoli-passa-basso-equivalente'):
         after = load(f'graph/dimostrazioni/{id}.json')
         old_notation = before[id]['notazione']
@@ -427,7 +458,7 @@ def test_e4_b1_b2_catene_e_descrizioni():
         'dim-conversione-ad': (4, 5, 6),
         'dim-conversione-da': (4, 5),
         'dim-spettri-modulazione-prodotto': (7, 8, 9),
-        'dim-modulazione-prodotto-qam-errore-fase': (7, 8),
+        'dim-modulazione-prodotto-qam-errore-fase': (8, 9),
         'dim-quadripoli-passa-basso-equivalente': (2, 3, 4),
         'dim-pm-fm-trasformazione': (1, 2),
         'dim-formula-carson': (3, 4, 5),
@@ -632,4 +663,103 @@ for (const [id, fig] of JSON.parse(data)) {
     result = subprocess.run(['node', '--input-type=module', '-e', javascript],
                             input=json.dumps(entries), text=True, capture_output=True, cwd=ROOT)
     assert len(entries) == 7
+    assert result.returncode == 0, result.stderr
+
+
+def test_e4_revisione_formule_stati_e_notazione():
+    """Copre i difetti di contenuto evidenziati dalla revisione E4."""
+    sp = load('graph/dimostrazioni/dim-spettri-modulazione-prodotto.json')
+    for n in (4, 5):
+        formula = sp['passi'][n - 1]['formula']
+        assert formula.index(r'd\omega') < formula.index(r'\cos')
+    assert r'-\varphi' in sp['passi'][3]['formula']
+    assert r'+\varphi' in sp['passi'][4]['formula']
+    previous, current = figure_by_step(sp, 8), figure_by_step(sp, 9)
+    assert_progressive(previous, current)
+    guide = current['serie'][-1]
+    assert guide['stile'] == 'tratteggio' and guide['punti'] == [[4, .25], [6, .25]]
+    assert guide['punti'][0] in previous['serie'][2]['punti']
+    assert guide['punti'][1] in previous['serie'][0]['punti']
+    assert not current.get('annotazioni') and 'non rappresenta uno spettro' in current['descrizione'].lower()
+    assert 'sovrappost' not in current['titolo'].lower()
+
+    qam = load('graph/dimostrazioni/dim-modulazione-prodotto-qam-errore-fase.json')
+    reason = qam['passi'][0]['perche']
+    display = re.findall(r'\$\$(.*?)\$\$', reason)
+    assert display == [r'\begin{gathered}2\cos a\cos b\\ =\cos(a-b)\\ +\cos(a+b)\end{gathered}']
+    assert re.findall(r'\$([^$]+)\$', reason.replace('$$' + display[0] + '$$', '')) == [r'x\cos\Delta']
+    assert not qam['passi'][6].get('figura') and qam['passi'][6]['testo'] == 'Filtrare il secondo ramo.'
+    assert figure_by_step(qam, 8)['id'] == 'rotazione-vettore-iniziale'
+    assert figure_by_step(qam, 9)['id'] == 'rotazione-assi'
+    assert not figure_by_step(qam, 9).get('annotazioni')
+    assert figure_by_step(qam, 10)['id'] == 'catena'
+    assert 'Δ=0' in str(figure_by_step(qam, 10)['blocchi'])
+    assert qam['verifica']['stato'] == 'da_verificare'
+    assert ('Il caso con errore di fase è stato confrontato con le immagini di '
+            'file1 p. 40 e file3 p. 24.') in qam['verifica']['note']
+    assert qam['verifica']['punti_aperti'] == [
+        'Confronto della convenzione di segno con il testo adottato: NON TROVATO.',
+        'Corrispondenza dei riferimenti p. 9.34 e p. 9.36 con il libro: NON TROVATO.',
+    ]
+
+    ad = load('graph/dimostrazioni/dim-conversione-ad.json')
+    assert r'\omega_s\ge 2\omega_m' in ad['enunciato']
+    assert r'\omega_{s} \ge 2\omega_{m}' in ad['ipotesi'][0]
+    assert 'uguaglianza' in ad['verifica']['punti_aperti'][1]
+    characteristic = figure_by_step(ad, 3)
+    for axis in ('asse_x', 'asse_y'):
+        assert characteristic[axis]['min'] < -1 < 1 < characteristic[axis]['max']
+    error = characteristic['annotazioni'][0]
+    assert error['testo'] == 'εₙ' and error['x'] == .49 and .375 < error['y'] < .49
+
+    da = load('graph/dimostrazioni/dim-conversione-da.json')
+    notation = {entry['simbolo'] for entry in da['notazione']}
+    assert {r's_q(t)', r'S_b(\omega)', r'x_r(t),X_r(\omega)',
+            r'\varepsilon(t)', r'\tau'} <= notation
+    carson = load('graph/dimostrazioni/dim-formula-carson.json')
+    order, band = figure_by_step(carson, 4), figure_by_step(carson, 5)
+    assert_progressive(order, band)
+    assert not order.get('annotazioni') and not band.get('annotazioni')
+    assert order['serie'][-1]['stile'] == 'punti'
+    assert order['serie'][-1]['punti'] == [[-3, .1], [3, .1]]
+
+
+def test_e4_revisione_iq_fili_ortogonali_alle_quattro_larghezze():
+    """Il ramo diretto non avvolge H i, quello j entra nel sommatore dal basso."""
+    import subprocess
+
+    demo = load('graph/dimostrazioni/dim-quadripoli-passa-basso-equivalente.json')
+    figure = figure_by_step(demo, 5)
+    blocks = {block['id']: block for block in figure['blocchi']}
+    assert blocks['parte-i']['etichetta'] == 'H_i' and blocks['parte-q']['etichetta'] == 'H_q'
+    assert 'H i più j volte H q' in figure['descrizione']
+    javascript = r'''
+import { renderBlocchi } from './web/js/figure/blocchi.js';
+import { larghezzaUtileFigura } from './web/js/figure/index.js';
+let data = ''; for await (const chunk of process.stdin) data += chunk;
+const figure = JSON.parse(data);
+const direct = figure.collegamenti.findIndex(c => c.da === 'parte-i' && c.a === 'somma');
+const quadrature = figure.collegamenti.findIndex(c => c.da === 'quadratura' && c.a === 'somma');
+if (direct < 0 || quadrature < 0) throw new Error('Ramo diretto o in quadratura assente');
+for (const width of [360, 390, 768, 1440]) {
+  const rendered = renderBlocchi(figure, {larghezzaMassima: larghezzaUtileFigura(width), adattaAlContenitore: true});
+  if (rendered.frecce.length !== figure.collegamenti.length) throw new Error(`${width}: collegamento assente`);
+  for (const edge of rendered.frecce) {
+    const points = edge.punti?.length ? edge.punti : [edge.inizio, edge.fine];
+    for (let i = 1; i < points.length; i++) {
+      if (Math.abs(points[i].x - points[i-1].x) > .01 && Math.abs(points[i].y - points[i-1].y) > .01)
+        throw new Error(`${width}: diagonale nel collegamento ${edge.indice}`);
+    }
+    if (edge.indice === direct || edge.indice === quadrature) {
+      if (points.length !== 2) throw new Error(`${width}: percorso con deviazioni nel collegamento ${edge.indice}`);
+      if (edge.indice === direct && !(points[1].x > points[0].x && Math.abs(points[1].y - points[0].y) < .01))
+        throw new Error(`${width}: H i non è collegato orizzontalmente alla somma`);
+      if (edge.indice === quadrature && !(points[1].y < points[0].y && Math.abs(points[1].x - points[0].x) < .01))
+        throw new Error(`${width}: il ramo j non entra dal basso nella somma`);
+    }
+  }
+}
+'''
+    result = subprocess.run(['node', '--input-type=module', '-e', javascript],
+                            input=json.dumps(figure), text=True, capture_output=True, cwd=ROOT)
     assert result.returncode == 0, result.stderr

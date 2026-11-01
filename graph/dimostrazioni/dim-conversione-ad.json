@@ -4,9 +4,9 @@
   "domande_esame": [
     "T7"
   ],
-  "enunciato": "La conversione A/D campiona il segnale con $\\omega_s>2\\omega_m$, quantizza i campioni su $L$ livelli e codifica ciascun livello con $b=\\lceil\\log_2 L\\rceil$ bit. La sequenza delle parole costituisce il segnale numerico PCM.",
+  "enunciato": "La conversione A/D campiona il segnale con $\\omega_s\\ge 2\\omega_m$, quantizza i campioni su $L$ livelli e codifica ciascun livello con $b=\\lceil\\log_2 L\\rceil$ bit. La sequenza delle parole costituisce il segnale numerico PCM.",
   "ipotesi": [
-    "Segnale limitato in banda a $\\omega_{m}$ e campionamento ideale con $\\omega_{s} > 2\\omega_{m}$; l’uguaglianza richiede condizioni ulteriori.",
+    "Segnale limitato in banda a $\\omega_{m}$ e campionamento ideale con $\\omega_{s} \\ge 2\\omega_{m}$; l’uguaglianza richiede condizioni ulteriori.",
     "Il quantizzatore ha L livelli e il segnale resta nell’intervallo di ingresso senza sovraccarico."
   ],
   "notazione": [
@@ -862,8 +862,8 @@
       "descrizione": "Nuovo esempio: la caratteristica a L=8 livelli nell’intervallo (-M,M). La diagonale è il riferimento senza quantizzazione; i tratti verticali indicano il passo Delta e l’errore epsilon tra campione e livello.",
       "asse_x": {
         "etichetta": "Campione xₙ",
-        "min": -1,
-        "max": 1,
+        "min": -1.2,
+        "max": 1.2,
         "tacche": [
           {
             "valore": -1,
@@ -881,8 +881,8 @@
       },
       "asse_y": {
         "etichetta": "Livello qₙ",
-        "min": -1,
-        "max": 1,
+        "min": -1.2,
+        "max": 1.2,
         "tacche": [
           {
             "valore": -1,
@@ -1055,7 +1055,7 @@
       "annotazioni": [
         {
           "x": 0.49,
-          "y": 0.49,
+          "y": 0.43,
           "testo": "εₙ"
         },
         {
@@ -1287,7 +1287,7 @@
     {
       "errore": "Campionare appena sopra la frequenza massima.",
       "perche_sbagliato": "Le repliche possono sovrapporsi; file3 p. 7 riporta un criterio insufficiente.",
-      "correzione": "Usare una frequenza maggiore del doppio della massima frequenza."
+      "correzione": "Usare una frequenza almeno doppia della massima, rispettando le condizioni aggiuntive al limite di uguaglianza."
     },
     {
       "errore": "Confondere campionamento e quantizzazione.",
@@ -1350,7 +1350,7 @@
     "note": "File3 pp. 7-8 descrive i tre passi ma riporta un criterio di frequenza insufficiente; file1 p. 32 riporta il doppio della banda.",
     "punti_aperti": [
       "File3 p. 7 indica una frequenza maggiore della sola frequenza massima: chiarire il refuso rispetto a file1 p. 32.",
-      "La condizione stretta scelta qui evita il caso critico al bordo; confronto con il libro adottato NON TROVATO.",
+      "Al limite di uguaglianza servono le condizioni ulteriori indicate nelle ipotesi; confronto con il libro adottato NON TROVATO.",
       "La forma d’onda del segnale numerico e la codifica di linea non sono state confrontate con file1 pp. 33-34: NON TROVATO."
     ]
   },

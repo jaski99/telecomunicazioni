@@ -581,32 +581,32 @@
       "id": "filtro-complesso-iq",
       "tipo": "blocchi",
       "titolo": "Modello complesso in quadratura",
-      "descrizione": "Quarto stato: un esempio di filtro complesso si divide in un ramo diretto e un ramo in quadratura. La loro somma realizza H zero come H i più j volte H q; la decomposizione è un modello e non garantisce causalità o stabilità.",
+      "descrizione": "Quarto stato: l’inviluppo complesso I si divide in due rami filtrati da H i e H q. Il secondo è moltiplicato per j, cioè sfasato di un quarto di giro; la somma realizza H zero come H i più j volte H q. È un modello e non garantisce causalità o stabilità.",
       "blocchi": [
         {
           "id": "ingresso",
-          "etichetta": "I complesso",
+          "etichetta": "I",
           "forma": "ingresso",
           "colonna": 0,
-          "riga": 1
+          "riga": 0
         },
         {
           "id": "parte-i",
-          "etichetta": "Hᵢ",
+          "etichetta": "H_i",
           "forma": "rettangolo",
           "colonna": 1,
           "riga": 0
         },
         {
           "id": "parte-q",
-          "etichetta": "Hᵩ",
+          "etichetta": "H_q",
           "forma": "rettangolo",
-          "colonna": 1,
+          "colonna": 0,
           "riga": 2
         },
         {
           "id": "quadratura",
-          "etichetta": "× j (π/2)",
+          "etichetta": "×j (π/2)",
           "forma": "rettangolo",
           "colonna": 2,
           "riga": 2
@@ -615,15 +615,15 @@
           "id": "somma",
           "etichetta": "+",
           "forma": "sommatore",
-          "colonna": 3,
-          "riga": 1
+          "colonna": 2,
+          "riga": 0
         },
         {
           "id": "uscita",
-          "etichetta": "Iᵣ complesso",
+          "etichetta": "Iᵣ",
           "forma": "uscita",
-          "colonna": 4,
-          "riga": 1
+          "colonna": 3,
+          "riga": 0
         }
       ],
       "collegamenti": [

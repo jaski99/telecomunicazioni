@@ -28,17 +28,6 @@ def leggi_grafo():
         return json.load(f)
 
 
-def conta_figure(tipo=None):
-    """Numero atteso ricavato dal grafo, incluse le nuove figure-stato."""
-    return sum(
-        1
-        for nodo in leggi_grafo()["nodi"]
-        for sezione in (nodo.get("lezione") or {}, nodo.get("dimostrazione") or {})
-        for figura in sezione.get("figure", [])
-        if tipo is None or figura.get("tipo") == tipo
-    )
-
-
 def promuovibile(s):
     """True se una formula inline sorgente viene promossa in display (§3.2)."""
     return bool(s) and len(s) > 40 and bool(DISPLAY_CMD.search(s))
@@ -201,9 +190,7 @@ def test_tutte_figure_blocchi_geometria_reale(server, width, height):
                 unavailable: host.querySelectorAll('.figura-non-disponibile').length,
                 pageWidth: document.scrollingElement.scrollWidth, viewport: innerWidth, issues};
             }''')
-            attese = conta_figure("blocchi")
-            assert attese >= 17
-            assert risultato["count"] == risultato["rendered"] == attese
+            assert risultato["count"] == risultato["rendered"] == 23
             assert risultato["unavailable"] == 0
             assert risultato["pageWidth"] <= risultato["viewport"]
             assert not risultato["issues"], risultato["issues"]
@@ -320,9 +307,7 @@ def test_testo_dentro_viewbox_per_ogni_figura_del_grafo(server, width, height):
               return {count: specs.length, rendered: host.querySelectorAll('svg.figura-svg').length,
                 issues, scroll: document.scrollingElement.scrollWidth, viewport: innerWidth};
             }''')
-            attese = conta_figure()
-            assert attese >= 63
-            assert risultato["count"] == risultato["rendered"] == attese
+            assert risultato["count"] == risultato["rendered"] == 81
             assert risultato["scroll"] <= risultato["viewport"]
             assert not risultato["issues"], risultato["issues"]
             assert not errori, errori

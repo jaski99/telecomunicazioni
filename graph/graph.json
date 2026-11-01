@@ -20343,9 +20343,9 @@
         "domande_esame": [
           "T7"
         ],
-        "enunciato": "La conversione A/D campiona il segnale con $\\omega_s>2\\omega_m$, quantizza i campioni su $L$ livelli e codifica ciascun livello con $b=\\lceil\\log_2 L\\rceil$ bit. La sequenza delle parole costituisce il segnale numerico PCM.",
+        "enunciato": "La conversione A/D campiona il segnale con $\\omega_s\\ge 2\\omega_m$, quantizza i campioni su $L$ livelli e codifica ciascun livello con $b=\\lceil\\log_2 L\\rceil$ bit. La sequenza delle parole costituisce il segnale numerico PCM.",
         "ipotesi": [
-          "Segnale limitato in banda a $\\omega_{m}$ e campionamento ideale con $\\omega_{s} > 2\\omega_{m}$; l’uguaglianza richiede condizioni ulteriori.",
+          "Segnale limitato in banda a $\\omega_{m}$ e campionamento ideale con $\\omega_{s} \\ge 2\\omega_{m}$; l’uguaglianza richiede condizioni ulteriori.",
           "Il quantizzatore ha L livelli e il segnale resta nell’intervallo di ingresso senza sovraccarico."
         ],
         "notazione": [
@@ -21201,8 +21201,8 @@
             "descrizione": "Nuovo esempio: la caratteristica a L=8 livelli nell’intervallo (-M,M). La diagonale è il riferimento senza quantizzazione; i tratti verticali indicano il passo Delta e l’errore epsilon tra campione e livello.",
             "asse_x": {
               "etichetta": "Campione xₙ",
-              "min": -1,
-              "max": 1,
+              "min": -1.2,
+              "max": 1.2,
               "tacche": [
                 {
                   "valore": -1,
@@ -21220,8 +21220,8 @@
             },
             "asse_y": {
               "etichetta": "Livello qₙ",
-              "min": -1,
-              "max": 1,
+              "min": -1.2,
+              "max": 1.2,
               "tacche": [
                 {
                   "valore": -1,
@@ -21394,7 +21394,7 @@
             "annotazioni": [
               {
                 "x": 0.49,
-                "y": 0.49,
+                "y": 0.43,
                 "testo": "εₙ"
               },
               {
@@ -21626,7 +21626,7 @@
           {
             "errore": "Campionare appena sopra la frequenza massima.",
             "perche_sbagliato": "Le repliche possono sovrapporsi; file3 p. 7 riporta un criterio insufficiente.",
-            "correzione": "Usare una frequenza maggiore del doppio della massima frequenza."
+            "correzione": "Usare una frequenza almeno doppia della massima, rispettando le condizioni aggiuntive al limite di uguaglianza."
           },
           {
             "errore": "Confondere campionamento e quantizzazione.",
@@ -21689,7 +21689,7 @@
           "note": "File3 pp. 7-8 descrive i tre passi ma riporta un criterio di frequenza insufficiente; file1 p. 32 riporta il doppio della banda.",
           "punti_aperti": [
             "File3 p. 7 indica una frequenza maggiore della sola frequenza massima: chiarire il refuso rispetto a file1 p. 32.",
-            "La condizione stretta scelta qui evita il caso critico al bordo; confronto con il libro adottato NON TROVATO.",
+            "Al limite di uguaglianza servono le condizioni ulteriori indicate nelle ipotesi; confronto con il libro adottato NON TROVATO.",
             "La forma d’onda del segnale numerico e la codifica di linea non sono state confrontate con file1 pp. 33-34: NON TROVATO."
           ]
         },
@@ -21769,6 +21769,38 @@
           {
             "simbolo": "X(\\omega)",
             "significato": "Trasformata del segnale originale."
+          },
+          {
+            "simbolo": "T",
+            "significato": "Periodo di campionamento."
+          },
+          {
+            "simbolo": "\\omega_m",
+            "significato": "Massima pulsazione del segnale originale limitato in banda."
+          },
+          {
+            "simbolo": "s_q(t)",
+            "significato": "Segnale PAM ottenuto dai livelli quantizzati decodificati."
+          },
+          {
+            "simbolo": "s(t),S(\\omega)",
+            "significato": "PAM ideale e suo spettro quando si trascura la quantizzazione."
+          },
+          {
+            "simbolo": "S_b(\\omega)",
+            "significato": "Spettro all’uscita del passa-basso prima dell’equalizzazione."
+          },
+          {
+            "simbolo": "x_r(t),X_r(\\omega)",
+            "significato": "Segnale ricostruito e suo spettro dopo l’equalizzazione."
+          },
+          {
+            "simbolo": "\\varepsilon(t)",
+            "significato": "Errore di ricostruzione rispetto al segnale originale: $x_r(t)-x(t)$."
+          },
+          {
+            "simbolo": "\\tau",
+            "significato": "Durata dell’impulso rettangolare considerato nell’approssimazione."
           }
         ],
         "varianti_notazione": [
@@ -22461,7 +22493,7 @@
             "id": "ordine-significativo-carson",
             "tipo": "grafico",
             "titolo": "Ordine significativo stimato",
-            "descrizione": "Nuove rispetto al passo precedente: le annotazioni dell’ordine significativo stimato nell’esempio con indice due. Le righe restano schematiche e la scala non cambia.",
+            "descrizione": "Nuovi rispetto al passo precedente: i marcatori degli ordini significativi stimati nell’esempio con indice due. Le righe restano schematiche e la scala non cambia.",
             "asse_x": {
               "etichetta": "Scostamento dalla portante (unità di ωm)",
               "min": -4,
@@ -22506,18 +22538,20 @@
                   ]
                 ],
                 "etichetta": "Righe indicative"
-              }
-            ],
-            "annotazioni": [
-              {
-                "x": -3,
-                "y": 0.1,
-                "testo": "n ≈ −3"
               },
               {
-                "x": 3,
-                "y": 0.1,
-                "testo": "n ≈ 3"
+                "stile": "punti",
+                "punti": [
+                  [
+                    -3,
+                    0.1
+                  ],
+                  [
+                    3,
+                    0.1
+                  ]
+                ],
+                "etichetta": "Ordini stimati: n = −3 e n = 3"
               }
             ]
           },
@@ -22572,6 +22606,20 @@
                 "etichetta": "Righe indicative"
               },
               {
+                "stile": "punti",
+                "punti": [
+                  [
+                    -3,
+                    0.1
+                  ],
+                  [
+                    3,
+                    0.1
+                  ]
+                ],
+                "etichetta": "Ordini stimati: n = −3 e n = 3"
+              },
+              {
                 "stile": "linea",
                 "etichetta": "Banda stimata",
                 "punti": [
@@ -22592,18 +22640,6 @@
                     0.82
                   ]
                 ]
-              }
-            ],
-            "annotazioni": [
-              {
-                "x": -3,
-                "y": 0.1,
-                "testo": "n ≈ −3"
-              },
-              {
-                "x": 3,
-                "y": 0.1,
-                "testo": "n ≈ 3"
               }
             ]
           }
@@ -22779,7 +22815,7 @@
             "n": 1,
             "testo": "Demodulare una singola modulazione a prodotto con riferimento locale.",
             "formula": "2x(t)\\cos(\\omega_0t)\\cos(\\omega_0t-\\Delta)=x(t)\\cos\\Delta+x(t)\\cos(2\\omega_0t-\\Delta)",
-            "perche": "Si usa $2\\cos a\\cos b=\\cos(a-b)+\\cos(a+b)$: il fattore 2 lascia $x\\cos\\Delta$ in banda base senza il fattore un mezzo.",
+            "perche": "Per l’identità prodotto-somma $$\\begin{gathered}2\\cos a\\cos b\\\\ =\\cos(a-b)\\\\ +\\cos(a+b)\\end{gathered}$$ il fattore 2 lascia $x\\cos\\Delta$ in banda base senza il fattore un mezzo.",
             "figura": "demodulatore-dsb"
           },
           {
@@ -22817,20 +22853,26 @@
           },
           {
             "n": 7,
-            "testo": "Filtrare il secondo ramo e rappresentare il vettore iniziale delle due componenti.",
+            "testo": "Filtrare il secondo ramo.",
             "formula": "\\hat{x}_2=x_2\\cos\\Delta+x_1\\sin\\Delta",
-            "perche": "Le identità prodotto-somma e il secondo filtro lasciano una combinazione con segno opposto al termine incrociato del primo ramo.",
-            "figura": "rotazione-vettore-iniziale"
+            "perche": "Le identità prodotto-somma e il secondo filtro lasciano una combinazione con segno opposto al termine incrociato del primo ramo."
           },
           {
             "n": 8,
+            "testo": "Rappresentare il vettore originale come inviluppo complesso.",
+            "formula": "x_1+jx_2",
+            "perche": "Le componenti in fase e in quadratura sono le coordinate del vettore complesso associato al messaggio.",
+            "figura": "rotazione-vettore-iniziale"
+          },
+          {
+            "n": 9,
             "testo": "Leggere le due relazioni come una rotazione dell’inviluppo complesso.",
             "formula": "s(t)=\\operatorname{Re}\\{(x_1+jx_2)e^{j\\omega_0t}\\},\\qquad\\hat{x}_1+j\\hat{x}_2=e^{j\\Delta}(x_1+jx_2)",
             "perche": "La moltiplicazione per l’esponenziale di fase combina le due uscite appena ricavate e ruota il vettore senza cambiarne il modulo.",
             "figura": "rotazione-assi"
           },
           {
-            "n": 9,
+            "n": 10,
             "testo": "Considerare il riferimento locale senza errore di fase.",
             "formula": "\\Delta=0\\quad\\Longrightarrow\\quad(\\hat{x}_1,\\hat{x}_2)=(x_1,x_2)",
             "perche": "Il coseno dell’errore vale uno e il seno vale zero: ciascun filtro restituisce soltanto il proprio messaggio.",
@@ -23264,20 +23306,13 @@
                   ]
                 ]
               }
-            ],
-            "annotazioni": [
-              {
-                "x": 0.32,
-                "y": 0.36,
-                "testo": "Δ"
-              }
             ]
           },
           {
             "id": "catena",
             "tipo": "blocchi",
-            "titolo": "Demodulazione coerente",
-            "descrizione": "Il segnale modulato entra nel demodulatore in quadratura e passa ai filtri che estraggono le due componenti.",
+            "titolo": "Demodulazione coerente senza errore di fase",
+            "descrizione": "Con riferimento locale senza scarto di fase, il demodulatore in quadratura e i due filtri restituiscono separatamente i due messaggi originali.",
             "blocchi": [
               {
                 "id": "b0",
@@ -23288,21 +23323,21 @@
               },
               {
                 "id": "b1",
-                "etichetta": "Demodulatore I/Q",
+                "etichetta": "I/Q, Δ=0",
                 "forma": "rettangolo",
                 "colonna": 1,
                 "riga": 0
               },
               {
                 "id": "b2",
-                "etichetta": "Passa-basso",
+                "etichetta": "Filtri I e Q",
                 "forma": "rettangolo",
                 "colonna": 2,
                 "riga": 0
               },
               {
                 "id": "b3",
-                "etichetta": "x̂₁, x̂₂",
+                "etichetta": "x₁, x₂",
                 "forma": "uscita",
                 "colonna": 3,
                 "riga": 0
@@ -23399,9 +23434,9 @@
         "verifica": {
           "stato": "da_verificare",
           "data": "2026-10-29",
-          "note": "File3 pp. 23-24 e 27 e file1 pp. 37 e 39 riportano il modulatore a prodotto e la QAM; i segni seguono il riferimento locale dichiarato.",
+          "note": "File3 pp. 23-24 e 27 e file1 pp. 37 e 39 riportano il modulatore a prodotto e la QAM; i segni seguono il riferimento locale dichiarato. Il caso con errore di fase è stato confrontato con le immagini di file1 p. 40 e file3 p. 24.",
           "punti_aperti": [
-            "Confrontare tutti i passaggi del caso con errore di fase con file1 p. 40 e con la convenzione di segno del testo adottato.",
+            "Confronto della convenzione di segno con il testo adottato: NON TROVATO.",
             "Corrispondenza dei riferimenti p. 9.34 e p. 9.36 con il libro: NON TROVATO."
           ]
         },
@@ -25390,32 +25425,32 @@
             "id": "filtro-complesso-iq",
             "tipo": "blocchi",
             "titolo": "Modello complesso in quadratura",
-            "descrizione": "Quarto stato: un esempio di filtro complesso si divide in un ramo diretto e un ramo in quadratura. La loro somma realizza H zero come H i più j volte H q; la decomposizione è un modello e non garantisce causalità o stabilità.",
+            "descrizione": "Quarto stato: l’inviluppo complesso I si divide in due rami filtrati da H i e H q. Il secondo è moltiplicato per j, cioè sfasato di un quarto di giro; la somma realizza H zero come H i più j volte H q. È un modello e non garantisce causalità o stabilità.",
             "blocchi": [
               {
                 "id": "ingresso",
-                "etichetta": "I complesso",
+                "etichetta": "I",
                 "forma": "ingresso",
                 "colonna": 0,
-                "riga": 1
+                "riga": 0
               },
               {
                 "id": "parte-i",
-                "etichetta": "Hᵢ",
+                "etichetta": "H_i",
                 "forma": "rettangolo",
                 "colonna": 1,
                 "riga": 0
               },
               {
                 "id": "parte-q",
-                "etichetta": "Hᵩ",
+                "etichetta": "H_q",
                 "forma": "rettangolo",
-                "colonna": 1,
+                "colonna": 0,
                 "riga": 2
               },
               {
                 "id": "quadratura",
-                "etichetta": "× j (π/2)",
+                "etichetta": "×j (π/2)",
                 "forma": "rettangolo",
                 "colonna": 2,
                 "riga": 2
@@ -25424,15 +25459,15 @@
                 "id": "somma",
                 "etichetta": "+",
                 "forma": "sommatore",
-                "colonna": 3,
-                "riga": 1
+                "colonna": 2,
+                "riga": 0
               },
               {
                 "id": "uscita",
-                "etichetta": "Iᵣ complesso",
+                "etichetta": "Iᵣ",
                 "forma": "uscita",
-                "colonna": 4,
-                "riga": 1
+                "colonna": 3,
+                "riga": 0
               }
             ],
             "collegamenti": [
@@ -25666,13 +25701,13 @@
           {
             "n": 4,
             "testo": "Isolare il contributo della banda laterale superiore.",
-            "formula": "s_s(t)=\\tfrac12\\int_{\\omega_i}^{\\omega_m}V(\\omega)\\cos[(\\omega_0+\\omega)t-\\varphi(\\omega)]\\,d\\omega",
+            "formula": "s_s(t)=\\tfrac12\\int_{\\omega_i}^{\\omega_m}\\!d\\omega\\,V(\\omega)\\cos[(\\omega_0+\\omega)t-\\varphi(\\omega)]",
             "perche": "Nel termine somma la pulsazione della portante si aggiunge a quella del messaggio, mentre la sua fase mantiene il segno."
           },
           {
             "n": 5,
             "testo": "Isolare il contributo della banda laterale inferiore con il segno corretto della fase.",
-            "formula": "s_i(t)=\\tfrac12\\int_{\\omega_i}^{\\omega_m}V(\\omega)\\cos[(\\omega_0-\\omega)t+\\varphi(\\omega)]\\,d\\omega",
+            "formula": "s_i(t)=\\tfrac12\\int_{\\omega_i}^{\\omega_m}\\!d\\omega\\,V(\\omega)\\cos[(\\omega_0-\\omega)t+\\varphi(\\omega)]",
             "perche": "Nella differenza si sottrae tutto l’argomento del messaggio: il meno davanti alla sua fase diventa un più."
           },
           {
@@ -25697,9 +25732,9 @@
           },
           {
             "n": 9,
-            "testo": "Sovrapporre le bande senza perdere il confronto tra ampiezze.",
+            "testo": "Confrontare le ampiezze delle due bande laterali distinte.",
             "formula": "V_s(\\omega_0+\\Omega)=V_i(\\omega_0-\\Omega)=\\tfrac12V(\\Omega)",
-            "perche": "Le bande positive non si sovrappongono perché la portante supera la banda del messaggio; la figura le riunisce.",
+            "perche": "Ai due scostamenti opposti dalla portante le ampiezze coincidono; il tratteggio è una guida di confronto, non uno spettro aggiuntivo.",
             "figura": "spettri-sovrapposti"
           },
           {
@@ -25993,8 +26028,8 @@
           {
             "id": "spettri-sovrapposti",
             "tipo": "grafico",
-            "titolo": "Bande laterali sovrapposte",
-            "descrizione": "Nuova in questo stato: l’annotazione che identifica la sovrapposizione completa delle bande. Le quattro serie e la scala restano identiche al passo precedente.",
+            "titolo": "Confronto fra le bande laterali",
+            "descrizione": "Nuova rispetto al passo precedente: la guida tratteggiata collega due punti di uguale ampiezza, equidistanti dalla portante. Non rappresenta uno spettro; le bande rimangono distinte.",
             "asse_x": {
               "etichetta": "Pulsazione positiva ω",
               "min": 0,
@@ -26091,13 +26126,20 @@
                     -0.2
                   ]
                 ]
-              }
-            ],
-            "annotazioni": [
+              },
               {
-                "x": 5,
-                "y": 1,
-                "testo": "Bande complete"
+                "stile": "tratteggio",
+                "etichetta": "Guida: ampiezze uguali",
+                "punti": [
+                  [
+                    4,
+                    0.25
+                  ],
+                  [
+                    6,
+                    0.25
+                  ]
+                ]
               }
             ]
           }
