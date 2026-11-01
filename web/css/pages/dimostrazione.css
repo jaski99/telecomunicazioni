@@ -125,3 +125,23 @@
   .dim-menu__corpo { position: static; margin: 0; padding: 0; border: 0; box-shadow: none; background: transparent; }
   .dim-indice { display: block; }
 }
+
+/* Idea in apertura, derivata dal campo dimostrazione.idea. */
+.dim-chiave { margin: 0 0 var(--s-4); padding: var(--s-4); border-left: 2px solid var(--c-primary); border-radius: var(--radius); background: var(--c-primary-weak); }
+.dim-chiave p { margin: 0; }
+.dim-chiave .callout__title { margin-bottom: var(--s-2); font-size: var(--fs-body); font-weight: 700; }
+
+/* Le motivazioni dei passi: note della dimostrazione, con una classe propria (.dim-nota)
+   indipendente da .nota-margine del nodo, che da 1200 px ha un filetto da nota a margine. */
+@media (min-width: 1200px) {
+  .step__corpo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(12ch, var(--margin-col, 220px));
+    grid-template-areas: "testo nota" "formula formula" "figura figura";
+    align-items: start; column-gap: var(--s-4);
+  }
+  .step__testo { grid-area: testo; min-width: 0; }
+  .step__corpo > .dim-nota { grid-area: nota; min-width: 0; }
+  .step__corpo > .passo-formula { grid-area: formula; min-width: 0; }
+  .step__figura { grid-area: figura; min-width: 0; }
+}
