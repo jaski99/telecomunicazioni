@@ -35121,7 +35121,7 @@
             "id": "finestra-efficienza-due-regimi",
             "tipo": "grafico",
             "titolo": "La finestra limita il ramo crescente",
-            "descrizione": "Aggiunge al ramo saturo la retta del regime limitato dalla finestra, senza cambiare assi o serie precedente. Nello stesso esempio il minimo raccorda i due rami alla soglia di 1,25 trame: una trama rende 0,76, da due trame si raggiunge 0,95. Il richiamo testuale della finestra unitaria è staccato dalla retta per non coprirla.",
+            "descrizione": "Aggiunge al ramo saturo la retta del regime limitato dalla finestra, senza cambiare assi o serie precedente. Nello stesso esempio il minimo raccorda i due rami alla soglia di 1,25 trame: una trama rende 0,76, da due trame si raggiunge 0,95.",
             "asse_x": {
               "etichetta": "Finestra W (trame)",
               "min": 0,
@@ -35207,11 +35207,6 @@
                 "x": 1.25,
                 "y": 0.95,
                 "testo": "W* = 1,25"
-              },
-              {
-                "x": 1.6,
-                "y": 0.76,
-                "testo": "W = 1: 0,76"
               }
             ]
           }
@@ -37503,7 +37498,7 @@
               },
               {
                 "x": 4,
-                "y": 0.2,
+                "y": 0.183939721,
                 "testo": "La coda è identica"
               }
             ]

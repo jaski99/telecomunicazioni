@@ -1136,10 +1136,15 @@ def test_e5r1_richiami_finestra_e_freccia_del_primo_bit():
     prima = fig(d, "finestra-efficienza-soglia")
     dopo = fig(d, "finestra-efficienza-due-regimi")
     assert prima["asse_y"] == dopo["asse_y"] and prima["asse_y"]["max"] == 1.2
-    assert prima["annotazioni"] == dopo["annotazioni"][:1] == [
+    assert prima["annotazioni"] == dopo["annotazioni"] == [
         {"x": 1.25, "y": 0.95, "testo": "W* = 1,25"}
     ]
-    assert dopo["annotazioni"][1] == {"x": 1.6, "y": 0.76, "testo": "W = 1: 0,76"}
+    # E5r2: il pallino deve essere un punto vero; il testo per W=1 resta sotto il grafico.
+    assert [1, 0.76] in dopo["serie"][1]["punti"]
+    assert "una trama rende 0,76" in dopo["descrizione"]
+    assert "staccato dalla retta" not in dopo["descrizione"]
+    punti = {tuple(p) for serie in dopo["serie"] for p in serie["punti"]}
+    assert all((a["x"], a["y"]) in punti for a in dopo["annotazioni"])
     f = fig(d, "finestra-insufficiente")
     ritorno = next(a for a in f["frecce"] if a["etichetta"] == "I: ritorno")
     inviato = next(iv for iv in f["intervalli"] if iv["corsia"] == "riscontro")
@@ -1155,3 +1160,8 @@ def test_e5r1_tacche_densita_e_accento():
         {"valore": i / 10, "etichetta": "0" if i == 0 else f"0,{i}"} for i in range(7)
     ]
     assert "Il tasso è mezzo" in f["descrizione"]
+    # E5r2: le annotazioni hanno un pallino; entrambe devono appartenere alla curva.
+    punti = {tuple(p) for serie in f["serie"] for p in serie["punti"]}
+    assert all((a["x"], a["y"]) in punti for a in f["annotazioni"])
+    coda = next(a for a in f["annotazioni"] if a["testo"] == "La coda è identica")
+    assert (coda["x"], coda["y"]) == (4, dict(f["serie"][1]["punti"])[4])
