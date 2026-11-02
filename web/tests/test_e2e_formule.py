@@ -190,7 +190,7 @@ def test_tutte_figure_blocchi_geometria_reale(server, width, height):
                 unavailable: host.querySelectorAll('.figura-non-disponibile').length,
                 pageWidth: document.scrollingElement.scrollWidth, viewport: innerWidth, issues};
             }''')
-            assert risultato["count"] == risultato["rendered"] == 20
+            assert risultato["count"] == risultato["rendered"] == 26
             assert risultato["unavailable"] == 0
             assert risultato["pageWidth"] <= risultato["viewport"]
             assert not risultato["issues"], risultato["issues"]
@@ -248,7 +248,10 @@ def test_nuovi_moduli_figura_disponibili_dopo_ricarica_offline(server):
             context.set_offline(True)
             page.goto(f"{server}/#/dim/dim-conversione-ad", wait_until="load")
             page.reload(wait_until="load")
-            page.locator('.sempre-visibile #catena svg.figura-svg').wait_for()
+            # La catena non è più orfana: viene resa quando si rivela il primo passo.
+            page.get_by_role('button', name='Prossimo passo').click()
+            page.locator('#passo-1 #catena svg.figura-svg').wait_for()
+            assert page.locator('#passo-1 .figura-non-disponibile').count() == 0
             assert page.locator('.sempre-visibile .figura-non-disponibile').count() == 0
             assert page.locator('h1').count() == 1
             assert not errori, errori
@@ -304,7 +307,7 @@ def test_testo_dentro_viewbox_per_ogni_figura_del_grafo(server, width, height):
               return {count: specs.length, rendered: host.querySelectorAll('svg.figura-svg').length,
                 issues, scroll: document.scrollingElement.scrollWidth, viewport: innerWidth};
             }''')
-            assert risultato["count"] == risultato["rendered"] == 74
+            assert risultato["count"] == risultato["rendered"] == 92
             assert risultato["scroll"] <= risultato["viewport"]
             assert not risultato["issues"], risultato["issues"]
             assert not errori, errori
@@ -485,5 +488,82 @@ def test_b9_punteggiatura_inline_non_orfana(server, width, height, dim_id):
             assert risultati == [], (dim_id, width, risultati)
             assert not errori, (dim_id, width, errori)
             page.close()
+        finally:
+            browser.close()
+
+
+@pytest.mark.parametrize('width,height', [(360, 780), (390, 844), (768, 1024), (1440, 900)])
+def test_e4_giro2_righe_prodotto_e_figure_legibili(server, width, height):
+    """I prodotti non sono spezzati, le bande iniziano dall'integrale e i marcatori sono visibili."""
+    formule = [
+        ('dim-modulazione-prodotto-qam-errore-fase', 1, 'qam'),
+        ('dim-spettri-modulazione-prodotto', 4, 'superiore'),
+        ('dim-spettri-modulazione-prodotto', 5, 'inferiore'),
+    ]
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        try:
+            page = browser.new_page(viewport={'width': width, 'height': height})
+            errori = console_errors(page)
+            for dim_id, numero, caso in formule:
+                page.goto(f'{server}/#/dim/{dim_id}?passo={numero}', wait_until='networkidle')
+                page.wait_for_selector(f'#passo-{numero}.step--rivelato')
+                page.evaluate('document.fonts.ready')
+                misura = page.evaluate('''n => {
+                  const box = document.querySelector(`#passo-${n} .passo-formula .scroll-x`);
+                  const limite = box.getBoundingClientRect();
+                  const vlist = box.querySelector('.katex-html .mtable > .col-align-c > .vlist-t > .vlist-r > .vlist');
+                  const righe = [...vlist.children].map(e => e.querySelector(':scope > .mord')).filter(Boolean).map(e => {
+                    const r = e.getBoundingClientRect();
+                    return {testo: e.textContent.replaceAll('\\u200b', ''), top: r.top,
+                            dentro: r.left >= limite.left - 1 && r.right <= limite.right + 1};
+                  });
+                  return {righe, scorre: box.scrollWidth > box.clientWidth,
+                    overflow: document.scrollingElement.scrollWidth - document.scrollingElement.clientWidth,
+                    katex: document.querySelectorAll('.katex-error,.katex-err').length};
+                }''', numero)
+                assert misura['overflow'] == 0 and not misura['scorre'] and misura['katex'] == 0, (width, caso, misura)
+                righe = misura['righe']
+                assert all(r['dentro'] for r in righe), (width, caso, misura)
+                assert all(a['top'] < b['top'] for a, b in zip(righe, righe[1:])), (width, caso, misura)
+                if caso == 'qam':
+                    assert [r['testo'] for r in righe] == [
+                        '2x(t)cos(ω0t)cos(ω0t−Δ)', '=x(t)cosΔ', '+x(t)cos(2ω0t−Δ)']
+                else:
+                    assert len(righe) == 2
+                    assert righe[0]['testo'].startswith('ss(t)=' if caso == 'superiore' else 'si(t)=')
+                    assert '∫' in righe[0]['testo'] and righe[0]['testo'].endswith('dω')
+                    assert righe[1]['testo'] == ('V(ω)cos[(ω0+ω)t−φ(ω)]' if caso == 'superiore'
+                                                  else 'V(ω)cos[(ω0−ω)t+φ(ω)]')
+
+            page.goto(f'{server}/#/dim/dim-conversione-ad?passo=3', wait_until='networkidle')
+            page.wait_for_selector('#caratteristica-quantizzatore svg.figura-svg')
+            page.evaluate('document.fonts.ready')
+            quant = page.evaluate('''() => {
+              const f = document.querySelector('#caratteristica-quantizzatore');
+              const svg = f.querySelector('svg.figura-svg');
+              const gruppi = [...svg.querySelectorAll('g[clip-path] > g')];
+              const punti = gruppo => {
+                const path = gruppo.querySelector('path'), matrix = path.getScreenCTM();
+                const numeri = path.getAttribute('d').match(/-?(?:\\d+\\.?\\d*|\\.\\d+)(?:e[-+]?\\d+)?/gi).map(Number);
+                const p = [];
+                for (let i = 0; i < numeri.length; i += 2) p.push(new DOMPoint(numeri[i], numeri[i+1]).matrixTransform(matrix));
+                return p;
+              };
+              const err = punti(gruppi[2]), delta = punti(gruppi[3]);
+              return {errorePx: Math.abs(err[1].y - err[0].y), passoPx: Math.abs(delta[2].y - delta[1].y),
+                legenda: f.querySelector('.figure__legend').textContent,
+                annotazioni: [...svg.querySelectorAll('text')].filter(t => /εₙ|Δ/.test(t.textContent)).length,
+                overflow: document.scrollingElement.scrollWidth - document.scrollingElement.clientWidth};
+            }''')
+            assert quant['errorePx'] >= 14 and quant['passoPx'] >= 40, (width, quant)
+            assert 'Errore εₙ' in quant['legenda'] and 'Passo Δ' in quant['legenda']
+            assert quant['annotazioni'] == 0 and quant['overflow'] == 0, (width, quant)
+
+            page.goto(f'{server}/#/dim/dim-quadripoli-passa-basso-equivalente?passo=5', wait_until='networkidle')
+            page.wait_for_selector('#filtro-complesso-iq svg.figura-svg')
+            labels = page.locator('#filtro-complesso-iq svg.figura-svg text').all_text_contents()
+            assert 'Hi' in labels and 'Hq' in labels and not any('_' in label for label in labels), (width, labels)
+            assert not errori, errori
         finally:
             browser.close()
