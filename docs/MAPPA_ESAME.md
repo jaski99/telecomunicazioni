@@ -15,8 +15,8 @@
 | T13 | Tempo residuo in un processo di Poisson | NON TROVATO | `dim-poisson-tempo-residuo` | dim-poisson-tempo-residuo:verificata_file1_file3 |
 | T14 | Equilibrio dei processi nascita-morte | NON TROVATO | `dim-nascita-morte-equilibrio` | dim-nascita-morte-equilibrio:verificata_file1_file3 |
 | T15 | Throughput normalizzato ALOHA | NON TROVATO | `dim-aloha-throughput` | dim-aloha-throughput:verificata_file1_file3 |
-| T16 | Throughput CSMA/CD e parametro a | NON TROVATO | `dim-csma-cd-throughput` | dim-csma-cd-throughput:da_verificare |
-| T17 | Ritardo medio TDMA rispetto a FDMA | NON TROVATO | `dim-ritardo-tdma-fdma` | dim-ritardo-tdma-fdma:da_verificare |
+| T16 | Throughput CSMA/CD e parametro a | NON TROVATO | `dim-csma-cd-throughput` | dim-csma-cd-throughput:verificata_file1_file3 |
+| T17 | Ritardo medio TDMA rispetto a FDMA | NON TROVATO | `dim-ritardo-tdma-fdma` | dim-ritardo-tdma-fdma:verificata_file1_file3 |
 | T2 | Trasformata della funzione impulsiva | NON TROVATO | `dim-impulso-dirac-trasformata` | dim-impulso-dirac-trasformata:verificata_file1_file3 |
 | T3 | Filtro trasversale e funzione di trasferimento | NON TROVATO | `dim-filtro-trasversale` | dim-filtro-trasversale:verificata_file1_file3 |
 | T4 | Risposta impulsiva e funzione di trasferimento | NON TROVATO | `dim-risposta-impulsiva-h` | dim-risposta-impulsiva-h:verificata_file1_file3 |

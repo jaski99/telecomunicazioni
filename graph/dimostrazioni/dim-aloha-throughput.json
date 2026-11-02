@@ -37,6 +37,10 @@
     {
       "simbolo": "P_s",
       "significato": "Probabilità di successo del tentativo di riferimento."
+    },
+    {
+      "simbolo": "\\lambda_r",
+      "significato": "Tasso delle ritrasmissioni: $\\lambda_t=\\lambda+\\lambda_r$, come in lucidi del docente, AccessoMultiplo.pdf, sezione sulle prestazioni di ALOHA."
     }
   ],
   "varianti_notazione": [],
@@ -63,26 +67,34 @@
     },
     {
       "n": 4,
-      "testo": "Ricava la frazione di tentativi con successo.",
-      "formula": "\\lambda=\\lambda_tP_s,\\qquad \\rho=Ge^{-2G}",
-      "perche": "Il tasso di successi è il tasso totale moltiplicato per la probabilità di successo."
-    },
-    {
-      "n": 5,
-      "testo": "Sincronizzando gli slot la finestra vulnerabile diventa uno slot.",
-      "formula": "P_{s,\\mathrm{slot}}=e^{-G},\\qquad \\rho_{\\mathrm{slot}}=Ge^{-G}",
+      "testo": "Individua la finestra vulnerabile con slot sincronizzati e la sua probabilità di successo.",
+      "formula": "|\\text{finestra slot}|=\\tau,\\qquad P_{s,\\mathrm{slot}}=e^{-\\lambda_t\\tau}=e^{-G}",
       "perche": "Solo gli altri tentativi nello stesso slot possono sovrapporsi alla trama di riferimento.",
       "figura": "aloha-finestra-slotted"
     },
     {
-      "n": 6,
+      "n": 5,
+      "testo": "Ricava la frazione di tentativi con successo.",
+      "formula": "\\lambda=\\lambda_tP_s,\\qquad \\rho=Ge^{-2G}",
+      "perche": "Il tasso di successi è il tasso totale moltiplicato per la probabilità di successo.",
+      "figura": "aloha-throughput-puro"
+    },
+    {
+      "testo": "Moltiplica il carico per la probabilità di successo dello slotted e aggiungi la sua curva.",
+      "formula": "\\rho_{\\mathrm{slot}}=G P_{s,\\mathrm{slot}}=Ge^{-G}",
+      "perche": "La normalizzazione è la stessa del puro: varia soltanto la probabilità di non avere concorrenti, perché la finestra vulnerabile è dimezzata.",
+      "figura": "aloha-throughput-puro-slotted",
+      "n": 6
+    },
+    {
+      "n": 7,
       "testo": "Deriva le curve per individuare i massimi e confrontali.",
-      "formula": "\\rho_{\\mathrm{puro}}^{\\prime}=e^{-2G}(1-2G),\\qquad \\rho_{\\mathrm{slot}}^{\\prime}=e^{-G}(1-G)",
+      "formula": "\\begin{aligned}\\rho_{\\mathrm{puro}}^{\\prime}&=e^{-2G}(1-2G)=0\\ \\Rightarrow\\ G=\\tfrac12,\\quad \\rho_{\\max,\\mathrm{puro}}=\\frac1{2e}\\approx0{,}1839\\\\ \\rho_{\\mathrm{slot}}^{\\prime}&=e^{-G}(1-G)=0\\ \\Rightarrow\\ G=1,\\quad \\rho_{\\max,\\mathrm{slot}}=\\frac1e\\approx0{,}3679\\end{aligned}",
       "perche": "Gli esponenziali sono positivi: i cambi di segno delle derivate avvengono a $G=1/2$ e $G=1$.",
       "figura": "aloha-throughput-grafico"
     }
   ],
-  "formula_finale": "\\rho_{\\mathrm{puro}}=Ge^{-2G},\\quad \\rho_{\\mathrm{slot}}=Ge^{-G},\\quad \\rho_{\\max,\\mathrm{puro}}=\\frac1{2e},\\quad \\rho_{\\max,\\mathrm{slot}}=\\frac1e.",
+  "formula_finale": "\\begin{aligned}\\rho_{\\mathrm{puro}}&=Ge^{-2G},&\\rho_{\\max,\\mathrm{puro}}&=\\frac1{2e}\\approx0{,}1839\\quad(G=\\tfrac12),\\\\ \\rho_{\\mathrm{slot}}&=Ge^{-G},&\\rho_{\\max,\\mathrm{slot}}&=\\frac1e\\approx0{,}3679\\quad(G=1).\\end{aligned}",
   "figure": [
     {
       "id": "aloha-finestra-puro",
@@ -235,7 +247,7 @@
       "id": "aloha-throughput-grafico",
       "tipo": "grafico",
       "titolo": "Throughput ALOHA rispetto al traffico",
-      "descrizione": "Due curve: ALOHA puro ha massimo circa 0,184 a G uguale a 0,5; slotted ha massimo circa 0,368 a G uguale a 1.",
+      "descrizione": "Aggiunge i massimi annotati alle due curve già costruite, conservando assi, punti e stili: puro a traffico 0,5 con throughput circa 0,1839, slotted a traffico uno con throughput circa 0,3679. Sono doppi i massimi, non i valori a ogni stesso traffico.",
       "asse_x": {
         "etichetta": "Traffico G (tentativi per durata di trama)",
         "min": 0,
@@ -760,9 +772,797 @@
           "testo": "Massimo slotted: 1/e"
         }
       ]
+    },
+    {
+      "id": "aloha-throughput-puro",
+      "tipo": "grafico",
+      "titolo": "Prima curva: solo ALOHA puro",
+      "descrizione": "Primo stato delle curve: il throughput puro in funzione del traffico totale, incluse le ritrasmissioni. Non sono ancora presenti la curva slotted o le annotazioni dei massimi.",
+      "asse_x": {
+        "etichetta": "Traffico G (tentativi per durata di trama)",
+        "min": 0,
+        "max": 3
+      },
+      "asse_y": {
+        "etichetta": "Throughput ρ (trame riuscite per durata)",
+        "min": 0,
+        "max": 0.42
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "ALOHA puro",
+          "punti": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.05,
+              0.045241871
+            ],
+            [
+              0.1,
+              0.081873075
+            ],
+            [
+              0.15,
+              0.111122733
+            ],
+            [
+              0.2,
+              0.134064009
+            ],
+            [
+              0.25,
+              0.151632665
+            ],
+            [
+              0.3,
+              0.164643491
+            ],
+            [
+              0.35,
+              0.173804856
+            ],
+            [
+              0.4,
+              0.179731586
+            ],
+            [
+              0.45,
+              0.182956347
+            ],
+            [
+              0.5,
+              0.183939721
+            ],
+            [
+              0.55,
+              0.183079096
+            ],
+            [
+              0.6,
+              0.180716527
+            ],
+            [
+              0.65,
+              0.177145665
+            ],
+            [
+              0.7,
+              0.172617875
+            ],
+            [
+              0.75,
+              0.16734762
+            ],
+            [
+              0.8,
+              0.161517214
+            ],
+            [
+              0.85,
+              0.155280995
+            ],
+            [
+              0.9,
+              0.148768999
+            ],
+            [
+              0.95,
+              0.142090188
+            ],
+            [
+              1.0,
+              0.135335283
+            ],
+            [
+              1.05,
+              0.12857925
+            ],
+            [
+              1.1,
+              0.121883474
+            ],
+            [
+              1.15,
+              0.11529767
+            ],
+            [
+              1.2,
+              0.108861544
+            ],
+            [
+              1.25,
+              0.102606248
+            ],
+            [
+              1.3,
+              0.096555652
+            ],
+            [
+              1.35,
+              0.090727442
+            ],
+            [
+              1.4,
+              0.085134088
+            ],
+            [
+              1.45,
+              0.079783669
+            ],
+            [
+              1.5,
+              0.074680603
+            ],
+            [
+              1.55,
+              0.069826264
+            ],
+            [
+              1.6,
+              0.065219526
+            ],
+            [
+              1.65,
+              0.060857226
+            ],
+            [
+              1.7,
+              0.056734559
+            ],
+            [
+              1.75,
+              0.052845421
+            ],
+            [
+              1.8,
+              0.0491827
+            ],
+            [
+              1.85,
+              0.045738524
+            ],
+            [
+              1.9,
+              0.042504467
+            ],
+            [
+              1.95,
+              0.039471727
+            ],
+            [
+              2.0,
+              0.036631278
+            ],
+            [
+              2.05,
+              0.033973985
+            ],
+            [
+              2.1,
+              0.031490711
+            ],
+            [
+              2.15,
+              0.029172402
+            ],
+            [
+              2.2,
+              0.027010148
+            ],
+            [
+              2.25,
+              0.024995242
+            ],
+            [
+              2.3,
+              0.023119222
+            ],
+            [
+              2.35,
+              0.021373901
+            ],
+            [
+              2.4,
+              0.019751393
+            ],
+            [
+              2.45,
+              0.018244129
+            ],
+            [
+              2.5,
+              0.016844867
+            ],
+            [
+              2.55,
+              0.015546704
+            ],
+            [
+              2.6,
+              0.014343067
+            ],
+            [
+              2.65,
+              0.013227724
+            ],
+            [
+              2.7,
+              0.012194769
+            ],
+            [
+              2.75,
+              0.011238621
+            ],
+            [
+              2.8,
+              0.010354018
+            ],
+            [
+              2.85,
+              0.009536002
+            ],
+            [
+              2.9,
+              0.008779909
+            ],
+            [
+              2.95,
+              0.008081362
+            ],
+            [
+              3.0,
+              0.007436257
+            ]
+          ]
+        }
+      ],
+      "annotazioni": []
+    },
+    {
+      "id": "aloha-throughput-puro-slotted",
+      "tipo": "grafico",
+      "titolo": "Si aggiunge la curva slotted",
+      "descrizione": "Aggiunge la curva slotted tratteggiata alla curva pura, identica e ancora prima in legenda. Gli assi non cambiano; non sono ancora annotati i massimi delle due curve.",
+      "asse_x": {
+        "etichetta": "Traffico G (tentativi per durata di trama)",
+        "min": 0,
+        "max": 3
+      },
+      "asse_y": {
+        "etichetta": "Throughput ρ (trame riuscite per durata)",
+        "min": 0,
+        "max": 0.42
+      },
+      "serie": [
+        {
+          "stile": "linea",
+          "etichetta": "ALOHA puro",
+          "punti": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.05,
+              0.045241871
+            ],
+            [
+              0.1,
+              0.081873075
+            ],
+            [
+              0.15,
+              0.111122733
+            ],
+            [
+              0.2,
+              0.134064009
+            ],
+            [
+              0.25,
+              0.151632665
+            ],
+            [
+              0.3,
+              0.164643491
+            ],
+            [
+              0.35,
+              0.173804856
+            ],
+            [
+              0.4,
+              0.179731586
+            ],
+            [
+              0.45,
+              0.182956347
+            ],
+            [
+              0.5,
+              0.183939721
+            ],
+            [
+              0.55,
+              0.183079096
+            ],
+            [
+              0.6,
+              0.180716527
+            ],
+            [
+              0.65,
+              0.177145665
+            ],
+            [
+              0.7,
+              0.172617875
+            ],
+            [
+              0.75,
+              0.16734762
+            ],
+            [
+              0.8,
+              0.161517214
+            ],
+            [
+              0.85,
+              0.155280995
+            ],
+            [
+              0.9,
+              0.148768999
+            ],
+            [
+              0.95,
+              0.142090188
+            ],
+            [
+              1.0,
+              0.135335283
+            ],
+            [
+              1.05,
+              0.12857925
+            ],
+            [
+              1.1,
+              0.121883474
+            ],
+            [
+              1.15,
+              0.11529767
+            ],
+            [
+              1.2,
+              0.108861544
+            ],
+            [
+              1.25,
+              0.102606248
+            ],
+            [
+              1.3,
+              0.096555652
+            ],
+            [
+              1.35,
+              0.090727442
+            ],
+            [
+              1.4,
+              0.085134088
+            ],
+            [
+              1.45,
+              0.079783669
+            ],
+            [
+              1.5,
+              0.074680603
+            ],
+            [
+              1.55,
+              0.069826264
+            ],
+            [
+              1.6,
+              0.065219526
+            ],
+            [
+              1.65,
+              0.060857226
+            ],
+            [
+              1.7,
+              0.056734559
+            ],
+            [
+              1.75,
+              0.052845421
+            ],
+            [
+              1.8,
+              0.0491827
+            ],
+            [
+              1.85,
+              0.045738524
+            ],
+            [
+              1.9,
+              0.042504467
+            ],
+            [
+              1.95,
+              0.039471727
+            ],
+            [
+              2.0,
+              0.036631278
+            ],
+            [
+              2.05,
+              0.033973985
+            ],
+            [
+              2.1,
+              0.031490711
+            ],
+            [
+              2.15,
+              0.029172402
+            ],
+            [
+              2.2,
+              0.027010148
+            ],
+            [
+              2.25,
+              0.024995242
+            ],
+            [
+              2.3,
+              0.023119222
+            ],
+            [
+              2.35,
+              0.021373901
+            ],
+            [
+              2.4,
+              0.019751393
+            ],
+            [
+              2.45,
+              0.018244129
+            ],
+            [
+              2.5,
+              0.016844867
+            ],
+            [
+              2.55,
+              0.015546704
+            ],
+            [
+              2.6,
+              0.014343067
+            ],
+            [
+              2.65,
+              0.013227724
+            ],
+            [
+              2.7,
+              0.012194769
+            ],
+            [
+              2.75,
+              0.011238621
+            ],
+            [
+              2.8,
+              0.010354018
+            ],
+            [
+              2.85,
+              0.009536002
+            ],
+            [
+              2.9,
+              0.008779909
+            ],
+            [
+              2.95,
+              0.008081362
+            ],
+            [
+              3.0,
+              0.007436257
+            ]
+          ]
+        },
+        {
+          "stile": "tratteggio",
+          "etichetta": "Slotted ALOHA",
+          "punti": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.05,
+              0.047561471
+            ],
+            [
+              0.1,
+              0.090483742
+            ],
+            [
+              0.15,
+              0.129106196
+            ],
+            [
+              0.2,
+              0.163746151
+            ],
+            [
+              0.25,
+              0.194700196
+            ],
+            [
+              0.3,
+              0.222245466
+            ],
+            [
+              0.35,
+              0.246640831
+            ],
+            [
+              0.4,
+              0.268128018
+            ],
+            [
+              0.45,
+              0.286932668
+            ],
+            [
+              0.5,
+              0.30326533
+            ],
+            [
+              0.55,
+              0.317322396
+            ],
+            [
+              0.6,
+              0.329286982
+            ],
+            [
+              0.65,
+              0.339329755
+            ],
+            [
+              0.7,
+              0.347609713
+            ],
+            [
+              0.75,
+              0.354274915
+            ],
+            [
+              0.8,
+              0.359463171
+            ],
+            [
+              0.85,
+              0.363302692
+            ],
+            [
+              0.9,
+              0.365912694
+            ],
+            [
+              0.95,
+              0.367403972
+            ],
+            [
+              1.0,
+              0.367879441
+            ],
+            [
+              1.05,
+              0.367434637
+            ],
+            [
+              1.1,
+              0.366158192
+            ],
+            [
+              1.15,
+              0.364132285
+            ],
+            [
+              1.2,
+              0.361433054
+            ],
+            [
+              1.25,
+              0.358130996
+            ],
+            [
+              1.3,
+              0.354291331
+            ],
+            [
+              1.35,
+              0.349974352
+            ],
+            [
+              1.4,
+              0.34523575
+            ],
+            [
+              1.45,
+              0.340126918
+            ],
+            [
+              1.5,
+              0.33469524
+            ],
+            [
+              1.55,
+              0.328984359
+            ],
+            [
+              1.6,
+              0.323034429
+            ],
+            [
+              1.65,
+              0.316882349
+            ],
+            [
+              1.7,
+              0.310561991
+            ],
+            [
+              1.75,
+              0.304104401
+            ],
+            [
+              1.8,
+              0.297537999
+            ],
+            [
+              1.85,
+              0.290888758
+            ],
+            [
+              1.9,
+              0.284180377
+            ],
+            [
+              1.95,
+              0.27743444
+            ],
+            [
+              2.0,
+              0.270670566
+            ],
+            [
+              2.05,
+              0.263906552
+            ],
+            [
+              2.1,
+              0.257158499
+            ],
+            [
+              2.15,
+              0.250440939
+            ],
+            [
+              2.2,
+              0.243766948
+            ],
+            [
+              2.25,
+              0.237148255
+            ],
+            [
+              2.3,
+              0.230595341
+            ],
+            [
+              2.35,
+              0.224117531
+            ],
+            [
+              2.4,
+              0.217723088
+            ],
+            [
+              2.45,
+              0.211419287
+            ],
+            [
+              2.5,
+              0.205212497
+            ],
+            [
+              2.55,
+              0.199108248
+            ],
+            [
+              2.6,
+              0.193111303
+            ],
+            [
+              2.65,
+              0.187225715
+            ],
+            [
+              2.7,
+              0.181454884
+            ],
+            [
+              2.75,
+              0.175801618
+            ],
+            [
+              2.8,
+              0.170268175
+            ],
+            [
+              2.85,
+              0.164856314
+            ],
+            [
+              2.9,
+              0.159567338
+            ],
+            [
+              2.95,
+              0.154402133
+            ],
+            [
+              3.0,
+              0.149361205
+            ]
+          ]
+        }
+      ],
+      "annotazioni": []
     }
   ],
-  "a_voce": "Chiamo tau il tempo di un pacchetto, lambda t il tasso totale di tentativi, comprese le ritrasmissioni, e G il prodotto tra i due. Nel puro ALOHA un altro pacchetto causa collisione se inizia entro una durata prima o una dopo l’inizio del riferimento: la finestra è due tau. Il numero di altri tentativi è modellato come Poisson, quindi la probabilità di zero è e alla meno due G. Moltiplico per il traffico e ottengo rho uguale G e alla meno due G. Derivando, il massimo si trova a G uguale mezzo ed è uno su due e. Con slot sincronizzati la finestra è una sola durata: la curva diventa G e alla meno G e il massimo uno su e si ottiene a G uguale uno. Sono doppi i massimi, non necessariamente i valori delle due curve allo stesso carico.",
+  "a_voce": "Chiamo tau la durata di una trama e lambda t il tasso totale dei tentativi: è lambda più lambda r, cioè successi più ritrasmissioni, come nei lucidi del corso. G è il tasso totale per tau, mentre rho conta soltanto i successi. Nel puro ALOHA un concorrente collide se inizia entro una durata prima o dopo il riferimento: la finestra vulnerabile è due tau. Il modello Poisson dà una probabilità di zero concorrenti pari a e alla meno due G. Con slot sincronizzati la finestra è invece tau e la probabilità diventa e alla meno G. Costruisco prima la curva pura moltiplicando G per la probabilità di successo, poi aggiungo la curva slotted sugli stessi assi. Le derivate cambiano segno a G uguale mezzo per il puro e a G uguale uno per lo slotted. Sostituendo ottengo i massimi: uno su due e, circa 0,1839, e uno su e, circa 0,3679. Solo a questo punto li annoto sul grafico. Sono doppi i massimi, che si raggiungono a carichi diversi: non tutti i valori delle due curve allo stesso G.",
   "errori_frequenti": [
     {
       "errore": "Usare $e^{2G}$ per la probabilità di successo.",
@@ -781,30 +1581,36 @@
     }
   ],
   "versione_compatta": [
-    "$G=\\lambda_t\\tau$ e $\\rho=\\lambda\\tau$.",
-    "Puro: finestra $2\\tau$, $P_s=e^{-2G}$, $\\rho=Ge^{-2G}$.",
-    "Slotted: finestra $\\tau$, $\\rho=Ge^{-G}$.",
-    "Massimi: $1/(2e)$ a $G=0{,}5$ e $1/e$ a $G=1$."
+    "$\\lambda_t=\\lambda+\\lambda_r$, $G=\\lambda_t\\tau$ e $\\rho=\\lambda\\tau$.",
+    "Puro: finestra $2\\tau$, $P_s=e^{-2G}$; slotted: finestra $\\tau$, $P_s=e^{-G}$.",
+    "Le curve si costruiscono nell’ordine $\\rho_{\\mathrm{puro}}=Ge^{-2G}$, poi $\\rho_{\\mathrm{slot}}=Ge^{-G}$.",
+    "Le derivate si annullano a $G=1/2$ e $G=1$: massimi $1/(2e)\\approx0{,}1839$ e $1/e\\approx0{,}3679$.",
+    "Raddoppiano i massimi, non il throughput a ogni stesso carico."
   ],
   "a_buchi": {
-    "testo": "Nel puro la finestra dura ___1___ e la probabilità di successo è ___2___ perché occorrono ___3___ tentativi concorrenti. Nello slotted il massimo è ___4___.",
+    "testo": "Nel puro la finestra dura ___1___ e la probabilità di successo è ___2___ perché occorrono ___3___ tentativi concorrenti. Il massimo puro vale ___4___, quello slotted ___5___.",
     "soluzioni": {
       "1": [
-        "$2\\tau$",
-        "2\\tau",
+        "2 tau",
         "due durate"
       ],
       "2": [
-        "$e^{-2G}$",
-        "e^{-2G}"
+        "exp(-2G)",
+        "esponenziale di meno due G"
       ],
       "3": [
         "zero",
         "0"
       ],
       "4": [
-        "$1/e$",
-        "1/e"
+        "1/(2e)",
+        "0,1839",
+        "0.1839"
+      ],
+      "5": [
+        "1/e",
+        "0,3679",
+        "0.3679"
       ]
     }
   },
@@ -824,6 +1630,10 @@
     {
       "domanda": "A quali carichi si hanno i massimi?",
       "risposta": "A $G=0{,}5$ per il puro e $G=1$ per lo slotted."
+    },
+    {
+      "domanda": "Confronta puro e slotted prima a G = 0,5 e poi a G = 1: il rapporto è sempre due?",
+      "risposta": "Calcolo dalle curve: a $G=0{,}5$, puro $0{,}1839$ e slotted $0{,}3033$; a $G=1$, puro $0{,}1353$ e slotted $0{,}3679$. Il fattore due riguarda i massimi $1/(2e)$ e $1/e$, non lo stesso carico."
     }
   ],
   "collegamenti": [
@@ -842,15 +1652,17 @@
     },
     {
       "chiave": "FILE1",
-      "rif": "file1 pp. 45–46: slide 5 Accesso multiplo citata, non consultata"
+      "rif": "file1 pp. 45–46: slide 5 Accesso multiplo citata; testo dei lucidi ora consultato"
+    },
+    {
+      "chiave": "LUCIDI_CASONI",
+      "rif": "AccessoMultiplo.pdf, sezioni Il protocollo ALOHA: prestazioni e Il protocollo slotted ALOHA; testo consultato, nessun riferimento al libro"
     }
   ],
   "verifica": {
     "stato": "verificata_file1_file3",
-    "data": "2026-10-28",
-    "note": "A10: la riga testuale in file3 p. 20 omette il meno, un probabile refuso; la formula successiva nello stesso file e file1 p. 46 hanno $e^{-2G}$. Non è un confronto diretto con i lucidi.",
-    "punti_aperti": [
-      "Confronto diretto con la slide del docente: NON TROVATO."
-    ]
+    "data": "2026-10-30",
+    "note": "A10: il refuso di segno in file3 p. 20 è confermato dall’immagine; file1 pp. 45–46 e il testo dei lucidi del docente, AccessoMultiplo.pdf, confermano $\\lambda_t=\\lambda+\\lambda_r$, le curve, i carichi dei massimi e i valori esatti $1/(2e)$ e $1/e$. Le approssimazioni 0,1839 e 0,3679 sono ricalcolate dai valori esatti, non nuove misure.",
+    "punti_aperti": []
   }
 }
