@@ -190,7 +190,7 @@ def test_tutte_figure_blocchi_geometria_reale(server, width, height):
                 unavailable: host.querySelectorAll('.figura-non-disponibile').length,
                 pageWidth: document.scrollingElement.scrollWidth, viewport: innerWidth, issues};
             }''')
-            assert risultato["count"] == risultato["rendered"] == 26
+            assert risultato["count"] == risultato["rendered"] == 29
             assert risultato["unavailable"] == 0
             assert risultato["pageWidth"] <= risultato["viewport"]
             assert not risultato["issues"], risultato["issues"]
@@ -307,7 +307,7 @@ def test_testo_dentro_viewbox_per_ogni_figura_del_grafo(server, width, height):
               return {count: specs.length, rendered: host.querySelectorAll('svg.figura-svg').length,
                 issues, scroll: document.scrollingElement.scrollWidth, viewport: innerWidth};
             }''')
-            assert risultato["count"] == risultato["rendered"] == 92
+            assert risultato["count"] == risultato["rendered"] == 106
             assert risultato["scroll"] <= risultato["viewport"]
             assert not risultato["issues"], risultato["issues"]
             assert not errori, errori

@@ -324,7 +324,7 @@
       "id": "poisson-densita-condizionata",
       "tipo": "grafico",
       "titolo": "Densità iniziale e densità condizionata traslata",
-      "descrizione": "Nuovo confronto delle due densità: quella dell’interarrivo parte dall’origine, quella condizionata a nessun arrivo fino a t zero parte da t zero uguale a due secondi ed è tratteggiata. Il tasso e mezzo arrivo al secondo: dopo traslazione la coda è identica, non è la densità non condizionata lasciata senza normalizzazione.",
+      "descrizione": "Nuovo confronto delle due densità: quella dell’interarrivo parte dall’origine, quella condizionata a nessun arrivo fino a t zero parte da t zero uguale a due secondi ed è tratteggiata. Il tasso è mezzo arrivo al secondo: dopo traslazione la coda è identica, non è la densità non condizionata lasciata senza normalizzazione.",
       "asse_x": {
         "etichetta": "Tempo assoluto t (s)",
         "min": 0,
@@ -333,7 +333,37 @@
       "asse_y": {
         "etichetta": "Densità (s⁻¹)",
         "min": 0,
-        "max": 0.6
+        "max": 0.6,
+        "tacche": [
+          {
+            "valore": 0.0,
+            "etichetta": "0"
+          },
+          {
+            "valore": 0.1,
+            "etichetta": "0,1"
+          },
+          {
+            "valore": 0.2,
+            "etichetta": "0,2"
+          },
+          {
+            "valore": 0.3,
+            "etichetta": "0,3"
+          },
+          {
+            "valore": 0.4,
+            "etichetta": "0,4"
+          },
+          {
+            "valore": 0.5,
+            "etichetta": "0,5"
+          },
+          {
+            "valore": 0.6,
+            "etichetta": "0,6"
+          }
+        ]
       },
       "serie": [
         {

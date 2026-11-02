@@ -341,7 +341,7 @@
       "id": "finestra-insufficiente",
       "tipo": "temporale",
       "titolo": "Finestra insufficiente: due trame e pausa",
-      "descrizione": "Rispetto alla lettura del ciclo, evidenzia ora la finestra insufficiente di due trame: dopo due secondi il mittente si ferma fino al primo ACK completo a tre secondi. Sono distinti serializzazione, andata, ACK e ritorno; esempio calcolato, non misura dei lucidi.",
+      "descrizione": "Rispetto alla lettura del ciclo, evidenzia ora la finestra insufficiente di due trame: dopo due secondi il mittente si ferma fino al primo ACK completo a tre secondi. Le frecce di andata e ritorno seguono il primo bit e indicano la stessa propagazione. Sono distinti serializzazione, ACK e attesa; esempio calcolato, non misura dei lucidi.",
       "asse_t": {
         "etichetta": "Tempo (s)",
         "min": 0,
@@ -438,11 +438,11 @@
         {
           "da": {
             "corsia": "riscontro",
-            "t": 2.5
+            "t": 1.5
           },
           "a": {
             "corsia": "ack-ricevuto",
-            "t": 3
+            "t": 2
           },
           "etichetta": "I: ritorno"
         },
@@ -520,7 +520,7 @@
       "asse_y": {
         "etichetta": "Efficienza utile η",
         "min": 0,
-        "max": 1,
+        "max": 1.2,
         "tacche": [
           {
             "valore": 0,
@@ -564,7 +564,7 @@
       "id": "finestra-efficienza-due-regimi",
       "tipo": "grafico",
       "titolo": "La finestra limita il ramo crescente",
-      "descrizione": "Aggiunge al ramo saturo la retta del regime limitato dalla finestra, senza cambiare assi o serie precedente. Nello stesso esempio il minimo raccorda i due rami alla soglia di 1,25 trame: una trama rende 0,76, da due trame si raggiunge 0,95.",
+      "descrizione": "Aggiunge al ramo saturo la retta del regime limitato dalla finestra, senza cambiare assi o serie precedente. Nello stesso esempio il minimo raccorda i due rami alla soglia di 1,25 trame: una trama rende 0,76, da due trame si raggiunge 0,95. Il richiamo testuale della finestra unitaria è staccato dalla retta per non coprirla.",
       "asse_x": {
         "etichetta": "Finestra W (trame)",
         "min": 0,
@@ -595,7 +595,7 @@
       "asse_y": {
         "etichetta": "Efficienza utile η",
         "min": 0,
-        "max": 1,
+        "max": 1.2,
         "tacche": [
           {
             "valore": 0,
@@ -652,7 +652,7 @@
           "testo": "W* = 1,25"
         },
         {
-          "x": 1,
+          "x": 1.6,
           "y": 0.76,
           "testo": "W = 1: 0,76"
         }

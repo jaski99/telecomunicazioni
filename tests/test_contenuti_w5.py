@@ -1054,9 +1054,15 @@ def test_b7_invarianti_per_campo_e_id_di_correzione(node_id):
     assert len(prima["passi"]) == len(PASSI_ECCEZIONI_E5[node_id])
     for originale in prima["figure"]:
         attuale = fig(dopo, originale["id"])
-        assert originale.keys() == attuale.keys()
-        for key in originale.keys() - FIGURE_ECCEZIONI_E5.get(originale["id"], set()):
-            assert originale[key] == attuale[key], (node_id, originale["id"], key)
+        attesa = deepcopy(originale)
+        if originale["id"] == "tdma-fdma-confronto-temporale":
+            # E5r1 §3c autorizza la sola rimozione delle etichette ridondanti:
+            # tempi, corsie, stili, ordine, assi e marcatori restano invarianti.
+            for intervallo in attesa["intervalli"]:
+                intervallo.pop("etichetta")
+        assert attesa.keys() == attuale.keys()
+        for key in attesa.keys() - FIGURE_ECCEZIONI_E5.get(originale["id"], set()):
+            assert attesa[key] == attuale[key], (node_id, originale["id"], key)
     assert next(s for s in prima["fonti"] if s["chiave"] == "FILE2") == next(s for s in dopo["fonti"] if s["chiave"] == "FILE2")
     assert dopo["verifica"]["stato"] != "verificata_testo_prof"
 
@@ -1071,3 +1077,81 @@ def test_b7_eccezioni_di_notazione_non_autorizzano_altro():
         assert tdma[campo] == atteso
     poisson = content("dim-poisson-tempo-residuo", "dimostrazioni")
     assert fig(poisson, "poisson-distribuzione-residuo")["serie"][-1] == baseline[poisson["id"]]["figure"][0]["serie"][0]
+
+
+# E5r1: regressioni della revisione, senza ritoccare lo snapshot originale.
+@pytest.mark.parametrize("width", [360, 390, 768, 1440])
+def test_e5r1_geometria_catene_stabile(width):
+    import subprocess
+
+    script = r"""
+import {readFileSync} from 'node:fs';
+import {renderBlocchi} from './web/js/figure/blocchi.js';
+import {renderTemporale} from './web/js/figure/temporale.js';
+import {larghezzaUtileFigura} from './web/js/figure/index.js';
+const leggi = id => JSON.parse(readFileSync(`graph/dimostrazioni/${id}.json`, 'utf8'));
+const d = leggi('dim-nascita-morte-equilibrio');
+const nascita = d.passi.filter(p => p.n >= 3 && p.n <= 5).map(p => {
+  const f = d.figure.find(f => f.id === p.figura);
+  const r = renderBlocchi(f, {larghezzaMassima: larghezzaUtileFigura(Number(process.argv[1])), adattaAlContenitore: true});
+  return {viewBox: r.viewBox, nodi: Object.fromEntries(r.nodi.map(n => [n.blocco.id, [n.x, n.y]]))};
+});
+const td = leggi('dim-ritardo-tdma-fdma');
+const tdma = td.passi.filter(p => p.n <= 3).map(p => renderTemporale(td.figure.find(f => f.id === p.figura)).viewBox);
+console.log(JSON.stringify({nascita, tdma}));
+"""
+    dati = json.loads(subprocess.check_output(
+        ["node", "--input-type=module", "-e", script, str(width)], cwd=ROOT, text=True
+    ))
+    iniziale = dati["nascita"][0]
+    assert len(dati["nascita"]) == len(dati["tdma"]) == 3
+    for stato in dati["nascita"]:
+        assert stato["viewBox"] == iniziale["viewBox"]
+        for id, punto in iniziale["nodi"].items():
+            assert stato["nodi"][id] == punto
+    for stato, taglio, sinistra, destra in (
+        (dati["nascita"][1], "taglio-zero", "zero", "uno"),
+        (dati["nascita"][2], "taglio-k", "k", "k-piu-uno"),
+    ):
+        nodi = stato["nodi"]
+        assert nodi[sinistra][1] == nodi[taglio][1] == nodi[destra][1]
+        assert nodi[sinistra][0] < nodi[taglio][0] < nodi[destra][0]
+    assert dati["tdma"] == [{"w": 960, "h": 787}] * 3
+
+
+def test_e5r1_tdma_griglia_comune_e_intervalli_senza_etichette_ridondanti():
+    d = content("dim-ritardo-tdma-fdma", "dimostrazioni")
+    originale = read(SNAPSHOT_E5)["dimostrazioni"][d["id"]]["figure"][0]
+    for f in d["figure"]:
+        assert f["asse_t"] == originale["asse_t"]
+        assert f["corsie"] == originale["corsie"]
+        assert f["marcatori"] == originale["marcatori"]
+        assert all("etichetta" not in iv for iv in f["intervalli"])
+    attesi = [{k: v for k, v in iv.items() if k != "etichetta"} for iv in originale["intervalli"]]
+    assert fig(d, "tdma-fdma-confronto-temporale")["intervalli"] == attesi
+
+
+def test_e5r1_richiami_finestra_e_freccia_del_primo_bit():
+    d = content("dim-sliding-window-efficienza", "dimostrazioni")
+    prima = fig(d, "finestra-efficienza-soglia")
+    dopo = fig(d, "finestra-efficienza-due-regimi")
+    assert prima["asse_y"] == dopo["asse_y"] and prima["asse_y"]["max"] == 1.2
+    assert prima["annotazioni"] == dopo["annotazioni"][:1] == [
+        {"x": 1.25, "y": 0.95, "testo": "W* = 1,25"}
+    ]
+    assert dopo["annotazioni"][1] == {"x": 1.6, "y": 0.76, "testo": "W = 1: 0,76"}
+    f = fig(d, "finestra-insufficiente")
+    ritorno = next(a for a in f["frecce"] if a["etichetta"] == "I: ritorno")
+    inviato = next(iv for iv in f["intervalli"] if iv["corsia"] == "riscontro")
+    ricevuto = next(iv for iv in f["intervalli"] if iv["corsia"] == "ack-ricevuto")
+    assert ritorno["da"]["t"] == inviato["t0"] == 1.5
+    assert ritorno["a"]["t"] == ricevuto["t0"] == 2
+    assert ritorno["a"]["t"] - ritorno["da"]["t"] == 0.5
+
+
+def test_e5r1_tacche_densita_e_accento():
+    f = fig(content("dim-poisson-tempo-residuo", "dimostrazioni"), "poisson-densita-condizionata")
+    assert f["asse_y"]["tacche"] == [
+        {"valore": i / 10, "etichetta": "0" if i == 0 else f"0,{i}"} for i in range(7)
+    ]
+    assert "Il tasso è mezzo" in f["descrizione"]

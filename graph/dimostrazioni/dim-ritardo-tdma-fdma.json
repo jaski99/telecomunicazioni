@@ -92,7 +92,7 @@
       "id": "tdma-fdma-confronto-temporale",
       "tipo": "temporale",
       "titolo": "TDMA e FDMA: quattro utenti",
-      "descrizione": "Aggiunge gli altri tre pacchetti TDMA e le loro attese di uno, due e tre slot, conservando il primo slot e tutti i pacchetti FDMA. Assi e corsie restano identici. L’esempio ha ciclo di quattro secondi: ora sono visibili tutti i tempi individuali, non ancora una barra del ritardo medio.",
+      "descrizione": "Aggiunge gli altri tre pacchetti TDMA e le attese di uno, due e tre slot, conservando il primo slot e tutti i pacchetti FDMA. Il blu indica trasmissione e il grigio attesa. Assi, corsie e confini restano identici; nel ciclo illustrativo di quattro secondi sono ora visibili i tempi individuali, non una barra del ritardo medio.",
       "asse_t": {
         "etichetta": "Tempo (s)",
         "min": 0,
@@ -137,77 +137,66 @@
           "corsia": "td-1",
           "t0": 0,
           "t1": 1,
-          "etichetta": "Pacchetto TDMA",
           "stile": "trasmissione"
         },
         {
           "corsia": "fd-1",
           "t0": 0,
           "t1": 4,
-          "etichetta": "Pacchetto FDMA",
           "stile": "trasmissione"
         },
         {
           "corsia": "td-2",
           "t0": 0,
           "t1": 1,
-          "etichetta": "Attesa",
           "stile": "attesa"
         },
         {
           "corsia": "td-2",
           "t0": 1,
           "t1": 2,
-          "etichetta": "Pacchetto TDMA",
           "stile": "trasmissione"
         },
         {
           "corsia": "fd-2",
           "t0": 0,
           "t1": 4,
-          "etichetta": "Pacchetto FDMA",
           "stile": "trasmissione"
         },
         {
           "corsia": "td-3",
           "t0": 0,
           "t1": 2,
-          "etichetta": "Attesa",
           "stile": "attesa"
         },
         {
           "corsia": "td-3",
           "t0": 2,
           "t1": 3,
-          "etichetta": "Pacchetto TDMA",
           "stile": "trasmissione"
         },
         {
           "corsia": "fd-3",
           "t0": 0,
           "t1": 4,
-          "etichetta": "Pacchetto FDMA",
           "stile": "trasmissione"
         },
         {
           "corsia": "td-4",
           "t0": 0,
           "t1": 3,
-          "etichetta": "Attesa",
           "stile": "attesa"
         },
         {
           "corsia": "td-4",
           "t0": 3,
           "t1": 4,
-          "etichetta": "Pacchetto TDMA",
           "stile": "trasmissione"
         },
         {
           "corsia": "fd-4",
           "t0": 0,
           "t1": 4,
-          "etichetta": "Pacchetto FDMA",
           "stile": "trasmissione"
         }
       ],
@@ -239,7 +228,7 @@
       "id": "tdma-fdma-primo-slot",
       "tipo": "temporale",
       "titolo": "Primo slot TDMA sul ciclo comune",
-      "descrizione": "Primo stato con quattro utenti e ciclo illustrativo di quattro secondi: è riempito solo il primo slot TDMA, lungo un secondo. Tutte le corsie e l’asse sono già predisposti; non sono ancora mostrati i pacchetti FDMA, le altre attese o il ritardo medio.",
+      "descrizione": "Primo stato con quattro utenti e ciclo illustrativo di quattro secondi: è riempito solo il primo slot TDMA, lungo un secondo. Corsie e confini di tutti gli slot sono predisposti fin dall’inizio, indipendentemente dai pacchetti visibili. Il blu indica la trasmissione; pacchetti FDMA, altre attese e ritardo medio non compaiono ancora.",
       "asse_t": {
         "etichetta": "Tempo (s)",
         "min": 0,
@@ -284,7 +273,6 @@
           "corsia": "td-1",
           "t0": 0,
           "t1": 1,
-          "etichetta": "Pacchetto TDMA",
           "stile": "trasmissione"
         }
       ],
@@ -297,6 +285,18 @@
         {
           "t": 1,
           "etichetta": "Fine slot 1"
+        },
+        {
+          "t": 2,
+          "etichetta": "Fine slot 2"
+        },
+        {
+          "t": 3,
+          "etichetta": "Fine slot 3"
+        },
+        {
+          "t": 4,
+          "etichetta": "Fine trama"
         }
       ]
     },
@@ -304,7 +304,7 @@
       "id": "tdma-fdma-corsie-fdma",
       "tipo": "temporale",
       "titolo": "Si riempiono le quattro sottobande FDMA",
-      "descrizione": "Aggiunge i quattro pacchetti FDMA in parallelo, dall’inizio alla fine del ciclo di quattro secondi, senza attesa iniziale. Il primo slot TDMA, l’asse e tutte le corsie restano identici; gli altri slot TDMA non sono ancora riempiti.",
+      "descrizione": "Aggiunge i quattro pacchetti FDMA in parallelo, dall’inizio alla fine del ciclo di quattro secondi, senza attesa iniziale. Il blu indica la trasmissione. Il primo slot TDMA, l’asse, tutti i confini e tutte le corsie restano identici; gli altri slot TDMA non sono ancora riempiti.",
       "asse_t": {
         "etichetta": "Tempo (s)",
         "min": 0,
@@ -349,35 +349,30 @@
           "corsia": "td-1",
           "t0": 0,
           "t1": 1,
-          "etichetta": "Pacchetto TDMA",
           "stile": "trasmissione"
         },
         {
           "corsia": "fd-1",
           "t0": 0,
           "t1": 4,
-          "etichetta": "Pacchetto FDMA",
           "stile": "trasmissione"
         },
         {
           "corsia": "fd-2",
           "t0": 0,
           "t1": 4,
-          "etichetta": "Pacchetto FDMA",
           "stile": "trasmissione"
         },
         {
           "corsia": "fd-3",
           "t0": 0,
           "t1": 4,
-          "etichetta": "Pacchetto FDMA",
           "stile": "trasmissione"
         },
         {
           "corsia": "fd-4",
           "t0": 0,
           "t1": 4,
-          "etichetta": "Pacchetto FDMA",
           "stile": "trasmissione"
         }
       ],
@@ -390,6 +385,14 @@
         {
           "t": 1,
           "etichetta": "Fine slot 1"
+        },
+        {
+          "t": 2,
+          "etichetta": "Fine slot 2"
+        },
+        {
+          "t": 3,
+          "etichetta": "Fine slot 3"
         },
         {
           "t": 4,

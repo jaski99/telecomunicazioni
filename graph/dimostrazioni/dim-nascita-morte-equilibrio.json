@@ -216,7 +216,7 @@
       "id": "nascita-morte-catena-equilibrio",
       "tipo": "blocchi",
       "titolo": "La catena all’equilibrio, prima dei tagli",
-      "descrizione": "Nuova vista simbolica della catena: zero, uno, stati intermedi, k, k più uno e ultimo stato N. I rami di nascita e morte distinguono i due versi; le probabilità sono ora costanti, ma non è ancora segnato alcun taglio.",
+      "descrizione": "Nuova vista simbolica della catena, predisposta su due righe identiche in tutti gli stati della figura: in alto zero e uno, poi gli stati intermedi; in basso k, k più uno e l’ultimo stato N. Le frecce collegano le due righe e i rami di nascita e morte distinguono i versi. Le probabilità sono costanti; non è ancora segnato alcun taglio.",
       "blocchi": [
         {
           "id": "zero",
@@ -236,36 +236,36 @@
           "id": "prima",
           "etichetta": "…",
           "forma": "nodo",
-          "colonna": 4,
+          "colonna": 3,
           "riga": 1
         },
         {
           "id": "k",
           "etichetta": "k",
           "forma": "nodo",
-          "colonna": 6,
-          "riga": 1
+          "colonna": 0,
+          "riga": 4
         },
         {
           "id": "k-piu-uno",
           "etichetta": "k+1",
           "forma": "nodo",
-          "colonna": 8,
-          "riga": 1
+          "colonna": 2,
+          "riga": 4
         },
         {
           "id": "dopo",
           "etichetta": "…",
           "forma": "nodo",
-          "colonna": 10,
-          "riga": 1
+          "colonna": 3,
+          "riga": 4
         },
         {
           "id": "n",
           "etichetta": "N",
           "forma": "nodo",
-          "colonna": 12,
-          "riga": 1
+          "colonna": 4,
+          "riga": 4
         },
         {
           "id": "nascita-zero",
@@ -285,15 +285,15 @@
           "id": "nascita-k",
           "etichetta": "λₖ",
           "forma": "rettangolo",
-          "colonna": 7,
-          "riga": 0
+          "colonna": 1,
+          "riga": 3
         },
         {
           "id": "morte-k-piu-uno",
           "etichetta": "μₖ₊₁",
           "forma": "rettangolo",
-          "colonna": 7,
-          "riga": 2
+          "colonna": 1,
+          "riga": 5
         }
       ],
       "collegamenti": [
@@ -351,7 +351,7 @@
       "id": "nascita-morte-taglio-zero",
       "tipo": "blocchi",
       "titolo": "Primo taglio: la frontiera fra zero e uno",
-      "descrizione": "Aggiunge il taglio fra zero e uno alla stessa catena e nelle stesse posizioni. La barra nel blocco Taglio separa i due insiemi: soltanto la nascita da zero e la morte da uno attraversano questa frontiera, con flussi uguali all’equilibrio.",
+      "descrizione": "Aggiunge il piccolo marcatore 0|1 fra zero e uno, nella prima riga della stessa catena. La barra indica il taglio e non un nuovo stato. Tutti i nodi e i tassi restano nelle posizioni precedenti: soltanto la nascita da zero e la morte da uno attraversano la frontiera, con flussi uguali all’equilibrio.",
       "blocchi": [
         {
           "id": "zero",
@@ -371,36 +371,36 @@
           "id": "prima",
           "etichetta": "…",
           "forma": "nodo",
-          "colonna": 4,
+          "colonna": 3,
           "riga": 1
         },
         {
           "id": "k",
           "etichetta": "k",
           "forma": "nodo",
-          "colonna": 6,
-          "riga": 1
+          "colonna": 0,
+          "riga": 4
         },
         {
           "id": "k-piu-uno",
           "etichetta": "k+1",
           "forma": "nodo",
-          "colonna": 8,
-          "riga": 1
+          "colonna": 2,
+          "riga": 4
         },
         {
           "id": "dopo",
           "etichetta": "…",
           "forma": "nodo",
-          "colonna": 10,
-          "riga": 1
+          "colonna": 3,
+          "riga": 4
         },
         {
           "id": "n",
           "etichetta": "N",
           "forma": "nodo",
-          "colonna": 12,
-          "riga": 1
+          "colonna": 4,
+          "riga": 4
         },
         {
           "id": "nascita-zero",
@@ -420,20 +420,20 @@
           "id": "nascita-k",
           "etichetta": "λₖ",
           "forma": "rettangolo",
-          "colonna": 7,
-          "riga": 0
+          "colonna": 1,
+          "riga": 3
         },
         {
           "id": "morte-k-piu-uno",
           "etichetta": "μₖ₊₁",
           "forma": "rettangolo",
-          "colonna": 7,
-          "riga": 2
+          "colonna": 1,
+          "riga": 5
         },
         {
           "id": "taglio-zero",
-          "etichetta": "Taglio 0 | 1",
-          "forma": "rettangolo",
+          "etichetta": "0|1",
+          "forma": "nodo",
           "colonna": 1,
           "riga": 1
         }
@@ -493,7 +493,7 @@
       "id": "taglio-flussi",
       "tipo": "blocchi",
       "titolo": "Taglio generale: da zero a k contro k+1 fino a N",
-      "descrizione": "Aggiunge il taglio fra k e k più uno, conservando la catena e il taglio iniziale. La barra nel nuovo blocco Taglio divide gli stati da zero a k da quelli da k più uno a N. I percorsi superiore e inferiore attraversano la frontiera nei versi opposti: la somma telescopica lascia uguali i due flussi.",
+      "descrizione": "Aggiunge il marcatore k|k+1 fra k e k più uno nella seconda riga, conservando la catena e il taglio iniziale 0|1. Le barre indicano frontiere, non stati aggiuntivi. La nuova frontiera separa gli stati da zero a k da quelli successivi fino a N; i flussi opposti si eguagliano dopo la somma telescopica.",
       "blocchi": [
         {
           "id": "zero",
@@ -513,36 +513,36 @@
           "id": "prima",
           "etichetta": "…",
           "forma": "nodo",
-          "colonna": 4,
+          "colonna": 3,
           "riga": 1
         },
         {
           "id": "k",
           "etichetta": "k",
           "forma": "nodo",
-          "colonna": 6,
-          "riga": 1
+          "colonna": 0,
+          "riga": 4
         },
         {
           "id": "k-piu-uno",
           "etichetta": "k+1",
           "forma": "nodo",
-          "colonna": 8,
-          "riga": 1
+          "colonna": 2,
+          "riga": 4
         },
         {
           "id": "dopo",
           "etichetta": "…",
           "forma": "nodo",
-          "colonna": 10,
-          "riga": 1
+          "colonna": 3,
+          "riga": 4
         },
         {
           "id": "n",
           "etichetta": "N",
           "forma": "nodo",
-          "colonna": 12,
-          "riga": 1
+          "colonna": 4,
+          "riga": 4
         },
         {
           "id": "nascita-zero",
@@ -562,29 +562,29 @@
           "id": "nascita-k",
           "etichetta": "λₖ",
           "forma": "rettangolo",
-          "colonna": 7,
-          "riga": 0
+          "colonna": 1,
+          "riga": 3
         },
         {
           "id": "morte-k-piu-uno",
           "etichetta": "μₖ₊₁",
           "forma": "rettangolo",
-          "colonna": 7,
-          "riga": 2
+          "colonna": 1,
+          "riga": 5
         },
         {
           "id": "taglio-zero",
-          "etichetta": "Taglio 0 | 1",
-          "forma": "rettangolo",
+          "etichetta": "0|1",
+          "forma": "nodo",
           "colonna": 1,
           "riga": 1
         },
         {
           "id": "taglio-k",
-          "etichetta": "Taglio k | k+1",
-          "forma": "rettangolo",
-          "colonna": 7,
-          "riga": 1
+          "etichetta": "k|k+1",
+          "forma": "nodo",
+          "colonna": 1,
+          "riga": 4
         }
       ],
       "collegamenti": [
