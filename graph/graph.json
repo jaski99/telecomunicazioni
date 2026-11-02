@@ -25155,7 +25155,7 @@
             "id": "caratteristica-quantizzatore",
             "tipo": "grafico",
             "titolo": "Quantizzatore uniforme a otto livelli",
-            "descrizione": "Nuovo esempio: la caratteristica a L=8 livelli nell’intervallo (-M,M). La diagonale è il riferimento senza quantizzazione; i tratti verticali indicano il passo Delta e l’errore epsilon tra campione e livello.",
+            "descrizione": "Caratteristica uniforme a otto livelli sull’intervallo da meno M a M. La diagonale tratteggiata è il riferimento senza quantizzazione. Per un campione pari a meno zero virgola sette M, la freccia indica l’errore fino al livello quantizzato; la parentesi esterna confronta due livelli adiacenti e indica il passo. Le etichette sono nella legenda.",
             "asse_x": {
               "etichetta": "Campione xₙ",
               "min": -1.2,
@@ -25176,7 +25176,7 @@
               ]
             },
             "asse_y": {
-              "etichetta": "Livello qₙ",
+              "etichetta": "Livello quantizzato qₙ (otto livelli nell’intervallo −M, M)",
               "min": -1.2,
               "max": 1.2,
               "tacche": [
@@ -25281,39 +25281,27 @@
               },
               {
                 "stile": "linea",
-                "etichetta": "Errore εₙ",
+                "etichetta": "Errore εₙ (xₙ = −0,70 M)",
                 "punti": [
                   [
-                    0.46,
-                    0.4
+                    -0.7,
+                    -0.7
                   ],
                   [
-                    0.49,
-                    0.375
+                    -0.7,
+                    -0.625
                   ],
                   [
-                    0.52,
-                    0.4
+                    -0.74,
+                    -0.655
                   ],
                   [
-                    0.49,
-                    0.375
+                    -0.7,
+                    -0.625
                   ],
                   [
-                    0.49,
-                    0.49
-                  ],
-                  [
-                    0.46,
-                    0.465
-                  ],
-                  [
-                    0.49,
-                    0.49
-                  ],
-                  [
-                    0.52,
-                    0.465
+                    -0.66,
+                    -0.655
                   ]
                 ]
               },
@@ -25322,42 +25310,22 @@
                 "etichetta": "Passo Δ",
                 "punti": [
                   [
-                    0.69,
-                    0.375
+                    -0.5,
+                    -0.375
                   ],
                   [
-                    0.74,
-                    0.375
+                    -0.95,
+                    -0.375
                   ],
                   [
-                    0.715,
-                    0.375
+                    -0.95,
+                    -0.125
                   ],
                   [
-                    0.715,
-                    0.625
-                  ],
-                  [
-                    0.69,
-                    0.625
-                  ],
-                  [
-                    0.74,
-                    0.625
+                    -0.25,
+                    -0.125
                   ]
                 ]
-              }
-            ],
-            "annotazioni": [
-              {
-                "x": 0.49,
-                "y": 0.43,
-                "testo": "εₙ"
-              },
-              {
-                "x": 0.715,
-                "y": 0.625,
-                "testo": "Δ"
               }
             ]
           },
@@ -26771,7 +26739,7 @@
           {
             "n": 1,
             "testo": "Demodulare una singola modulazione a prodotto con riferimento locale.",
-            "formula": "2x(t)\\cos(\\omega_0t)\\cos(\\omega_0t-\\Delta)=x(t)\\cos\\Delta+x(t)\\cos(2\\omega_0t-\\Delta)",
+            "formula": "\\begin{gathered}2x(t)\\cos(\\omega_0t)\\cos(\\omega_0t-\\Delta)\\\\=x(t)\\cos\\Delta\\\\+x(t)\\cos(2\\omega_0t-\\Delta)\\end{gathered}",
             "perche": "Per l’identità prodotto-somma $$\\begin{gathered}2\\cos a\\cos b\\\\ =\\cos(a-b)\\\\ +\\cos(a+b)\\end{gathered}$$ il fattore 2 lascia $x\\cos\\Delta$ in banda base senza il fattore un mezzo.",
             "figura": "demodulatore-dsb"
           },
@@ -29382,7 +29350,7 @@
             "id": "filtro-complesso-iq",
             "tipo": "blocchi",
             "titolo": "Modello complesso in quadratura",
-            "descrizione": "Quarto stato: l’inviluppo complesso I si divide in due rami filtrati da H i e H q. Il secondo è moltiplicato per j, cioè sfasato di un quarto di giro; la somma realizza H zero come H i più j volte H q. È un modello e non garantisce causalità o stabilità.",
+            "descrizione": "Quarto stato: l’inviluppo complesso I si divide in due rami filtrati da Hi e Hq. Il secondo è moltiplicato per j, cioè sfasato di un quarto di giro; la somma realizza H zero come Hi più j volte Hq. È un modello e non garantisce causalità o stabilità.",
             "blocchi": [
               {
                 "id": "ingresso",
@@ -29393,14 +29361,14 @@
               },
               {
                 "id": "parte-i",
-                "etichetta": "H_i",
+                "etichetta": "Hi",
                 "forma": "rettangolo",
                 "colonna": 1,
                 "riga": 0
               },
               {
                 "id": "parte-q",
-                "etichetta": "H_q",
+                "etichetta": "Hq",
                 "forma": "rettangolo",
                 "colonna": 0,
                 "riga": 2
@@ -29658,13 +29626,13 @@
           {
             "n": 4,
             "testo": "Isolare il contributo della banda laterale superiore.",
-            "formula": "s_s(t)=\\tfrac12\\int_{\\omega_i}^{\\omega_m}\\!d\\omega\\,V(\\omega)\\cos[(\\omega_0+\\omega)t-\\varphi(\\omega)]",
+            "formula": "\\begin{gathered}s_s(t)=\\tfrac12\\int_{\\omega_i}^{\\omega_m}\\!d\\omega\\\\V(\\omega)\\cos[(\\omega_0+\\omega)t-\\varphi(\\omega)]\\end{gathered}",
             "perche": "Nel termine somma la pulsazione della portante si aggiunge a quella del messaggio, mentre la sua fase mantiene il segno."
           },
           {
             "n": 5,
             "testo": "Isolare il contributo della banda laterale inferiore con il segno corretto della fase.",
-            "formula": "s_i(t)=\\tfrac12\\int_{\\omega_i}^{\\omega_m}\\!d\\omega\\,V(\\omega)\\cos[(\\omega_0-\\omega)t+\\varphi(\\omega)]",
+            "formula": "\\begin{gathered}s_i(t)=\\tfrac12\\int_{\\omega_i}^{\\omega_m}\\!d\\omega\\\\V(\\omega)\\cos[(\\omega_0-\\omega)t+\\varphi(\\omega)]\\end{gathered}",
             "perche": "Nella differenza si sottrae tutto l’argomento del messaggio: il meno davanti alla sua fase diventa un più."
           },
           {

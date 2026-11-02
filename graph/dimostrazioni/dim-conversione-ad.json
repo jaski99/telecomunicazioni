@@ -859,7 +859,7 @@
       "id": "caratteristica-quantizzatore",
       "tipo": "grafico",
       "titolo": "Quantizzatore uniforme a otto livelli",
-      "descrizione": "Nuovo esempio: la caratteristica a L=8 livelli nell’intervallo (-M,M). La diagonale è il riferimento senza quantizzazione; i tratti verticali indicano il passo Delta e l’errore epsilon tra campione e livello.",
+      "descrizione": "Caratteristica uniforme a otto livelli sull’intervallo da meno M a M. La diagonale tratteggiata è il riferimento senza quantizzazione. Per un campione pari a meno zero virgola sette M, la freccia indica l’errore fino al livello quantizzato; la parentesi esterna confronta due livelli adiacenti e indica il passo. Le etichette sono nella legenda.",
       "asse_x": {
         "etichetta": "Campione xₙ",
         "min": -1.2,
@@ -880,7 +880,7 @@
         ]
       },
       "asse_y": {
-        "etichetta": "Livello qₙ",
+        "etichetta": "Livello quantizzato qₙ (otto livelli nell’intervallo −M, M)",
         "min": -1.2,
         "max": 1.2,
         "tacche": [
@@ -985,39 +985,27 @@
         },
         {
           "stile": "linea",
-          "etichetta": "Errore εₙ",
+          "etichetta": "Errore εₙ (xₙ = −0,70 M)",
           "punti": [
             [
-              0.46,
-              0.4
+              -0.7,
+              -0.7
             ],
             [
-              0.49,
-              0.375
+              -0.7,
+              -0.625
             ],
             [
-              0.52,
-              0.4
+              -0.74,
+              -0.655
             ],
             [
-              0.49,
-              0.375
+              -0.7,
+              -0.625
             ],
             [
-              0.49,
-              0.49
-            ],
-            [
-              0.46,
-              0.465
-            ],
-            [
-              0.49,
-              0.49
-            ],
-            [
-              0.52,
-              0.465
+              -0.66,
+              -0.655
             ]
           ]
         },
@@ -1026,42 +1014,22 @@
           "etichetta": "Passo Δ",
           "punti": [
             [
-              0.69,
-              0.375
+              -0.5,
+              -0.375
             ],
             [
-              0.74,
-              0.375
+              -0.95,
+              -0.375
             ],
             [
-              0.715,
-              0.375
+              -0.95,
+              -0.125
             ],
             [
-              0.715,
-              0.625
-            ],
-            [
-              0.69,
-              0.625
-            ],
-            [
-              0.74,
-              0.625
+              -0.25,
+              -0.125
             ]
           ]
-        }
-      ],
-      "annotazioni": [
-        {
-          "x": 0.49,
-          "y": 0.43,
-          "testo": "εₙ"
-        },
-        {
-          "x": 0.715,
-          "y": 0.625,
-          "testo": "Δ"
         }
       ]
     },

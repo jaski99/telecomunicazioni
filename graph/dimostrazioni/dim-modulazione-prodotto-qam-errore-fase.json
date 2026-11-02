@@ -43,7 +43,7 @@
     {
       "n": 1,
       "testo": "Demodulare una singola modulazione a prodotto con riferimento locale.",
-      "formula": "2x(t)\\cos(\\omega_0t)\\cos(\\omega_0t-\\Delta)=x(t)\\cos\\Delta+x(t)\\cos(2\\omega_0t-\\Delta)",
+      "formula": "\\begin{gathered}2x(t)\\cos(\\omega_0t)\\cos(\\omega_0t-\\Delta)\\\\=x(t)\\cos\\Delta\\\\+x(t)\\cos(2\\omega_0t-\\Delta)\\end{gathered}",
       "perche": "Per l’identità prodotto-somma $$\\begin{gathered}2\\cos a\\cos b\\\\ =\\cos(a-b)\\\\ +\\cos(a+b)\\end{gathered}$$ il fattore 2 lascia $x\\cos\\Delta$ in banda base senza il fattore un mezzo.",
       "figura": "demodulatore-dsb"
     },

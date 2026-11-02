@@ -669,9 +669,10 @@ for (const [id, fig] of JSON.parse(data)) {
 def test_e4_revisione_formule_stati_e_notazione():
     """Copre i difetti di contenuto evidenziati dalla revisione E4."""
     sp = load('graph/dimostrazioni/dim-spettri-modulazione-prodotto.json')
-    for n in (4, 5):
+    for n, letter, operator, sign in ((4, 's', '+', '-'), (5, 'i', '-', '+')):
         formula = sp['passi'][n - 1]['formula']
-        assert formula.index(r'd\omega') < formula.index(r'\cos')
+        assert formula == (rf'\begin{{gathered}}s_{letter}(t)=\tfrac12\int_{{\omega_i}}^{{\omega_m}}\!d\omega'
+                           rf'\\V(\omega)\cos[(\omega_0{operator}\omega)t{sign}\varphi(\omega)]\end{{gathered}}')
     assert r'-\varphi' in sp['passi'][3]['formula']
     assert r'+\varphi' in sp['passi'][4]['formula']
     previous, current = figure_by_step(sp, 8), figure_by_step(sp, 9)
@@ -684,6 +685,9 @@ def test_e4_revisione_formule_stati_e_notazione():
     assert 'sovrappost' not in current['titolo'].lower()
 
     qam = load('graph/dimostrazioni/dim-modulazione-prodotto-qam-errore-fase.json')
+    assert qam['passi'][0]['formula'] == (
+        r'\begin{gathered}2x(t)\cos(\omega_0t)\cos(\omega_0t-\Delta)'
+        r'\\=x(t)\cos\Delta\\+x(t)\cos(2\omega_0t-\Delta)\end{gathered}')
     reason = qam['passi'][0]['perche']
     display = re.findall(r'\$\$(.*?)\$\$', reason)
     assert display == [r'\begin{gathered}2\cos a\cos b\\ =\cos(a-b)\\ +\cos(a+b)\end{gathered}']
@@ -709,8 +713,18 @@ def test_e4_revisione_formule_stati_e_notazione():
     characteristic = figure_by_step(ad, 3)
     for axis in ('asse_x', 'asse_y'):
         assert characteristic[axis]['min'] < -1 < 1 < characteristic[axis]['max']
-    error = characteristic['annotazioni'][0]
-    assert error['testo'] == 'εₙ' and error['x'] == .49 and .375 < error['y'] < .49
+    assert not characteristic.get('annotazioni')  # etichette in legenda, non sulla scala
+    error, delta = characteristic['serie'][2:]
+    assert error['etichetta'] == 'Errore εₙ (xₙ = −0,70 M)'
+    assert delta['etichetta'] == 'Passo Δ'
+    x, reference = error['punti'][0]
+    x2, quantized = error['punti'][1]
+    assert x == x2 == reference == -.7 and quantized == -.625
+    assert math.isclose(quantized - reference, .075)  # epsilon = q_n - x_n
+    assert characteristic['serie'][0]['punti'][2:4] == [[-.75, -.625], [-.5, -.625]]
+    assert delta['punti'] == [[-.5, -.375], [-.95, -.375], [-.95, -.125], [-.25, -.125]]
+    assert math.isclose(delta['punti'][2][1] - delta['punti'][1][1], .25)  # 2M/8
+    assert 'parentesi esterna' in characteristic['descrizione']
 
     da = load('graph/dimostrazioni/dim-conversione-da.json')
     notation = {entry['simbolo'] for entry in da['notazione']}
@@ -731,8 +745,9 @@ def test_e4_revisione_iq_fili_ortogonali_alle_quattro_larghezze():
     demo = load('graph/dimostrazioni/dim-quadripoli-passa-basso-equivalente.json')
     figure = figure_by_step(demo, 5)
     blocks = {block['id']: block for block in figure['blocchi']}
-    assert blocks['parte-i']['etichetta'] == 'H_i' and blocks['parte-q']['etichetta'] == 'H_q'
-    assert 'H i più j volte H q' in figure['descrizione']
+    assert blocks['parte-i']['etichetta'] == 'Hi' and blocks['parte-q']['etichetta'] == 'Hq'
+    assert 'Hi più j volte Hq' in figure['descrizione']
+    assert all('_' not in block['etichetta'] for block in figure['blocchi'])
     javascript = r'''
 import { renderBlocchi } from './web/js/figure/blocchi.js';
 import { larghezzaUtileFigura } from './web/js/figure/index.js';

@@ -581,7 +581,7 @@
       "id": "filtro-complesso-iq",
       "tipo": "blocchi",
       "titolo": "Modello complesso in quadratura",
-      "descrizione": "Quarto stato: l’inviluppo complesso I si divide in due rami filtrati da H i e H q. Il secondo è moltiplicato per j, cioè sfasato di un quarto di giro; la somma realizza H zero come H i più j volte H q. È un modello e non garantisce causalità o stabilità.",
+      "descrizione": "Quarto stato: l’inviluppo complesso I si divide in due rami filtrati da Hi e Hq. Il secondo è moltiplicato per j, cioè sfasato di un quarto di giro; la somma realizza H zero come Hi più j volte Hq. È un modello e non garantisce causalità o stabilità.",
       "blocchi": [
         {
           "id": "ingresso",
@@ -592,14 +592,14 @@
         },
         {
           "id": "parte-i",
-          "etichetta": "H_i",
+          "etichetta": "Hi",
           "forma": "rettangolo",
           "colonna": 1,
           "riga": 0
         },
         {
           "id": "parte-q",
-          "etichetta": "H_q",
+          "etichetta": "Hq",
           "forma": "rettangolo",
           "colonna": 0,
           "riga": 2

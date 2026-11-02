@@ -79,13 +79,13 @@
     {
       "n": 4,
       "testo": "Isolare il contributo della banda laterale superiore.",
-      "formula": "s_s(t)=\\tfrac12\\int_{\\omega_i}^{\\omega_m}\\!d\\omega\\,V(\\omega)\\cos[(\\omega_0+\\omega)t-\\varphi(\\omega)]",
+      "formula": "\\begin{gathered}s_s(t)=\\tfrac12\\int_{\\omega_i}^{\\omega_m}\\!d\\omega\\\\V(\\omega)\\cos[(\\omega_0+\\omega)t-\\varphi(\\omega)]\\end{gathered}",
       "perche": "Nel termine somma la pulsazione della portante si aggiunge a quella del messaggio, mentre la sua fase mantiene il segno."
     },
     {
       "n": 5,
       "testo": "Isolare il contributo della banda laterale inferiore con il segno corretto della fase.",
-      "formula": "s_i(t)=\\tfrac12\\int_{\\omega_i}^{\\omega_m}\\!d\\omega\\,V(\\omega)\\cos[(\\omega_0-\\omega)t+\\varphi(\\omega)]",
+      "formula": "\\begin{gathered}s_i(t)=\\tfrac12\\int_{\\omega_i}^{\\omega_m}\\!d\\omega\\\\V(\\omega)\\cos[(\\omega_0-\\omega)t+\\varphi(\\omega)]\\end{gathered}",
       "perche": "Nella differenza si sottrae tutto l’argomento del messaggio: il meno davanti alla sua fase diventa un più."
     },
     {
