@@ -1,0 +1,208 @@
+{
+  "id": "schema-filtro-ricorrente-semplificato",
+  "tipo": "blocchi",
+  "titolo": "Filtro ricorrente: due linee di ritardo",
+  "descrizione": "Novità: alla linea di ingresso con pesi da h zero a h enne meno uno si aggiunge la linea di uscita, con pesi da h primo uno a h primo emme. Le celle ritardano di T e tutte le prese arrivano a un solo sommatore, che fornisce e retroaziona l’uscita.",
+  "blocchi": [
+    {
+      "id": "in",
+      "etichetta": "x(t)",
+      "forma": "ingresso",
+      "colonna": 0,
+      "riga": 0
+    },
+    {
+      "id": "r1",
+      "etichetta": "T",
+      "forma": "ritardo",
+      "colonna": 2,
+      "riga": 0
+    },
+    {
+      "id": "r2",
+      "etichetta": "T",
+      "forma": "ritardo",
+      "colonna": 4,
+      "riga": 0
+    },
+    {
+      "id": "rn",
+      "etichetta": "T",
+      "forma": "ritardo",
+      "colonna": 6,
+      "riga": 0
+    },
+    {
+      "id": "m0",
+      "etichetta": "h₀",
+      "forma": "moltiplicatore",
+      "colonna": 0,
+      "riga": 1
+    },
+    {
+      "id": "m1",
+      "etichetta": "h₁",
+      "forma": "moltiplicatore",
+      "colonna": 2,
+      "riga": 1
+    },
+    {
+      "id": "m2",
+      "etichetta": "h₂",
+      "forma": "moltiplicatore",
+      "colonna": 4,
+      "riga": 1
+    },
+    {
+      "id": "mn",
+      "etichetta": "hN−1",
+      "forma": "moltiplicatore",
+      "colonna": 6,
+      "riga": 1
+    },
+    {
+      "id": "somma",
+      "etichetta": "+",
+      "forma": "sommatore",
+      "colonna": 8,
+      "riga": 3
+    },
+    {
+      "id": "out",
+      "etichetta": "y(t)",
+      "forma": "uscita",
+      "colonna": 12,
+      "riga": 3
+    },
+    {
+      "id": "ry1",
+      "etichetta": "T",
+      "forma": "ritardo",
+      "colonna": 10,
+      "riga": 5
+    },
+    {
+      "id": "ry2",
+      "etichetta": "T",
+      "forma": "ritardo",
+      "colonna": 8,
+      "riga": 5
+    },
+    {
+      "id": "rym",
+      "etichetta": "T",
+      "forma": "ritardo",
+      "colonna": 6,
+      "riga": 5
+    },
+    {
+      "id": "my1",
+      "etichetta": "h′₁",
+      "forma": "moltiplicatore",
+      "colonna": 10,
+      "riga": 4
+    },
+    {
+      "id": "my2",
+      "etichetta": "h′₂",
+      "forma": "moltiplicatore",
+      "colonna": 8,
+      "riga": 4
+    },
+    {
+      "id": "mym",
+      "etichetta": "h′M",
+      "forma": "moltiplicatore",
+      "colonna": 6,
+      "riga": 4
+    }
+  ],
+  "collegamenti": [
+    {
+      "da": "in",
+      "a": "r1"
+    },
+    {
+      "da": "r1",
+      "a": "r2"
+    },
+    {
+      "da": "r2",
+      "a": "rn",
+      "etichetta": "…"
+    },
+    {
+      "da": "in",
+      "a": "m0"
+    },
+    {
+      "da": "r1",
+      "a": "m1"
+    },
+    {
+      "da": "r2",
+      "a": "m2"
+    },
+    {
+      "da": "rn",
+      "a": "mn"
+    },
+    {
+      "da": "m0",
+      "a": "somma"
+    },
+    {
+      "da": "m1",
+      "a": "somma"
+    },
+    {
+      "da": "m2",
+      "a": "somma"
+    },
+    {
+      "da": "mn",
+      "a": "somma"
+    },
+    {
+      "da": "somma",
+      "a": "out"
+    },
+    {
+      "da": "out",
+      "a": "ry1"
+    },
+    {
+      "da": "ry1",
+      "a": "ry2"
+    },
+    {
+      "da": "ry2",
+      "a": "rym",
+      "etichetta": "…"
+    },
+    {
+      "da": "ry1",
+      "a": "my1"
+    },
+    {
+      "da": "ry2",
+      "a": "my2"
+    },
+    {
+      "da": "rym",
+      "a": "mym"
+    },
+    {
+      "da": "my1",
+      "a": "somma"
+    },
+    {
+      "da": "my2",
+      "a": "somma"
+    },
+    {
+      "da": "mym",
+      "a": "somma"
+    }
+  ]
+}

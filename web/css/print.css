@@ -1,0 +1,61 @@
+/* web/css/print.css — owner E1. Stampa da manuale: @media print, zero importanti,
+   sezioni aperte via markup (open impostato dal JS su beforeprint),
+   nessuna navigazione, URL dei link stampati a piè di pagina. */
+@media print {
+  * { box-sizing: border-box; }
+  html { background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { background: #fff; color: #000; font-size: 11pt; line-height: 1.5; margin: 0; padding: 0; overflow: visible; }
+  a { text-decoration: none; color: #000; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 8pt; color: #444; white-space: pre-wrap; word-break: break-all; }
+  a[href^="#"]::after { content: ""; }
+  a[href^="./"]::after { content: ""; }
+  a[href^="../"]::after { content: ""; }
+
+  header, nav, .site-header, .nav-principale, .skip-link,
+  .dim-controlli, .dim-tabs, .dim-indice,
+  .site-footer, [hidden] { display: none; }
+
+  .dim-testata { display: none; }
+  html body .step__corpo[hidden] { display: flex; }
+  .step--nascosto .step__nascosto-testo { display: none; }
+
+  main, .page { max-width: none; width: 100%; padding: 0; margin: 0; }
+  @page { margin: 16mm; }
+
+  h1, h2, h3 { page-break-after: avoid; }
+  h1 { font-size: 16pt; margin: 0 0 0.5em; }
+  h2 { font-size: 13pt; margin: 1.2em 0 0.4em; }
+  h3 { font-size: 11.5pt; margin: 1em 0 0.3em; }
+  p, li { orphans: 3; widows: 3; }
+
+  .prose { max-width: none; }
+  .card, .callout, .blocco, .definizione, .esempio, .scenario, .analogia, .attenzione, .errore, .verifica,
+  .formula-box, .step { page-break-inside: avoid; border: 1px solid #999; background: #fff; color: #000; }
+  .step { border-left: 3px solid #000; }
+  .step__num { background: #000; color: #fff; }
+
+  .chiave, .definizione, .esempio, .scenario, .analogia, .attenzione, .errore, .verifica { border-left: 4px solid #000; background: #fff; color: #000; }
+  .callout { border-left: 4px solid #000; background: #fff; color: #000; }
+
+  figure { page-break-inside: avoid; margin: 0; }
+  figcaption { font-size: 8.5pt; text-align: left; }
+  svg { max-width: 100%; height: auto; }
+
+  .nodo-sezione { page-break-before: auto; page-break-after: avoid; }
+  .nodo-sezione > h2 { page-break-after: avoid; }
+  .sezione__num { color: #000; }
+
+  details { page-break-inside: avoid; }
+  details[open] > * { display: block; }
+  details summary { display: list-item; font-weight: 700; }
+
+  .nota-margine, aside[role="note"] { display: block; font-size: 8.5pt; border-top: 1px solid #999; padding-top: 0.3em; margin-top: 0.8em; page-break-inside: avoid; }
+
+  .nav-sequenza, .btn, .chip, .progress, .tabs { display: none; }
+
+  p { text-align: left; }
+  ul, ol { padding-left: 1.2em; }
+  table { page-break-inside: auto; }
+  th, td { border: 1px solid #999; padding: 3pt; font-size: 9pt; }
+  th { background: #eef2f8; }
+}
